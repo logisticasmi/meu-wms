@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SMI WMS - Configurações</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body onload="verificarLogin()">
+
+
+<!-- MENU LATERAL -->
+
+<div class="sidebar">
+
+    <h2>SMI WMS</h2>
+
+
+    <a href="dashboard.html">
+        📊 Dashboard
+    </a>
+
+
+    <a href="produtos.html">
+        📦 Produtos
+    </a>
+
+
+    <a href="posicoes.html">
+        🏭 Posições
+    </a>
+
+
+    <a href="entradas.html">
+        📥 Entradas
+    </a>
+
+
+    <a href="saidas.html">
+        📤 Saídas
+    </a>
+
+
+    <a href="transferencias.html">
+        🔄 Transferências
+    </a>
+
+
+    <a href="relatorios.html">
+        📈 Relatórios
+    </a>
+
+
+    <a href="configuracoes.html" class="ativo">
+        ⚙️ Configurações
+    </a>
+
+
+    <button onclick="sairSistema()">
+        🚪 Sair
+    </button>
+
+
+</div>
+
+
+
+<!-- CONTEÚDO -->
+
+
+<div class="conteudo">
+
+
+<header>
+
+<h1>
+⚙️ Configurações do Sistema
+</h1>
+
+
+<div id="nomeUsuario"></div>
+
+
+</header>
+
+
+
+<!-- EMPRESA -->
+
+<div class="card">
+
+<h2>
+🏢 Dados da Empresa
+</h2>
+
+
+<p>
+<strong>Empresa:</strong>
+SMI DO BRASIL
+</p>
+
+
+<p>
+<strong>Sistema:</strong>
+SMI WMS
+</p>
+
+
+<p>
+<strong>Depósito:</strong>
+1 Unidade
+</p>
+
+
+<p>
+<strong>Capacidade:</strong>
+60 posições / 360 níveis
+</p>
+
+
+</div>
+
+
+
+
+
+<!-- USUÁRIO -->
+
+<div class="card">
+
+<h2>
+👤 Usuário Atual
+</h2>
+
+
+<p>
+Usuário conectado:
+<span id="usuarioConfig">
+</span>
+</p>
+
+
+</div>
+
+
+
+
+
+<!-- BACKUP -->
+
+<div class="card">
+
+
+<h2>
+💾 Backup dos Dados
+</h2>
+
+
+<p>
+Faça uma cópia do estoque salvo no sistema.
+</p>
+
+
+<button class="btn"
+onclick="exportarEstoque()">
+
+Exportar Backup
+
+</button>
+
+
+</div>
+
+
+
+
+
+<!-- LIMPEZA -->
+
+<div class="card">
+
+
+<h2>
+⚠️ Administração
+
+</h2>
+
+
+<p>
+Remover todos os dados gravados no navegador.
+</p>
+
+
+<button 
+class="btn btn-vermelho"
+onclick="limparSistema()">
+
+Limpar Dados
+
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+
+<script src="app.js"></script>
+
+
+<script>
+
+
+window.onload=function(){
+
+    verificarLogin();
+
+
+    let usuario =
+    localStorage.getItem("usuario");
+
+
+    if(usuario){
+
+        document.getElementById("usuarioConfig").innerHTML =
+        usuario;
+
+    }
+
+
+}
+
+
+
+function exportarEstoque(){
+
+
+    let dados =
+    localStorage.getItem("estoque");
+
+
+    if(!dados){
+
+        alert("Nenhum estoque encontrado.");
+
+        return;
+
+    }
+
+
+    let arquivo =
+    new Blob(
+        [dados],
+        {
+            type:"application/json"
+        }
+    );
+
+
+    let link =
+    document.createElement("a");
+
+
+    link.href =
+    URL.createObjectURL(arquivo);
+
+
+    link.download =
+    "backup_estoque_smi.json";
+
+
+    link.click();
+
+
+}
+
+
+
+function limparSistema(){
+
+
+    if(confirm(
+    "Deseja apagar todos os dados do sistema?"
+    )){
+
+
+        localStorage.removeItem("estoque");
+
+
+        localStorage.removeItem("movimentacoes");
+
+
+        alert(
+        "Dados removidos com sucesso."
+        );
+
+
+        location.reload();
+
+
+    }
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

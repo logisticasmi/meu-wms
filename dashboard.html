@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SMI WMS - Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<!-- MENU -->
+
+<div class="sidebar">
+
+<div class="logo">
+<img src="img/logo.png">
+</div>
+
+<h2>SMI WMS</h2>
+
+<ul>
+
+<li class="ativo" onclick="location.href='dashboard.html'">
+🏠 Dashboard
+</li>
+
+<li onclick="location.href='produtos.html'">
+📦 Produtos
+</li>
+
+<li onclick="location.href='entradas.html'">
+📥 Entradas
+</li>
+
+<li onclick="location.href='saidas.html'">
+📤 Saídas
+</li>
+
+<li onclick="location.href='transferencias.html'">
+🔄 Transferências
+</li>
+
+<li onclick="location.href='posicoes.html'">
+📍 Posições
+</li>
+
+<li onclick="location.href='relatorios.html'">
+📊 Relatórios
+</li>
+
+<li onclick="location.href='configuracoes.html'">
+⚙ Configurações
+</li>
+
+</ul>
+
+</div>
+
+<!-- CONTEÚDO -->
+
+<div class="conteudo">
+
+<!-- TOPO -->
+
+<div class="topbar">
+
+<div class="titulo-pagina">
+
+<h1>Dashboard</h1>
+
+<small>Visão Geral do Estoque</small>
+
+</div>
+
+<div class="usuario">
+
+<span id="relogio"></span>
+
+<span id="nomeUsuario"></span>
+
+<button onclick="sairSistema()">
+Sair
+</button>
+
+</div>
+
+</div>
+
+<!-- CARDS DO DASHBOARD -->
+
+<div class="cards-dashboard">
+
+    <!-- PRODUTOS -->
+
+    <div class="card-dashboard card-produtos">
+
+        <div class="icone-card azul">
+            📦
+        </div>
+
+        <div class="card-dashboard-conteudo">
+
+            <h3>Produtos</h3>
+
+            <h1 id="cardProdutos">0</h1>
+
+           <span class="card-tendencia tendencia-positiva">
+    Últimos 7 dias
+</span>
+
+        </div>
+
+        <div class="mini-grafico">
+            <canvas id="tendenciaProdutos"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- QUANTIDADE -->
+
+    <div class="card-dashboard card-quantidade">
+
+        <div class="icone-card verde">
+            📚
+        </div>
+
+        <div class="card-dashboard-conteudo">
+
+            <h3>Quantidade Total</h3>
+
+            <h1 id="cardQuantidade">0</h1>
+
+           <span class="card-tendencia tendencia-positiva">
+    Últimos 7 dias
+</span>
+
+        </div>
+
+        <div class="mini-grafico">
+            <canvas id="tendenciaQuantidade"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- VALOR -->
+
+    <div class="card-dashboard card-valor">
+
+        <div class="icone-card amarelo">
+            💰
+        </div>
+
+        <div class="card-dashboard-conteudo">
+
+            <h3>Valor do Estoque</h3>
+
+            <h1 id="cardValor">R$ 0,00</h1>
+
+           <span class="card-tendencia tendencia-positiva">
+    Valor movimentado
+</span>
+
+        </div>
+
+        <div class="mini-grafico">
+            <canvas id="tendenciaValor"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- POSIÇÕES -->
+
+    <div class="card-dashboard card-posicoes">
+
+        <div class="icone-card roxo">
+            📍
+        </div>
+
+        <div class="card-dashboard-conteudo">
+
+            <h3>Posições Utilizadas</h3>
+
+            <h1 id="cardPosicoes">0</h1>
+
+            <span class="card-tendencia">
+                de 360 posições
+            </span>
+
+            <div class="progresso-card">
+
+                <div
+                    id="progressoPosicoes"
+                    class="progresso-card-preenchimento progresso-roxo">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NÍVEIS -->
+
+    <div class="card-dashboard card-niveis">
+
+        <div class="icone-card turquesa">
+            🏭
+        </div>
+
+        <div class="card-dashboard-conteudo">
+
+            <h3>Níveis Utilizados</h3>
+
+            <h1 id="cardNiveis">0%</h1>
+
+            <span class="card-tendencia">
+                Ocupação atual
+            </span>
+
+            <div class="progresso-card">
+
+                <div
+                    id="progressoNiveis"
+                    class="progresso-card-preenchimento progresso-turquesa">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- GRÁFICOS -->
+
+<div class="graficos">
+
+<div class="grafico-card">
+
+<h2>Entradas x Saídas</h2>
+
+<canvas id="graficoMovimentacoes"></canvas>
+
+</div>
+
+<div class="grafico-card">
+
+<h2>Estoque por Cliente</h2>
+
+<canvas id="graficoEstoque"></canvas>
+
+</div>
+
+</div>
+<!-- INDICADORES E RANKINGS -->
+
+<div class="dashboard-grid-secundario">
+
+    <!-- TOP 5 PRODUTOS -->
+
+    <div class="painel dashboard-painel">
+
+        <div class="dashboard-titulo-painel">
+
+            <div>
+                <h2>Top 5 Produtos</h2>
+                <small>Produtos com maior quantidade em estoque</small>
+            </div>
+
+            <span class="dashboard-badge">
+                Estoque
+            </span>
+
+        </div>
+
+        <div id="topProdutos" class="dashboard-ranking">
+
+            <div class="dashboard-vazio">
+                Nenhum produto cadastrado.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOP 5 POSIÇÕES -->
+
+    <div class="painel dashboard-painel">
+
+        <div class="dashboard-titulo-painel">
+
+            <div>
+                <h2>Top 5 Posições</h2>
+                <small>Endereços com maior volume armazenado</small>
+            </div>
+
+            <span class="dashboard-badge">
+                Ocupação
+            </span>
+
+        </div>
+
+        <div id="topPosicoes" class="dashboard-ranking">
+
+            <div class="dashboard-vazio">
+                Nenhuma posição ocupada.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- MOVIMENTAÇÕES DO DIA -->
+
+<div class="painel dashboard-painel">
+
+    <div class="dashboard-titulo-painel">
+
+        <div>
+            <h2>Resumo das Movimentações</h2>
+            <small>Informações operacionais registradas hoje</small>
+        </div>
+
+        <span class="dashboard-badge">
+            Hoje
+        </span>
+
+    </div>
+
+    <div class="resumo-movimentacoes">
+
+        <div class="resumo-movimento-item entrada">
+
+            <div class="resumo-movimento-icone">
+                📥
+            </div>
+
+            <div>
+                <span>Entradas</span>
+                <strong id="resumoEntradas">0</strong>
+            </div>
+
+        </div>
+
+
+        <div class="resumo-movimento-item saida">
+
+            <div class="resumo-movimento-icone">
+                📤
+            </div>
+
+            <div>
+                <span>Saídas</span>
+                <strong id="resumoSaidas">0</strong>
+            </div>
+
+        </div>
+
+
+        <div class="resumo-movimento-item transferencia">
+
+            <div class="resumo-movimento-icone">
+                🔄
+            </div>
+
+            <div>
+                <span>Transferências</span>
+                <strong id="resumoTransferencias">0</strong>
+            </div>
+
+        </div>
+
+
+        <div class="resumo-movimento-item saldo">
+
+            <div class="resumo-movimento-icone">
+                📊
+            </div>
+
+            <div>
+                <span>Saldo do Dia</span>
+                <strong id="resumoSaldo">0</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ÚLTIMAS MOVIMENTAÇÕES -->
+
+<div class="painel dashboard-painel">
+
+    <div class="dashboard-titulo-painel">
+
+        <div>
+            <h2>Últimas Movimentações</h2>
+            <small>Entradas, saídas e transferências recentes</small>
+        </div>
+
+        <button
+            type="button"
+            class="btn-dashboard-relatorio"
+            onclick="location.href='relatorios.html'">
+
+            Ver Relatório
+
+        </button>
+
+    </div>
+
+
+    <div class="dashboard-tabela-container">
+
+        <table class="tabela dashboard-tabela">
+
+            <thead>
+
+                <tr>
+
+                    <th>Tipo</th>
+
+                    <th>Código</th>
+
+                    <th>Descrição</th>
+
+                    <th>Quantidade</th>
+
+                    <th>Origem</th>
+
+                    <th>Destino</th>
+
+                    <th>Data</th>
+
+                    <th>Operador</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="ultimasMovimentacoes">
+
+                <tr>
+
+                    <td
+                        colspan="8"
+                        class="dashboard-sem-registro">
+
+                        Nenhuma movimentação registrada.
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- ===================================== -->
+<!-- RODAPÉ -->
+<!-- ===================================== -->
+
+<footer class="dashboard-rodape">
+
+    <span>
+        SMI DO BRASIL — Sistema de Gerenciamento de Estoque
+    </span>
+
+    <span>
+        WMS versão 2.0
+    </span>
+
+</footer>
+
+<!-- ===================================== -->
+<!-- SCRIPTS -->
+<!-- ===================================== -->
+
+<script src="app.js"></script>
+<script src="dashboard.js"></script>
+
+</body>
+</html>

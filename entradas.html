@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SMI WMS - Entrada de Estoque</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <div class="logo">
+            <img
+                src="img/logo.png"
+                alt="Logo SMI WMS"
+            >
+        </div>
+
+        <h2>SMI WMS</h2>
+
+        <ul>
+            <li onclick="location.href='dashboard.html'">
+                🏠 Dashboard
+            </li>
+
+            <li onclick="location.href='produtos.html'">
+                📦 Produtos
+            </li>
+
+            <li class="ativo">
+                📥 Entradas
+            </li>
+
+            <li onclick="location.href='saidas.html'">
+                📤 Saídas
+            </li>
+
+            <li onclick="location.href='transferencias.html'">
+                🔄 Transferências
+            </li>
+
+            <li onclick="location.href='posicoes.html'">
+                📍 Posições
+            </li>
+
+            <li onclick="location.href='relatorios.html'">
+                📊 Relatórios
+            </li>
+
+            <li onclick="location.href='configuracoes.html'">
+                ⚙️ Configurações
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="conteudo">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Entrada de Estoque</h1>
+                <small>Registrar Entrada</small>
+            </div>
+
+            <div class="usuario">
+
+                <span id="relogio"></span>
+
+                <span id="nomeUsuario"></span>
+
+                <button
+                    type="button"
+                    onclick="sairSistema()"
+                >
+                    Sair
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="painel">
+
+            <h2>Nova Entrada</h2>
+
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 20px;
+                "
+            >
+
+                <input
+                    id="codigoEntrada"
+                    type="text"
+                    placeholder="Código do Produto"
+                    autocomplete="off"
+                >
+
+                <input
+                    id="quantidadeEntrada"
+                    type="number"
+                    min="1"
+                    step="1"
+                    placeholder="Quantidade"
+                >
+
+                <input
+                    id="enderecoEntrada"
+                    type="text"
+                    placeholder="Endereço"
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    class="btn"
+                    id="btnRegistrarEntrada"
+                >
+                    Registrar Entrada
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="painel">
+
+            <h2>Histórico</h2>
+
+            <table class="tabela">
+
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Descrição</th>
+                        <th>Quantidade</th>
+                        <th>Endereço</th>
+                        <th>Data</th>
+                        <th>Operador</th>
+                    </tr>
+                </thead>
+
+                <tbody id="listaEntradas">
+
+                    <tr>
+                        <td
+                            colspan="6"
+                            style="text-align: center;"
+                        >
+                            Nenhuma entrada registrada.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            carregarHistoricoEntradas();
+
+            const botao =
+                document.getElementById(
+                    "btnRegistrarEntrada"
+                );
+
+            if (botao) {
+                botao.addEventListener(
+                    "click",
+                    registrarEntrada
+                );
+            }
+
+            const campoQuantidade =
+                document.getElementById(
+                    "quantidadeEntrada"
+                );
+
+            if (campoQuantidade) {
+                campoQuantidade.addEventListener(
+                    "keydown",
+                    function (evento) {
+                        if (evento.key === "Enter") {
+                            registrarEntrada();
+                        }
+                    }
+                );
+            }
+        });
+
+
+        /* =====================================================
+           REGISTRAR ENTRADA
+        ===================================================== */
+
+        function registrarEntrada() {
+            const campoCodigo =
+                document.getElementById(
+                    "codigoEntrada"
+                );
+
+            const campoQuantidade =
+                document.getElementById(
+                    "quantidadeEntrada"
+                );
+
+            const campoEndereco =
+                document.getElementById(
+                    "enderecoEntrada"
+                );
+
+            const codigo = String(
+                campoCodigo.value || ""
+            )
+                .trim()
+                .toUpperCase();
+
+            const endereco = String(
+                campoEndereco.value || ""
+            )
+                .trim()
+                .toUpperCase();
+
+            const quantidade =
+                converterNumeroEntrada(
+                    campoQuantidade.value
+                );
+
+            if (codigo === "") {
+                alert("Digite o código do produto.");
+                campoCodigo.focus();
+                return;
+            }
+
+            if (
+                !Number.isFinite(quantidade) ||
+                quantidade <= 0
+            ) {
+                alert("Digite uma quantidade válida.");
+                campoQuantidade.focus();
+                return;
+            }
+
+            if (endereco === "") {
+                alert("Digite o endereço de armazenagem.");
+                campoEndereco.focus();
+                return;
+            }
+
+            const estoque =
+                obterEstoqueEntrada();
+
+            const produtosDoCodigo =
+                estoque.filter(
+                    function (produto) {
+                        return normalizarCodigoEntrada(
+                            produto.codigo
+                        ) === normalizarCodigoEntrada(
+                            codigo
+                        );
+                    }
+                );
+
+            if (produtosDoCodigo.length === 0) {
+                alert(
+                    'O produto "' +
+                    codigo +
+                    '" não está cadastrado.\n\n' +
+                    "Cadastre ou importe o produto antes de registrar a entrada."
+                );
+
+                campoCodigo.focus();
+                return;
+            }
+
+            const produtoReferencia =
+                produtosDoCodigo[0];
+
+            const posicaoExistente =
+                estoque.find(
+                    function (produto) {
+                        return (
+                            normalizarCodigoEntrada(
+                                produto.codigo
+                            ) === normalizarCodigoEntrada(
+                                codigo
+                            ) &&
+                            normalizarEnderecoEntrada(
+                                produto.endereco
+                            ) === normalizarEnderecoEntrada(
+                                endereco
+                            )
+                        );
+                    }
+                );
+
+            if (posicaoExistente) {
+                posicaoExistente.quantidade =
+                    converterNumeroEntrada(
+                        posicaoExistente.quantidade
+                    ) + quantidade;
+            } else {
+                estoque.push({
+                    nf:
+                        produtoReferencia.nf || "",
+
+                    codigo:
+                        produtoReferencia.codigo ||
+                        codigo,
+
+                    descricao:
+                        produtoReferencia.descricao ||
+                        "Sem descrição",
+
+                    cliente:
+                        produtoReferencia.cliente ||
+                        "SMI",
+
+                    quantidade:
+                        quantidade,
+
+                    endereco:
+                        endereco,
+
+                    valor:
+                        produtoReferencia.valor || 0
+                });
+            }
+
+            localStorage.setItem(
+                "estoque",
+                JSON.stringify(estoque)
+            );
+
+            const movimentacao = {
+                tipo: "ENTRADA",
+
+                codigo:
+                    produtoReferencia.codigo ||
+                    codigo,
+
+                descricao:
+                    produtoReferencia.descricao ||
+                    "Sem descrição",
+
+                quantidade:
+                    quantidade,
+
+                endereco:
+                    endereco,
+
+                origem:
+                    "Recebimento",
+
+                destino:
+                    endereco,
+
+                cliente:
+                    produtoReferencia.cliente ||
+                    "SMI",
+
+                data:
+                    obterDataHoraEntrada(),
+
+                operador:
+                    obterOperadorEntrada()
+            };
+
+            salvarEntradaHistorico(
+                movimentacao
+            );
+
+            salvarMovimentacaoGeralEntrada(
+                movimentacao
+            );
+
+            carregarHistoricoEntradas();
+
+            campoCodigo.value = "";
+            campoQuantidade.value = "";
+            campoEndereco.value = "";
+
+            campoCodigo.focus();
+
+            alert(
+                "Entrada registrada com sucesso!\n\n" +
+                "Código: " +
+                movimentacao.codigo +
+                "\n" +
+                "Quantidade: " +
+                formatarQuantidadeEntrada(
+                    quantidade
+                ) +
+                "\n" +
+                "Endereço: " +
+                endereco
+            );
+        }
+
+
+        /* =====================================================
+           ESTOQUE
+        ===================================================== */
+
+        function obterEstoqueEntrada() {
+            try {
+                const dados =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "estoque"
+                        )
+                    );
+
+                return Array.isArray(dados)
+                    ? dados
+                    : [];
+            } catch (erro) {
+                console.error(
+                    "Erro ao recuperar estoque:",
+                    erro
+                );
+
+                return [];
+            }
+        }
+
+
+        /* =====================================================
+           HISTÓRICO DE ENTRADAS
+        ===================================================== */
+
+        function salvarEntradaHistorico(
+            movimentacao
+        ) {
+            let entradas = [];
+
+            try {
+                const dados =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "entradas"
+                        )
+                    );
+
+                if (Array.isArray(dados)) {
+                    entradas = dados;
+                }
+            } catch (erro) {
+                entradas = [];
+            }
+
+            entradas.unshift(
+                movimentacao
+            );
+
+            localStorage.setItem(
+                "entradas",
+                JSON.stringify(entradas)
+            );
+        }
+
+
+        function salvarMovimentacaoGeralEntrada(
+            movimentacao
+        ) {
+            let movimentacoes = [];
+
+            try {
+                const dados =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "movimentacoes"
+                        )
+                    );
+
+                if (Array.isArray(dados)) {
+                    movimentacoes = dados;
+                }
+            } catch (erro) {
+                movimentacoes = [];
+            }
+
+            movimentacoes.unshift(
+                movimentacao
+            );
+
+            localStorage.setItem(
+                "movimentacoes",
+                JSON.stringify(
+                    movimentacoes
+                )
+            );
+        }
+
+
+        function carregarHistoricoEntradas() {
+            const tabela =
+                document.getElementById(
+                    "listaEntradas"
+                );
+
+            if (!tabela) {
+                return;
+            }
+
+            let entradas = [];
+
+            try {
+                const dados =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "entradas"
+                        )
+                    );
+
+                entradas = Array.isArray(dados)
+                    ? dados
+                    : [];
+            } catch (erro) {
+                entradas = [];
+            }
+
+            tabela.innerHTML = "";
+
+            if (entradas.length === 0) {
+                tabela.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="6"
+                            style="text-align:center;"
+                        >
+                            Nenhuma entrada registrada.
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+            entradas.forEach(
+                function (entrada) {
+                    const linha =
+                        document.createElement(
+                            "tr"
+                        );
+
+                    linha.appendChild(
+                        criarCelulaEntrada(
+                            entrada.codigo || "-"
+                        )
+                    );
+
+                    linha.appendChild(
+                        criarCelulaEntrada(
+                            entrada.descricao || "-"
+                        )
+                    );
+
+                    linha.appendChild(
+                        criarCelulaEntrada(
+                            formatarQuantidadeEntrada(
+                                entrada.quantidade
+                            )
+                        )
+                    );
+
+                    linha.appendChild(
+                        criarCelulaEntrada(
+                            entrada.endereco ||
+                            entrada.destino ||
+                            "-"
+                        )
+                    );
+
+                    linha.appendChild(
+                        criarCelulaEntrada(
+                            entrada.data || "-"
+                        )
+                    );
+
+                    linha.appendChild(
+                        criarCelulaEntrada(
+                            entrada.operador ||
+                            "Operador"
+                        )
+                    );
+
+                    tabela.appendChild(
+                        linha
+                    );
+                }
+            );
+        }
+
+
+        /* =====================================================
+           FUNÇÕES AUXILIARES
+        ===================================================== */
+
+        function criarCelulaEntrada(valor) {
+            const celula =
+                document.createElement("td");
+
+            celula.textContent =
+                valor === undefined ||
+                valor === null ||
+                valor === ""
+                    ? "-"
+                    : valor;
+
+            return celula;
+        }
+
+
+        function normalizarCodigoEntrada(
+            codigo
+        ) {
+            return String(codigo || "")
+                .trim()
+                .toUpperCase();
+        }
+
+
+        function normalizarEnderecoEntrada(
+            endereco
+        ) {
+            return String(endereco || "")
+                .trim()
+                .toUpperCase();
+        }
+
+
+        function converterNumeroEntrada(
+            valor
+        ) {
+            if (
+                valor === undefined ||
+                valor === null ||
+                valor === ""
+            ) {
+                return 0;
+            }
+
+            if (typeof valor === "number") {
+                return Number.isFinite(valor)
+                    ? valor
+                    : 0;
+            }
+
+            let texto = String(valor)
+                .trim()
+                .replace(/\s/g, "");
+
+            if (
+                texto.includes(".") &&
+                texto.includes(",")
+            ) {
+                texto = texto
+                    .replace(/\./g, "")
+                    .replace(",", ".");
+            } else if (texto.includes(",")) {
+                texto = texto.replace(",", ".");
+            }
+
+            texto = texto.replace(
+                /[^0-9.-]/g,
+                ""
+            );
+
+            const numero =
+                Number(texto);
+
+            return Number.isFinite(numero)
+                ? numero
+                : 0;
+        }
+
+
+        function formatarQuantidadeEntrada(
+            valor
+        ) {
+            return converterNumeroEntrada(
+                valor
+            ).toLocaleString(
+                "pt-BR",
+                {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 3
+                }
+            );
+        }
+
+
+        function obterDataHoraEntrada() {
+            return new Date().toLocaleString(
+                "pt-BR"
+            );
+        }
+
+
+        function obterOperadorEntrada() {
+            const elementoNome =
+                document.getElementById(
+                    "nomeUsuario"
+                );
+
+            if (
+                elementoNome &&
+                elementoNome.textContent.trim() !== ""
+            ) {
+                return elementoNome.textContent.trim();
+            }
+
+            const chaves = [
+                "nomeUsuario",
+                "usuarioLogado",
+                "usuario",
+                "operador"
+            ];
+
+            for (const chave of chaves) {
+                const valor =
+                    localStorage.getItem(chave);
+
+                if (
+                    valor &&
+                    valor.trim() !== ""
+                ) {
+                    try {
+                        const dados =
+                            JSON.parse(valor);
+
+                        if (
+                            dados &&
+                            typeof dados === "object"
+                        ) {
+                            return (
+                                dados.nome ||
+                                dados.usuario ||
+                                dados.login ||
+                                "Operador"
+                            );
+                        }
+                    } catch (erro) {
+                        return valor;
+                    }
+                }
+            }
+
+            return "Operador";
+        }
+
+
+        window.registrarEntrada =
+            registrarEntrada;
+
+        window.carregarHistoricoEntradas =
+            carregarHistoricoEntradas;
+    </script>
+
+</body>
+
+</html>

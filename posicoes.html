@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Posições - SMI WMS</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Modal para consulta da posição */
+
+        .modal-posicao-consulta {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 22, 49, 0.58);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-posicao-consulta.aberto {
+            display: flex;
+        }
+
+        .modal-posicao-conteudo {
+            width: min(760px, 100%);
+            max-height: 85vh;
+            overflow-y: auto;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 26px;
+            box-shadow: 0 20px 60px rgba(0, 28, 66, 0.28);
+        }
+
+        .modal-posicao-cabecalho {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 22px;
+        }
+
+        .modal-posicao-cabecalho h2 {
+            margin: 0;
+            color: #062d63;
+            font-size: 26px;
+        }
+
+        .modal-posicao-fechar {
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 10px;
+            background: #d20f25;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-posicao-fechar:hover {
+            filter: brightness(0.92);
+        }
+
+        .tabela-posicao-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .tabela-posicao-consulta {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tabela-posicao-consulta th,
+        .tabela-posicao-consulta td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        .tabela-posicao-consulta th {
+            color: #062d63;
+            background: #f5f8fc;
+        }
+
+        .posicao-sem-produtos {
+            padding: 30px !important;
+            text-align: center !important;
+            color: #64748b;
+        }
+
+        .resumo-posicao {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #f5f8fc;
+            color: #062d63;
+        }
+
+        .resumo-posicao strong {
+            font-size: 18px;
+        }
+
+        /*
+         * Aplica aparência clicável aos cartões encontrados
+         * dentro do mapa.
+         */
+        #mapaEstoque [data-posicao],
+        #mapaEstoque [data-endereco],
+        #mapaEstoque .posicao,
+        #mapaEstoque .card-posicao,
+        #mapaEstoque .box-posicao {
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .modal-posicao-conteudo {
+                padding: 18px;
+            }
+
+            .resumo-posicao {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- MENU LATERAL -->
+    <div class="sidebar">
+
+        <div class="logo">
+            <img
+                src="img/logo.png"
+                alt="SMI"
+            >
+        </div>
+
+        <h2>SMI WMS</h2>
+
+        <ul>
+            <li onclick="location.href='dashboard.html'">
+                🏠 Dashboard
+            </li>
+
+            <li onclick="location.href='produtos.html'">
+                📦 Produtos
+            </li>
+
+            <li class="ativo">
+                📍 Posições
+            </li>
+
+            <li onclick="location.href='entradas.html'">
+                📥 Entradas
+            </li>
+
+            <li onclick="location.href='saidas.html'">
+                📤 Saídas
+            </li>
+
+            <li onclick="location.href='transferencias.html'">
+                🔄 Transferências
+            </li>
+
+            <li onclick="location.href='relatorios.html'">
+                📊 Relatórios
+            </li>
+
+            <li onclick="location.href='configuracoes.html'">
+                ⚙️ Configurações
+            </li>
+        </ul>
+
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div class="conteudo">
+
+        <header class="topbar">
+
+            <div>
+                <h1>Mapa do Estoque</h1>
+                <small>SMI DO BRASIL</small>
+            </div>
+
+            <div class="usuario">
+                <div id="relogio"></div>
+                <span id="nomeUsuario">👤 Administrador</span>
+            </div>
+
+        </header>
+
+        <div class="painel">
+
+            <h2>Mapa do Estoque</h2>
+
+            <div class="barraPesquisa">
+
+                <input
+                    type="text"
+                    id="pesquisaPosicao"
+                    placeholder="Pesquisar posição (Ex.: 15C)"
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <div
+                id="mapaEstoque"
+                class="mapa-estoque"
+            ></div>
+
+        </div>
+
+    </div>
+
+    <!-- MODAL ÚNICO DA POSIÇÃO -->
+    <div
+        id="modalPosicao"
+        class="modal-posicao-consulta"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tituloPosicao"
+    >
+
+        <div class="modal-posicao-conteudo">
+
+            <div class="modal-posicao-cabecalho">
+
+                <h2 id="tituloPosicao">
+                    📍 Posição
+                </h2>
+
+                <button
+                    type="button"
+                    class="modal-posicao-fechar"
+                    onclick="fecharModalPosicao()"
+                    aria-label="Fechar janela"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+            <div class="tabela-posicao-container">
+
+                <table class="tabela-posicao-consulta">
+
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descrição</th>
+                            <th>Quantidade</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="listaProdutosPosicao">
+
+                        <tr>
+                            <td
+                                colspan="3"
+                                class="posicao-sem-produtos"
+                            >
+                                Nenhum produto encontrado.
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="resumo-posicao">
+
+                <span>
+                    Total de produtos:
+                    <strong id="totalSku">0</strong>
+                </span>
+
+                <span>
+                    Quantidade total:
+                    <strong id="quantidadeTotalPosicao">0</strong>
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            prepararConsultaPosicoes();
+
+            const campoPesquisa =
+                document.getElementById("pesquisaPosicao");
+
+            if (campoPesquisa) {
+                campoPesquisa.addEventListener(
+                    "keyup",
+                    pesquisarPosicao
+                );
+            }
+
+            const modal =
+                document.getElementById("modalPosicao");
+
+            if (modal) {
+                modal.addEventListener(
+                    "click",
+                    function (evento) {
+                        if (evento.target === modal) {
+                            fecharModalPosicao();
+                        }
+                    }
+                );
+            }
+
+            document.addEventListener(
+                "keydown",
+                function (evento) {
+                    if (evento.key === "Escape") {
+                        fecharModalPosicao();
+                    }
+                }
+            );
+        });
+
+
+        /* =====================================================
+           ABRIR POSIÇÃO
+        ===================================================== */
+
+        function abrirModalPosicao(posicao) {
+            const endereco = normalizarEnderecoPosicao(
+                posicao
+            );
+
+            if (!endereco) {
+                return;
+            }
+
+            const estoque = obterEstoquePosicoes();
+
+            const produtosDaPosicao = estoque.filter(
+                function (produto) {
+                    return normalizarEnderecoPosicao(
+                        produto.endereco
+                    ) === endereco;
+                }
+            );
+
+            const titulo =
+                document.getElementById("tituloPosicao");
+
+            const tabela =
+                document.getElementById(
+                    "listaProdutosPosicao"
+                );
+
+            const totalSku =
+                document.getElementById("totalSku");
+
+            const quantidadeTotal =
+                document.getElementById(
+                    "quantidadeTotalPosicao"
+                );
+
+            const modal =
+                document.getElementById("modalPosicao");
+
+            titulo.textContent =
+                "📍 Posição " + endereco;
+
+            tabela.innerHTML = "";
+
+            if (produtosDaPosicao.length === 0) {
+                tabela.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="3"
+                            class="posicao-sem-produtos"
+                        >
+                            Nenhum produto armazenado nesta posição.
+                        </td>
+                    </tr>
+                `;
+
+                totalSku.textContent = "0";
+                quantidadeTotal.textContent = "0";
+            } else {
+                produtosDaPosicao.forEach(
+                    function (produto) {
+                        const linha =
+                            document.createElement("tr");
+
+                        linha.appendChild(
+                            criarCelulaPosicao(
+                                produto.codigo || "-"
+                            )
+                        );
+
+                        linha.appendChild(
+                            criarCelulaPosicao(
+                                produto.descricao ||
+                                "Sem descrição"
+                            )
+                        );
+
+                        linha.appendChild(
+                            criarCelulaPosicao(
+                                formatarQuantidadePosicao(
+                                    produto.quantidade
+                                )
+                            )
+                        );
+
+                        tabela.appendChild(linha);
+                    }
+                );
+
+                const codigosUnicos = new Set();
+
+                produtosDaPosicao.forEach(
+                    function (produto) {
+                        if (produto.codigo) {
+                            codigosUnicos.add(
+                                String(produto.codigo)
+                                    .trim()
+                                    .toUpperCase()
+                            );
+                        }
+                    }
+                );
+
+                const somaQuantidade =
+                    produtosDaPosicao.reduce(
+                        function (total, produto) {
+                            return total +
+                                converterNumeroPosicao(
+                                    produto.quantidade
+                                );
+                        },
+                        0
+                    );
+
+                totalSku.textContent =
+                    codigosUnicos.size.toLocaleString(
+                        "pt-BR"
+                    );
+
+                quantidadeTotal.textContent =
+                    formatarQuantidadePosicao(
+                        somaQuantidade
+                    );
+            }
+
+            modal.classList.add("aberto");
+
+            document.body.style.overflow = "hidden";
+        }
+
+
+        /* =====================================================
+           FECHAR MODAL
+        ===================================================== */
+
+        function fecharModalPosicao() {
+            const modal =
+                document.getElementById("modalPosicao");
+
+            if (modal) {
+                modal.classList.remove("aberto");
+            }
+
+            document.body.style.overflow = "";
+        }
+
+
+        /* =====================================================
+           ATIVAR CLIQUE NOS CARTÕES
+        ===================================================== */
+
+        function prepararConsultaPosicoes() {
+            const mapa =
+                document.getElementById("mapaEstoque");
+
+            if (!mapa) {
+                return;
+            }
+
+            /*
+             * O mapa normalmente é criado pelo app.js.
+             * A delegação permite clicar inclusive em cartões
+             * criados depois do carregamento da página.
+             */
+            mapa.addEventListener(
+                "click",
+                function (evento) {
+                    const cartao =
+                        localizarCartaoPosicao(
+                            evento.target,
+                            mapa
+                        );
+
+                    if (!cartao) {
+                        return;
+                    }
+
+                    const posicao =
+                        extrairPosicaoDoCartao(cartao);
+
+                    if (posicao) {
+                        abrirModalPosicao(posicao);
+                    }
+                }
+            );
+        }
+
+
+        function localizarCartaoPosicao(
+            elemento,
+            mapa
+        ) {
+            if (!elemento || elemento === mapa) {
+                return null;
+            }
+
+            const seletor = [
+                "[data-posicao]",
+                "[data-endereco]",
+                ".posicao",
+                ".card-posicao",
+                ".box-posicao",
+                ".posicao-card",
+                ".endereco-card"
+            ].join(",");
+
+            const encontrado =
+                elemento.closest(seletor);
+
+            if (
+                encontrado &&
+                mapa.contains(encontrado)
+            ) {
+                return encontrado;
+            }
+
+            /*
+             * Caso os cartões não tenham classes específicas,
+             * utiliza o filho direto do agrupamento do mapa.
+             */
+            let atual = elemento;
+
+            while (
+                atual &&
+                atual.parentElement !== mapa
+            ) {
+                atual = atual.parentElement;
+            }
+
+            return atual && atual !== mapa
+                ? atual
+                : null;
+        }
+
+
+        function extrairPosicaoDoCartao(cartao) {
+            if (!cartao) {
+                return "";
+            }
+
+            const posicaoDataset =
+                cartao.dataset.posicao ||
+                cartao.dataset.endereco ||
+                "";
+
+            if (posicaoDataset) {
+                return normalizarEnderecoPosicao(
+                    posicaoDataset
+                );
+            }
+
+            const identificadores = [
+                cartao.id,
+                cartao.getAttribute("title"),
+                cartao.getAttribute("aria-label"),
+                cartao.textContent
+            ];
+
+            for (const valor of identificadores) {
+                const posicao =
+                    localizarCodigoPosicao(valor);
+
+                if (posicao) {
+                    return posicao;
+                }
+            }
+
+            return "";
+        }
+
+
+        function localizarCodigoPosicao(texto) {
+            const valor = String(texto || "")
+                .trim()
+                .toUpperCase();
+
+            /*
+             * Exemplos reconhecidos:
+             * 1A, 2H, 15C, 30C, 100A
+             */
+            const resultado = valor.match(
+                /\b\d{1,3}[A-Z]\b/
+            );
+
+            return resultado
+                ? resultado[0]
+                : "";
+        }
+
+
+        /* =====================================================
+           PESQUISA DE POSIÇÃO
+        ===================================================== */
+
+        function pesquisarPosicao() {
+            const campo =
+                document.getElementById(
+                    "pesquisaPosicao"
+                );
+
+            const pesquisa =
+                normalizarEnderecoPosicao(
+                    campo ? campo.value : ""
+                );
+
+            const mapa =
+                document.getElementById("mapaEstoque");
+
+            if (!mapa) {
+                return;
+            }
+
+            const elementos =
+                mapa.querySelectorAll(
+                    "[data-posicao], " +
+                    "[data-endereco], " +
+                    ".posicao, " +
+                    ".card-posicao, " +
+                    ".box-posicao, " +
+                    ".posicao-card, " +
+                    ".endereco-card"
+                );
+
+            elementos.forEach(
+                function (elemento) {
+                    const posicao =
+                        extrairPosicaoDoCartao(
+                            elemento
+                        );
+
+                    const corresponde =
+                        pesquisa === "" ||
+                        posicao.includes(pesquisa);
+
+                    elemento.style.display =
+                        corresponde
+                            ? ""
+                            : "none";
+                }
+            );
+        }
+
+
+        /* =====================================================
+           DADOS E FORMATAÇÃO
+        ===================================================== */
+
+        function obterEstoquePosicoes() {
+            try {
+                const dados = JSON.parse(
+                    localStorage.getItem("estoque")
+                );
+
+                return Array.isArray(dados)
+                    ? dados
+                    : [];
+            } catch (erro) {
+                console.error(
+                    "Erro ao carregar estoque:",
+                    erro
+                );
+
+                return [];
+            }
+        }
+
+
+        function normalizarEnderecoPosicao(
+            endereco
+        ) {
+            return String(endereco || "")
+                .trim()
+                .toUpperCase()
+                .replace(/\s+/g, "");
+        }
+
+
+        function converterNumeroPosicao(valor) {
+            if (
+                valor === undefined ||
+                valor === null ||
+                valor === ""
+            ) {
+                return 0;
+            }
+
+            if (typeof valor === "number") {
+                return Number.isFinite(valor)
+                    ? valor
+                    : 0;
+            }
+
+            let texto = String(valor)
+                .trim()
+                .replace(/\s/g, "");
+
+            if (
+                texto.includes(".") &&
+                texto.includes(",")
+            ) {
+                texto = texto
+                    .replace(/\./g, "")
+                    .replace(",", ".");
+            } else if (texto.includes(",")) {
+                texto = texto.replace(",", ".");
+            }
+
+            texto = texto.replace(
+                /[^0-9.-]/g,
+                ""
+            );
+
+            const numero = Number(texto);
+
+            return Number.isFinite(numero)
+                ? numero
+                : 0;
+        }
+
+
+        function formatarQuantidadePosicao(valor) {
+            return converterNumeroPosicao(
+                valor
+            ).toLocaleString(
+                "pt-BR",
+                {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 3
+                }
+            );
+        }
+
+
+        function criarCelulaPosicao(valor) {
+            const celula =
+                document.createElement("td");
+
+            celula.textContent =
+                valor === undefined ||
+                valor === null ||
+                valor === ""
+                    ? "-"
+                    : valor;
+
+            return celula;
+        }
+
+
+        window.abrirModalPosicao =
+            abrirModalPosicao;
+
+        window.fecharModalPosicao =
+            fecharModalPosicao;
+
+        window.pesquisarPosicao =
+            pesquisarPosicao;
+    </script>
+
+</body>
+
+</html>

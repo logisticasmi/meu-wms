@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SMI WMS - Saídas</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- MENU LATERAL -->
+    <div class="sidebar">
+
+        <div class="logo">
+            <img
+                src="img/logo.png"
+                alt="Logo SMI WMS"
+            >
+        </div>
+
+        <h2>SMI WMS</h2>
+
+        <ul>
+            <li onclick="location.href='dashboard.html'">
+                🏠 Dashboard
+            </li>
+
+            <li onclick="location.href='produtos.html'">
+                📦 Produtos
+            </li>
+
+            <li onclick="location.href='entradas.html'">
+                📥 Entradas
+            </li>
+
+            <li class="ativo">
+                📤 Saídas
+            </li>
+
+            <li onclick="location.href='transferencias.html'">
+                🔄 Transferências
+            </li>
+
+            <li onclick="location.href='posicoes.html'">
+                📍 Posições
+            </li>
+
+            <li onclick="location.href='relatorios.html'">
+                📊 Relatórios
+            </li>
+
+            <li onclick="location.href='configuracoes.html'">
+                ⚙️ Configurações
+            </li>
+        </ul>
+
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div class="conteudo">
+
+        <!-- BARRA SUPERIOR -->
+        <div class="topbar">
+
+            <div>
+                <h1>Saída de Estoque</h1>
+                <small>Registrar Saída</small>
+            </div>
+
+            <div class="usuario">
+
+                <span id="relogio"></span>
+
+                <span id="nomeUsuario"></span>
+
+                <button
+                    type="button"
+                    onclick="sairSistema()"
+                >
+                    Sair
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- NOVA SAÍDA -->
+        <div class="painel">
+
+            <h2>Nova Saída</h2>
+
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 20px;
+                "
+            >
+
+                <input
+                    id="codigoSaida"
+                    type="text"
+                    placeholder="Código do Produto"
+                    autocomplete="off"
+                >
+
+                <input
+                    id="quantidadeSaida"
+                    type="number"
+                    min="1"
+                    step="1"
+                    placeholder="Quantidade"
+                >
+
+                <button
+                    type="button"
+                    class="btn"
+                    id="btnRegistrarSaida"
+                >
+                    Registrar Saída
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- HISTÓRICO -->
+        <div class="painel">
+
+            <h2>Histórico de Saídas</h2>
+
+            <table class="tabela">
+
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Descrição</th>
+                        <th>Quantidade</th>
+                        <th>Endereço</th>
+                        <th>Data</th>
+                        <th>Operador</th>
+                    </tr>
+                </thead>
+
+                <tbody id="listaSaidas">
+
+                    <tr>
+                        <td
+                            colspan="6"
+                            style="text-align: center;"
+                        >
+                            Nenhuma saída registrada.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT PRINCIPAL -->
+    <script src="app.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            carregarHistoricoSaidas();
+
+            const botao = document.getElementById(
+                "btnRegistrarSaida"
+            );
+
+            botao.addEventListener(
+                "click",
+                registrarSaida
+            );
+
+            document
+                .getElementById("quantidadeSaida")
+                .addEventListener("keydown", function (evento) {
+                    if (evento.key === "Enter") {
+                        registrarSaida();
+                    }
+                });
+        });
+
+
+        /* =====================================================
+           FUNÇÃO PRINCIPAL PARA REGISTRAR A SAÍDA
+        ===================================================== */
+
+        function registrarSaida() {
+            const campoCodigo =
+                document.getElementById("codigoSaida");
+
+            const campoQuantidade =
+                document.getElementById("quantidadeSaida");
+
+            const codigo = campoCodigo.value
+                .trim()
+                .toUpperCase();
+
+            const quantidadeSolicitada =
+                Number(campoQuantidade.value);
+
+            if (codigo === "") {
+                alert("Digite o código do produto.");
+
+                campoCodigo.focus();
+                return;
+            }
+
+            if (
+                !Number.isFinite(quantidadeSolicitada) ||
+                quantidadeSolicitada <= 0
+            ) {
+                alert("Digite uma quantidade válida.");
+
+                campoQuantidade.focus();
+                return;
+            }
+
+            const estoque = obterEstoque();
+
+            if (estoque.length === 0) {
+                alert(
+                    "Não existem produtos cadastrados no estoque."
+                );
+
+                return;
+            }
+
+            /*
+             * Localiza todas as posições que possuem
+             * o código informado.
+             */
+            const posicoesProduto = estoque
+                .map(function (produto, indice) {
+                    return {
+                        produto: produto,
+                        indice: indice
+                    };
+                })
+                .filter(function (item) {
+                    return normalizarCodigo(
+                        item.produto.codigo
+                    ) === normalizarCodigo(codigo);
+                });
+
+            if (posicoesProduto.length === 0) {
+                alert(
+                    'Produto "' +
+                    codigo +
+                    '" não encontrado no estoque.'
+                );
+
+                campoCodigo.focus();
+                return;
+            }
+
+            const saldoDisponivel = posicoesProduto.reduce(
+                function (total, item) {
+                    return total +
+                        converterNumero(
+                            item.produto.quantidade
+                        );
+                },
+                0
+            );
+
+            if (quantidadeSolicitada > saldoDisponivel) {
+                alert(
+                    "Saldo insuficiente.\n\n" +
+                    "Código: " + codigo + "\n" +
+                    "Saldo disponível: " +
+                    formatarQuantidade(saldoDisponivel) +
+                    "\n" +
+                    "Quantidade solicitada: " +
+                    formatarQuantidade(
+                        quantidadeSolicitada
+                    )
+                );
+
+                campoQuantidade.focus();
+                return;
+            }
+
+            const confirmou = confirm(
+                "Confirmar saída de estoque?\n\n" +
+                "Código: " + codigo + "\n" +
+                "Quantidade: " +
+                formatarQuantidade(
+                    quantidadeSolicitada
+                ) +
+                "\n" +
+                "Saldo atual: " +
+                formatarQuantidade(saldoDisponivel)
+            );
+
+            if (!confirmou) {
+                return;
+            }
+
+            let quantidadeRestante =
+                quantidadeSolicitada;
+
+            const movimentacoes = [];
+
+            /*
+             * Caso o mesmo produto esteja em mais de um
+             * endereço, a saída será baixada posição por posição.
+             */
+            posicoesProduto.forEach(function (item) {
+                if (quantidadeRestante <= 0) {
+                    return;
+                }
+
+                const produto = item.produto;
+
+                const saldoPosicao = converterNumero(
+                    produto.quantidade
+                );
+
+                if (saldoPosicao <= 0) {
+                    return;
+                }
+
+                const quantidadeRetirada = Math.min(
+                    saldoPosicao,
+                    quantidadeRestante
+                );
+
+                produto.quantidade =
+                    saldoPosicao - quantidadeRetirada;
+
+                quantidadeRestante -=
+                    quantidadeRetirada;
+
+                movimentacoes.push({
+                    codigo: produto.codigo || codigo,
+                    descricao:
+                        produto.descricao ||
+                        "Sem descrição",
+
+                    quantidade:
+                        quantidadeRetirada,
+
+                    endereco:
+                        produto.endereco ||
+                        "-",
+
+                    cliente:
+                        produto.cliente ||
+                        "SMI",
+
+                    data:
+                        obterDataHoraAtual(),
+
+                    operador:
+                        obterNomeOperador()
+                });
+            });
+
+            /*
+             * Mantém os produtos com saldo zero no estoque.
+             * Assim o cadastro não desaparece da tabela.
+             */
+            localStorage.setItem(
+                "estoque",
+                JSON.stringify(estoque)
+            );
+
+            salvarMovimentacoesSaida(
+                movimentacoes
+            );
+
+            carregarHistoricoSaidas();
+
+            campoCodigo.value = "";
+            campoQuantidade.value = "";
+
+            campoCodigo.focus();
+
+            alert(
+                "Saída registrada com sucesso!\n\n" +
+                "Código: " + codigo + "\n" +
+                "Quantidade retirada: " +
+                formatarQuantidade(
+                    quantidadeSolicitada
+                ) +
+                "\n" +
+                "Novo saldo: " +
+                formatarQuantidade(
+                    saldoDisponivel -
+                    quantidadeSolicitada
+                )
+            );
+        }
+
+
+        /* =====================================================
+           RECUPERAÇÃO DO ESTOQUE
+        ===================================================== */
+
+        function obterEstoque() {
+            try {
+                const estoqueSalvo =
+                    localStorage.getItem("estoque");
+
+                if (!estoqueSalvo) {
+                    return [];
+                }
+
+                const estoque =
+                    JSON.parse(estoqueSalvo);
+
+                return Array.isArray(estoque)
+                    ? estoque
+                    : [];
+
+            } catch (erro) {
+                console.error(
+                    "Erro ao recuperar estoque:",
+                    erro
+                );
+
+                return [];
+            }
+        }
+
+
+        /* =====================================================
+           SALVAMENTO DAS SAÍDAS
+        ===================================================== */
+
+        function salvarMovimentacoesSaida(
+            movimentacoes
+        ) {
+            let historico = [];
+
+            try {
+                const historicoSalvo =
+                    JSON.parse(
+                        localStorage.getItem("saidas")
+                    );
+
+                if (Array.isArray(historicoSalvo)) {
+                    historico = historicoSalvo;
+                }
+
+            } catch (erro) {
+                console.error(
+                    "Erro ao recuperar saídas:",
+                    erro
+                );
+
+                historico = [];
+            }
+
+            movimentacoes.forEach(
+                function (movimentacao) {
+                    historico.unshift(
+                        movimentacao
+                    );
+                }
+            );
+
+            localStorage.setItem(
+                "saidas",
+                JSON.stringify(historico)
+            );
+        }
+
+
+        /* =====================================================
+           CARREGAMENTO DO HISTÓRICO
+        ===================================================== */
+
+        function carregarHistoricoSaidas() {
+            const tabela =
+                document.getElementById(
+                    "listaSaidas"
+                );
+
+            if (!tabela) {
+                return;
+            }
+
+            let historico = [];
+
+            try {
+                const dados =
+                    JSON.parse(
+                        localStorage.getItem("saidas")
+                    );
+
+                historico = Array.isArray(dados)
+                    ? dados
+                    : [];
+
+            } catch (erro) {
+                console.error(
+                    "Erro ao carregar histórico:",
+                    erro
+                );
+
+                historico = [];
+            }
+
+            tabela.innerHTML = "";
+
+            if (historico.length === 0) {
+                tabela.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="6"
+                            style="text-align:center;"
+                        >
+                            Nenhuma saída registrada.
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+            historico.forEach(
+                function (saida) {
+                    const linha =
+                        document.createElement("tr");
+
+                    linha.appendChild(
+                        criarCelula(
+                            saida.codigo || "-"
+                        )
+                    );
+
+                    linha.appendChild(
+                        criarCelula(
+                            saida.descricao || "-"
+                        )
+                    );
+
+                    linha.appendChild(
+                        criarCelula(
+                            formatarQuantidade(
+                                saida.quantidade
+                            )
+                        )
+                    );
+
+                    linha.appendChild(
+                        criarCelula(
+                            saida.endereco || "-"
+                        )
+                    );
+
+                    linha.appendChild(
+                        criarCelula(
+                            saida.data || "-"
+                        )
+                    );
+
+                    linha.appendChild(
+                        criarCelula(
+                            saida.operador || "-"
+                        )
+                    );
+
+                    tabela.appendChild(linha);
+                }
+            );
+        }
+
+
+        /* =====================================================
+           FUNÇÕES AUXILIARES
+        ===================================================== */
+
+        function criarCelula(valor) {
+            const celula =
+                document.createElement("td");
+
+            celula.textContent = valor;
+
+            return celula;
+        }
+
+
+        function normalizarCodigo(codigo) {
+            return String(codigo || "")
+                .trim()
+                .toUpperCase();
+        }
+
+
+        function converterNumero(valor) {
+            if (
+                valor === undefined ||
+                valor === null ||
+                valor === ""
+            ) {
+                return 0;
+            }
+
+            if (typeof valor === "number") {
+                return Number.isFinite(valor)
+                    ? valor
+                    : 0;
+            }
+
+            let texto = String(valor)
+                .trim()
+                .replace(/\s/g, "");
+
+            if (
+                texto.includes(".") &&
+                texto.includes(",")
+            ) {
+                texto = texto
+                    .replace(/\./g, "")
+                    .replace(",", ".");
+
+            } else if (texto.includes(",")) {
+                texto = texto.replace(",", ".");
+            }
+
+            texto = texto.replace(
+                /[^0-9.-]/g,
+                ""
+            );
+
+            const numero = Number(texto);
+
+            return Number.isFinite(numero)
+                ? numero
+                : 0;
+        }
+
+
+        function formatarQuantidade(valor) {
+            const numero = converterNumero(valor);
+
+            return numero.toLocaleString(
+                "pt-BR",
+                {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 3
+                }
+            );
+        }
+
+
+        function obterDataHoraAtual() {
+            return new Date().toLocaleString(
+                "pt-BR"
+            );
+        }
+
+
+        function obterNomeOperador() {
+            const elementoNome =
+                document.getElementById(
+                    "nomeUsuario"
+                );
+
+            if (
+                elementoNome &&
+                elementoNome.textContent.trim() !== ""
+            ) {
+                return elementoNome.textContent.trim();
+            }
+
+            const chavesPossiveis = [
+                "nomeUsuario",
+                "usuarioLogado",
+                "usuario",
+                "operador"
+            ];
+
+            for (
+                const chave of chavesPossiveis
+            ) {
+                const valor =
+                    localStorage.getItem(chave);
+
+                if (
+                    valor &&
+                    valor.trim() !== ""
+                ) {
+                    try {
+                        const dados =
+                            JSON.parse(valor);
+
+                        if (
+                            dados &&
+                            typeof dados === "object"
+                        ) {
+                            return (
+                                dados.nome ||
+                                dados.usuario ||
+                                dados.login ||
+                                "Operador"
+                            );
+                        }
+                    } catch (erro) {
+                        return valor;
+                    }
+                }
+            }
+
+            return "Operador";
+        }
+
+
+        /*
+         * Deixa as funções disponíveis para outras
+         * partes do sistema.
+         */
+        window.registrarSaida =
+            registrarSaida;
+
+        window.carregarHistoricoSaidas =
+            carregarHistoricoSaidas;
+    </script>
+
+</body>
+
+</html>

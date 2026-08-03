@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SMI WMS - Relatórios</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- MENU LATERAL -->
+    <div class="sidebar">
+
+        <div class="logo">
+            <img
+                src="img/logo.png"
+                alt="Logo SMI WMS"
+            >
+        </div>
+
+        <h2>SMI WMS</h2>
+
+        <a href="dashboard.html">
+            📊 Dashboard
+        </a>
+
+        <a href="produtos.html">
+            📦 Produtos
+        </a>
+
+        <a href="posicoes.html">
+            🏭 Posições
+        </a>
+
+        <a href="entradas.html">
+            📥 Entradas
+        </a>
+
+        <a href="saidas.html">
+            📤 Saídas
+        </a>
+
+        <a href="transferencias.html">
+            🔄 Transferências
+        </a>
+
+        <a
+            href="relatorios.html"
+            class="ativo"
+        >
+            📈 Relatórios
+        </a>
+
+        <a href="configuracoes.html">
+            ⚙️ Configurações
+        </a>
+
+        <button
+            type="button"
+            onclick="sairSistema()"
+        >
+            🚪 Sair
+        </button>
+
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div class="conteudo">
+
+        <!-- TOPO -->
+        <header class="topbar">
+
+            <div>
+                <h1>📈 Relatórios Operacionais</h1>
+                <small>Movimentações e posição atual do estoque</small>
+            </div>
+
+            <div class="usuario">
+
+                <span id="relogio"></span>
+
+                <span id="nomeUsuario"></span>
+
+                <button
+                    type="button"
+                    onclick="sairSistema()"
+                >
+                    Sair
+                </button>
+
+            </div>
+
+        </header>
+
+        <!-- RESUMO -->
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>Produtos</h3>
+
+                <span id="relProdutos">
+                    0
+                </span>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Quantidade</h3>
+
+                <span id="relQuantidade">
+                    0
+                </span>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Valor Estoque</h3>
+
+                <span id="relValor">
+                    R$ 0,00
+                </span>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Posições</h3>
+
+                <span id="relPosicoes">
+                    0
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- FILTROS E BOTÕES -->
+        <div class="card">
+
+            <h2>Movimentações</h2>
+
+            <div
+                style="
+                    display: flex;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    gap: 12px;
+                "
+            >
+
+                <select
+                    id="filtroMovimento"
+                    onchange="filtrarRelatorio()"
+                >
+
+                    <option value="TODOS">
+                        Todos
+                    </option>
+
+                    <option value="ENTRADA">
+                        Entradas
+                    </option>
+
+                    <option value="SAIDA">
+                        Saídas
+                    </option>
+
+                    <option value="TRANSFERENCIA">
+                        Transferências
+                    </option>
+
+                </select>
+
+                <button
+                    type="button"
+                    class="btn"
+                    onclick="imprimirRelatorio()"
+                >
+                    🖨️ Imprimir
+                </button>
+
+                <button
+                    type="button"
+                    class="btn"
+                    onclick="exportarRelatorioExcel()"
+                >
+                    📊 Exportar para Excel
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- TABELA -->
+        <div class="card">
+
+            <div style="overflow-x: auto;">
+
+                <table class="tabela">
+
+                    <thead>
+
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Código</th>
+                            <th>Descrição</th>
+                            <th>Quantidade</th>
+                            <th>Origem</th>
+                            <th>Destino</th>
+                            <th>Data</th>
+                            <th>Operador</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="listaRelatorios">
+
+                        <tr>
+                            <td
+                                colspan="8"
+                                style="text-align: center;"
+                            >
+                                Nenhuma movimentação encontrada.
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BIBLIOTECA PARA CRIAR O EXCEL -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <!-- JAVASCRIPT PRINCIPAL DO WMS -->
+    <script src="app.js"></script>
+
+    <script>
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                atualizarCardsRelatorios();
+
+                /*
+                 * O app.js carrega a tabela automaticamente.
+                 * Este pequeno atraso garante a atualização
+                 * dos cards e a aplicação do filtro.
+                 */
+                setTimeout(
+                    function () {
+
+                        atualizarCardsRelatorios();
+
+                        if (
+                            typeof carregarRelatorios ===
+                            "function"
+                        ) {
+
+                            carregarRelatorios();
+
+                        }
+
+                    },
+                    150
+                );
+
+            }
+        );
+
+
+        // =====================================================
+        // ATUALIZAR CARDS DO RELATÓRIO
+        // =====================================================
+
+        function atualizarCardsRelatorios() {
+
+            const estoque =
+                typeof carregarEstoque === "function"
+                    ? carregarEstoque()
+                    : obterEstoqueRelatorioReserva();
+
+
+            const codigos =
+                new Set();
+
+
+            const posicoes =
+                new Set();
+
+
+            let quantidadeTotal = 0;
+
+            let valorTotal = 0;
+
+
+            estoque.forEach(
+                function (produto) {
+
+                    const codigo =
+                        String(
+                            produto.codigo || ""
+                        )
+                        .trim()
+                        .toUpperCase();
+
+
+                    const endereco =
+                        String(
+                            produto.endereco || ""
+                        )
+                        .trim()
+                        .toUpperCase();
+
+
+                    if (codigo !== "") {
+
+                        codigos.add(
+                            codigo
+                        );
+
+                    }
+
+
+                    if (endereco !== "") {
+
+                        posicoes.add(
+                            endereco
+                        );
+
+                    }
+
+
+                    const quantidade =
+                        converterNumeroRelatorio(
+                            produto.quantidade
+                        );
+
+
+                    const valorUnitario =
+                        converterNumeroRelatorio(
+                            produto.valor
+                        );
+
+
+                    quantidadeTotal +=
+                        quantidade;
+
+
+                    valorTotal +=
+                        quantidade *
+                        valorUnitario;
+
+                }
+            );
+
+
+            alterarTextoRelatorio(
+                "relProdutos",
+                codigos.size.toLocaleString(
+                    "pt-BR"
+                )
+            );
+
+
+            alterarTextoRelatorio(
+                "relQuantidade",
+                quantidadeTotal.toLocaleString(
+                    "pt-BR",
+                    {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 3
+                    }
+                )
+            );
+
+
+            alterarTextoRelatorio(
+                "relValor",
+                valorTotal.toLocaleString(
+                    "pt-BR",
+                    {
+                        style: "currency",
+                        currency: "BRL"
+                    }
+                )
+            );
+
+
+            alterarTextoRelatorio(
+                "relPosicoes",
+                posicoes.size.toLocaleString(
+                    "pt-BR"
+                )
+            );
+
+        }
+
+
+        // =====================================================
+        // FILTRAR A TABELA
+        // =====================================================
+
+        function filtrarRelatorio() {
+
+            const campoFiltro =
+                document.getElementById(
+                    "filtroMovimento"
+                );
+
+
+            if (!campoFiltro) {
+
+                return;
+
+            }
+
+
+            const filtro =
+                normalizarTipoRelatorio(
+                    campoFiltro.value
+                );
+
+
+            const linhas =
+                document.querySelectorAll(
+                    "#listaRelatorios tr"
+                );
+
+
+            linhas.forEach(
+                function (linha) {
+
+                    if (
+                        !linha.children ||
+                        linha.children.length === 0
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    /*
+                     * Ignora a linha que informa
+                     * que não há movimentações.
+                     */
+                    if (
+                        linha.children.length === 1
+                    ) {
+
+                        linha.style.display =
+                            "";
+
+                        return;
+
+                    }
+
+
+                    const tipoLinha =
+                        normalizarTipoRelatorio(
+                            linha.children[0]
+                                .textContent
+                        );
+
+
+                    const mostrar =
+                        filtro === "TODOS" ||
+                        tipoLinha === filtro;
+
+
+                    linha.style.display =
+                        mostrar
+                            ? ""
+                            : "none";
+
+                }
+            );
+
+        }
+
+
+        // =====================================================
+        // NORMALIZAR TIPO DA MOVIMENTAÇÃO
+        // =====================================================
+
+        function normalizarTipoRelatorio(
+            tipo
+        ) {
+
+            const texto =
+                String(
+                    tipo || ""
+                )
+                .trim()
+                .toUpperCase()
+                .normalize("NFD")
+                .replace(
+                    /[\u0300-\u036f]/g,
+                    ""
+                );
+
+
+            if (
+                texto.includes("ENTRADA")
+            ) {
+
+                return "ENTRADA";
+
+            }
+
+
+            if (
+                texto.includes("SAIDA")
+            ) {
+
+                return "SAIDA";
+
+            }
+
+
+            if (
+                texto.includes("TRANSFERENCIA") ||
+                texto.includes("TRANSFERIR")
+            ) {
+
+                return "TRANSFERENCIA";
+
+            }
+
+
+            if (
+                texto.includes("TODOS")
+            ) {
+
+                return "TODOS";
+
+            }
+
+
+            return texto;
+
+        }
+
+
+        // =====================================================
+        // IMPRIMIR
+        // =====================================================
+
+        function imprimirRelatorio() {
+
+            window.print();
+
+        }
+
+
+        // =====================================================
+        // FUNÇÕES AUXILIARES
+        // =====================================================
+
+        function alterarTextoRelatorio(
+            id,
+            valor
+        ) {
+
+            const elemento =
+                document.getElementById(
+                    id
+                );
+
+
+            if (elemento) {
+
+                elemento.textContent =
+                    valor;
+
+            }
+
+        }
+
+
+        function obterEstoqueRelatorioReserva() {
+
+            try {
+
+                const dados =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "estoque"
+                        )
+                    );
+
+
+                return Array.isArray(dados)
+                    ? dados
+                    : [];
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao carregar estoque:",
+                    erro
+                );
+
+
+                return [];
+
+            }
+
+        }
+
+
+        function converterNumeroRelatorio(
+            valor
+        ) {
+
+            if (
+                typeof converterNumero ===
+                "function"
+            ) {
+
+                return converterNumero(
+                    valor
+                );
+
+            }
+
+
+            if (
+                valor === undefined ||
+                valor === null ||
+                valor === ""
+            ) {
+
+                return 0;
+
+            }
+
+
+            if (
+                typeof valor === "number"
+            ) {
+
+                return Number.isFinite(valor)
+                    ? valor
+                    : 0;
+
+            }
+
+
+            let texto =
+                String(valor)
+                    .trim()
+                    .replace(/\s/g, "");
+
+
+            if (
+                texto.includes(".") &&
+                texto.includes(",")
+            ) {
+
+                texto =
+                    texto
+                        .replace(/\./g, "")
+                        .replace(",", ".");
+
+            } else if (
+                texto.includes(",")
+            ) {
+
+                texto =
+                    texto.replace(",", ".");
+
+            }
+
+
+            texto =
+                texto.replace(
+                    /[^0-9.-]/g,
+                    ""
+                );
+
+
+            const numero =
+                Number(texto);
+
+
+            return Number.isFinite(numero)
+                ? numero
+                : 0;
+
+        }
+
+
+        window.filtrarRelatorio =
+            filtrarRelatorio;
+
+
+        window.imprimirRelatorio =
+            imprimirRelatorio;
+
+
+        window.atualizarCardsRelatorios =
+            atualizarCardsRelatorios;
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SMI WMS - Transferências</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body>
+
+    <!-- MENU LATERAL -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+
+            <img
+                src="img/logo.png"
+                alt="Logo SMI WMS"
+            >
+
+        </div>
+
+        <h2>SMI WMS</h2>
+
+        <ul>
+
+            <li onclick="location.href='dashboard.html'">
+                🏠 Dashboard
+            </li>
+
+            <li onclick="location.href='produtos.html'">
+                📦 Produtos
+            </li>
+
+            <li onclick="location.href='entradas.html'">
+                📥 Entradas
+            </li>
+
+            <li onclick="location.href='saidas.html'">
+                📤 Saídas
+            </li>
+
+            <li class="ativo">
+                🔄 Transferências
+            </li>
+
+            <li onclick="location.href='posicoes.html'">
+                📍 Posições
+            </li>
+
+            <li onclick="location.href='relatorios.html'">
+                📊 Relatórios
+            </li>
+
+            <li onclick="location.href='configuracoes.html'">
+                ⚙ Configurações
+            </li>
+
+        </ul>
+
+    </div>
+
+
+    <!-- CONTEÚDO -->
+
+    <div class="conteudo">
+
+        <!-- TOPO -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>Transferência</h1>
+
+                <small>
+                    Movimentação entre posições
+                </small>
+
+            </div>
+
+            <div class="usuario">
+
+                <span id="relogio"></span>
+
+                <span id="nomeUsuario"></span>
+
+                <button
+                    type="button"
+                    onclick="sairSistema()"
+                >
+                    Sair
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORMULÁRIO DE TRANSFERÊNCIA -->
+
+        <div class="painel">
+
+            <h2>Transferir Produto</h2>
+
+            <div
+                style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 20px;
+                "
+            >
+
+                <input
+                    type="text"
+                    id="codigoTransferencia"
+                    placeholder="Código do Produto"
+                >
+
+                <input
+                    type="number"
+                    id="quantidadeTransferencia"
+                    placeholder="Quantidade"
+                    min="0.001"
+                    step="0.001"
+                >
+
+                <input
+                    type="text"
+                    id="origemTransferencia"
+                    placeholder="Endereço Atual"
+                >
+
+                <input
+                    type="text"
+                    id="destinoTransferencia"
+                    placeholder="Novo Endereço"
+                >
+
+                <button
+                    type="button"
+                    id="btnRegistrarTransferencia"
+                    class="btn"
+                    onclick="registrarTransferencia()"
+                >
+                    🔄 Transferir Produto
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- HISTÓRICO -->
+
+        <div class="painel">
+
+            <h2>Histórico de Transferências</h2>
+
+            <table class="tabela">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Código</th>
+
+                        <th>Descrição</th>
+
+                        <th>Quantidade</th>
+
+                        <th>Origem</th>
+
+                        <th>Destino</th>
+
+                        <th>Data</th>
+
+                        <th>Operador</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="listaTransferencias">
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            style="text-align: center;"
+                        >
+                            Nenhuma transferência registrada.
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
