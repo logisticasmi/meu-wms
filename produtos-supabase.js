@@ -1037,6 +1037,136 @@ function filtrarProdutosSupabase() {
     });
 }
 
+// =====================================================
+// EXPORTAR ESTOQUE PARA EXCEL
+// =====================================================
+
+async function exportarEstoqueExcel() {
+
+    try {
+
+        if (typeof XLSX === "undefined") {
+            alert(
+                "A biblioteca do Excel não foi carregada."
+            );
+            return;
+        }
+
+        const produtos =
+            await buscarProdutosSupabase();
+
+        if (
+            !Array.isArray(produtos) ||
+            produtos.length === 0
+        ) {
+            alert(
+                "Não existem produtos para exportar."
+            );
+            return;
+        }
+
+        const dadosExportacao =
+            produtos.map(
+                function (produto) {
+
+                    const quantidade =
+                        Number(
+                            produto.quantidade || 0
+                        );
+
+                    const valorTotal =
+                        Number(
+                            produto.valor_total ??
+                            produto.valorTotal ??
+                            0
+                        );
+
+                    const valorUnitario =
+                        quantidade > 0
+                            ? valorTotal / quantidade
+                            : 0;
+
+                    return {
+                        "NF":
+                            produto.nf || "",
+
+                        "Código":
+                            produto.codigo || "",
+
+                        "Descrição":
+                            produto.descricao || "",
+
+                        "Cliente":
+                            produto.cliente || "SMI",
+
+                        "Quantidade":
+                            quantidade,
+
+                        "Valor Unitário":
+                            valorUnitario,
+
+                        "Valor Total":
+                            valorTotal,
+
+                        "Endereço":
+                            produto.endereco || ""
+                    };
+
+                }
+            );
+
+        const planilha =
+            XLSX.utils.json_to_sheet(
+                dadosExportacao
+            );
+
+        planilha["!cols"] = [
+            { wch: 15 },
+            { wch: 18 },
+            { wch: 40 },
+            { wch: 22 },
+            { wch: 14 },
+            { wch: 18 },
+            { wch: 18 },
+            { wch: 15 }
+        ];
+
+        const arquivoExcel =
+            XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(
+            arquivoExcel,
+            planilha,
+            "Estoque"
+        );
+
+        const dataAtual =
+            new Date()
+                .toLocaleDateString("pt-BR")
+                .replace(/\//g, "-");
+
+        XLSX.writeFile(
+            arquivoExcel,
+            "Relatorio_Estoque_" +
+            dataAtual +
+            ".xlsx"
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao exportar estoque:",
+            erro
+        );
+
+        alert(
+            "Não foi possível exportar o estoque."
+        );
+
+    }
+
+}
+
 
 // =====================================================
 // DISPONIBILIZA AS FUNÇÕES PARA O PRODUTOS.HTML
@@ -1071,6 +1201,8 @@ window.editarProdutoSupabase =
 
 window.excluirProdutoSupabase =
     excluirProdutoSupabase;
+    window.exportarEstoqueExcel =
+    exportarEstoqueExcel;
 
 // =====================================================
 // INICIALIZAÇÃO DA TELA DE PRODUTOS
