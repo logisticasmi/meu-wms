@@ -300,15 +300,25 @@ const valorTotal = produtosValidos.reduce(
     );
 
 
-    alterarTextoElemento(
-        "cardValor",
-        valorTotal.toLocaleString("pt-BR", {
+   const elementoValorEstoque =
+    document.getElementById("cardValor");
 
-            style: "currency",
-            currency: "BRL"
+if (elementoValorEstoque) {
+    const valorFormatado =
+        valorTotal.toLocaleString(
+            "pt-BR",
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        );
 
-        })
-    );
+    elementoValorEstoque.innerHTML =
+        "R$<br>" + valorFormatado;
+
+    elementoValorEstoque.title =
+        "R$ " + valorFormatado;
+}
 
 
     alterarTextoElemento(
@@ -592,6 +602,10 @@ function criarGraficoMovimentacoes(movimentacoes) {
 // GRÁFICO: ESTOQUE POR CLIENTE
 // =====================================================
 
+// =====================================================
+// GRÁFICO: OCUPAÇÃO GERAL DO ARMAZÉM
+// =====================================================
+
 function criarGraficoEstoqueCliente(estoque) {
 
     const canvas =
@@ -600,125 +614,131 @@ function criarGraficoEstoqueCliente(estoque) {
         );
 
     if (!canvas || typeof Chart === "undefined") {
-
         return;
-
     }
 
+    /*
+       Capacidade total cadastrada no armazém.
+       Altere este número caso a capacidade mude.
+    */
+    const CAPACIDADE_TOTAL_POSICOES = 360;
 
-    const estoquePorCliente = {};
-
+    /*
+       Guarda somente posições únicas e com estoque.
+    */
+    const posicoesOcupadas = new Set();
 
     estoque.forEach(function (produto) {
 
-        if (!produto || !produto.codigo) {
-
+        if (!produto) {
             return;
-
         }
-
-
-        const cliente =
-            String(
-                produto.cliente ||
-                "Sem cliente informado"
-            ).trim();
-
 
         const quantidade =
-            Number(
-                produto.quantidade || 0
-            );
+            Number(produto.quantidade || 0);
 
+        const posicao =
+            String(
+                produto.endereco || ""
+            )
+                .trim()
+                .toUpperCase();
 
-        if (!estoquePorCliente[cliente]) {
-
-            estoquePorCliente[cliente] = 0;
-
+        if (
+            posicao !== "" &&
+            quantidade > 0
+        ) {
+            posicoesOcupadas.add(posicao);
         }
-
-
-        estoquePorCliente[cliente] += quantidade;
 
     });
 
+    const quantidadeOcupada =
+        posicoesOcupadas.size;
 
-    let dadosOrdenados =
-        Object.entries(estoquePorCliente)
-            .sort(function (a, b) {
+    const quantidadeLivre =
+        Math.max(
+            CAPACIDADE_TOTAL_POSICOES -
+            quantidadeOcupada,
+            0
+        );
 
-                return b[1] - a[1];
-
-            });
-
+    const percentualOcupacao =
+        CAPACIDADE_TOTAL_POSICOES > 0
+            ? Math.min(
+                (
+                    quantidadeOcupada /
+                    CAPACIDADE_TOTAL_POSICOES
+                ) * 100,
+                100
+            )
+            : 0;
 
     /*
-      Mantém os cinco principais clientes.
-      Os demais são agrupados em "Outros".
+       Plugin responsável pelo texto no centro da rosca.
     */
+    const textoCentralOcupacao = {
 
-    if (dadosOrdenados.length > 5) {
+        id: "textoCentralOcupacao",
 
-        const principais =
-            dadosOrdenados.slice(0, 5);
+        afterDraw: function (grafico) {
 
+            const contexto = grafico.ctx;
 
-        const totalOutros =
-            dadosOrdenados
-                .slice(5)
-                .reduce(
-                    function (total, item) {
+            const area = grafico.chartArea;
 
-                        return total + item[1];
+            if (!area) {
+                return;
+            }
 
-                    },
-                    0
-                );
+            const centroX =
+                (
+                    area.left +
+                    area.right
+                ) / 2;
 
+            const centroY =
+                (
+                    area.top +
+                    area.bottom
+                ) / 2;
 
-        principais.push([
-            "Outros",
-            totalOutros
-        ]);
+            contexto.save();
 
+            contexto.textAlign = "center";
+            contexto.textBaseline = "middle";
 
-        dadosOrdenados = principais;
+            contexto.fillStyle = "#062d63";
+            contexto.font =
+                "bold 34px Arial";
 
-    }
+            contexto.fillText(
+                percentualOcupacao
+                    .toFixed(1)
+                    .replace(".", ",") +
+                "%",
+                centroX,
+                centroY - 8
+            );
 
+            contexto.fillStyle = "#64748b";
+            contexto.font =
+                "bold 13px Arial";
 
-    if (dadosOrdenados.length === 0) {
+            contexto.fillText(
+                "OCUPADO",
+                centroX,
+                centroY + 25
+            );
 
-        dadosOrdenados = [
-            ["Sem estoque", 1]
-        ];
+            contexto.restore();
+        }
 
-    }
-
-
-    const cores = [
-
-        "rgba(37, 99, 235, 0.85)",
-
-        "rgba(22, 163, 74, 0.85)",
-
-        "rgba(245, 158, 11, 0.85)",
-
-        "rgba(147, 51, 234, 0.85)",
-
-        "rgba(6, 182, 212, 0.85)",
-
-        "rgba(107, 114, 128, 0.85)"
-
-    ];
-
+    };
 
     if (graficoEstoqueDashboard) {
-
         graficoEstoqueDashboard.destroy();
-
     }
-
 
     graficoEstoqueDashboard =
         new Chart(
@@ -727,70 +747,48 @@ function criarGraficoEstoqueCliente(estoque) {
                 type: "doughnut",
 
                 data: {
-
-                    labels: dadosOrdenados.map(
-                        function (item) {
-
-                            return item[0];
-
-                        }
-                    ),
+                    labels: [
+                        "Posições ocupadas",
+                        "Posições livres"
+                    ],
 
                     datasets: [
-
                         {
-                            data: dadosOrdenados.map(
-                                function (item) {
+                            data: [
+                                quantidadeOcupada,
+                                quantidadeLivre
+                            ],
 
-                                    return item[1];
-
-                                }
-                            ),
-
-                            backgroundColor: cores,
+                            backgroundColor: [
+                                "rgba(37, 99, 235, 0.90)",
+                                "rgba(226, 232, 240, 0.90)"
+                            ],
 
                             borderColor: "#ffffff",
-
                             borderWidth: 4,
-
                             hoverOffset: 8
-
                         }
-
                     ]
-
                 },
 
                 options: {
-
                     responsive: true,
-
                     maintainAspectRatio: false,
-
-                    cutout: "65%",
+                    cutout: "68%",
 
                     plugins: {
-
                         legend: {
-
                             position: "bottom",
 
                             labels: {
-
                                 usePointStyle: true,
-
                                 padding: 18,
-
                                 boxWidth: 10
-
                             }
-
                         },
 
                         tooltip: {
-
                             callbacks: {
-
                                 label: function (contexto) {
 
                                     const valor =
@@ -798,28 +796,26 @@ function criarGraficoEstoqueCliente(estoque) {
                                             contexto.raw || 0
                                         );
 
-                                    return contexto.label +
+                                    return (
+                                        contexto.label +
                                         ": " +
-                                        valor.toLocaleString(
-                                            "pt-BR"
-                                        ) +
-                                        " unidades";
-
+                                        valor +
+                                        " de " +
+                                        CAPACIDADE_TOTAL_POSICOES +
+                                        " posições"
+                                    );
                                 }
-
                             }
-
                         }
-
                     }
+                },
 
-                }
-
+                plugins: [
+                    textoCentralOcupacao
+                ]
             }
         );
-
 }
-
 
 // =====================================================
 // TOP 5 PRODUTOS
@@ -1314,6 +1310,10 @@ function carregarUltimasMovimentacoes(
     if (!tabela) {
 
         return;
+        movimentacoes =
+    Array.isArray(movimentacoes)
+        ? movimentacoes
+        : [];
 
     }
 

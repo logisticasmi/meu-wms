@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>SMI WMS - Dashboard</title>
+<link rel="icon" type="image/png" href="img/favicon.png">
 
 <link rel="stylesheet" href="style.css">
 
@@ -21,7 +22,7 @@
 <div class="sidebar">
 
 <div class="logo">
-<img src="img/logo.png">
+<img src="img/logo.png" alt="Logo SMI WMS">
 </div>
 
 <h2>SMI WMS</h2>
@@ -50,6 +51,10 @@
 
 <li onclick="location.href='posicoes.html'">
 📍 Posições
+</li>
+
+<li onclick="location.href='inventario.html'">
+    📋 Inventário
 </li>
 
 <li onclick="location.href='relatorios.html'">
@@ -164,7 +169,20 @@ Sair
 
             <h3>Valor do Estoque</h3>
 
-            <h1 id="cardValor">R$ 0,00</h1>
+    <h1
+    id="cardValor"
+    style="
+        font-size: 20px !important;
+        line-height: 1.15 !important;
+        letter-spacing: -0.8px !important;
+        white-space: nowrap !important;
+        overflow: visible !important;
+        width: 190px !important;
+        max-width: 190px !important;
+    "
+>
+    R$ 0,00
+</h1>
 
            <span class="card-tendencia tendencia-positiva">
     Valor movimentado
@@ -258,7 +276,7 @@ Sair
 
 <div class="grafico-card">
 
-<h2>Estoque por Cliente</h2>
+<h2>Ocupação Geral</h2>
 
 <canvas id="graficoEstoque"></canvas>
 
@@ -499,6 +517,10 @@ Sair
 <!-- ===================================== -->
 <!-- SCRIPTS -->
 <!-- ===================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="supabase.js"></script>
+<script src="sync-supabase.js"></script>
 
 <script src="app.js"></script>
 <script src="dashboard.js"></script>

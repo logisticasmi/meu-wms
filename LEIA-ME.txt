@@ -1,0 +1,20 @@
+VERSÃO ESTÁVEL PARA APRESENTAÇÃO - SMI WMS
+
+O QUE FOI CORRIGIDO
+- A página Produtos não usa mais duas rotinas concorrentes.
+- A importação e a exibição de produtos usam somente o app.js/localStorage.
+- O sync-supabase.js envia o estoque do navegador para a tabela wms_state.
+- A lista não deve mais aparecer e desaparecer.
+
+COMO INSTALAR
+1. Faça backup da pasta atual.
+2. Substitua os arquivos da pasta do projeto pelos arquivos desta pasta.
+3. NÃO apague a pasta img. Ela deve continuar contendo logo.png e excel-icon.png.
+4. Teste produtos.html com Live Server.
+5. Importe a planilha uma vez.
+6. Atualize a página com F5 para confirmar que os dados continuam.
+7. Envie estes arquivos ao GitHub, preservando a pasta img.
+
+IMPORTANTE
+- Para esta apresentação, o estoque compartilhado fica salvo em wms_state por meio do sync-supabase.js.
+- A tabela public.produtos não é usada nesta versão de apresentação.

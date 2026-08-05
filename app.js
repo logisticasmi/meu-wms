@@ -233,16 +233,31 @@ function realizarLogin() {
 
 
 const usuariosPermitidos = [
+
     {
         login: "administrador",
         senha: "1234",
         nome: "Administrador"
     },
+
     {
         login: "julio.smi",
         senha: "1234",
         nome: "JULIO.SMI"
+    },
+
+    {
+        login: "rafael.smi",
+        senha: "1234",
+        nome: "RAFAEL.SMI"
+    },
+
+    {
+        login: "marcos.smi",
+        senha: "1234",
+        nome: "MARCOS.SMI"
     }
+
 ];
 
 const usuarioEncontrado =
@@ -748,22 +763,13 @@ window.limparEstoque =
 // INICIALIZAÇÃO DA PÁGINA DE PRODUTOS
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
+    const tabelaProdutos = document.getElementById("listaProdutos");
 
-        const tabelaProdutos =
-            document.getElementById(
-                "listaProdutos"
-            );
-
-        if (tabelaProdutos) {
-            carregarTabelaProdutos();
-        }
-
+    if (tabelaProdutos) {
+        carregarTabelaProdutos();
     }
-);
-
+});
 
 // =====================================================
 // ABRIR CADASTRO
@@ -813,279 +819,55 @@ function fecharCadastro() {
 
 function salvarProduto() {
 
-    const campoCodigo =
-        document.getElementById(
-            "codigo"
-        );
+    const campoCodigo = document.getElementById("codigo");
+    const campoDescricao = document.getElementById("descricao");
+    const campoCliente = document.getElementById("cliente");
+    const campoQuantidade = document.getElementById("quantidade");
+    const campoEndereco = document.getElementById("endereco");
+    const campoNF = document.getElementById("nf");
+    const campoValorTotal = document.getElementById("valorTotal") || document.getElementById("valor");
 
-    const campoDescricao =
-        document.getElementById(
-            "descricao"
-        );
-
-    const campoCliente =
-        document.getElementById(
-            "cliente"
-        );
-
-    const campoQuantidade =
-        document.getElementById(
-            "quantidade"
-        );
-
-    const campoEndereco =
-        document.getElementById(
-            "endereco"
-        );
-
-    const campoNF =
-        document.getElementById(
-            "nf"
-        );
-
-    const campoValorTotal =
-        document.getElementById(
-            "valorTotal"
-        ) ||
-        document.getElementById(
-            "valor"
-        );
-
-
-    if (
-        !campoCodigo ||
-        !campoDescricao ||
-        !campoQuantidade ||
-        !campoEndereco
-    ) {
-
-        alert(
-            "Os campos do cadastro não foram encontrados."
-        );
-
+    if (!campoCodigo || !campoDescricao || !campoQuantidade || !campoEndereco) {
+        alert("Os campos do cadastro não foram encontrados.");
         return;
-
     }
 
+    const codigo = normalizarCodigo(campoCodigo.value);
+    const descricao = String(campoDescricao.value || "").trim();
+    const cliente = String(campoCliente ? campoCliente.value : "SMI").trim() || "SMI";
+    const quantidade = converterNumero(campoQuantidade.value);
+    const endereco = normalizarEndereco(campoEndereco.value);
+    const nf = String(campoNF ? campoNF.value : "").trim();
+    const valorTotal = converterNumero(campoValorTotal ? campoValorTotal.value : 0);
 
-    const codigo =
-        normalizarCodigo(
-            campoCodigo.value
-        );
+    if (codigo === "") { alert("Digite o código do produto."); campoCodigo.focus(); return; }
+    if (descricao === "") { alert("Digite a descrição do produto."); campoDescricao.focus(); return; }
+    if (!Number.isFinite(quantidade) || quantidade < 0) { alert("Digite uma quantidade válida."); campoQuantidade.focus(); return; }
+    if (endereco === "") { alert("Digite o endereço do produto."); campoEndereco.focus(); return; }
 
-
-    const descricao =
-        String(
-            campoDescricao.value || ""
-        ).trim();
-
-
-    const cliente =
-        String(
-            campoCliente
-                ? campoCliente.value
-                : "SMI"
-        ).trim() || "SMI";
-
-
-    const quantidade =
-        converterNumero(
-            campoQuantidade.value
-        );
-
-
-    const endereco =
-        normalizarEndereco(
-            campoEndereco.value
-        );
-
-
-    const nf =
-        String(
-            campoNF
-                ? campoNF.value
-                : ""
-        ).trim();
-
-
-    const valorTotal =
-        converterNumero(
-            campoValorTotal
-                ? campoValorTotal.value
-                : 0
-        );
-
-
-    if (codigo === "") {
-
-        alert(
-            "Digite o código do produto."
-        );
-
-        campoCodigo.focus();
-
-        return;
-
-    }
-
-
-    if (descricao === "") {
-
-        alert(
-            "Digite a descrição do produto."
-        );
-
-        campoDescricao.focus();
-
-        return;
-
-    }
-
-
-    if (
-        !Number.isFinite(
-            quantidade
-        ) ||
-        quantidade < 0
-    ) {
-
-        alert(
-            "Digite uma quantidade válida."
-        );
-
-        campoQuantidade.focus();
-
-        return;
-
-    }
-
-
-    if (endereco === "") {
-
-        alert(
-            "Digite o endereço do produto."
-        );
-
-        campoEndereco.focus();
-
-        return;
-
-    }
-
-
-    const estoque =
-        carregarEstoque();
-estoque.sort(function (a, b) {
-
-    return String(a.endereco || "")
-        .localeCompare(
-            String(b.endereco || ""),
-            "pt-BR",
-            {
-                numeric: true
-            }
-        );
-
-});
-
-    const produtoExistente =
-        estoque.find(
-            function (produto) {
-
-                return (
-                    normalizarCodigo(
-                        produto.codigo
-                    ) === codigo
-                    &&
-                    normalizarEndereco(
-                        produto.endereco
-                    ) === endereco
-                );
-
-            }
-        );
-
+    const estoque = carregarEstoque();
+    const produtoExistente = estoque.find(function (produto) {
+        return normalizarCodigo(produto.codigo) === codigo && normalizarEndereco(produto.endereco) === endereco;
+    });
 
     if (produtoExistente) {
-
-        const confirmou =
-            confirm(
-                "Este produto já existe nesta posição.\n\n" +
-                "Deseja somar a quantidade informada ao saldo atual?"
-            );
-
-        if (!confirmou) {
-            return;
-        }
-
-
-        produtoExistente.quantidade =
-            converterNumero(
-                produtoExistente.quantidade
-            ) + quantidade;
-
-
-        produtoExistente.descricao =
-            descricao;
-
-
-        produtoExistente.cliente =
-            cliente;
-
-
-        produtoExistente.nf =
-            nf ||
-            produtoExistente.nf ||
-            "";
-
-
-        produtoExistente.valorTotal =
-            valorTotal ||
-            converterNumero(
-                produtoExistente.valorTotal
-            );
-
+        const confirmou = confirm("Este produto já existe nesta posição.\n\nDeseja somar a quantidade informada ao saldo atual?");
+        if (!confirmou) return;
+        produtoExistente.quantidade = converterNumero(produtoExistente.quantidade) + quantidade;
+        produtoExistente.descricao = descricao;
+        produtoExistente.cliente = cliente;
+        produtoExistente.nf = nf || produtoExistente.nf || "";
+        produtoExistente.valorTotal = valorTotal || converterNumero(produtoExistente.valorTotal);
     } else {
-
-        estoque.push(
-            {
-                nf: nf,
-                codigo: codigo,
-                descricao: descricao,
-                cliente: cliente,
-                quantidade: quantidade,
-                valorTotal: valorTotal,
-                endereco: endereco
-            }
-        );
-
+        estoque.push({ nf, codigo, descricao, cliente, quantidade, valorTotal, endereco });
     }
 
-
-    const salvou =
-        salvarEstoque(
-            estoque
-        );
-
-
-    if (!salvou) {
-        return;
-    }
-
-
-    alert(
-        "Produto salvo com sucesso."
-    );
-
-
+    if (!salvarEstoque(estoque)) return;
+    alert("Produto salvo com sucesso.");
     limparFormularioProduto();
-
     fecharCadastro();
-
     carregarTabelaProdutos();
-
 }
-
 
 // =====================================================
 // LIMPAR FORMULÁRIO
@@ -1216,7 +998,7 @@ function carregarTabelaProdutos() {
         tabela.innerHTML =
             "<tr>" +
                 "<td " +
-                    "colspan='8' " +
+                    "colspan='7' " +
                     "class='produtos-vazio'" +
                 ">" +
                     "Nenhum produto cadastrado." +
@@ -1248,13 +1030,6 @@ function carregarTabelaProdutos() {
                 normalizarCodigo(
                     produto.codigo
                 );
-
-
-            linha.appendChild(
-                criarCelula(
-                    produto.nf || "-"
-                )
-            );
 
 
             linha.appendChild(
@@ -2031,9 +1806,9 @@ function importarProdutosExcel(
                 }
 
 
-                processarProdutosImportados(
-                    linhas
-                );
+               window.processarProdutosImportados(
+    linhas
+);
 
             } catch (erro) {
 
@@ -2115,9 +1890,9 @@ function importarProdutosJSON(
                 }
 
 
-                processarProdutosImportados(
-                    linhas
-                );
+              window.processarProdutosImportados(
+    linhas
+);
 
             } catch (erro) {
 
@@ -7854,3 +7629,16 @@ function filtrarProdutosAvancado() {
     });
 
 }
+
+
+// Compatibilidade das páginas antigas
+function login() { return realizarLogin(); }
+function verificarLogin() {
+    const paginaLogin = /(^|\/)index\.html$/i.test(window.location.pathname) || window.location.pathname.endsWith('/');
+    if (paginaLogin) return true;
+    const usuario = localStorage.getItem('usuarioLogado') || localStorage.getItem('usuario');
+    if (!usuario) window.location.href = 'index.html';
+    return Boolean(usuario);
+}
+window.login = login;
+window.verificarLogin = verificarLogin;

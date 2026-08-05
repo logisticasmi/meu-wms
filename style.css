@@ -486,12 +486,171 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
 
 }
 
-.icone-excel img{
+.icone-excel{
 
-    width:38px;
+    width:70px;
+    height:70px;
 
-    height:38px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#107C41;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    box-shadow:0 8px 18px rgba(16,124,65,.30);
+
+}
+
+.icone-excel{
+
+    width:70px;
+    height:70px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#107C41;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    box-shadow:0 8px 18px rgba(16,124,65,.30);
+
+}
+
+.icone-excel{
+
+    width:70px;
+    height:70px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#107C41;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    box-shadow:0 8px 18px rgba(16,124,65,.30);
+
+}
+
+.icone-excel{
+
+    width:70px;
+    height:70px;
+    min-width:70px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#107C41;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+}
+
+.img-excel{
+
+    width:32px !important;
+    height:32px !important;
+
+    max-width:32px;
+    max-height:32px;
 
     object-fit:contain;
 
+    display:block;
+
+}
+
+
+/* ========= CORREÇÃO ÍCONE EXCEL ========= */
+
+.icone-excel{
+
+    width:70px !important;
+    height:70px !important;
+
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+
+    overflow:hidden !important;
+
+    background:#107C41;
+
+    border-radius:16px;
+
+}
+
+.icone-excel img{
+
+    width:34px !important;
+    height:34px !important;
+
+    max-width:34px !important;
+    max-height:34px !important;
+
+    object-fit:contain !important;
+
+    display:block !important;
+
+}
+/* CORREÇÃO DEFINITIVA DO CARD VALOR DO ESTOQUE */
+
+.card-valor {
+    overflow: hidden;
+}
+
+.card-valor .card-dashboard-conteudo {
+    min-width: 0;
+    flex: 1;
+    overflow: visible;
+}
+
+.card-valor #cardValor {
+    font-size: 24px !important;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+    letter-spacing: -0.7px;
+   transform: scaleX(0.78);
+    transform-origin: left center;
+    width: 113%;
+}
+
+.card-valor h3 {
+    white-space: nowrap;
+    font-size: 17px;
+}
+
+.card-valor .card-tendencia {
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+/* VALOR DO ESTOQUE EM DUAS LINHAS */
+
+.card-valor #cardValor {
+    font-size: 24px !important;
+    line-height: 1.05 !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    transform: none !important;
+    width: auto !important;
+    max-width: 100% !important;
+    letter-spacing: -0.4px;
 }
