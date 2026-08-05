@@ -1038,6 +1038,53 @@ function filtrarProdutosSupabase() {
 }
 
 // =====================================================
+// BUSCAR TODOS OS PRODUTOS PARA EXPORTAÇÃO
+// =====================================================
+
+async function buscarTodosProdutosParaExportacao() {
+
+    const todosProdutos = [];
+    const tamanhoPagina = 1000;
+    let inicio = 0;
+
+    while (true) {
+
+        const fim =
+            inicio + tamanhoPagina - 1;
+
+        const { data, error } =
+            await window.supabaseClient
+                .from("produtos")
+                .select("*")
+                .order("id", {
+                    ascending: true
+                })
+                .range(inicio, fim);
+
+        if (error) {
+            throw error;
+        }
+
+        if (
+            !Array.isArray(data) ||
+            data.length === 0
+        ) {
+            break;
+        }
+
+        todosProdutos.push(...data);
+
+        if (data.length < tamanhoPagina) {
+            break;
+        }
+
+        inicio += tamanhoPagina;
+    }
+
+    return todosProdutos;
+}
+
+// =====================================================
 // EXPORTAR ESTOQUE PARA EXCEL
 // =====================================================
 
@@ -1052,8 +1099,8 @@ async function exportarEstoqueExcel() {
             return;
         }
 
-        const produtos =
-            await buscarProdutosSupabase();
+       const produtos =
+    await buscarTodosProdutosParaExportacao();
 
         if (
             !Array.isArray(produtos) ||
