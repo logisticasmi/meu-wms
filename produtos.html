@@ -195,16 +195,271 @@
 
     </main>
 
-    <!-- BIBLIOTECA PARA LEITURA DO EXCEL -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<!-- BIBLIOTECA PARA LEITURA DO EXCEL -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
-    <!-- A lógica de Produtos fica centralizada no app.js. -->
-
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
+
+<!-- FUNÇÕES GERAIS -->
 <script src="app.js"></script>
-<script src="produtos-supabase.js"></script>
-<script src="sync-supabase.js"></script>
+
+<!-- FUNÇÕES EXCLUSIVAS DA TELA DE PRODUTOS -->
+<script src="produtos-supabase.js?v=20260805-2001"></script>
+
+<script>
+async function carregarTodosOsProdutosNaTela() {
+    const tabela = document.getElementById("listaProdutos");
+
+    if (!tabela || !window.supabaseClient) {
+        console.error("Tabela ou conexão Supabase não encontrada.");
+        return;
+    }
+
+    tabela.innerHTML = `
+        <tr>
+            <td colspan="7" class="produtos-vazio">
+                Carregando todos os produtos...
+            </td>
+        </tr>
+    `;
+
+    try {
+        const todosProdutos = [];
+        const quantidadePorBusca = 1000;
+        let inicio = 0;
+
+        while (true) {
+            const fim = inicio + quantidadePorBusca - 1;
+
+            console.log(
+                `Buscando produtos ${inicio + 1} até ${fim + 1}`
+            );
+
+            const { data, error } = await window.supabaseClient
+                .from("produtos")
+                .select("*")
+                .order("id", { ascending: true })
+                .range(inicio, fim);
+
+            if (error) {
+                throw error;
+            }
+
+            if (!Array.isArray(data) || data.length === 0) {
+                break;
+            }
+
+            todosProdutos.push(...data);
+
+            if (data.length < quantidadePorBusca) {
+                break;
+            }
+
+            inicio += quantidadePorBusca;
+        }
+
+        console.log(
+            "TOTAL DE PRODUTOS CARREGADOS:",
+            todosProdutos.length
+        );
+
+        todosProdutos.sort(function(a, b) {
+            return String(a.endereco || "").localeCompare(
+                String(b.endereco || ""),
+                "pt-BR",
+                { numeric: true }
+            );
+        });
+
+        tabela.innerHTML = "";
+
+        if (todosProdutos.length === 0) {
+            tabela.innerHTML = `
+                <tr>
+                    <td colspan="7" class="produtos-vazio">
+                        Nenhum produto cadastrado.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        todosProdutos.forEach(function(produto) {
+            const linha = document.createElement("tr");
+
+            linha.dataset.id = produto.id || "";
+            linha.dataset.codigo = produto.codigo || "";
+
+            const quantidade = Number(produto.quantidade || 0);
+
+            const valorTotal = Number(
+                produto.valor_total ??
+                produto.valorTotal ??
+                0
+            );
+
+            linha.innerHTML = `
+                <td>${produto.codigo || "-"}</td>
+
+                <td>${produto.descricao || "-"}</td>
+
+                <td>
+                    <span class="cliente-produto">
+                        ${produto.cliente || "SMI"}
+                    </span>
+                </td>
+
+                <td>
+                    ${quantidade.toLocaleString("pt-BR", {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 3
+                    })}
+                </td>
+
+                <td>
+                    ${valorTotal.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL"
+                    })}
+                </td>
+
+                <td>
+                    <span class="endereco-produto">
+                        ${produto.endereco || "-"}
+                    </span>
+                </td>
+
+                <td>
+                    <div class="acoes-produto">
+                        <button
+                            type="button"
+                            class="btn-editar-produto"
+                            title="Editar produto"
+                        >
+                            ✏️
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn-excluir-produto"
+                            title="Excluir produto"
+                        >
+                            🗑️
+                        </button>
+                    </div>
+                </td>
+            `;
+
+            const botaoEditar =
+                linha.querySelector(".btn-editar-produto");
+
+            const botaoExcluir =
+                linha.querySelector(".btn-excluir-produto");
+
+            botaoEditar.addEventListener("click", function() {
+                if (
+                    typeof window.editarProdutoSupabase ===
+                    "function"
+                ) {
+                    window.editarProdutoSupabase({
+                        ...produto,
+                        valorTotal: valorTotal
+                    });
+                }
+            });
+
+            botaoExcluir.addEventListener("click", function() {
+                if (
+                    typeof window.confirmarExclusaoProdutoSupabase ===
+                    "function"
+                ) {
+                    window.confirmarExclusaoProdutoSupabase({
+                        ...produto,
+                        valorTotal: valorTotal
+                    });
+                } else if (
+                    typeof window.excluirProdutoSupabase ===
+                    "function"
+                ) {
+                    window.excluirProdutoSupabase(produto.id);
+                }
+            });
+
+            tabela.appendChild(linha);
+        });
+
+        atualizarFiltroComTodosOsProdutos(todosProdutos);
+
+        console.log(
+            `${todosProdutos.length} produtos colocados na tabela.`
+        );
+
+    } catch (erro) {
+        console.error(
+            "Erro ao carregar todos os produtos:",
+            erro
+        );
+
+        tabela.innerHTML = `
+            <tr>
+                <td colspan="7" class="produtos-vazio">
+                    Erro ao carregar produtos:
+                    ${erro.message}
+                </td>
+            </tr>
+        `;
+    }
+}
+
+
+function atualizarFiltroComTodosOsProdutos(produtos) {
+    const filtro =
+        document.getElementById("filtroClienteProdutos");
+
+    if (!filtro) {
+        return;
+    }
+
+    const clientes = [
+        ...new Set(
+            produtos
+                .map(function(produto) {
+                    return String(
+                        produto.cliente || "SMI"
+                    ).trim();
+                })
+                .filter(Boolean)
+        )
+    ].sort();
+
+    filtro.innerHTML =
+        '<option value="">Todos os clientes</option>';
+
+    clientes.forEach(function(cliente) {
+        const opcao = document.createElement("option");
+
+        opcao.value = cliente;
+        opcao.textContent = cliente;
+
+        filtro.appendChild(opcao);
+    });
+}
+
+window.addEventListener("load", function() {
+    setTimeout(function() {
+        carregarTodosOsProdutosNaTela();
+    }, 1000);
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+<script src="app.js?v=2100"></script>
+<script src="produtos-supabase.js?v=2100"></script>
 
 </body>
 </html>

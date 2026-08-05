@@ -347,7 +347,7 @@ async function salvarContagemInventarioSupabase(
 
 
 // =====================================================
-// LIMPAR CONTAGENS NÃO APROVADAS
+// LIMPAR TODAS AS CONTAGENS
 // =====================================================
 
 async function limparContagensInventarioSupabase() {
@@ -363,20 +363,17 @@ async function limparContagensInventarioSupabase() {
                 diferenca: null,
                 status: "PENDENTE",
                 usuario: null,
-
                 atualizado_em:
                     new Date().toISOString(),
-
                 situacao_aprovacao:
                     "PENDENTE",
-
                 aprovado_por: null,
                 aprovado_em: null,
                 observacao: null
             })
-            .neq(
-                "situacao_aprovacao",
-                "APROVADO"
+            .or(
+                "situacao_aprovacao.is.null," +
+                "situacao_aprovacao.neq.__LIMPAR_TODOS__"
             );
 
     if (error) {
@@ -395,7 +392,7 @@ async function limparContagensInventarioSupabase() {
 
     return true;
 }
-
+   
 
 // =====================================================
 // APROVAR CONTAGEM E AJUSTAR PRODUTO

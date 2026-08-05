@@ -164,7 +164,6 @@
 
                 <select
                     id="filtroMovimento"
-                    onchange="filtrarRelatorio()"
                 >
 
                     <option value="TODOS">
@@ -184,6 +183,32 @@
                     </option>
 
                 </select>
+
+                <label for="dataInicialRelatorio">
+                    De:
+                </label>
+
+                <input
+                    type="date"
+                    id="dataInicialRelatorio"
+                >
+
+                <label for="dataFinalRelatorio">
+                    Até:
+                </label>
+
+                <input
+                    type="date"
+                    id="dataFinalRelatorio"
+                >
+
+                <button
+                    type="button"
+                    class="btn"
+                    onclick="filtrarRelatorio()"
+                >
+                    🔍 Consultar
+                </button>
 
                 <button
                     type="button"
@@ -428,25 +453,59 @@
                     "filtroMovimento"
                 );
 
+            const campoDataInicial =
+                document.getElementById(
+                    "dataInicialRelatorio"
+                );
+
+            const campoDataFinal =
+                document.getElementById(
+                    "dataFinalRelatorio"
+                );
 
             if (!campoFiltro) {
-
                 return;
-
             }
-
 
             const filtro =
                 normalizarTipoRelatorio(
                     campoFiltro.value
                 );
 
+            const dataInicial =
+                campoDataInicial &&
+                campoDataInicial.value
+                    ? new Date(
+                        campoDataInicial.value +
+                        "T00:00:00"
+                    )
+                    : null;
+
+            const dataFinal =
+                campoDataFinal &&
+                campoDataFinal.value
+                    ? new Date(
+                        campoDataFinal.value +
+                        "T23:59:59"
+                    )
+                    : null;
+
+            if (
+                dataInicial &&
+                dataFinal &&
+                dataInicial > dataFinal
+            ) {
+                alert(
+                    "A data inicial não pode ser maior que a data final."
+                );
+
+                return;
+            }
 
             const linhas =
                 document.querySelectorAll(
                     "#listaRelatorios tr"
                 );
-
 
             linhas.forEach(
                 function (linha) {
@@ -455,27 +514,13 @@
                         !linha.children ||
                         linha.children.length === 0
                     ) {
-
                         return;
-
                     }
 
-
-                    /*
-                     * Ignora a linha que informa
-                     * que não há movimentações.
-                     */
-                    if (
-                        linha.children.length === 1
-                    ) {
-
-                        linha.style.display =
-                            "";
-
+                    if (linha.children.length === 1) {
+                        linha.style.display = "";
                         return;
-
                     }
-
 
                     const tipoLinha =
                         normalizarTipoRelatorio(
@@ -483,18 +528,71 @@
                                 .textContent
                         );
 
+                    const textoData =
+                        linha.children[6]
+                            .textContent
+                            .trim();
 
-                    const mostrar =
+                    const dataLinha =
+                        converterDataRelatorio(
+                            textoData
+                        );
+
+                    const tipoCorreto =
                         filtro === "TODOS" ||
                         tipoLinha === filtro;
 
+                    const depoisDaInicial =
+                        !dataInicial ||
+                        (
+                            dataLinha &&
+                            dataLinha >= dataInicial
+                        );
+
+                    const antesDaFinal =
+                        !dataFinal ||
+                        (
+                            dataLinha &&
+                            dataLinha <= dataFinal
+                        );
 
                     linha.style.display =
-                        mostrar
+                        tipoCorreto &&
+                        depoisDaInicial &&
+                        antesDaFinal
                             ? ""
                             : "none";
-
                 }
+            );
+
+        }
+
+
+        function converterDataRelatorio(
+            textoData
+        ) {
+
+            const texto =
+                String(
+                    textoData || ""
+                ).trim();
+
+            const resultado =
+                texto.match(
+                    /(\d{2})\/(\d{2})\/(\d{4})(?:,\s*(\d{2}):(\d{2})(?::(\d{2}))?)?/
+                );
+
+            if (!resultado) {
+                return null;
+            }
+
+            return new Date(
+                Number(resultado[3]),
+                Number(resultado[2]) - 1,
+                Number(resultado[1]),
+                Number(resultado[4] || 0),
+                Number(resultado[5] || 0),
+                Number(resultado[6] || 0)
             );
 
         }

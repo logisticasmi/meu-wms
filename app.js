@@ -911,6 +911,12 @@ function limparFormularioProduto() {
 
 function carregarTabelaProdutos() {
 
+        if (
+        typeof window.carregarTabelaProdutosSupabase === "function"
+    ) {
+        return window.carregarTabelaProdutosSupabase();
+    }
+
     const tabela =
         document.getElementById(
             "listaProdutos"

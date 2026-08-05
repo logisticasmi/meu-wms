@@ -129,172 +129,57 @@ async function buscarProdutosSupabase() {
         return [];
     }
 
-    const { data, error } = await window.supabaseClient
-        .from(NOME_TABELA_PRODUTOS)
-        .select("*")
-        .order("endereco", {
-            ascending: true
-        });
+    const todosProdutos = [];
+    const tamanhoPagina = 1000;
+    let inicio = 0;
 
-    if (error) {
-        console.error(
-            "Erro ao buscar produtos:",
-            error
-        );
+    while (true) {
+        const fim = inicio + tamanhoPagina - 1;
 
-        alert(
-            "Não foi possível carregar os produtos do banco online.\n\n" +
-            error.message
-        );
-
-        return [];
-    }
-
-    return Array.isArray(data)
-        ? data.map(normalizarProdutoBanco)
-        : [];
-}
-
-
-// =====================================================
-// INSERIR UM PRODUTO
-// =====================================================
-
-async function inserirProdutoSupabase(produto) {
-    if (!verificarConexaoSupabase()) {
-        return false;
-    }
-
-    const dadosBanco =
-        prepararProdutoParaBanco(produto);
-
-    const { error } = await window.supabaseClient
-        .from(NOME_TABELA_PRODUTOS)
-        .insert([dadosBanco]);
-
-    if (error) {
-        console.error(
-            "Erro ao inserir produto:",
-            error
-        );
-
-        alert(
-            "Erro ao salvar produto:\n\n" +
-            error.message
-        );
-
-        return false;
-    }
-
-    return true;
-}
-
-
-// =====================================================
-// IMPORTAR PLANILHA PARA O SUPABASE
-// =====================================================
-
-async function salvarProdutosImportadosSupabase(
-    produtos,
-    substituirEstoque
-) {
-    if (!verificarConexaoSupabase()) {
-        return false;
-    }
-
-    if (
-        !Array.isArray(produtos) ||
-        produtos.length === 0
-    ) {
-        alert(
-            "Nenhum produto válido foi encontrado para salvar."
-        );
-
-        return false;
-    }
-
-    const produtosBanco = produtos
-        .map(prepararProdutoParaBanco)
-        .filter(function (produto) {
-            return (
-                produto.codigo !== "" ||
-                produto.descricao !== "" ||
-                produto.nf !== "" ||
-                produto.endereco !== ""
-            );
-        });
-
-    if (produtosBanco.length === 0) {
-        alert(
-            "Nenhum produto válido foi reconhecido na planilha."
-        );
-
-        return false;
-    }
-
-    if (substituirEstoque) {
-        const { error: erroExclusao } =
-            await window.supabaseClient
-                .from(NOME_TABELA_PRODUTOS)
-                .delete()
-                .neq("id", 0);
-
-        if (erroExclusao) {
-            console.error(
-                "Erro ao limpar produtos antigos:",
-                erroExclusao
-            );
-
-            alert(
-                "Não foi possível substituir o estoque antigo.\n\n" +
-                erroExclusao.message
-            );
-
-            return false;
-        }
-    }
-
-    const TAMANHO_LOTE = 500;
-
-    for (
-        let inicio = 0;
-        inicio < produtosBanco.length;
-        inicio += TAMANHO_LOTE
-    ) {
-        const lote = produtosBanco.slice(
-            inicio,
-            inicio + TAMANHO_LOTE
-        );
-
-      const resposta = await window.supabaseClient
-    .from(NOME_TABELA_PRODUTOS)
-    .insert(lote);
-
-console.log("RESPOSTA DO SUPABASE:");
-console.log(resposta);
-
-const error = resposta.error;
+        const { data, error } = await window.supabaseClient
+            .from(NOME_TABELA_PRODUTOS)
+            .select("*")
+            .order("id", {
+                ascending: true
+            })
+            .range(inicio, fim);
 
         if (error) {
             console.error(
-                "Erro ao inserir lote de produtos:",
+                "Erro ao buscar produtos:",
                 error
             );
 
             alert(
-                "A importação parou no produto " +
-                (inicio + 1) +
-                ".\n\nErro: " +
+                "Não foi possível carregar os produtos.\n\n" +
                 error.message
             );
 
-            return false;
+            return [];
         }
+
+        if (!Array.isArray(data) || data.length === 0) {
+            break;
+        }
+
+        todosProdutos.push(
+            ...data.map(normalizarProdutoBanco)
+        );
+
+        if (data.length < tamanhoPagina) {
+            break;
+        }
+
+        inicio += tamanhoPagina;
     }
 
-    return true;
-}
+    console.log(
+        "TOTAL DE PRODUTOS CARREGADOS:",
+        todosProdutos.length
+    );
 
+    return todosProdutos;
+}
 // =====================================================
 // CONVERTER LINHA DA PLANILHA EM PRODUTO
 // =====================================================

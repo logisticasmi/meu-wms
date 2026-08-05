@@ -229,21 +229,28 @@
                 "Atualizado"
             );
 
-          if (houveAlteracao) {
+ if (houveAlteracao) {
+
     if (
-        typeof carregarTabelaProdutos === "function"
+        typeof window.carregarTabelaProdutosSupabase ===
+        "function"
     ) {
-        carregarTabelaProdutos();
+        window.carregarTabelaProdutosSupabase();
+
+    } else if (
+        typeof window.carregarTabelaProdutos ===
+        "function"
+    ) {
+        window.carregarTabelaProdutos();
     }
 
     if (
-        typeof atualizarDashboard === "function"
+        typeof window.atualizarDashboard ===
+        "function"
     ) {
-        atualizarDashboard();
+        window.atualizarDashboard();
     }
 }
-        }
-    }
 
     function mostrarStatusSincronizacao(
         texto
