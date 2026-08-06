@@ -2,6 +2,8 @@
 // SMI WMS - SINCRONIZAÇÃO ENTRE USUÁRIOS
 // =====================================================
 
+// VERSÃO CORRIGIDA ONLINE - 20260806-1620
+
 (function () {
     "use strict";
 
