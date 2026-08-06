@@ -27,10 +27,21 @@
     let aplicandoDadosDoBanco = false;
     let envioAgendado = null;
     let ultimaAtualizacao = "";
+    let buscaEmAndamento = false;
+
+
+    // =====================================================
+    // OBTER CLIENTE SUPABASE
+    // =====================================================
 
     function obterClienteSupabase() {
         return window.supabaseClient || null;
     }
+
+
+    // =====================================================
+    // COLETAR DADOS DO NAVEGADOR
+    // =====================================================
 
     function coletarDadosDoNavegador() {
         const dados = {};
@@ -56,6 +67,11 @@
         return dados;
     }
 
+
+    // =====================================================
+    // APLICAR DADOS RECEBIDOS DO BANCO
+    // =====================================================
+
     function aplicarDadosDoBanco(dados) {
         if (
             !dados ||
@@ -65,6 +81,7 @@
         }
 
         let houveAlteracao = false;
+
         aplicandoDadosDoBanco = true;
 
         try {
@@ -110,6 +127,11 @@
         return houveAlteracao;
     }
 
+
+    // =====================================================
+    // ENVIAR DADOS PARA O SUPABASE
+    // =====================================================
+
     async function enviarDadosParaBanco() {
         const supabase =
             obterClienteSupabase();
@@ -118,6 +140,7 @@
             mostrarStatusSincronizacao(
                 "Sem conexão"
             );
+
             return;
         }
 
@@ -161,6 +184,11 @@
         );
     }
 
+
+    // =====================================================
+    // AGENDAR ENVIO
+    // =====================================================
+
     function agendarEnvioParaBanco() {
         if (aplicandoDadosDoBanco) {
             return;
@@ -174,122 +202,141 @@
         );
     }
 
-    async function buscarDadosDoBanco() {
-    const supabase =
-        obterClienteSupabase();
 
-    if (!supabase) {
-        mostrarStatusSincronizacao(
-            "Sem conexão"
-        );
-        return;
-    }
+    // =====================================================
+    // ATUALIZAR A TELA DEPOIS DA SINCRONIZAÇÃO
+    // =====================================================
 
-    const { data, error } =
-        await supabase
-            .from("wms_state")
-            .select(
-                "data, updated_at"
-            )
-            .eq("id", ID_ESTADO)
-            .maybeSingle();
+    function atualizarTelaDepoisDaSincronizacao() {
 
-    if (error) {
-        console.error(
-            "Erro ao buscar dados:",
-            error
-        );
+        if (
+            typeof window
+                .carregarTabelaProdutosSupabase ===
+            "function"
+        ) {
+            window
+                .carregarTabelaProdutosSupabase();
 
-        mostrarStatusSincronizacao(
-            "Erro de sincronização"
-        );
-
-        return;
-    }
-
-    if (!data) {
-        await enviarDadosParaBanco();
-        return;
-    }
-
-    if (
-        data.updated_at &&
-        data.updated_at !== ultimaAtualizacao
-    ) {
-        const houveAlteracao =
-            aplicarDadosDoBanco(
-                data.data || {}
-            );
-
-        ultimaAtualizacao =
-            data.updated_at;
-
-        mostrarStatusSincronizacao(
-            "Atualizado"
-        );
-
-        if (houveAlteracao) {
-
-            if (
-                typeof window
-                    .carregarTabelaProdutosSupabase ===
-                "function"
-            ) {
-                window
-                    .carregarTabelaProdutosSupabase();
-
-            } else if (
-                typeof window
-                    .carregarTabelaProdutos ===
-                "function"
-            ) {
-                window.carregarTabelaProdutos();
-            }
-
-            if (
-                typeof window.atualizarDashboard ===
-                "function"
-            ) {
-                window.atualizarDashboard();
-            }
-
-            if (
-                typeof window
-                    .atualizarResumoMovimentacoes ===
-                "function"
-            ) {
-                window
-                    .atualizarResumoMovimentacoes();
-            }
-
-            if (
-                typeof window
-                    .carregarUltimasMovimentacoes ===
-                "function"
-            ) {
-                window
-                    .carregarUltimasMovimentacoes();
-            }
-        }
-    }
-}
-            mostrarStatusSincronizacao(
-                "Erro de sincronização"
-            );
-
-            return;
-        }
-
-        if (!data) {
-            await enviarDadosParaBanco();
-            return;
+        } else if (
+            typeof window
+                .carregarTabelaProdutos ===
+            "function"
+        ) {
+            window.carregarTabelaProdutos();
         }
 
         if (
-            data.updated_at &&
-            data.updated_at !==
-                ultimaAtualizacao
+            typeof window.atualizarDashboard ===
+            "function"
         ) {
+            window.atualizarDashboard();
+        }
+
+        if (
+            typeof window
+                .atualizarResumoMovimentacoes ===
+            "function"
+        ) {
+            window
+                .atualizarResumoMovimentacoes();
+        }
+
+        if (
+            typeof window
+                .carregarUltimasMovimentacoes ===
+            "function"
+        ) {
+            window
+                .carregarUltimasMovimentacoes();
+        }
+
+        if (
+            typeof window
+                .carregarHistoricoEntradas ===
+            "function"
+        ) {
+            window
+                .carregarHistoricoEntradas();
+        }
+
+        if (
+            typeof window
+                .carregarHistoricoSaidas ===
+            "function"
+        ) {
+            window
+                .carregarHistoricoSaidas();
+        }
+
+        if (
+            typeof window
+                .carregarHistoricoTransferencias ===
+            "function"
+        ) {
+            window
+                .carregarHistoricoTransferencias();
+        }
+    }
+
+
+    // =====================================================
+    // BUSCAR DADOS DO SUPABASE
+    // =====================================================
+
+    async function buscarDadosDoBanco() {
+        if (buscaEmAndamento) {
+            return;
+        }
+
+        buscaEmAndamento = true;
+
+        try {
+            const supabase =
+                obterClienteSupabase();
+
+            if (!supabase) {
+                mostrarStatusSincronizacao(
+                    "Sem conexão"
+                );
+
+                return;
+            }
+
+            const { data, error } =
+                await supabase
+                    .from("wms_state")
+                    .select(
+                        "data, updated_at"
+                    )
+                    .eq("id", ID_ESTADO)
+                    .maybeSingle();
+
+            if (error) {
+                console.error(
+                    "Erro ao buscar dados:",
+                    error
+                );
+
+                mostrarStatusSincronizacao(
+                    "Erro de sincronização"
+                );
+
+                return;
+            }
+
+            if (!data) {
+                await enviarDadosParaBanco();
+                return;
+            }
+
+            if (
+                !data.updated_at ||
+                data.updated_at ===
+                    ultimaAtualizacao
+            ) {
+                return;
+            }
+
             const houveAlteracao =
                 aplicarDadosDoBanco(
                     data.data || {}
@@ -302,35 +349,29 @@
                 "Atualizado"
             );
 
-if (houveAlteracao) {
+            if (houveAlteracao) {
+                atualizarTelaDepoisDaSincronizacao();
+            }
 
-    if (
-        typeof window.carregarTabelaProdutosSupabase ===
-        "function"
-    ) {
-        window.carregarTabelaProdutosSupabase();
+        } catch (erro) {
+            console.error(
+                "Erro inesperado na sincronização:",
+                erro
+            );
 
-    } else if (
-        typeof window.carregarTabelaProdutos ===
-        "function"
-    ) {
-        window.carregarTabelaProdutos();
+            mostrarStatusSincronizacao(
+                "Erro de sincronização"
+            );
+
+        } finally {
+            buscaEmAndamento = false;
+        }
     }
 
-    if (
-        typeof window.atualizarDashboard ===
-        "function"
-    ) {
-        window.atualizarDashboard();
-    }
 
-    if (
-        typeof window.atualizarResumoMovimentacoes ===
-        "function"
-    ) {
-        window.atualizarResumoMovimentacoes();
-    }
-}
+    // =====================================================
+    // STATUS VISUAL
+    // =====================================================
 
     function mostrarStatusSincronizacao(
         texto
@@ -372,6 +413,11 @@ if (houveAlteracao) {
             "☁ " + texto;
     }
 
+
+    // =====================================================
+    // INTERCEPTAR ALTERAÇÕES NO LOCALSTORAGE
+    // =====================================================
+
     Storage.prototype.setItem =
         function (chave, valor) {
             setItemOriginal.call(
@@ -389,6 +435,7 @@ if (houveAlteracao) {
             }
         };
 
+
     Storage.prototype.removeItem =
         function (chave) {
             removeItemOriginal.call(
@@ -405,16 +452,22 @@ if (houveAlteracao) {
             }
         };
 
- window.addEventListener(
-    "load",
-    function () {
 
-        buscarDadosDoBanco();
+    // =====================================================
+    // INICIAR SINCRONIZAÇÃO
+    // =====================================================
 
-        setInterval(
-            buscarDadosDoBanco,
-            INTERVALO_ATUALIZACAO
-        );
-    }
-);
+    window.addEventListener(
+        "load",
+        function () {
+
+            buscarDadosDoBanco();
+
+            setInterval(
+                buscarDadosDoBanco,
+                INTERVALO_ATUALIZACAO
+            );
+        }
+    );
+
 })();
