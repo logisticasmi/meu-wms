@@ -231,6 +231,16 @@
         if (houveAlteracao) {
 
             if (
+    document.getElementById("resumoEntradas")
+) {
+    setTimeout(function () {
+        window.location.reload();
+    }, 500);
+
+    return;
+}
+
+            if (
                 typeof window
                     .carregarTabelaProdutosSupabase ===
                 "function"
@@ -409,8 +419,10 @@ if (houveAlteracao) {
     "load",
     function () {
 
+        // Busca imediatamente ao abrir
         buscarDadosDoBanco();
 
+        // Continua verificando alterações dos outros usuários
         setInterval(
             buscarDadosDoBanco,
             INTERVALO_ATUALIZACAO
