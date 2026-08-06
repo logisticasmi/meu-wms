@@ -3143,52 +3143,41 @@ async function registrarEntrada() {
             "enderecoEntrada"
         );
 
-
     if (
         !campoCodigo ||
         !campoQuantidade ||
         !campoEndereco
     ) {
-
         alert(
             "Os campos da entrada não foram encontrados."
         );
 
         return;
-
     }
-
 
     const codigo =
         normalizarCodigo(
             campoCodigo.value
         );
 
-
     const quantidadeEntrada =
         converterNumero(
             campoQuantidade.value
         );
-
 
     const endereco =
         normalizarEndereco(
             campoEndereco.value
         );
 
-
     if (codigo === "") {
-
         alert(
             "Digite o código do produto."
         );
 
         campoCodigo.focus();
-
         return;
-
     }
-
 
     if (
         !Number.isFinite(
@@ -3196,175 +3185,53 @@ async function registrarEntrada() {
         ) ||
         quantidadeEntrada <= 0
     ) {
-
         alert(
             "Digite uma quantidade válida."
         );
 
         campoQuantidade.focus();
-
         return;
-
     }
 
-
     if (endereco === "") {
-
         alert(
             "Digite o endereço de armazenagem."
         );
 
         campoEndereco.focus();
-
         return;
-
     }
 
-
-    const estoque =
-        carregarEstoque();
-
-
-    const produtosMesmoCodigo =
-        estoque.filter(
-            function (produto) {
-
-                return (
-                    normalizarCodigo(
-                        produto.codigo
-                    ) === codigo
-                );
-
-            }
+    if (!window.supabaseClient) {
+        alert(
+            "A conexão com o banco online não foi carregada."
         );
 
+        return;
+    }
+
+    const produtosMesmoCodigo =
+        await buscarProdutosMovimentacaoSupabase(
+            codigo,
+            ""
+        );
 
     if (
+        produtosMesmoCodigo === null ||
         produtosMesmoCodigo.length === 0
     ) {
-
         alert(
             'O produto "' +
             codigo +
-            '" não está cadastrado.\n\n' +
-            "Cadastre ou importe o produto antes de registrar a entrada."
+            '" não foi encontrado na base online.'
         );
 
         campoCodigo.focus();
-
         return;
-
     }
-
 
     const produtoReferencia =
         produtosMesmoCodigo[0];
-
-
-    const produtoNaPosicao =
-        estoque.find(
-            function (produto) {
-
-                return (
-                    normalizarCodigo(
-                        produto.codigo
-                    ) === codigo
-                    &&
-                    normalizarEndereco(
-                        produto.endereco
-                    ) === endereco
-                );
-
-            }
-        );
-
-
-    if (produtoNaPosicao) {
-
-        const quantidadeAnterior =
-            converterNumero(
-                produtoNaPosicao.quantidade
-            );
-
-
-        const valorTotalAnterior =
-            converterNumero(
-                produtoNaPosicao.valorTotal
-            );
-
-
-        const valorUnitarioCalculado =
-            quantidadeAnterior > 0
-                ? valorTotalAnterior /
-                  quantidadeAnterior
-                : 0;
-
-
-        produtoNaPosicao.quantidade =
-            quantidadeAnterior +
-            quantidadeEntrada;
-
-
-        produtoNaPosicao.valorTotal =
-            valorTotalAnterior +
-            (
-                quantidadeEntrada *
-                valorUnitarioCalculado
-            );
-
-    } else {
-
-        const quantidadeReferencia =
-            converterNumero(
-                produtoReferencia.quantidade
-            );
-
-
-        const valorTotalReferencia =
-            converterNumero(
-                produtoReferencia.valorTotal
-            );
-
-
-        const valorUnitarioReferencia =
-            quantidadeReferencia > 0
-                ? valorTotalReferencia /
-                  quantidadeReferencia
-                : 0;
-
-
-        estoque.push(
-            {
-                nf:
-                    produtoReferencia.nf ||
-                    "",
-
-                codigo:
-                    produtoReferencia.codigo ||
-                    codigo,
-
-                descricao:
-                    produtoReferencia.descricao ||
-                    "Sem descrição",
-
-                cliente:
-                    produtoReferencia.cliente ||
-                    "SMI",
-
-                quantidade:
-                    quantidadeEntrada,
-
-                valorTotal:
-                    quantidadeEntrada *
-                    valorUnitarioReferencia,
-
-                endereco:
-                    endereco
-            }
-        );
-
-    }
-
 
     const sincronizouBanco =
         await sincronizarEntradaProdutoSupabase(
@@ -3377,21 +3244,100 @@ async function registrarEntrada() {
         return;
     }
 
-    const salvouEstoque =
-        salvarEstoque(
-            estoque
+    const estoque =
+        carregarEstoque();
+
+    const produtoNaPosicao =
+        estoque.find(
+            function (produto) {
+                return (
+                    normalizarCodigo(
+                        produto.codigo
+                    ) === codigo &&
+                    normalizarEndereco(
+                        produto.endereco
+                    ) === endereco
+                );
+            }
         );
 
+    const quantidadeReferencia =
+        converterNumero(
+            produtoReferencia.quantidade
+        );
 
-    if (!salvouEstoque) {
+    const valorTotalReferencia =
+        converterNumero(
+            produtoReferencia.valor_total ??
+            produtoReferencia.valorTotal ??
+            0
+        );
 
-        return;
+    const valorUnitarioReferencia =
+        quantidadeReferencia > 0
+            ? valorTotalReferencia /
+              quantidadeReferencia
+            : 0;
 
+                if (produtoNaPosicao) {
+
+        const quantidadeAnterior =
+            converterNumero(
+                produtoNaPosicao.quantidade
+            );
+
+        const valorTotalAnterior =
+            converterNumero(
+                produtoNaPosicao.valorTotal
+            );
+
+        produtoNaPosicao.quantidade =
+            quantidadeAnterior +
+            quantidadeEntrada;
+
+        produtoNaPosicao.valorTotal =
+            valorTotalAnterior +
+            (
+                quantidadeEntrada *
+                valorUnitarioReferencia
+            );
+
+    } else {
+
+        estoque.push({
+            nf:
+                produtoReferencia.nf ||
+                "",
+
+            codigo:
+                produtoReferencia.codigo ||
+                codigo,
+
+            descricao:
+                produtoReferencia.descricao ||
+                "Sem descrição",
+
+            cliente:
+                produtoReferencia.cliente ||
+                "SMI",
+
+            quantidade:
+                quantidadeEntrada,
+
+            valorTotal:
+                quantidadeEntrada *
+                valorUnitarioReferencia,
+
+            endereco:
+                endereco
+        });
     }
 
+    salvarEstoque(
+        estoque
+    );
 
     const movimentacao = {
-
         tipo:
             "ENTRADA",
 
@@ -3424,28 +3370,31 @@ async function registrarEntrada() {
 
         operador:
             obterNomeUsuario()
-
     };
-
 
     salvarHistoricoEntrada(
         movimentacao
     );
 
-
     salvarMovimentacaoGeral(
         movimentacao
     );
 
-
     limparCamposEntrada();
-
 
     carregarHistoricoEntradas();
 
+    if (
+        typeof window
+            .carregarTabelaProdutosSupabase ===
+        "function"
+    ) {
+        await window
+            .carregarTabelaProdutosSupabase();
+    }
 
-    alert(
-        "Entrada registrada com sucesso!\n\n" +
+        alert(
+        "Entrada registrada e confirmada na base de Produtos!\n\n" +
         "Código: " +
         movimentacao.codigo +
         "\nQuantidade: " +
@@ -3456,11 +3405,8 @@ async function registrarEntrada() {
         endereco
     );
 
-
     campoCodigo.focus();
-
 }
-
 
 // =====================================================
 // SALVAR HISTÓRICO DE ENTRADAS
@@ -3475,17 +3421,14 @@ function salvarHistoricoEntrada(
             "entradas"
         );
 
-
     entradas.unshift(
         movimentacao
     );
-
 
     salvarListaLocalStorage(
         "entradas",
         entradas
     );
-
 }
 
 
@@ -3502,19 +3445,15 @@ function salvarMovimentacaoGeral(
             "movimentacoes"
         );
 
-
     movimentacoes.unshift(
         movimentacao
     );
-
 
     salvarListaLocalStorage(
         "movimentacoes",
         movimentacoes
     );
-
 }
-
 
 // =====================================================
 // CARREGAR HISTÓRICO DE ENTRADAS
