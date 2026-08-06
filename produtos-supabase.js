@@ -965,7 +965,7 @@ async function buscarTodosProdutosParaExportacao() {
 
         inicio += tamanhoPagina;
     }
-
+console.log("TOTAL:", todosProdutos.length);
     return todosProdutos;
 }
 

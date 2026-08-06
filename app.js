@@ -5506,108 +5506,80 @@ function atualizarResumoMovimentacoes() {
     const movimentacoes =
         obterTodasMovimentacoes();
 
+    const agora = new Date();
 
-    let totalEntradas =
-        0;
+    const hoje =
+        String(agora.getDate()).padStart(2, "0") +
+        "/" +
+        String(agora.getMonth() + 1).padStart(2, "0") +
+        "/" +
+        agora.getFullYear();
 
+    let totalEntradas = 0;
+    let totalSaidas = 0;
+    let totalTransferencias = 0;
 
-    let totalSaidas =
-        0;
+    movimentacoes.forEach(function (movimentacao) {
 
+        const dataMovimentacao =
+            String(movimentacao.data || "")
+                .trim()
+                .split(",")[0]
+                .split(" ")[0];
 
-    let totalTransferencias =
-        0;
-
-
-    movimentacoes.forEach(
-        function (movimentacao) {
-
-            const tipo =
-                normalizarTipoMovimentacaoApp(
-                    movimentacao.tipo
-                );
-
-
-            const quantidade =
-                converterNumero(
-                    movimentacao.quantidade
-                );
-
-
-            if (
-                tipo ===
-                "ENTRADA"
-            ) {
-
-                totalEntradas +=
-                    quantidade;
-
-            }
-
-
-            if (
-                tipo ===
-                "SAIDA"
-            ) {
-
-                totalSaidas +=
-                    quantidade;
-
-            }
-
-
-            if (
-                tipo ===
-                "TRANSFERENCIA"
-            ) {
-
-                totalTransferencias +=
-                    quantidade;
-
-            }
-
+        if (dataMovimentacao !== hoje) {
+            return;
         }
-    );
 
+        const tipo =
+            normalizarTipoMovimentacaoApp(
+                movimentacao.tipo
+            );
+
+        const quantidade =
+            converterNumero(
+                movimentacao.quantidade
+            );
+
+        if (tipo === "ENTRADA") {
+            totalEntradas += quantidade;
+        }
+
+        if (tipo === "SAIDA") {
+            totalSaidas += quantidade;
+        }
+
+        if (tipo === "TRANSFERENCIA") {
+            totalTransferencias +=
+                quantidade > 0
+                    ? quantidade
+                    : 1;
+        }
+    });
 
     const saldo =
-        totalEntradas -
-        totalSaidas;
-
+        totalEntradas - totalSaidas;
 
     alterarTextoDashboard(
         "resumoEntradas",
-        formatarQuantidade(
-            totalEntradas
-        )
+        formatarQuantidade(totalEntradas)
     );
-
 
     alterarTextoDashboard(
         "resumoSaidas",
-        formatarQuantidade(
-            totalSaidas
-        )
+        formatarQuantidade(totalSaidas)
     );
-
 
     alterarTextoDashboard(
         "resumoTransferencias",
-        formatarQuantidade(
-            totalTransferencias
-        )
+        formatarQuantidade(totalTransferencias)
     );
-
 
     alterarTextoDashboard(
         "resumoSaldo",
-        formatarQuantidade(
-            saldo
-        )
+        formatarQuantidade(saldo)
     );
-
 }
-
 
 // =====================================================
 // CARREGAR ÚLTIMAS MOVIMENTAÇÕES
