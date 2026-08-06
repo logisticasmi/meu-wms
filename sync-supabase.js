@@ -175,31 +175,104 @@
     }
 
     async function buscarDadosDoBanco() {
-        const supabase =
-            obterClienteSupabase();
+    const supabase =
+        obterClienteSupabase();
 
-        if (!supabase) {
-            mostrarStatusSincronizacao(
-                "Sem conexão"
+    if (!supabase) {
+        mostrarStatusSincronizacao(
+            "Sem conexão"
+        );
+        return;
+    }
+
+    const { data, error } =
+        await supabase
+            .from("wms_state")
+            .select(
+                "data, updated_at"
+            )
+            .eq("id", ID_ESTADO)
+            .maybeSingle();
+
+    if (error) {
+        console.error(
+            "Erro ao buscar dados:",
+            error
+        );
+
+        mostrarStatusSincronizacao(
+            "Erro de sincronização"
+        );
+
+        return;
+    }
+
+    if (!data) {
+        await enviarDadosParaBanco();
+        return;
+    }
+
+    if (
+        data.updated_at &&
+        data.updated_at !== ultimaAtualizacao
+    ) {
+        const houveAlteracao =
+            aplicarDadosDoBanco(
+                data.data || {}
             );
-            return;
+
+        ultimaAtualizacao =
+            data.updated_at;
+
+        mostrarStatusSincronizacao(
+            "Atualizado"
+        );
+
+        if (houveAlteracao) {
+
+            if (
+                typeof window
+                    .carregarTabelaProdutosSupabase ===
+                "function"
+            ) {
+                window
+                    .carregarTabelaProdutosSupabase();
+
+            } else if (
+                typeof window
+                    .carregarTabelaProdutos ===
+                "function"
+            ) {
+                window.carregarTabelaProdutos();
+            }
+
+            if (
+                typeof window.atualizarDashboard ===
+                "function"
+            ) {
+                window.atualizarDashboard();
+            }
+
+            if (
+                typeof window
+                    .atualizarResumoMovimentacoes ===
+                "function"
+            ) {
+                window
+                    .atualizarResumoMovimentacoes();
+            }
+
+            if (
+                typeof window
+                    .carregarUltimasMovimentacoes ===
+                "function"
+            ) {
+                window
+                    .carregarUltimasMovimentacoes();
+            }
         }
-
-        const { data, error } =
-            await supabase
-                .from("wms_state")
-                .select(
-                    "data, updated_at"
-                )
-                .eq("id", ID_ESTADO)
-                .maybeSingle();
-
-        if (error) {
-            console.error(
-                "Erro ao buscar dados:",
-                error
-            );
-
+    }
+}
             mostrarStatusSincronizacao(
                 "Erro de sincronização"
             );
@@ -229,7 +302,7 @@
                 "Atualizado"
             );
 
- if (houveAlteracao) {
+if (houveAlteracao) {
 
     if (
         typeof window.carregarTabelaProdutosSupabase ===
@@ -249,6 +322,13 @@
         "function"
     ) {
         window.atualizarDashboard();
+    }
+
+    if (
+        typeof window.atualizarResumoMovimentacoes ===
+        "function"
+    ) {
+        window.atualizarResumoMovimentacoes();
     }
 }
 
@@ -325,12 +405,16 @@
             }
         };
 
-    window.addEventListener(
-        "load",
-        function () {
-            buscarDadosDoBanco();
+ window.addEventListener(
+    "load",
+    function () {
 
-        }
-    );
+        buscarDadosDoBanco();
 
+        setInterval(
+            buscarDadosDoBanco,
+            INTERVALO_ATUALIZACAO
+        );
+    }
+);
 })();
