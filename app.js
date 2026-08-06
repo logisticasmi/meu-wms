@@ -5521,13 +5521,18 @@ function atualizarResumoMovimentacoes() {
 
     movimentacoes.forEach(function (movimentacao) {
 
-        const dataMovimentacao =
-            String(movimentacao.data || "")
-                .trim()
-                .split(",")[0]
-                .split(" ")[0];
+        const textoData =
+            String(movimentacao.data || "").trim();
 
-        if (dataMovimentacao !== hoje) {
+        const dataMovimentacao =
+            textoData.match(
+                /^(\d{1,2}\/\d{1,2}\/\d{4})/
+            );
+
+        if (
+            !dataMovimentacao ||
+            dataMovimentacao[1] !== hoje
+        ) {
             return;
         }
 
