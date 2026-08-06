@@ -2,7 +2,7 @@
 // SMI WMS - PRODUTOS 100% INTEGRADOS AO SUPABASE
 // =====================================================
 
-const NOME_TABELA_PRODUTOS = "produtos";
+var NOME_TABELA_PRODUTOS = "produtos";
 
 
 // =====================================================
@@ -1146,7 +1146,42 @@ window.excluirProdutoSupabase =
 
 async function iniciarTelaProdutosSupabase() {
     await carregarTabelaProdutosSupabase();
+
+    if (!window.__intervaloProdutosSupabase) {
+        window.__intervaloProdutosSupabase = window.setInterval(
+            function () {
+                if (
+                    document.visibilityState === "visible" &&
+                    document.getElementById("listaProdutos")
+                ) {
+                    carregarTabelaProdutosSupabase();
+                }
+            },
+            3000
+        );
+    }
 }
+
+window.addEventListener(
+    "focus",
+    function () {
+        if (document.getElementById("listaProdutos")) {
+            carregarTabelaProdutosSupabase();
+        }
+    }
+);
+
+document.addEventListener(
+    "visibilitychange",
+    function () {
+        if (
+            document.visibilityState === "visible" &&
+            document.getElementById("listaProdutos")
+        ) {
+            carregarTabelaProdutosSupabase();
+        }
+    }
+);
 
 if (document.readyState === "loading") {
     document.addEventListener(

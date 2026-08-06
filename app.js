@@ -2330,6 +2330,729 @@ window.processarProdutosImportados =
 window.normalizarProdutoImportado =
     normalizarProdutoImportado;
     // =====================================================
+
+// =====================================================
+// SINCRONIZAÇÃO DAS MOVIMENTAÇÕES COM A TABELA PRODUTOS
+// =====================================================
+
+function obterClienteProdutosMovimentacao() {
+    return window.supabaseClient || null;
+}
+
+async function buscarProdutosMovimentacaoSupabase(
+    codigo,
+    endereco
+) {
+    const supabase =
+        obterClienteProdutosMovimentacao();
+
+    if (!supabase) {
+        alert(
+            "A conexão com o banco online não foi carregada.\n\n" +
+            "Verifique se a página possui supabase.js antes de app.js."
+        );
+
+        return null;
+    }
+
+    let consulta =
+        supabase
+            .from("produtos")
+            .select("*")
+            .eq("codigo", String(codigo || "").trim());
+
+    if (endereco) {
+        consulta =
+            consulta.eq(
+                "endereco",
+                String(endereco || "")
+                    .trim()
+                    .toUpperCase()
+                    .replace(/\s+/g, "")
+            );
+    }
+
+    const { data, error } =
+        await consulta.order("id", {
+            ascending: true
+        });
+
+    if (error) {
+        console.error(
+            "Erro ao buscar produto no banco:",
+            error
+        );
+
+        alert(
+            "Não foi possível consultar o produto no banco online.\n\n" +
+            error.message
+        );
+
+        return null;
+    }
+
+    return Array.isArray(data)
+        ? data
+        : [];
+}
+
+async function sincronizarEntradaProdutoSupabase(
+    codigo,
+    endereco,
+    quantidade
+) {
+    const supabase =
+        obterClienteProdutosMovimentacao();
+
+    if (!supabase) {
+        return false;
+    }
+
+    const registrosExatos =
+        await buscarProdutosMovimentacaoSupabase(
+            codigo,
+            endereco
+        );
+
+    if (registrosExatos === null) {
+        return false;
+    }
+
+    const quantidadeEntrada =
+        converterNumero(quantidade);
+
+    if (registrosExatos.length > 0) {
+        const produto =
+            registrosExatos[0];
+
+        const quantidadeAtual =
+            converterNumero(
+                produto.quantidade
+            );
+
+        const valorAtual =
+            converterNumero(
+                produto.valor_total ??
+                produto.valorTotal ??
+                0
+            );
+
+        const valorUnitario =
+            quantidadeAtual > 0
+                ? valorAtual / quantidadeAtual
+                : 0;
+
+        const {
+            data: produtoAtualizado,
+            error
+        } =
+            await supabase
+                .from("produtos")
+                .update({
+                    quantidade:
+                        quantidadeAtual +
+                        quantidadeEntrada,
+
+                    valor_total:
+                        valorAtual +
+                        (
+                            quantidadeEntrada *
+                            valorUnitario
+                        )
+                })
+                .eq("id", produto.id)
+                .select(
+                    "id, codigo, quantidade, endereco"
+                )
+                .maybeSingle();
+
+        if (error) {
+            console.error(
+                "Erro ao atualizar entrada no banco:",
+                error
+            );
+
+            alert(
+                "A entrada não foi salva na base de produtos.\n\n" +
+                error.message
+            );
+
+            return false;
+        }
+
+        if (!produtoAtualizado) {
+            alert(
+                "A entrada foi registrada no histórico, mas a tabela Produtos não foi alterada.\n\n" +
+                "O Supabase não permitiu atualizar esse registro. Verifique a política de UPDATE da tabela produtos."
+            );
+
+            return false;
+        }
+
+        console.log(
+            "PRODUTO ATUALIZADO NO SUPABASE:",
+            produtoAtualizado
+        );
+
+        return true;
+    }
+
+    const referencias =
+        await buscarProdutosMovimentacaoSupabase(
+            codigo,
+            ""
+        );
+
+    if (
+        referencias === null ||
+        referencias.length === 0
+    ) {
+        alert(
+            "O produto não foi encontrado na base online."
+        );
+
+        return false;
+    }
+
+    const referencia =
+        referencias[0];
+
+    const quantidadeReferencia =
+        converterNumero(
+            referencia.quantidade
+        );
+
+    const valorReferencia =
+        converterNumero(
+            referencia.valor_total ??
+            referencia.valorTotal ??
+            0
+        );
+
+    const valorUnitario =
+        quantidadeReferencia > 0
+            ? valorReferencia /
+              quantidadeReferencia
+            : 0;
+
+    const {
+        data: produtoInserido,
+        error
+    } =
+        await supabase
+            .from("produtos")
+            .insert([
+                {
+                    nf:
+                        referencia.nf || "",
+
+                    codigo:
+                        referencia.codigo ||
+                        codigo,
+
+                    descricao:
+                        referencia.descricao ||
+                        "Sem descrição",
+
+                    cliente:
+                        referencia.cliente ||
+                        "SMI",
+
+                    quantidade:
+                        quantidadeEntrada,
+
+                    valor_total:
+                        quantidadeEntrada *
+                        valorUnitario,
+
+                    endereco:
+                        String(endereco || "")
+                            .trim()
+                            .toUpperCase()
+                            .replace(/\s+/g, "")
+                }
+            ])
+            .select(
+                "id, codigo, quantidade, endereco"
+            )
+            .maybeSingle();
+
+    if (error) {
+        console.error(
+            "Erro ao inserir entrada no banco:",
+            error
+        );
+
+        alert(
+            "A entrada não foi salva na base de produtos.\n\n" +
+            error.message
+        );
+
+        return false;
+    }
+
+    if (!produtoInserido) {
+        alert(
+            "A nova posição não foi criada na tabela Produtos.\n\n" +
+            "O Supabase não permitiu inserir esse registro. Verifique a política de INSERT da tabela produtos."
+        );
+
+        return false;
+    }
+
+    console.log(
+        "PRODUTO INSERIDO NO SUPABASE:",
+        produtoInserido
+    );
+
+    return true;
+}
+
+async function sincronizarSaidaProdutoSupabase(
+    codigo,
+    endereco,
+    quantidade
+) {
+    const supabase =
+        obterClienteProdutosMovimentacao();
+
+    if (!supabase) {
+        return false;
+    }
+
+    const registros =
+        await buscarProdutosMovimentacaoSupabase(
+            codigo,
+            endereco || ""
+        );
+
+    if (registros === null) {
+        return false;
+    }
+
+    const quantidadeSolicitada =
+        converterNumero(quantidade);
+
+    const saldoTotal =
+        registros.reduce(
+            function (total, produto) {
+                return (
+                    total +
+                    converterNumero(
+                        produto.quantidade
+                    )
+                );
+            },
+            0
+        );
+
+    if (saldoTotal < quantidadeSolicitada) {
+        alert(
+            "Saldo insuficiente na base online.\n\n" +
+            "Saldo disponível: " +
+            formatarQuantidade(saldoTotal)
+        );
+
+        return false;
+    }
+
+    let restante =
+        quantidadeSolicitada;
+
+    for (const produto of registros) {
+        if (restante <= 0) {
+            break;
+        }
+
+        const quantidadeAtual =
+            converterNumero(
+                produto.quantidade
+            );
+
+        const valorAtual =
+            converterNumero(
+                produto.valor_total ??
+                produto.valorTotal ??
+                0
+            );
+
+        const retirada =
+            Math.min(
+                quantidadeAtual,
+                restante
+            );
+
+        const valorUnitario =
+            quantidadeAtual > 0
+                ? valorAtual /
+                  quantidadeAtual
+                : 0;
+
+        const novaQuantidade =
+            quantidadeAtual -
+            retirada;
+
+        const novoValor =
+            Math.max(
+                0,
+                valorAtual -
+                (
+                    retirada *
+                    valorUnitario
+                )
+            );
+
+        let error;
+
+        let produtoAlterado = null;
+
+        if (novaQuantidade <= 0) {
+            const resposta =
+                await supabase
+                    .from("produtos")
+                    .delete()
+                    .eq("id", produto.id)
+                    .select(
+                        "id, codigo, quantidade, endereco"
+                    )
+                    .maybeSingle();
+
+            error = resposta.error;
+            produtoAlterado = resposta.data;
+        } else {
+            const resposta =
+                await supabase
+                    .from("produtos")
+                    .update({
+                        quantidade:
+                            novaQuantidade,
+
+                        valor_total:
+                            novoValor
+                    })
+                    .eq("id", produto.id)
+                    .select(
+                        "id, codigo, quantidade, endereco"
+                    )
+                    .maybeSingle();
+
+            error = resposta.error;
+            produtoAlterado = resposta.data;
+        }
+
+        if (error) {
+            console.error(
+                "Erro ao registrar saída no banco:",
+                error
+            );
+
+            alert(
+                "A saída não foi salva na base de produtos.\n\n" +
+                error.message
+            );
+
+            return false;
+        }
+
+        if (!produtoAlterado) {
+            alert(
+                "A saída foi registrada no histórico, mas a tabela Produtos não foi alterada.\n\n" +
+                "O Supabase não permitiu atualizar ou excluir esse registro. Verifique as políticas de UPDATE e DELETE da tabela produtos."
+            );
+
+            return false;
+        }
+
+        console.log(
+            "PRODUTO ALTERADO NA SAÍDA:",
+            produtoAlterado
+        );
+
+        restante -= retirada;
+    }
+
+    return true;
+}
+
+async function sincronizarTransferenciaProdutoSupabase(
+    codigo,
+    origem,
+    destino,
+    quantidade
+) {
+    const supabase =
+        obterClienteProdutosMovimentacao();
+
+    if (!supabase) {
+        return false;
+    }
+
+    const origemNormalizada =
+        normalizarEndereco(origem);
+
+    const destinoNormalizado =
+        normalizarEndereco(destino);
+
+    const registrosOrigem =
+        await buscarProdutosMovimentacaoSupabase(
+            codigo,
+            origemNormalizada
+        );
+
+    if (
+        registrosOrigem === null ||
+        registrosOrigem.length === 0
+    ) {
+        alert(
+            "O produto não foi encontrado na posição de origem na base online."
+        );
+
+        return false;
+    }
+
+    const quantidadeTransferida =
+        converterNumero(quantidade);
+
+    const saldoOrigem =
+        registrosOrigem.reduce(
+            function (total, produto) {
+                return (
+                    total +
+                    converterNumero(
+                        produto.quantidade
+                    )
+                );
+            },
+            0
+        );
+
+    if (saldoOrigem < quantidadeTransferida) {
+        alert(
+            "Saldo insuficiente na posição de origem da base online."
+        );
+
+        return false;
+    }
+
+    const referencia =
+        registrosOrigem[0];
+
+    let restante =
+        quantidadeTransferida;
+
+    let valorTransferido =
+        0;
+
+    for (const produto of registrosOrigem) {
+        if (restante <= 0) {
+            break;
+        }
+
+        const quantidadeAtual =
+            converterNumero(
+                produto.quantidade
+            );
+
+        const valorAtual =
+            converterNumero(
+                produto.valor_total ??
+                produto.valorTotal ??
+                0
+            );
+
+        const retirada =
+            Math.min(
+                quantidadeAtual,
+                restante
+            );
+
+        const valorUnitario =
+            quantidadeAtual > 0
+                ? valorAtual /
+                  quantidadeAtual
+                : 0;
+
+        const valorRetirado =
+            retirada *
+            valorUnitario;
+
+        const novaQuantidade =
+            quantidadeAtual -
+            retirada;
+
+        const novoValor =
+            Math.max(
+                0,
+                valorAtual -
+                valorRetirado
+            );
+
+        let error;
+
+        if (novaQuantidade <= 0) {
+            const resposta =
+                await supabase
+                    .from("produtos")
+                    .delete()
+                    .eq("id", produto.id);
+
+            error = resposta.error;
+        } else {
+            const resposta =
+                await supabase
+                    .from("produtos")
+                    .update({
+                        quantidade:
+                            novaQuantidade,
+
+                        valor_total:
+                            novoValor
+                    })
+                    .eq("id", produto.id);
+
+            error = resposta.error;
+        }
+
+        if (error) {
+            console.error(
+                "Erro ao retirar transferência da origem:",
+                error
+            );
+
+            alert(
+                "A transferência não foi salva na base de produtos.\n\n" +
+                error.message
+            );
+
+            return false;
+        }
+
+        valorTransferido +=
+            valorRetirado;
+
+        restante -=
+            retirada;
+    }
+
+    const registrosDestino =
+        await buscarProdutosMovimentacaoSupabase(
+            codigo,
+            destinoNormalizado
+        );
+
+    if (registrosDestino === null) {
+        return false;
+    }
+
+    if (registrosDestino.length > 0) {
+        const produtoDestino =
+            registrosDestino[0];
+
+        const quantidadeDestino =
+            converterNumero(
+                produtoDestino.quantidade
+            );
+
+        const valorDestino =
+            converterNumero(
+                produtoDestino.valor_total ??
+                produtoDestino.valorTotal ??
+                0
+            );
+
+        const { error } =
+            await supabase
+                .from("produtos")
+                .update({
+                    quantidade:
+                        quantidadeDestino +
+                        quantidadeTransferida,
+
+                    valor_total:
+                        valorDestino +
+                        valorTransferido
+                })
+                .eq(
+                    "id",
+                    produtoDestino.id
+                );
+
+        if (error) {
+            console.error(
+                "Erro ao atualizar destino da transferência:",
+                error
+            );
+
+            alert(
+                "A transferência não foi concluída na posição de destino.\n\n" +
+                error.message
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    const { error } =
+        await supabase
+            .from("produtos")
+            .insert([
+                {
+                    nf:
+                        referencia.nf || "",
+
+                    codigo:
+                        referencia.codigo ||
+                        codigo,
+
+                    descricao:
+                        referencia.descricao ||
+                        "Sem descrição",
+
+                    cliente:
+                        referencia.cliente ||
+                        "SMI",
+
+                    quantidade:
+                        quantidadeTransferida,
+
+                    valor_total:
+                        valorTransferido,
+
+                    endereco:
+                        destinoNormalizado
+                }
+            ]);
+
+    if (error) {
+        console.error(
+            "Erro ao criar destino da transferência:",
+            error
+        );
+
+        alert(
+            "A transferência não foi concluída na base de produtos.\n\n" +
+            error.message
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
+window.sincronizarEntradaProdutoSupabase =
+    sincronizarEntradaProdutoSupabase;
+
+window.sincronizarSaidaProdutoSupabase =
+    sincronizarSaidaProdutoSupabase;
+
+window.sincronizarTransferenciaProdutoSupabase =
+    sincronizarTransferenciaProdutoSupabase;
+
+
+// =====================================================
 // SMI WMS - APP.JS
 // PARTE 4 - ENTRADAS DE ESTOQUE
 // =====================================================
@@ -2403,7 +3126,7 @@ document.addEventListener(
 // REGISTRAR ENTRADA
 // =====================================================
 
-function registrarEntrada() {
+async function registrarEntrada() {
 
     const campoCodigo =
         document.getElementById(
@@ -2642,6 +3365,17 @@ function registrarEntrada() {
 
     }
 
+
+    const sincronizouBanco =
+        await sincronizarEntradaProdutoSupabase(
+            codigo,
+            endereco,
+            quantidadeEntrada
+        );
+
+    if (!sincronizouBanco) {
+        return;
+    }
 
     const salvouEstoque =
         salvarEstoque(
@@ -3019,7 +3753,7 @@ document.addEventListener(
 // REGISTRAR SAÍDA
 // =====================================================
 
-function registrarSaida() {
+async function registrarSaida() {
 
     const campoCodigo =
         document.getElementById(
@@ -3292,6 +4026,17 @@ function registrarSaida() {
             }
         );
 
+
+    const sincronizouBanco =
+        await sincronizarSaidaProdutoSupabase(
+            codigo,
+            enderecoInformado,
+            quantidadeSolicitada
+        );
+
+    if (!sincronizouBanco) {
+        return;
+    }
 
     const salvou =
         salvarEstoque(
@@ -3657,7 +4402,7 @@ document.addEventListener(
 // REGISTRAR TRANSFERÊNCIA
 // =====================================================
 
-function registrarTransferencia() {
+async function registrarTransferencia() {
 
     const campoCodigo =
         document.getElementById(
@@ -3971,6 +4716,18 @@ function registrarTransferencia() {
             }
         );
 
+
+    const sincronizouBanco =
+        await sincronizarTransferenciaProdutoSupabase(
+            codigo,
+            origem,
+            destino,
+            quantidadeTransferida
+        );
+
+    if (!sincronizouBanco) {
+        return;
+    }
 
     const salvou =
         salvarEstoque(
@@ -7625,3 +8382,6 @@ function verificarLogin() {
 }
 window.login = login;
 window.verificarLogin = verificarLogin;
+
+window.atualizarResumoMovimentacoes =
+    atualizarResumoMovimentacoes;
