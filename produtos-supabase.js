@@ -1259,43 +1259,12 @@ window.excluirProdutoSupabase =
 // =====================================================
 
 async function iniciarTelaProdutosSupabase() {
-    await carregarTabelaProdutosSupabase();
-
-    if (!window.__intervaloProdutosSupabase) {
-        window.__intervaloProdutosSupabase = window.setInterval(
-            function () {
-                if (
-                    document.visibilityState === "visible" &&
-                    document.getElementById("listaProdutos")
-                ) {
-                    carregarTabelaProdutosSupabase();
-                }
-            },
-            3000
-        );
-    }
+    console.log("Produtos Supabase disponível.");
 }
 
-window.addEventListener(
-    "focus",
-    function () {
-        if (document.getElementById("listaProdutos")) {
-            carregarTabelaProdutosSupabase();
-        }
-    }
-);
 
-document.addEventListener(
-    "visibilitychange",
-    function () {
-        if (
-            document.visibilityState === "visible" &&
-            document.getElementById("listaProdutos")
-        ) {
-            carregarTabelaProdutosSupabase();
-        }
-    }
-);
+
+
 
 if (document.readyState === "loading") {
     document.addEventListener(
