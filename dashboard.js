@@ -166,12 +166,12 @@ function obterMovimentacoesDashboard() {
             );
         });
 
-    const todos = [
-        ...movimentacoes,
-        ...entradas,
-        ...saidas,
-        ...transferencias
-    ];
+  const todos = [
+    ...saidas,
+    ...movimentacoes,
+    ...entradas,
+    ...transferencias
+];
 
     const registrosUnicos = [];
     const assinaturas = new Set();
