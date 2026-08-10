@@ -101,7 +101,7 @@ Sair
 
 <!-- CARDS DO DASHBOARD -->
 
-<div class="cards-dashboard">
+<div class="cards-dashboard" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
 
     <!-- PRODUTOS -->
 
@@ -117,9 +117,9 @@ Sair
 
             <h1 id="cardProdutos">0</h1>
 
-           <span class="card-tendencia tendencia-positiva">
-    Últimos 7 dias
-</span>
+            <span class="card-tendencia tendencia-positiva">
+                Últimos 7 dias
+            </span>
 
         </div>
 
@@ -144,54 +144,14 @@ Sair
 
             <h1 id="cardQuantidade">0</h1>
 
-           <span class="card-tendencia tendencia-positiva">
-    Últimos 7 dias
-</span>
+            <span class="card-tendencia tendencia-positiva">
+                Últimos 7 dias
+            </span>
 
         </div>
 
         <div class="mini-grafico">
             <canvas id="tendenciaQuantidade"></canvas>
-        </div>
-
-    </div>
-
-
-    <!-- VALOR -->
-
-    <div class="card-dashboard card-valor">
-
-        <div class="icone-card amarelo">
-            💰
-        </div>
-
-        <div class="card-dashboard-conteudo">
-
-            <h3>Valor do Estoque</h3>
-
-    <h1
-    id="cardValor"
-    style="
-        font-size: 20px !important;
-        line-height: 1.15 !important;
-        letter-spacing: -0.8px !important;
-        white-space: nowrap !important;
-        overflow: visible !important;
-        width: 190px !important;
-        max-width: 190px !important;
-    "
->
-    R$ 0,00
-</h1>
-
-           <span class="card-tendencia tendencia-positiva">
-    Valor movimentado
-</span>
-
-        </div>
-
-        <div class="mini-grafico">
-            <canvas id="tendenciaValor"></canvas>
         </div>
 
     </div>

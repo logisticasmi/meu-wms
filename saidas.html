@@ -126,7 +126,8 @@
 >
 
 <select id="requisitanteSaida">
-    <option value="">Selecione o Requisitante</option>
+  <option value="">Selecione o Destino</option>
+    <option value="VENDA">VENDA</option>
     <option value="VALDIR">VALDIR</option>
     <option value="JEFFERSON">JEFFERSON</option>
     <option value="DANILO">DANILO</option>
@@ -137,8 +138,6 @@
     <option value="CARLOS">CARLOS</option>
     <option value="ADEMAR ALVES">ADEMAR ALVES</option>
 </select>
->
-
 <button
     type="button"
     class="btn"
@@ -164,7 +163,7 @@
                         <th>Descrição</th>
                         <th>Quantidade</th>
                         <th>Endereço</th>
-                        <th>Requisitante</th>
+                        <th>Destino</th>
                         <th>Data</th>
                         <th>Operador</th>
                     </tr>
@@ -194,23 +193,8 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            carregarHistoricoSaidas();
-
-            const botao = document.getElementById(
-                "btnRegistrarSaida"
-            );
-
-           botao.addEventListener(
-    "click",
-    registrarSaidaComRequisitante
-);
-            document
-                .getElementById("quantidadeSaida")
-                .addEventListener("keydown", function (evento) {
-                   if (evento.key === "Enter") {
-    registrarSaidaComRequisitante();
-}
-                });
+          carregarHistoricoSaidasComRequisitante();
+          
         });
 
 
@@ -420,7 +404,7 @@ requisitante:
                 movimentacoes
             );
 
-            carregarHistoricoSaidas();
+           carregarHistoricoSaidasComRequisitante();
 
             campoCodigo.value = "";
             campoQuantidade.value = "";
@@ -523,7 +507,7 @@ requisitante:
            CARREGAMENTO DO HISTÓRICO
         ===================================================== */
 
-        function carregarHistoricoSaidas() {
+      function carregarHistoricoSaidasComRequisitante() {
             const tabela =
                 document.getElementById(
                     "listaSaidas"
@@ -771,8 +755,8 @@ linha.appendChild(
      window.registrarSaidaComRequisitante =
     registrarSaidaComRequisitante;
 
-        window.carregarHistoricoSaidas =
-            carregarHistoricoSaidas;
+      window.carregarHistoricoSaidasComRequisitante =
+    carregarHistoricoSaidasComRequisitante;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js?v=20260806-04"></script>

@@ -114,12 +114,17 @@ function obterNomeUsuario() {
                 typeof dados === "object"
             ) {
 
-                return (
-                    dados.nome ||
-                    dados.usuario ||
-                    dados.login ||
-                    "Administrador"
-                );
+              const nomeEncontrado =
+    dados.nome ||
+    dados.usuario ||
+    dados.login ||
+    "Administrador";
+
+return (
+    String(nomeEncontrado).trim().toLowerCase() === "administrador"
+        ? "DAVI.SMI"
+        : nomeEncontrado
+);
 
             }
 
@@ -3988,7 +3993,17 @@ async function registrarSaida() {
         return;
 
     }
+const campoRequisitante =
+    document.getElementById(
+        "requisitanteSaida"
+    );
 
+const requisitante =
+    campoRequisitante
+        ? String(
+            campoRequisitante.value || ""
+        ).trim()
+        : "";
 
     const movimentacao = {
 
@@ -4015,7 +4030,10 @@ async function registrarSaida() {
             "-",
 
         destino:
-            "Expedição",
+           requisitante || "Venda",
+
+           requisitante:
+    requisitante || "VENDA",
 
         endereco:
             enderecoInformado ||
@@ -4182,30 +4200,42 @@ function carregarHistoricoSaidas() {
                 )
             );
 
-
-            linha.appendChild(
-                criarCelula(
-                    saida.origem ||
-                    saida.endereco ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    saida.data ||
-                    "-"
-                )
-            );
+linha.appendChild(
+    criarCelula(
+        saida.origem ||
+        saida.endereco ||
+        "-"
+    )
+);
 
 
-            linha.appendChild(
-                criarCelula(
-                    saida.operador ||
-                    "Administrador"
-                )
-            );
+// REQUISITANTE / DESTINO
+linha.appendChild(
+    criarCelula(
+        saida.requisitante ||
+        saida.destino ||
+        "VENDA"
+    )
+);
+
+
+// DATA
+linha.appendChild(
+    criarCelula(
+        saida.data ||
+        "-"
+    )
+);
+
+
+// OPERADOR
+linha.appendChild(
+    criarCelula(
+        saida.operador ||
+        saida.usuario ||
+        "DAVI.SMI"
+    )
+);
 
 
             tabela.appendChild(
@@ -5753,7 +5783,7 @@ function prepararMovimentacao(
 
         registro.destino =
             registro.destino ||
-            "Expedição";
+            "Venda";
 
     }
 
@@ -6404,13 +6434,14 @@ function carregarUltimasMovimentacoes() {
             );
 
 
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.destino ||
-                    movimentacao.endereco ||
-                    "-"
-                )
-            );
+linha.appendChild(
+    criarCelula(
+        movimentacao.destino ||
+        movimentacao.requisitante ||
+        movimentacao.endereco ||
+        "-"
+    )
+);
 
 
             linha.appendChild(
@@ -6828,11 +6859,8 @@ function carregarTabelaRelatorios() {
             "listaRelatorios"
         );
 
-
     if (!tabela) {
-
         return;
-
     }
 
 
@@ -6854,8 +6882,7 @@ function carregarTabelaRelatorios() {
             );
 
 
-    tabela.innerHTML =
-        "";
+    tabela.innerHTML = "";
 
 
     if (
@@ -6873,7 +6900,6 @@ function carregarTabelaRelatorios() {
             "</tr>";
 
         return;
-
     }
 
 
@@ -6896,6 +6922,7 @@ function carregarTabelaRelatorios() {
                 tipo;
 
 
+            // TIPO
             linha.appendChild(
                 criarCelula(
                     formatarTipoRelatorio(
@@ -6905,6 +6932,7 @@ function carregarTabelaRelatorios() {
             );
 
 
+            // CÓDIGO
             linha.appendChild(
                 criarCelula(
                     movimentacao.codigo ||
@@ -6913,6 +6941,7 @@ function carregarTabelaRelatorios() {
             );
 
 
+            // DESCRIÇÃO
             linha.appendChild(
                 criarCelula(
                     movimentacao.descricao ||
@@ -6921,6 +6950,7 @@ function carregarTabelaRelatorios() {
             );
 
 
+            // QUANTIDADE
             linha.appendChild(
                 criarCelula(
                     formatarQuantidade(
@@ -6930,6 +6960,7 @@ function carregarTabelaRelatorios() {
             );
 
 
+            // ORIGEM
             linha.appendChild(
                 criarCelula(
                     movimentacao.origem ||
@@ -6939,15 +6970,34 @@ function carregarTabelaRelatorios() {
             );
 
 
-            linha.appendChild(
-                criarCelula(
+            // DESTINO
+            let destinoRelatorio = "-";
+
+            if (tipo === "SAIDA") {
+
+                destinoRelatorio =
+                    movimentacao.requisitante ||
+                    movimentacao.destino ||
+                    "Venda";
+
+            } else {
+
+                destinoRelatorio =
                     movimentacao.destino ||
                     movimentacao.endereco ||
-                    "-"
+                    "-";
+
+            }
+
+
+            linha.appendChild(
+                criarCelula(
+                    destinoRelatorio
                 )
             );
 
 
+            // DATA
             linha.appendChild(
                 criarCelula(
                     movimentacao.data ||
@@ -6956,11 +7006,12 @@ function carregarTabelaRelatorios() {
             );
 
 
+            // OPERADOR
             linha.appendChild(
                 criarCelula(
                     movimentacao.operador ||
                     movimentacao.usuario ||
-                    "Administrador"
+                    "-"
                 )
             );
 
