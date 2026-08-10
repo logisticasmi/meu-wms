@@ -200,17 +200,16 @@
                 "btnRegistrarSaida"
             );
 
-            botao.addEventListener(
-                "click",
-                registrarSaida
-            );
-
+           botao.addEventListener(
+    "click",
+    registrarSaidaComRequisitante
+);
             document
                 .getElementById("quantidadeSaida")
                 .addEventListener("keydown", function (evento) {
-                    if (evento.key === "Enter") {
-                        registrarSaida();
-                    }
+                   if (evento.key === "Enter") {
+    registrarSaidaComRequisitante();
+}
                 });
         });
 
@@ -219,7 +218,7 @@
            FUNÇÃO PRINCIPAL PARA REGISTRAR A SAÍDA
         ===================================================== */
 
-        function registrarSaida() {
+        function registrarSaidaComRequisitante() {
             const campoCodigo =
                 document.getElementById("codigoSaida");
 
@@ -769,8 +768,8 @@ linha.appendChild(
          * Deixa as funções disponíveis para outras
          * partes do sistema.
          */
-        window.registrarSaida =
-            registrarSaida;
+     window.registrarSaidaComRequisitante =
+    registrarSaidaComRequisitante;
 
         window.carregarHistoricoSaidas =
             carregarHistoricoSaidas;
