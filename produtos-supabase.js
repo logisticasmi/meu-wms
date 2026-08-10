@@ -180,6 +180,120 @@ async function buscarProdutosSupabase() {
 
     return todosProdutos;
 }
+
+// =====================================================
+// INSERIR UM PRODUTO
+// =====================================================
+
+async function inserirProdutoSupabase(produto) {
+    if (!verificarConexaoSupabase()) {
+        return false;
+    }
+
+    const dadosBanco =
+        prepararProdutoParaBanco(produto);
+
+    const { error } = await window.supabaseClient
+        .from(NOME_TABELA_PRODUTOS)
+        .insert([dadosBanco]);
+
+    if (error) {
+        console.error(
+            "Erro ao inserir produto:",
+            error
+        );
+
+        alert(
+            "Não foi possível cadastrar o produto.\n\n" +
+            error.message
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
+
+// =====================================================
+// SALVAR PRODUTOS IMPORTADOS
+// =====================================================
+
+async function salvarProdutosImportadosSupabase(
+    produtos,
+    substituirEstoque
+) {
+    if (!verificarConexaoSupabase()) {
+        return false;
+    }
+
+    if (
+        !Array.isArray(produtos) ||
+        produtos.length === 0
+    ) {
+        alert("Nenhum produto para importar.");
+        return false;
+    }
+
+    try {
+
+        if (substituirEstoque) {
+            const { error: erroExclusao } =
+                await window.supabaseClient
+                    .from(NOME_TABELA_PRODUTOS)
+                    .delete()
+                    .neq("id", 0);
+
+            if (erroExclusao) {
+                throw erroExclusao;
+            }
+        }
+
+        const produtosBanco =
+            produtos.map(function (produto) {
+                return prepararProdutoParaBanco(produto);
+            });
+
+        const tamanhoLote = 500;
+
+        for (
+            let inicio = 0;
+            inicio < produtosBanco.length;
+            inicio += tamanhoLote
+        ) {
+            const lote =
+                produtosBanco.slice(
+                    inicio,
+                    inicio + tamanhoLote
+                );
+
+            const { error } =
+                await window.supabaseClient
+                    .from(NOME_TABELA_PRODUTOS)
+                    .insert(lote);
+
+            if (error) {
+                throw error;
+            }
+        }
+
+        return true;
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao importar produtos:",
+            erro
+        );
+
+        alert(
+            "Não foi possível salvar os produtos no banco.\n\n" +
+            erro.message
+        );
+
+        return false;
+    }
+}
 // =====================================================
 // CONVERTER LINHA DA PLANILHA EM PRODUTO
 // =====================================================
