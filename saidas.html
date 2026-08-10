@@ -117,22 +117,35 @@
                     placeholder="Código do Produto"
                     autocomplete="off"
                 >
+<input
+    id="quantidadeSaida"
+    type="number"
+    min="1"
+    step="1"
+    placeholder="Quantidade"
+>
 
-                <input
-                    id="quantidadeSaida"
-                    type="number"
-                    min="1"
-                    step="1"
-                    placeholder="Quantidade"
-                >
+<select id="requisitanteSaida">
+    <option value="">Selecione o Requisitante</option>
+    <option value="VALDIR">VALDIR</option>
+    <option value="JEFFERSON">JEFFERSON</option>
+    <option value="DANILO">DANILO</option>
+    <option value="FELIPE">FELIPE</option>
+    <option value="RICARDO">RICARDO</option>
+    <option value="GUSTAVO SOARES">GUSTAVO SOARES</option>
+    <option value="GUSTAVO MARQUES">GUSTAVO MARQUES</option>
+    <option value="CARLOS">CARLOS</option>
+    <option value="ADEMAR ALVES">ADEMAR ALVES</option>
+</select>
+>
 
-                <button
-                    type="button"
-                    class="btn"
-                    id="btnRegistrarSaida"
-                >
-                    Registrar Saída
-                </button>
+<button
+    type="button"
+    class="btn"
+    id="btnRegistrarSaida"
+>
+    Registrar Saída
+</button>
 
             </div>
 
@@ -151,6 +164,7 @@
                         <th>Descrição</th>
                         <th>Quantidade</th>
                         <th>Endereço</th>
+                        <th>Requisitante</th>
                         <th>Data</th>
                         <th>Operador</th>
                     </tr>
@@ -160,7 +174,7 @@
 
                     <tr>
                         <td
-                            colspan="6"
+                            colspan="7"
                             style="text-align: center;"
                         >
                             Nenhuma saída registrada.
@@ -212,12 +226,18 @@
             const campoQuantidade =
                 document.getElementById("quantidadeSaida");
 
+                const campoRequisitante =
+    document.getElementById("requisitanteSaida");
+
             const codigo = campoCodigo.value
                 .trim()
                 .toUpperCase();
 
             const quantidadeSolicitada =
                 Number(campoQuantidade.value);
+
+                const requisitante =
+    campoRequisitante.value.trim();
 
             if (codigo === "") {
                 alert("Digite o código do produto.");
@@ -235,6 +255,13 @@
                 campoQuantidade.focus();
                 return;
             }
+
+            if (requisitante === "") {
+    alert("Digite o nome do requisitante.");
+
+    campoRequisitante.focus();
+    return;
+}
 
             const estoque = obterEstoque();
 
@@ -372,8 +399,12 @@
                     data:
                         obterDataHoraAtual(),
 
-                    operador:
-                        obterNomeOperador()
+                operador:
+    obterNomeOperador(),
+
+requisitante:
+    requisitante
+                        
                 });
             });
 
@@ -394,6 +425,7 @@
 
             campoCodigo.value = "";
             campoQuantidade.value = "";
+            campoRequisitante.value = "";
 
             campoCodigo.focus();
 
@@ -570,7 +602,11 @@
                             saida.endereco || "-"
                         )
                     );
-
+linha.appendChild(
+    criarCelula(
+        saida.requisitante || "-"
+    )
+);
                     linha.appendChild(
                         criarCelula(
                             saida.data || "-"

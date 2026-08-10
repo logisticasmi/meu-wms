@@ -1473,17 +1473,25 @@ function carregarUltimasMovimentacoes(
 
                 </td>
 
-                <td>
+              <td>
 
-                    ${escaparHTML(
-                        movimento.operador ||
-                        localStorage.getItem(
-                            "usuario"
-                        ) ||
-                        "Administrador"
-                    )}
+    ${escaparHTML(
+        movimento.operador ||
+        localStorage.getItem(
+            "usuario"
+        ) ||
+        "Administrador"
+    )}
 
-                </td>
+    ${
+        tipo === "SAIDA" && movimento.requisitante
+            ? "<br><small>Requisitante: " +
+              escaparHTML(movimento.requisitante) +
+              "</small>"
+            : ""
+    }
+
+</td>
 
             `;
 
