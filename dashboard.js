@@ -1453,15 +1453,23 @@ function carregarUltimasMovimentacoes(
 
                 </td>
 
-                <td>
+               <td>
 
-                    ${escaparHTML(
-                        movimento.destino ||
-                        movimento.endereco ||
-                        "-"
-                    )}
+    ${escaparHTML(
+        tipo === "SAIDA"
+            ? (
+                movimento.requisitante
+                    ? movimento.requisitante
+                    : "Venda"
+            )
+            : (
+                movimento.destino ||
+                movimento.endereco ||
+                "-"
+            )
+    )}
 
-                </td>
+</td>
 
                 <td>
 
@@ -1472,8 +1480,7 @@ function carregarUltimasMovimentacoes(
                     )}
 
                 </td>
-
-              <td>
+<td>
 
     ${escaparHTML(
         movimento.operador ||
@@ -1482,14 +1489,6 @@ function carregarUltimasMovimentacoes(
         ) ||
         "Administrador"
     )}
-
-    ${
-        tipo === "SAIDA" && movimento.requisitante
-            ? "<br><small>Requisitante: " +
-              escaparHTML(movimento.requisitante) +
-              "</small>"
-            : ""
-    }
 
 </td>
 
