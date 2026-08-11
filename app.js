@@ -5022,11 +5022,36 @@ function gerarListaPosicoes() {
 
     const posicoes = [];
 
-    const letras = [
+    const letrasPadrao = [
         "A",
         "B",
         "C",
         "D"
+    ];
+
+    const letrasPosicoes1e2 = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J"
+    ];
+
+    const letrasPosicoes46a56 = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I"
     ];
 
     for (
@@ -5035,7 +5060,32 @@ function gerarListaPosicoes() {
         numero++
     ) {
 
-        letras.forEach(
+        let letrasDaPosicao =
+            letrasPadrao;
+
+        // POSIÇÕES 1 E 2 = A ATÉ J
+        if (
+            numero === 1 ||
+            numero === 2
+        ) {
+
+            letrasDaPosicao =
+                letrasPosicoes1e2;
+
+        }
+
+        // POSIÇÕES 46 ATÉ 56 = A ATÉ I
+        if (
+            numero >= 46 &&
+            numero <= 56
+        ) {
+
+            letrasDaPosicao =
+                letrasPosicoes46a56;
+
+        }
+
+        letrasDaPosicao.forEach(
             function (letra) {
 
                 posicoes.push(
