@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SMI WMS - Requisição</title>
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="img/favicon.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+
+    <style>
+
+        .requisicao-container {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+
+        .requisicao-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .requisicao-topo h2 {
+            margin: 0;
+            color: #062d5b;
+        }
+
+        .acoes-requisicao {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-requisicao {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            background: #0a4681;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-requisicao:hover {
+            opacity: 0.9;
+        }
+
+        .ficha-requisicao {
+            border: 2px solid #222;
+            padding: 0;
+            background: #ffffff;
+            color: #111111;
+        }
+
+        .cabecalho-ficha {
+            display: grid;
+            grid-template-columns: 180px 1fr 170px;
+            border-bottom: 2px solid #222;
+            min-height: 90px;
+        }
+
+        .logo-ficha {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid #222;
+            padding: 12px;
+        }
+
+        .logo-ficha img {
+            max-width: 150px;
+            max-height: 60px;
+        }
+
+        .titulo-ficha {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-right: 1px solid #222;
+        }
+
+        .titulo-ficha h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .titulo-ficha span {
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .numero-ficha {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .numero-ficha label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .numero-ficha input {
+            width: 100%;
+        }
+
+        .dados-gerais {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1.4fr;
+            border-bottom: 2px solid #222;
+        }
+
+        .campo-ficha {
+            padding: 8px;
+            border-right: 1px solid #222;
+        }
+
+        .campo-ficha:last-child {
+            border-right: none;
+        }
+
+        .campo-ficha label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .campo-ficha input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            padding: 4px;
+            background: transparent;
+        }
+
+        .dados-secundarios {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr;
+            border-bottom: 2px solid #222;
+        }
+
+        .titulo-materiais {
+            text-align: center;
+            font-weight: bold;
+            padding: 8px;
+            border-bottom: 1px solid #222;
+            background: #f2f2f2;
+        }
+
+        .tabela-materiais {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tabela-materiais th,
+        .tabela-materiais td {
+            border: 1px solid #222;
+            padding: 5px;
+        }
+
+        .tabela-materiais th {
+            background: #eeeeee;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .tabela-materiais input {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 13px;
+            padding: 5px;
+        }
+
+        .rodape-ficha {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            margin-top: 20px;
+            border-top: 1px solid #222;
+        }
+
+        .assinatura {
+            padding: 30px 15px 10px 15px;
+            text-align: center;
+        }
+
+        .linha-assinatura {
+            border-top: 1px solid #222;
+            padding-top: 5px;
+            font-size: 12px;
+        }
+
+        .observacao-ficha {
+            font-size: 11px;
+            padding: 12px;
+            border-top: 1px solid #222;
+        }
+
+
+        @media print {
+
+            @page {
+                size: A4 landscape;
+                margin: 8mm;
+            }
+
+            body {
+                background: #ffffff !important;
+            }
+
+            .sidebar,
+            .topbar,
+            .acoes-requisicao,
+            .titulo-pagina-requisicao {
+                display: none !important;
+            }
+
+            .conteudo {
+                margin-left: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+            }
+
+            .requisicao-container {
+                box-shadow: none !important;
+                padding: 0 !important;
+                border-radius: 0 !important;
+            }
+
+            .ficha-requisicao {
+                width: 100%;
+            }
+
+            input {
+                color: #000000 !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- MENU LATERAL -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        <img
+            src="img/logo.png"
+            alt="Logo SMI WMS"
+        >
+    </div>
+
+    <h2>SMI WMS</h2>
+
+
+    <ul>
+
+        <li onclick="location.href='dashboard.html'">
+            🏠 Dashboard
+        </li>
+
+        <li onclick="location.href='produtos.html'">
+            📦 Produtos
+        </li>
+
+        <li onclick="location.href='entradas.html'">
+            📥 Entradas
+        </li>
+
+        <li onclick="location.href='saidas.html'">
+            📤 Saídas
+        </li>
+
+        <li onclick="location.href='transferencias.html'">
+            🔄 Transferências
+        </li>
+
+        <li onclick="location.href='posicoes.html'">
+            📍 Posições
+        </li>
+
+        <li onclick="location.href='inventario.html'">
+            📋 Inventário
+        </li>
+
+        <li onclick="location.href='relatorios.html'">
+            📊 Relatórios
+        </li>
+
+        <li
+            class="ativo"
+            onclick="location.href='requisicao.html'"
+        >
+            📝 Requisição
+        </li>
+
+        <li onclick="location.href='configuracoes.html'">
+            ⚙ Configurações
+        </li>
+
+    </ul>
+
+</div>
+
+
+
+<!-- CONTEÚDO -->
+
+<div class="conteudo">
+
+
+    <!-- TOPO -->
+
+    <div class="topbar">
+
+        <div class="titulo-pagina">
+
+            <h1>Requisição</h1>
+
+            <small>
+                Solicitação de materiais de consumo
+            </small>
+
+        </div>
+
+        <div class="usuario">
+
+            <span id="relogio"></span>
+
+            <span id="nomeUsuario"></span>
+
+            <button onclick="sairSistema()">
+                Sair
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="requisicao-container">
+
+
+        <div class="requisicao-topo">
+
+            <div class="titulo-pagina-requisicao">
+
+                <h2>
+                    📝 Requisição de Materiais
+                </h2>
+
+            </div>
+
+
+            <div class="acoes-requisicao">
+
+                <button
+                    type="button"
+                    class="btn-requisicao"
+                    onclick="limparRequisicao()"
+                >
+                    🧹 Limpar
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-requisicao"
+                    onclick="window.print()"
+                >
+                    🖨️ Imprimir Requisição
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FICHA -->
+
+        <div class="ficha-requisicao">
+
+
+            <!-- CABEÇALHO -->
+
+            <div class="cabecalho-ficha">
+
+
+                <div class="logo-ficha">
+
+                    <img
+                        src="img/logo.png"
+                        alt="SMI"
+                    >
+
+                </div>
+
+
+                <div class="titulo-ficha">
+
+                    <h2>
+                        SOLICITAÇÃO DE MATERIAIS DE CONSUMO
+                    </h2>
+
+                    <span>
+                        SMI DO BRASIL
+                    </span>
+
+                </div>
+
+
+                <div class="numero-ficha">
+
+                    <label>
+                        Nº
+                    </label>
+
+                    <input
+                        type="text"
+                        id="numeroRequisicao"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- DADOS PRINCIPAIS -->
+
+            <div class="dados-gerais">
+
+
+                <div class="campo-ficha">
+
+                    <label>
+                        Cliente
+                    </label>
+
+                    <input
+                        type="text"
+                        id="clienteRequisicao"
+                    >
+
+                </div>
+
+
+                <div class="campo-ficha">
+
+                    <label>
+                        Responsável
+                    </label>
+
+                    <input
+                        type="text"
+                        id="responsavelRequisicao"
+                    >
+
+                </div>
+
+
+                <div class="campo-ficha">
+
+                    <label>
+                        Data
+                    </label>
+
+                    <input
+                        type="date"
+                        id="dataRequisicao"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="dados-secundarios">
+
+
+                <div class="campo-ficha">
+
+                    <label>
+                        Endereço
+                    </label>
+
+                    <input
+                        type="text"
+                        id="enderecoRequisicao"
+                    >
+
+                </div>
+
+
+                <div class="campo-ficha">
+
+                    <label>
+                        Telefone
+                    </label>
+
+                    <input
+                        type="text"
+                        id="telefoneRequisicao"
+                    >
+
+                </div>
+
+
+                <div class="campo-ficha">
+
+                    <label>
+                        Sala
+                    </label>
+
+                    <input
+                        type="text"
+                        id="salaRequisicao"
+                    >
+
+                </div>
+
+
+                <div class="campo-ficha">
+
+                    <label>
+                        Andar
+                    </label>
+
+                    <input
+                        type="text"
+                        id="andarRequisicao"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="titulo-materiais">
+
+                SOLICITO FORNECIMENTO DO(S)
+                SEGUINTE(S) MATERIAL(IS)
+
+            </div>
+
+
+
+            <!-- TABELA DOS MATERIAIS -->
+
+            <table class="tabela-materiais">
+
+                <thead>
+
+                    <tr>
+
+                        <th style="width: 15%;">
+                            Código do Material
+                        </th>
+
+                        <th style="width: 12%;">
+                            Quantidade Solicitada
+                        </th>
+
+                        <th style="width: 10%;">
+                            Unidade
+                        </th>
+
+                        <th>
+                            Descrição
+                        </th>
+
+                        <th style="width: 15%;">
+                            Quantidade Utilizada
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="materiaisRequisicao">
+
+                    <tr>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="number"></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+
+            <!-- ASSINATURAS -->
+
+            <div class="rodape-ficha">
+
+
+                <div class="assinatura">
+
+                    <div class="linha-assinatura">
+                        Assinatura do Requisitante
+                    </div>
+
+                </div>
+
+
+                <div class="assinatura">
+
+                    <div class="linha-assinatura">
+                        Assinatura do Responsável
+                    </div>
+
+                </div>
+
+
+                <div class="assinatura">
+
+                    <div class="linha-assinatura">
+                        Data
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="observacao-ficha">
+
+                As peças devem ser entregues assim que
+                o requisitante voltar para a empresa.
+                Caso não ocorra, o requisitante estará
+                sujeito à advertência.
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script src="app.js"></script>
+
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const campoData =
+                document.getElementById(
+                    "dataRequisicao"
+                );
+
+            if (campoData) {
+
+                const hoje =
+                    new Date();
+
+                const ano =
+                    hoje.getFullYear();
+
+                const mes =
+                    String(
+                        hoje.getMonth() + 1
+                    ).padStart(
+                        2,
+                        "0"
+                    );
+
+                const dia =
+                    String(
+                        hoje.getDate()
+                    ).padStart(
+                        2,
+                        "0"
+                    );
+
+                campoData.value =
+                    ano +
+                    "-" +
+                    mes +
+                    "-" +
+                    dia;
+
+            }
+
+        }
+    );
+
+
+    function limparRequisicao() {
+
+        const campos =
+            document.querySelectorAll(
+                ".ficha-requisicao input"
+            );
+
+        campos.forEach(
+            function (campo) {
+
+                campo.value = "";
+
+            }
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
