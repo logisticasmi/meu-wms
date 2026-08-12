@@ -176,13 +176,14 @@
 <th>IPI</th>
 <th>Valor Unitário</th>
 <th>Valor Total</th>
+<th>Posição</th>
                     </tr>
                 </thead>
 
                 <tbody id="listaProdutos">
                     <tr>
                         <td
-                            colspan="8"
+                            colspan="9"
                             class="produtos-vazio"
                         >
                             Nenhum produto cadastrado.
@@ -213,7 +214,7 @@ async function carregarTodosOsProdutosNaTela() {
 
     tabela.innerHTML = `
         <tr>
-            <td colspan="8" class="produtos-vazio">
+            <td colspan="9" class="produtos-vazio">
                 Carregando todos os produtos...
             </td>
         </tr>
@@ -272,7 +273,7 @@ async function carregarTodosOsProdutosNaTela() {
         if (todosProdutos.length === 0) {
             tabela.innerHTML = `
                 <tr>
-                    <td colspan="8" class="produtos-vazio">
+                    <td colspan="9" class="produtos-vazio">
                         Nenhum produto cadastrado.
                     </td>
                 </tr>
@@ -355,6 +356,8 @@ async function carregarTodosOsProdutosNaTela() {
                         currency: "BRL"
                     })}
                 </td>
+
+                <td>${produto.endereco || "-"}</td>
             `;
 
             tabela.appendChild(linha);
@@ -374,7 +377,7 @@ async function carregarTodosOsProdutosNaTela() {
 
         tabela.innerHTML = `
             <tr>
-                <td colspan="8" class="produtos-vazio">
+                <td colspan="9" class="produtos-vazio">
                     Erro ao carregar produtos:
                     ${erro.message}
                 </td>
