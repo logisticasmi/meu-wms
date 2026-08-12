@@ -768,14 +768,6 @@ window.limparEstoque =
 // INICIALIZAÇÃO DA PÁGINA DE PRODUTOS
 // =====================================================
 
-document.addEventListener("DOMContentLoaded", function () {
-    const tabelaProdutos = document.getElementById("listaProdutos");
-
-    if (tabelaProdutos) {
-        carregarTabelaProdutos();
-    }
-});
-
 // =====================================================
 // ABRIR CADASTRO
 // =====================================================
@@ -7698,18 +7690,6 @@ window.exportarEstoqueExcel =
 // =====================================================
 
 function atualizarTelaAtual() {
-
-    if (
-        document.getElementById(
-            "listaProdutos"
-        ) &&
-        typeof carregarTabelaProdutos ===
-        "function"
-    ) {
-
-        carregarTabelaProdutos();
-
-    }
 
 
     if (
