@@ -385,31 +385,35 @@
 
             </div>
 
+<div class="acoes-requisicao">
 
-            <div class="acoes-requisicao">
+    <button
+        type="button"
+        class="btn-requisicao"
+        onclick="limparRequisicao()"
+    >
+        🧹 Limpar
+    </button>
 
-                <button
-                    type="button"
-                    class="btn-requisicao"
-                    onclick="limparRequisicao()"
-                >
-                    🧹 Limpar
-                </button>
+    <button
+        type="button"
+        class="btn-requisicao"
+        onclick="exportarRequisicaoPDF()"
+    >
+        📄 Exportar PDF
+    </button>
 
-                <button
-                    type="button"
-                    class="btn-requisicao"
-                    onclick="window.print()"
-                >
-                    🖨️ Imprimir Requisição
-                </button>
+    <button
+        type="button"
+        class="btn-requisicao"
+        onclick="window.print()"
+    >
+        🖨️ Imprimir Requisição
+    </button>
 
-            </div>
+</div>
 
-        </div>
-
-
-
+</div>
         <!-- FICHA -->
 
         <div class="ficha-requisicao">
@@ -500,10 +504,10 @@
                         Data
                     </label>
 
-                    <input
-                        type="date"
-                        id="dataRequisicao"
-                    >
+                 <input
+    type="text"
+    id="dataRequisicao"
+>
 
                 </div>
 
@@ -751,52 +755,6 @@
 
 <script>
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
-
-            const campoData =
-                document.getElementById(
-                    "dataRequisicao"
-                );
-
-            if (campoData) {
-
-                const hoje =
-                    new Date();
-
-                const ano =
-                    hoje.getFullYear();
-
-                const mes =
-                    String(
-                        hoje.getMonth() + 1
-                    ).padStart(
-                        2,
-                        "0"
-                    );
-
-                const dia =
-                    String(
-                        hoje.getDate()
-                    ).padStart(
-                        2,
-                        "0"
-                    );
-
-                campoData.value =
-                    ano +
-                    "-" +
-                    mes +
-                    "-" +
-                    dia;
-
-            }
-
-        }
-    );
-
-
     function limparRequisicao() {
 
         const campos =
@@ -811,6 +769,13 @@
 
             }
         );
+
+    }
+
+
+    function exportarRequisicaoPDF() {
+
+        window.print();
 
     }
 
