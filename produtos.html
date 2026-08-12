@@ -170,18 +170,19 @@
                      
 <th>Código</th>
 <th>Descrição</th>
-<th>Cliente</th>
+<th>Descrição detalhada</th>
 <th>Quantidade</th>
+<th>NCM</th>
+<th>IPI</th>
+<th>Valor Unitário</th>
 <th>Valor Total</th>
-<th>Endereço</th>
-<th>Ações</th>
                     </tr>
                 </thead>
 
                 <tbody id="listaProdutos">
                     <tr>
                         <td
-                            colspan="7"
+                            colspan="8"
                             class="produtos-vazio"
                         >
                             Nenhum produto cadastrado.
@@ -212,7 +213,7 @@ async function carregarTodosOsProdutosNaTela() {
 
     tabela.innerHTML = `
         <tr>
-            <td colspan="7" class="produtos-vazio">
+            <td colspan="8" class="produtos-vazio">
                 Carregando todos os produtos...
             </td>
         </tr>
@@ -271,7 +272,7 @@ async function carregarTodosOsProdutosNaTela() {
         if (todosProdutos.length === 0) {
             tabela.innerHTML = `
                 <tr>
-                    <td colspan="7" class="produtos-vazio">
+                    <td colspan="8" class="produtos-vazio">
                         Nenhum produto cadastrado.
                     </td>
                 </tr>
@@ -293,21 +294,58 @@ async function carregarTodosOsProdutosNaTela() {
                 0
             );
 
+            const descricaoDetalhada =
+                produto.descricao_detalhada ??
+                produto.descricaoDetalhada ??
+                "-";
+
+            const ncm =
+                produto.ncm ??
+                produto.NCM ??
+                "-";
+
+            const ipi =
+                produto.ipi ??
+                produto.IPI ??
+                "-";
+
+            let valorUnitario = Number(
+                produto.valor_unitario ??
+                produto.valorUnitario ??
+                0
+            );
+
+            if (
+                (!Number.isFinite(valorUnitario) || valorUnitario === 0) &&
+                quantidade > 0 &&
+                valorTotal > 0
+            ) {
+                valorUnitario =
+                    valorTotal / quantidade;
+            }
+
             linha.innerHTML = `
                 <td>${produto.codigo || "-"}</td>
 
                 <td>${produto.descricao || "-"}</td>
 
-                <td>
-                    <span class="cliente-produto">
-                        ${produto.cliente || "SMI"}
-                    </span>
-                </td>
+                <td>${descricaoDetalhada || "-"}</td>
 
                 <td>
                     ${quantidade.toLocaleString("pt-BR", {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 3
+                    })}
+                </td>
+
+                <td>${ncm || "-"}</td>
+
+                <td>${ipi === "" || ipi === null || ipi === undefined ? "-" : ipi}</td>
+
+                <td>
+                    ${valorUnitario.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL"
                     })}
                 </td>
 
@@ -317,68 +355,7 @@ async function carregarTodosOsProdutosNaTela() {
                         currency: "BRL"
                     })}
                 </td>
-
-                <td>
-                    <span class="endereco-produto">
-                        ${produto.endereco || "-"}
-                    </span>
-                </td>
-
-                <td>
-                    <div class="acoes-produto">
-                        <button
-                            type="button"
-                            class="btn-editar-produto"
-                            title="Editar produto"
-                        >
-                            ✏️
-                        </button>
-
-                        <button
-                            type="button"
-                            class="btn-excluir-produto"
-                            title="Excluir produto"
-                        >
-                            🗑️
-                        </button>
-                    </div>
-                </td>
             `;
-
-            const botaoEditar =
-                linha.querySelector(".btn-editar-produto");
-
-            const botaoExcluir =
-                linha.querySelector(".btn-excluir-produto");
-
-            botaoEditar.addEventListener("click", function() {
-                if (
-                    typeof window.editarProdutoSupabase ===
-                    "function"
-                ) {
-                    window.editarProdutoSupabase({
-                        ...produto,
-                        valorTotal: valorTotal
-                    });
-                }
-            });
-
-            botaoExcluir.addEventListener("click", function() {
-                if (
-                    typeof window.confirmarExclusaoProdutoSupabase ===
-                    "function"
-                ) {
-                    window.confirmarExclusaoProdutoSupabase({
-                        ...produto,
-                        valorTotal: valorTotal
-                    });
-                } else if (
-                    typeof window.excluirProdutoSupabase ===
-                    "function"
-                ) {
-                    window.excluirProdutoSupabase(produto.id);
-                }
-            });
 
             tabela.appendChild(linha);
         });
@@ -397,7 +374,7 @@ async function carregarTodosOsProdutosNaTela() {
 
         tabela.innerHTML = `
             <tr>
-                <td colspan="7" class="produtos-vazio">
+                <td colspan="8" class="produtos-vazio">
                     Erro ao carregar produtos:
                     ${erro.message}
                 </td>
