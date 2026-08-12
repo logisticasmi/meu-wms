@@ -2053,14 +2053,14 @@ function processarProdutosImportados(
     }
 
 
-    if (
-        typeof carregarTabelaProdutos ===
-        "function"
-    ) {
+   if (
+    typeof carregarTodosOsProdutosNaTela ===
+    "function"
+) {
 
-        carregarTabelaProdutos();
+    carregarTodosOsProdutosNaTela();
 
-    }
+}
 
 
     alert(
@@ -2094,7 +2094,6 @@ function normalizarProdutoImportado(
                 ]
             ),
 
-
         codigo:
             normalizarCodigo(
                 obterValorColuna(
@@ -2113,7 +2112,6 @@ function normalizarProdutoImportado(
                 )
             ),
 
-
         descricao:
             obterValorColuna(
                 linha,
@@ -2121,28 +2119,23 @@ function normalizarProdutoImportado(
                     "DESCRICAO",
                     "Descrição",
                     "Descricao",
-                    "Desc.",
                     "Produto",
-                    "Nome do Produto",
-                    "Descrição do Produto",
-                    "Descricao do Produto"
+                    "Nome do Produto"
                 ]
             ),
 
-
-        cliente:
+        descricaoDetalhada:
             obterValorColuna(
                 linha,
                 [
-                    "CLIENTE",
-                    "Cliente",
-                    "Depositante",
-                    "Proprietário",
-                    "Proprietario",
-                    "Empresa"
+                    "DESCRIÇÃO DETALHADA",
+                    "DESCRICAO DETALHADA",
+                    "Descrição Detalhada",
+                    "Descricao Detalhada"
                 ]
-            ) || "SMI",
+            ),
 
+        cliente: "SMI",
 
         quantidade:
             converterNumero(
@@ -2153,29 +2146,54 @@ function normalizarProdutoImportado(
                         "Quantidade",
                         "Qtd",
                         "Qtde",
-                        "QTD",
-                        "Saldo",
-                        "Estoque",
-                        "Quantidade Atual"
+                        "QTD"
                     ]
                 )
             ),
 
+        ncm:
+            obterValorColuna(
+                linha,
+                [
+                    "NCM",
+                    "ncm"
+                ]
+            ),
+
+        ipi:
+            obterValorColuna(
+                linha,
+                [
+                    "IPI",
+                    "ipi"
+                ]
+            ),
+
+        valorUnitario:
+            converterNumero(
+                obterValorColuna(
+                    linha,
+                    [
+                        "Valor Unitário",
+                        "VALOR UNITÁRIO",
+                        "VALOR UNITARIO",
+                        "Valor Unitario"
+                    ]
+                )
+            ),
 
         valorTotal:
             converterNumero(
                 obterValorColuna(
                     linha,
                     [
-                        "VALOR TOTAL",
                         "Valor Total",
+                        "VALOR TOTAL",
                         "ValorTotal",
-                        "Total",
-                        "Valor do Estoque"
+                        "Total"
                     ]
                 )
             ),
-
 
         endereco:
             normalizarEndereco(
@@ -2183,14 +2201,11 @@ function normalizarProdutoImportado(
                     linha,
                     [
                         "POSICAO",
+                        "POSIÇÃO",
                         "Posição",
                         "Posicao",
                         "Endereço",
-                        "Endereco",
-                        "Localização",
-                        "Localizacao",
-                        "Rua",
-                        "Local"
+                        "Endereco"
                     ]
                 )
             )

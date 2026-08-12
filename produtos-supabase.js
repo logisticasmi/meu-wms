@@ -87,28 +87,67 @@ function normalizarProdutoBanco(produto) {
 
 
 function prepararProdutoParaBanco(produto) {
-    return {
-        nf: String(produto.nf || "").trim(),
 
-        codigo: String(produto.codigo || "").trim(),
+    return {
+
+        nf: String(
+            produto.nf || ""
+        ).trim(),
+
+        codigo: String(
+            produto.codigo || ""
+        ).trim(),
 
         descricao: String(
             produto.descricao || ""
+        ).trim(),
+
+        descricao_detalhada: String(
+            produto.descricao_detalhada ??
+            produto.descricaoDetalhada ??
+            ""
         ).trim(),
 
         cliente: String(
             produto.cliente || "SMI"
         ).trim() || "SMI",
 
-        quantidade: converterNumeroProduto(
-            produto.quantidade
+        quantidade:
+            converterNumeroProduto(
+                produto.quantidade
+            ),
+
+        ncm: String(
+            produto.ncm ??
+            produto.NCM ??
+            ""
+        ).trim(),
+
+        ipi:
+    String(
+        produto.ipi ??
+        produto.IPI ??
+        ""
+    ).trim() === ""
+        ? null
+        : converterNumeroProduto(
+            produto.ipi ??
+            produto.IPI
         ),
 
-        valor_total: converterNumeroProduto(
-            produto.valor_total ??
-            produto.valorTotal ??
-            0
-        ),
+        valor_unitario:
+            converterNumeroProduto(
+                produto.valor_unitario ??
+                produto.valorUnitario ??
+                0
+            ),
+
+        valor_total:
+            converterNumeroProduto(
+                produto.valor_total ??
+                produto.valorTotal ??
+                0
+            ),
 
         endereco: String(
             produto.endereco || ""
@@ -116,9 +155,10 @@ function prepararProdutoParaBanco(produto) {
             .trim()
             .toUpperCase()
             .replace(/\s+/g, "")
-    };
-}
 
+    };
+
+}
 
 // =====================================================
 // BUSCAR PRODUTOS
@@ -332,7 +372,9 @@ function obterValorColunaProduto(linha, nomesPossiveis) {
 
 
 function criarProdutoImportado(linha) {
+
     return {
+
         nf: String(
             obterValorColunaProduto(
                 linha,
@@ -351,6 +393,7 @@ function criarProdutoImportado(linha) {
                 [
                     "Código",
                     "Codigo",
+                    "CODIGO",
                     "Cod",
                     "Código Produto",
                     "Cod Produto",
@@ -366,6 +409,7 @@ function criarProdutoImportado(linha) {
                 [
                     "Descrição",
                     "Descricao",
+                    "DESCRICAO",
                     "Produto",
                     "Descrição Produto",
                     "Nome Produto"
@@ -373,49 +417,91 @@ function criarProdutoImportado(linha) {
             ) || ""
         ).trim(),
 
-        cliente: String(
+        descricaoDetalhada: String(
             obterValorColunaProduto(
                 linha,
                 [
-                    "Cliente",
-                    "Nome Cliente"
+                    "DESCRIÇÃO DETALHADA",
+                    "DESCRICAO DETALHADA",
+                    "Descrição Detalhada",
+                    "Descricao Detalhada"
                 ]
-            ) || "SMI"
-        ).trim() || "SMI",
+            ) || ""
+        ).trim(),
 
-        quantidade: converterNumeroProduto(
-            obterValorColunaProduto(
-                linha,
-                [
-                    "Quantidade",
-                    "Qtde",
-                    "Qtd",
-                    "Saldo",
-                    "Quantidade Total"
-                ]
-            )
-        ),
+        cliente: "SMI",
 
-        valorTotal: converterNumeroProduto(
+        quantidade:
+            converterNumeroProduto(
+                obterValorColunaProduto(
+                    linha,
+                    [
+                        "Quantidade",
+                        "QUANTIDADE",
+                        "Qtde",
+                        "Qtd",
+                        "Saldo",
+                        "Quantidade Total"
+                    ]
+                )
+            ),
+
+        ncm: String(
             obterValorColunaProduto(
                 linha,
                 [
-                    "Valor Total",
-                    "Valor",
-                    "Valor Estoque",
-                    "Total"
+                    "NCM",
+                    "ncm"
                 ]
-            )
-        ),
+            ) || ""
+        ).trim(),
+
+        ipi:
+            obterValorColunaProduto(
+                linha,
+                [
+                    "IPI",
+                    "ipi"
+                ]
+            ),
+
+        valorUnitario:
+            converterNumeroProduto(
+                obterValorColunaProduto(
+                    linha,
+                    [
+                        "Valor Unitário",
+                        "VALOR UNITÁRIO",
+                        "VALOR UNITARIO",
+                        "Valor Unitario"
+                    ]
+                )
+            ),
+
+        valorTotal:
+            converterNumeroProduto(
+                obterValorColunaProduto(
+                    linha,
+                    [
+                        "Valor Total",
+                        "VALOR TOTAL",
+                        "Valor",
+                        "Valor Estoque",
+                        "Total"
+                    ]
+                )
+            ),
 
         endereco: String(
             obterValorColunaProduto(
                 linha,
                 [
-                    "Endereço",
-                    "Endereco",
+                    "POSICAO",
+                    "POSIÇÃO",
                     "Posição",
                     "Posicao",
+                    "Endereço",
+                    "Endereco",
                     "Localização",
                     "Localizacao"
                 ]
@@ -424,7 +510,9 @@ function criarProdutoImportado(linha) {
             .trim()
             .toUpperCase()
             .replace(/\s+/g, "")
+
     };
+
 }
 
 
@@ -666,6 +754,7 @@ function formatarValorProduto(valor) {
 // =====================================================
 
 async function carregarTabelaProdutosSupabase() {
+
     const tabela =
         document.getElementById(
             "listaProdutos"
@@ -677,7 +766,7 @@ async function carregarTabelaProdutosSupabase() {
 
     tabela.innerHTML =
         "<tr>" +
-        "<td colspan='8' class='produtos-vazio'>" +
+        "<td colspan='9' class='produtos-vazio'>" +
         "Carregando produtos..." +
         "</td>" +
         "</tr>";
@@ -688,18 +777,19 @@ async function carregarTabelaProdutosSupabase() {
     tabela.innerHTML = "";
 
     if (produtos.length === 0) {
+
         tabela.innerHTML =
             "<tr>" +
-            "<td colspan='8' class='produtos-vazio'>" +
+            "<td colspan='9' class='produtos-vazio'>" +
             "Nenhum produto cadastrado." +
             "</td>" +
             "</tr>";
 
-        atualizarFiltroClientesSupabase([]);
         return;
     }
 
     produtos.sort(function (a, b) {
+
         return String(a.endereco || "")
             .localeCompare(
                 String(b.endereco || ""),
@@ -708,18 +798,69 @@ async function carregarTabelaProdutosSupabase() {
                     numeric: true
                 }
             );
+
     });
 
     produtos.forEach(function (produto) {
+
         const linha =
             document.createElement("tr");
 
-        linha.dataset.id = produto.id;
+        linha.dataset.id =
+            produto.id || "";
+
         linha.dataset.codigo =
             produto.codigo || "";
 
+        const quantidade =
+            converterNumeroProduto(
+                produto.quantidade
+            );
+
+        const valorTotal =
+            converterNumeroProduto(
+                produto.valor_total ??
+                produto.valorTotal ??
+                0
+            );
+
+        const descricaoDetalhada =
+            produto.descricao_detalhada ??
+            produto.descricaoDetalhada ??
+            "";
+
+        const ncm =
+            produto.ncm ??
+            produto.NCM ??
+            "";
+
+        const ipi =
+            produto.ipi ??
+            produto.IPI ??
+            "";
+
+        let valorUnitario =
+            converterNumeroProduto(
+                produto.valor_unitario ??
+                produto.valorUnitario ??
+                0
+            );
+
+        if (
+            valorUnitario === 0 &&
+            quantidade > 0 &&
+            valorTotal > 0
+        ) {
+
+            valorUnitario =
+                valorTotal / quantidade;
+
+        }
+
         linha.appendChild(
-            criarCelulaProduto(produto.codigo)
+            criarCelulaProduto(
+                produto.codigo
+            )
         );
 
         linha.appendChild(
@@ -728,25 +869,36 @@ async function carregarTabelaProdutosSupabase() {
             )
         );
 
-        const celulaCliente =
-            document.createElement("td");
-
-        const cliente =
-            document.createElement("span");
-
-        cliente.className =
-            "cliente-produto";
-
-        cliente.textContent =
-            produto.cliente || "SMI";
-
-        celulaCliente.appendChild(cliente);
-        linha.appendChild(celulaCliente);
+        linha.appendChild(
+            criarCelulaProduto(
+                descricaoDetalhada
+            )
+        );
 
         linha.appendChild(
             criarCelulaProduto(
                 formatarQuantidadeProduto(
-                    produto.quantidade
+                    quantidade
+                )
+            )
+        );
+
+        linha.appendChild(
+            criarCelulaProduto(
+                ncm
+            )
+        );
+
+        linha.appendChild(
+            criarCelulaProduto(
+                ipi
+            )
+        );
+
+        linha.appendChild(
+            criarCelulaProduto(
+                formatarValorProduto(
+                    valorUnitario
                 )
             )
         );
@@ -754,83 +906,24 @@ async function carregarTabelaProdutosSupabase() {
         linha.appendChild(
             criarCelulaProduto(
                 formatarValorProduto(
-                    produto.valorTotal
+                    valorTotal
                 )
             )
         );
 
-        const celulaEndereco =
-            document.createElement("td");
-
-        const endereco =
-            document.createElement("span");
-
-        endereco.className =
-            "endereco-produto";
-
-        endereco.textContent =
-            produto.endereco || "-";
-
-        celulaEndereco.appendChild(endereco);
-        linha.appendChild(celulaEndereco);
-
-        const celulaAcoes =
-            document.createElement("td");
-
-        const acoes =
-            document.createElement("div");
-
-        acoes.className =
-            "acoes-produto";
-
-        const botaoEditar =
-            document.createElement("button");
-
-        botaoEditar.type = "button";
-        botaoEditar.className =
-            "btn-editar-produto";
-        botaoEditar.textContent = "✏️";
-        botaoEditar.title =
-            "Editar produto";
-
-        botaoEditar.addEventListener(
-            "click",
-            function () {
-                editarProdutoSupabase(produto);
-            }
+        linha.appendChild(
+            criarCelulaProduto(
+                produto.endereco
+            )
         );
 
-        const botaoExcluir =
-            document.createElement("button");
-
-        botaoExcluir.type = "button";
-        botaoExcluir.className =
-            "btn-excluir-produto";
-        botaoExcluir.textContent = "🗑️";
-        botaoExcluir.title =
-            "Excluir produto";
-
-        botaoExcluir.addEventListener(
-            "click",
-            function () {
-                confirmarExclusaoProdutoSupabase(
-                    produto
-                );
-            }
+        tabela.appendChild(
+            linha
         );
 
-        acoes.appendChild(botaoEditar);
-        acoes.appendChild(botaoExcluir);
-
-        celulaAcoes.appendChild(acoes);
-        linha.appendChild(celulaAcoes);
-
-        tabela.appendChild(linha);
     });
 
-    atualizarFiltroClientesSupabase(produtos);
 }
-
 
 // =====================================================
 // EDITAR
