@@ -7525,113 +7525,237 @@ function exportarRelatorioCSV(
 // EXPORTAR ESTOQUE COMPLETO PARA EXCEL
 // =====================================================
 
-function exportarEstoqueExcel() {
+async function exportarEstoqueExcel() {
 
-    const estoque =
-        carregarEstoque();
-
-
-    if (
-        estoque.length === 0
-    ) {
-
-        alert(
-            "Não existem produtos no estoque para exportar."
-        );
-
+    if (typeof XLSX === "undefined") {
+        alert("A biblioteca XLSX não foi carregada.");
         return;
-
     }
 
+    if (!window.supabaseClient) {
+        alert("A conexão com o banco online não foi encontrada.");
+        return;
+    }
 
-    const dados =
-        estoque.map(
-            function (produto) {
+    try {
 
-                return {
+        const todosProdutos = [];
+        const quantidadePorBusca = 1000;
+        let inicio = 0;
 
-                    NF:
-                        produto.nf ||
-                        "",
+        // BUSCA TODOS OS PRODUTOS DO SUPABASE
+        while (true) {
 
-                    Código:
-                        produto.codigo ||
-                        "",
+            const fim =
+                inicio + quantidadePorBusca - 1;
 
-                    Descrição:
-                        produto.descricao ||
-                        "",
+            const { data, error } =
+                await window.supabaseClient
+                    .from("produtos")
+                    .select("*")
+                    .order("id", {
+                        ascending: true
+                    })
+                    .range(inicio, fim);
 
-                    Cliente:
-                        produto.cliente ||
-                        "SMI",
+            if (error) {
+                throw error;
+            }
 
-                    Quantidade:
-                        converterNumero(
-                            produto.quantidade
-                        ),
+            if (
+                !Array.isArray(data) ||
+                data.length === 0
+            ) {
+                break;
+            }
 
-                    "Valor Total":
-                        converterNumero(
-                            produto.valorTotal
-                        ),
+            todosProdutos.push(...data);
 
-                    Posição:
-                        produto.endereco ||
-                        ""
+            if (
+                data.length <
+                quantidadePorBusca
+            ) {
+                break;
+            }
 
-                };
+            inicio += quantidadePorBusca;
+        }
+
+
+        if (todosProdutos.length === 0) {
+
+            alert(
+                "Não existem produtos no estoque para exportar."
+            );
+
+            return;
+        }
+
+
+        // ORGANIZAR POR POSIÇÃO
+        todosProdutos.sort(
+            function (a, b) {
+
+                return String(
+                    a.endereco || ""
+                ).localeCompare(
+                    String(
+                        b.endereco || ""
+                    ),
+                    "pt-BR",
+                    {
+                        numeric: true
+                    }
+                );
 
             }
         );
 
 
-    if (
-        typeof XLSX ===
-        "undefined"
-    ) {
+        // MONTAR PLANILHA NO NOVO MODELO
+        const dados =
+            todosProdutos.map(
+                function (produto) {
+
+                    const quantidade =
+                        Number(
+                            produto.quantidade || 0
+                        );
+
+
+                    const valorTotal =
+                        Number(
+                            produto.valor_total ??
+                            produto.valorTotal ??
+                            0
+                        );
+
+
+                    let valorUnitario =
+                        Number(
+                            produto.valor_unitario ??
+                            produto.valorUnitario ??
+                            0
+                        );
+
+
+                    if (
+                        (
+                            !Number.isFinite(
+                                valorUnitario
+                            ) ||
+                            valorUnitario === 0
+                        ) &&
+                        quantidade > 0 &&
+                        valorTotal > 0
+                    ) {
+
+                        valorUnitario =
+                            valorTotal /
+                            quantidade;
+                    }
+
+
+                    return {
+
+                        "Código":
+                            produto.codigo || "",
+
+                        "Descrição":
+                            produto.descricao || "",
+
+                        "Descrição detalhada":
+                            produto.descricao_detalhada ??
+                            produto.descricaoDetalhada ??
+                            "",
+
+                        "Quantidade":
+                            quantidade,
+
+                        "NCM":
+                            produto.ncm ??
+                            produto.NCM ??
+                            "",
+
+                        "IPI":
+                            produto.ipi ??
+                            produto.IPI ??
+                            "",
+
+                        "Valor Unitário":
+                            valorUnitario,
+
+                        "Valor Total":
+                            valorTotal,
+
+                        "Posição":
+                            produto.endereco || ""
+
+                    };
+
+                }
+            );
+
+
+        const planilha =
+            XLSX.utils.json_to_sheet(
+                dados
+            );
+
+
+        // LARGURA DAS COLUNAS
+        planilha["!cols"] = [
+
+            { wch: 18 }, // Código
+            { wch: 45 }, // Descrição
+            { wch: 55 }, // Descrição detalhada
+            { wch: 15 }, // Quantidade
+            { wch: 18 }, // NCM
+            { wch: 12 }, // IPI
+            { wch: 18 }, // Valor Unitário
+            { wch: 18 }, // Valor Total
+            { wch: 15 }  // Posição
+
+        ];
+
+
+        const pastaExcel =
+            XLSX.utils.book_new();
+
+
+        XLSX.utils.book_append_sheet(
+            pastaExcel,
+            planilha,
+            "Estoque"
+        );
+
+
+        XLSX.writeFile(
+            pastaExcel,
+            "estoque_smi_wms.xlsx"
+        );
+
+
+        console.log(
+            "TOTAL EXPORTADO:",
+            todosProdutos.length
+        );
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao exportar estoque:",
+            erro
+        );
+
 
         alert(
-            "A biblioteca XLSX não foi carregada."
+            "Não foi possível exportar o estoque.\n\n" +
+            erro.message
         );
-
-        return;
 
     }
-
-
-    const planilha =
-        XLSX.utils.json_to_sheet(
-            dados
-        );
-
-
-    planilha["!cols"] = [
-        { wch: 16 },
-        { wch: 18 },
-        { wch: 50 },
-        { wch: 25 },
-        { wch: 15 },
-        { wch: 18 },
-        { wch: 15 }
-    ];
-
-
-    const pastaExcel =
-        XLSX.utils.book_new();
-
-
-    XLSX.utils.book_append_sheet(
-        pastaExcel,
-        planilha,
-        "Estoque"
-    );
-
-
-    XLSX.writeFile(
-        pastaExcel,
-        "estoque_smi_wms.xlsx"
-    );
 
 }
 

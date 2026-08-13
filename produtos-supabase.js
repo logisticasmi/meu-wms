@@ -1191,8 +1191,8 @@ async function exportarEstoqueExcel() {
             return;
         }
 
-       const produtos =
-    await buscarTodosProdutosParaExportacao();
+        const produtos =
+            await buscarTodosProdutosParaExportacao();
 
         if (
             !Array.isArray(produtos) ||
@@ -1220,14 +1220,26 @@ async function exportarEstoqueExcel() {
                             0
                         );
 
-                    const valorUnitario =
-                        quantidade > 0
-                            ? valorTotal / quantidade
-                            : 0;
+                    let valorUnitario =
+                        Number(
+                            produto.valor_unitario ??
+                            produto.valorUnitario ??
+                            0
+                        );
+
+                    if (
+                        (
+                            !Number.isFinite(valorUnitario) ||
+                            valorUnitario === 0
+                        ) &&
+                        quantidade > 0 &&
+                        valorTotal > 0
+                    ) {
+                        valorUnitario =
+                            valorTotal / quantidade;
+                    }
 
                     return {
-                        "NF":
-                            produto.nf || "",
 
                         "Código":
                             produto.codigo || "",
@@ -1235,11 +1247,23 @@ async function exportarEstoqueExcel() {
                         "Descrição":
                             produto.descricao || "",
 
-                        "Cliente":
-                            produto.cliente || "SMI",
+                        "Descrição detalhada":
+                            produto.descricao_detalhada ??
+                            produto.descricaoDetalhada ??
+                            "",
 
                         "Quantidade":
                             quantidade,
+
+                        "NCM":
+                            produto.ncm ??
+                            produto.NCM ??
+                            "",
+
+                        "IPI":
+                            produto.ipi ??
+                            produto.IPI ??
+                            "",
 
                         "Valor Unitário":
                             valorUnitario,
@@ -1247,8 +1271,9 @@ async function exportarEstoqueExcel() {
                         "Valor Total":
                             valorTotal,
 
-                        "Endereço":
+                        "Posição":
                             produto.endereco || ""
+
                     };
 
                 }
@@ -1260,14 +1285,15 @@ async function exportarEstoqueExcel() {
             );
 
         planilha["!cols"] = [
-            { wch: 15 },
-            { wch: 18 },
-            { wch: 40 },
-            { wch: 22 },
-            { wch: 14 },
-            { wch: 18 },
-            { wch: 18 },
-            { wch: 15 }
+            { wch: 18 }, // Código
+            { wch: 40 }, // Descrição
+            { wch: 55 }, // Descrição detalhada
+            { wch: 14 }, // Quantidade
+            { wch: 18 }, // NCM
+            { wch: 12 }, // IPI
+            { wch: 18 }, // Valor Unitário
+            { wch: 18 }, // Valor Total
+            { wch: 15 }  // Posição
         ];
 
         const arquivoExcel =
@@ -1291,6 +1317,11 @@ async function exportarEstoqueExcel() {
             ".xlsx"
         );
 
+        console.log(
+            "TOTAL EXPORTADO:",
+            produtos.length
+        );
+
     } catch (erro) {
 
         console.error(
@@ -1299,7 +1330,8 @@ async function exportarEstoqueExcel() {
         );
 
         alert(
-            "Não foi possível exportar o estoque."
+            "Não foi possível exportar o estoque.\n\n" +
+            erro.message
         );
 
     }
