@@ -9,6 +9,7 @@
 <title>SMI WMS - Dashboard</title>
 <link rel="icon" type="image/png" href="img/favicon.png">
 
+<!-- CSS ORIGINAL DO WMS + versão para forçar o navegador a recarregar -->
 <link rel="stylesheet" href="style.css">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -45,6 +46,10 @@
 📤 Saídas
 </li>
 
+<li onclick="location.href='separacao.html'">
+🛒 Separação
+</li>
+
 <li onclick="location.href='transferencias.html'">
 🔄 Transferências
 </li>
@@ -54,7 +59,7 @@
 </li>
 
 <li onclick="location.href='inventario.html'">
-    📋 Inventário
+📋 Inventário
 </li>
 
 <li onclick="location.href='relatorios.html'">
@@ -62,7 +67,7 @@
 </li>
 
 <li onclick="location.href='requisicao.html'">
-    📝 Requisição
+📝 Requisição
 </li>
 
 <li onclick="location.href='configuracoes.html'">
@@ -133,7 +138,6 @@ Sair
 
     </div>
 
-
     <!-- QUANTIDADE -->
 
     <div class="card-dashboard card-quantidade">
@@ -159,7 +163,6 @@ Sair
         </div>
 
     </div>
-
 
     <!-- POSIÇÕES -->
 
@@ -191,7 +194,6 @@ Sair
         </div>
 
     </div>
-
 
     <!-- NÍVEIS -->
 
@@ -247,6 +249,7 @@ Sair
 </div>
 
 </div>
+
 <!-- INDICADORES E RANKINGS -->
 
 <div class="dashboard-grid-secundario">
@@ -278,7 +281,6 @@ Sair
 
     </div>
 
-
     <!-- TOP 5 POSIÇÕES -->
 
     <div class="painel dashboard-painel">
@@ -307,7 +309,6 @@ Sair
     </div>
 
 </div>
-
 
 <!-- MOVIMENTAÇÕES DO DIA -->
 
@@ -341,7 +342,6 @@ Sair
 
         </div>
 
-
         <div class="resumo-movimento-item saida">
 
             <div class="resumo-movimento-icone">
@@ -355,7 +355,6 @@ Sair
 
         </div>
 
-
         <div class="resumo-movimento-item transferencia">
 
             <div class="resumo-movimento-icone">
@@ -368,7 +367,6 @@ Sair
             </div>
 
         </div>
-
 
         <div class="resumo-movimento-item saldo">
 
@@ -386,7 +384,6 @@ Sair
     </div>
 
 </div>
-
 
 <!-- ÚLTIMAS MOVIMENTAÇÕES -->
 
@@ -409,7 +406,6 @@ Sair
         </button>
 
     </div>
-
 
     <div class="dashboard-tabela-container">
 
@@ -439,7 +435,6 @@ Sair
 
             </thead>
 
-
             <tbody id="ultimasMovimentacoes">
 
                 <tr>
@@ -462,9 +457,7 @@ Sair
 
 </div>
 
-<!-- ===================================== -->
 <!-- RODAPÉ -->
-<!-- ===================================== -->
 
 <footer class="dashboard-rodape">
 
@@ -478,9 +471,9 @@ Sair
 
 </footer>
 
-<!-- ===================================== -->
+</div>
+
 <!-- SCRIPTS -->
-<!-- ===================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="supabase.js"></script>
@@ -488,5 +481,6 @@ Sair
 <script src="app.js?v=20260806-01"></script>
 <script src="dashboard.js?v=20260806-01"></script>
 <script src="sync-supabase.js?v=20260806-10"></script>
+
 </body>
 </html>
