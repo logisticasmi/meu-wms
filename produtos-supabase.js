@@ -1338,6 +1338,69 @@ async function exportarEstoqueExcel() {
 
 }
 
+// =====================================================
+// LIMPAR TODOS OS PRODUTOS DO SUPABASE
+// =====================================================
+
+async function limparTodosProdutosSupabase() {
+
+    const confirmou =
+        confirm(
+            "ATENÇÃO!\n\n" +
+            "Tem certeza que deseja excluir TODOS os produtos cadastrados?\n\n" +
+            "Esta ação limpará completamente a base de Produtos para uma nova importação."
+        );
+
+    if (!confirmou) {
+        return;
+    }
+
+    const confirmouNovamente =
+        confirm(
+            "CONFIRMAÇÃO FINAL\n\n" +
+            "Todos os produtos serão apagados da tabela Produtos.\n\n" +
+            "Deseja continuar?"
+        );
+
+    if (!confirmouNovamente) {
+        return;
+    }
+
+    try {
+
+        if (!verificarConexaoSupabase()) {
+            return;
+        }
+
+        const { error } =
+            await window.supabaseClient
+                .from(NOME_TABELA_PRODUTOS)
+                .delete()
+                .neq("id", 0);
+
+        if (error) {
+            throw error;
+        }
+
+        alert(
+            "Todos os produtos foram excluídos com sucesso."
+        );
+
+        await carregarTabelaProdutosSupabase();
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao limpar produtos:",
+            erro
+        );
+
+        alert(
+            "Não foi possível limpar os produtos.\n\n" +
+            erro.message
+        );
+    }
+}
 
 // =====================================================
 // DISPONIBILIZA AS FUNÇÕES PARA O PRODUTOS.HTML
@@ -1374,6 +1437,8 @@ window.excluirProdutoSupabase =
     excluirProdutoSupabase;
     window.exportarEstoqueExcel =
     exportarEstoqueExcel;
+    window.limparTodosProdutosSupabase =
+    limparTodosProdutosSupabase;
 
 // =====================================================
 // INICIALIZAÇÃO DA TELA DE PRODUTOS
