@@ -261,7 +261,13 @@ const usuariosPermitidos = [
         login: "marcos.smi",
         senha: "1234",
         nome: "MARCOS.SMI"
-    }
+    },
+
+    {
+    login: "juliana.smi",
+    senha: "1234",
+    nome: "JULIANA.SMI"
+}
 
 ];
 
