@@ -2143,7 +2143,7 @@ function normalizarProdutoImportado(
 
         cliente: "SMI",
 
-        quantidade:
+           quantidade:
             converterNumero(
                 obterValorColuna(
                     linha,
@@ -2153,6 +2153,36 @@ function normalizarProdutoImportado(
                         "Qtd",
                         "Qtde",
                         "QTD"
+                    ]
+                )
+            ),
+
+        minimo:
+            converterNumero(
+                obterValorColuna(
+                    linha,
+                    [
+                        "Mínimo",
+                        "Minimo",
+                        "MÍNIMO",
+                        "MINIMO",
+                        "Estoque Mínimo",
+                        "Estoque Minimo"
+                    ]
+                )
+            ),
+
+        maximo:
+            converterNumero(
+                obterValorColuna(
+                    linha,
+                    [
+                        "Máximo",
+                        "Maximo",
+                        "MÁXIMO",
+                        "MAXIMO",
+                        "Estoque Máximo",
+                        "Estoque Maximo"
                     ]
                 )
             ),

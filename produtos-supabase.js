@@ -10,8 +10,12 @@ var NOME_TABELA_PRODUTOS = "produtos";
 // =====================================================
 
 function verificarConexaoSupabase() {
+
     if (!window.supabaseClient) {
-        console.error("Cliente Supabase não encontrado.");
+
+        console.error(
+            "Cliente Supabase não encontrado."
+        );
 
         alert(
             "Não foi possível conectar ao banco de dados.\n\n" +
@@ -26,10 +30,11 @@ function verificarConexaoSupabase() {
 
 
 // =====================================================
-// CONVERSÃO DOS DADOS
+// CONVERSÃO DE NÚMEROS
 // =====================================================
 
 function converterNumeroProduto(valor) {
+
     if (
         valor === undefined ||
         valor === null ||
@@ -38,102 +43,193 @@ function converterNumeroProduto(valor) {
         return 0;
     }
 
-    let texto = String(valor)
-        .trim()
-        .replace(/\s/g, "")
-        .replace(/R\$/gi, "");
+    let texto =
+        String(valor)
+            .trim()
+            .replace(/\s/g, "")
+            .replace(/R\$/gi, "");
 
-    if (texto.includes(".") && texto.includes(",")) {
-        texto = texto
-            .replace(/\./g, "")
-            .replace(",", ".");
-    } else if (texto.includes(",")) {
-        texto = texto.replace(",", ".");
+    if (
+        texto.includes(".") &&
+        texto.includes(",")
+    ) {
+
+        texto =
+            texto
+                .replace(/\./g, "")
+                .replace(",", ".");
+
+    } else if (
+        texto.includes(",")
+    ) {
+
+        texto =
+            texto.replace(",", ".");
     }
 
-    texto = texto.replace(/[^0-9.-]/g, "");
+    texto =
+        texto.replace(
+            /[^0-9.-]/g,
+            ""
+        );
 
-    const numero = Number(texto);
+    const numero =
+        Number(texto);
 
-    return Number.isFinite(numero) ? numero : 0;
+    return Number.isFinite(numero)
+        ? numero
+        : 0;
 }
 
+
+// =====================================================
+// NORMALIZAR PRODUTO VINDO DO SUPABASE
+// =====================================================
 
 function normalizarProdutoBanco(produto) {
+
     return {
+
         ...produto,
 
-        nf: produto.nf || "",
+        nf:
+            produto.nf || "",
 
-        codigo: produto.codigo || "",
+        codigo:
+            produto.codigo || "",
 
-        descricao: produto.descricao || "",
+        descricao:
+            produto.descricao || "",
 
-        cliente: produto.cliente || "SMI",
-
-        quantidade: converterNumeroProduto(
-            produto.quantidade
-        ),
-
-        valorTotal: converterNumeroProduto(
-            produto.valor_total ??
-            produto.valorTotal ??
-            0
-        ),
-
-        endereco: produto.endereco || ""
-    };
-}
-
-
-function prepararProdutoParaBanco(produto) {
-
-    return {
-
-        nf: String(
-            produto.nf || ""
-        ).trim(),
-
-        codigo: String(
-            produto.codigo || ""
-        ).trim(),
-
-        descricao: String(
-            produto.descricao || ""
-        ).trim(),
-
-        descricao_detalhada: String(
+        descricaoDetalhada:
             produto.descricao_detalhada ??
             produto.descricaoDetalhada ??
-            ""
-        ).trim(),
+            "",
 
-        cliente: String(
-            produto.cliente || "SMI"
-        ).trim() || "SMI",
+        cliente:
+            produto.cliente || "SMI",
 
         quantidade:
             converterNumeroProduto(
                 produto.quantidade
             ),
 
-        ncm: String(
+        minimo:
+            converterNumeroProduto(
+                produto.minimo ??
+                produto.estoque_minimo ??
+                0
+            ),
+
+        maximo:
+            converterNumeroProduto(
+                produto.maximo ??
+                produto.estoque_maximo ??
+                0
+            ),
+
+        ncm:
             produto.ncm ??
             produto.NCM ??
-            ""
-        ).trim(),
+            "",
 
         ipi:
-    String(
-        produto.ipi ??
-        produto.IPI ??
-        ""
-    ).trim() === ""
-        ? null
-        : converterNumeroProduto(
             produto.ipi ??
-            produto.IPI
-        ),
+            produto.IPI ??
+            "",
+
+        valorUnitario:
+            converterNumeroProduto(
+                produto.valor_unitario ??
+                produto.valorUnitario ??
+                0
+            ),
+
+        valorTotal:
+            converterNumeroProduto(
+                produto.valor_total ??
+                produto.valorTotal ??
+                0
+            ),
+
+        endereco:
+            produto.endereco || ""
+    };
+}
+
+
+// =====================================================
+// PREPARAR PRODUTO PARA O SUPABASE
+// =====================================================
+
+function prepararProdutoParaBanco(produto) {
+
+    return {
+
+        nf:
+            String(
+                produto.nf || ""
+            ).trim(),
+
+        codigo:
+            String(
+                produto.codigo || ""
+            ).trim(),
+
+        descricao:
+            String(
+                produto.descricao || ""
+            ).trim(),
+
+        descricao_detalhada:
+            String(
+                produto.descricao_detalhada ??
+                produto.descricaoDetalhada ??
+                ""
+            ).trim(),
+
+        cliente:
+            String(
+                produto.cliente || "SMI"
+            ).trim() || "SMI",
+
+        quantidade:
+            converterNumeroProduto(
+                produto.quantidade
+            ),
+
+        minimo:
+            converterNumeroProduto(
+                produto.minimo ??
+                produto.estoque_minimo ??
+                0
+            ),
+
+        maximo:
+            converterNumeroProduto(
+                produto.maximo ??
+                produto.estoque_maximo ??
+                0
+            ),
+
+        ncm:
+            String(
+                produto.ncm ??
+                produto.NCM ??
+                ""
+            ).trim(),
+
+        ipi:
+            String(
+                produto.ipi ??
+                produto.IPI ??
+                ""
+            ).trim() === ""
+                ? null
+                : converterNumeroProduto(
+                    produto.ipi ??
+                    produto.IPI
+                ),
 
         valor_unitario:
             converterNumeroProduto(
@@ -149,42 +245,60 @@ function prepararProdutoParaBanco(produto) {
                 0
             ),
 
-        endereco: String(
-            produto.endereco || ""
-        )
-            .trim()
-            .toUpperCase()
-            .replace(/\s+/g, "")
-
+        endereco:
+            String(
+                produto.endereco || ""
+            )
+                .trim()
+                .toUpperCase()
+                .replace(/\s+/g, "")
     };
-
 }
 
+
 // =====================================================
-// BUSCAR PRODUTOS
+// BUSCAR TODOS OS PRODUTOS
+// SEM LIMITE DE 1000
 // =====================================================
 
 async function buscarProdutosSupabase() {
+
     if (!verificarConexaoSupabase()) {
         return [];
     }
 
     const todosProdutos = [];
+
     const tamanhoPagina = 1000;
+
     let inicio = 0;
 
     while (true) {
-        const fim = inicio + tamanhoPagina - 1;
 
-        const { data, error } = await window.supabaseClient
-            .from(NOME_TABELA_PRODUTOS)
-            .select("*")
-            .order("id", {
-                ascending: true
-            })
-            .range(inicio, fim);
+        const fim =
+            inicio +
+            tamanhoPagina -
+            1;
+
+        const { data, error } =
+            await window.supabaseClient
+                .from(
+                    NOME_TABELA_PRODUTOS
+                )
+                .select("*")
+                .order(
+                    "id",
+                    {
+                        ascending: true
+                    }
+                )
+                .range(
+                    inicio,
+                    fim
+                );
 
         if (error) {
+
             console.error(
                 "Erro ao buscar produtos:",
                 error
@@ -198,19 +312,28 @@ async function buscarProdutosSupabase() {
             return [];
         }
 
-        if (!Array.isArray(data) || data.length === 0) {
+        if (
+            !Array.isArray(data) ||
+            data.length === 0
+        ) {
             break;
         }
 
         todosProdutos.push(
-            ...data.map(normalizarProdutoBanco)
+            ...data.map(
+                normalizarProdutoBanco
+            )
         );
 
-        if (data.length < tamanhoPagina) {
+        if (
+            data.length <
+            tamanhoPagina
+        ) {
             break;
         }
 
-        inicio += tamanhoPagina;
+        inicio +=
+            tamanhoPagina;
     }
 
     console.log(
@@ -221,23 +344,35 @@ async function buscarProdutosSupabase() {
     return todosProdutos;
 }
 
+
 // =====================================================
 // INSERIR UM PRODUTO
 // =====================================================
 
-async function inserirProdutoSupabase(produto) {
+async function inserirProdutoSupabase(
+    produto
+) {
+
     if (!verificarConexaoSupabase()) {
         return false;
     }
 
     const dadosBanco =
-        prepararProdutoParaBanco(produto);
+        prepararProdutoParaBanco(
+            produto
+        );
 
-    const { error } = await window.supabaseClient
-        .from(NOME_TABELA_PRODUTOS)
-        .insert([dadosBanco]);
+    const { error } =
+        await window.supabaseClient
+            .from(
+                NOME_TABELA_PRODUTOS
+            )
+            .insert([
+                dadosBanco
+            ]);
 
     if (error) {
+
         console.error(
             "Erro ao inserir produto:",
             error
@@ -256,13 +391,14 @@ async function inserirProdutoSupabase(produto) {
 
 
 // =====================================================
-// SALVAR PRODUTOS IMPORTADOS
+// SALVAR PRODUTOS IMPORTADOS NO SUPABASE
 // =====================================================
 
 async function salvarProdutosImportadosSupabase(
     produtos,
     substituirEstoque
 ) {
+
     if (!verificarConexaoSupabase()) {
         return false;
     }
@@ -271,18 +407,30 @@ async function salvarProdutosImportadosSupabase(
         !Array.isArray(produtos) ||
         produtos.length === 0
     ) {
-        alert("Nenhum produto para importar.");
+
+        alert(
+            "Nenhum produto para importar."
+        );
+
         return false;
     }
 
     try {
 
         if (substituirEstoque) {
-            const { error: erroExclusao } =
+
+            const {
+                error: erroExclusao
+            } =
                 await window.supabaseClient
-                    .from(NOME_TABELA_PRODUTOS)
+                    .from(
+                        NOME_TABELA_PRODUTOS
+                    )
                     .delete()
-                    .neq("id", 0);
+                    .neq(
+                        "id",
+                        0
+                    );
 
             if (erroExclusao) {
                 throw erroExclusao;
@@ -290,9 +438,14 @@ async function salvarProdutosImportadosSupabase(
         }
 
         const produtosBanco =
-            produtos.map(function (produto) {
-                return prepararProdutoParaBanco(produto);
-            });
+            produtos.map(
+                function (produto) {
+
+                    return prepararProdutoParaBanco(
+                        produto
+                    );
+                }
+            );
 
         const tamanhoLote = 500;
 
@@ -301,6 +454,7 @@ async function salvarProdutosImportadosSupabase(
             inicio < produtosBanco.length;
             inicio += tamanhoLote
         ) {
+
             const lote =
                 produtosBanco.slice(
                     inicio,
@@ -309,8 +463,12 @@ async function salvarProdutosImportadosSupabase(
 
             const { error } =
                 await window.supabaseClient
-                    .from(NOME_TABELA_PRODUTOS)
-                    .insert(lote);
+                    .from(
+                        NOME_TABELA_PRODUTOS
+                    )
+                    .insert(
+                        lote
+                    );
 
             if (error) {
                 throw error;
@@ -334,36 +492,74 @@ async function salvarProdutosImportadosSupabase(
         return false;
     }
 }
+
+
 // =====================================================
-// CONVERTER LINHA DA PLANILHA EM PRODUTO
+// LOCALIZAR COLUNA DA PLANILHA
 // =====================================================
 
-function obterValorColunaProduto(linha, nomesPossiveis) {
-    if (!linha || typeof linha !== "object") {
+function obterValorColunaProduto(
+    linha,
+    nomesPossiveis
+) {
+
+    if (
+        !linha ||
+        typeof linha !== "object"
+    ) {
         return "";
     }
 
-    const chaves = Object.keys(linha);
+    const chaves =
+        Object.keys(linha);
 
-    for (const nomePossivel of nomesPossiveis) {
-        const nomeNormalizado = String(nomePossivel)
-            .trim()
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/[^a-z0-9]/g, "");
+    for (
+        const nomePossivel
+        of nomesPossiveis
+    ) {
 
-        const chaveEncontrada = chaves.find(function (chave) {
-            return String(chave)
+        const nomeNormalizado =
+            String(nomePossivel)
                 .trim()
                 .toLowerCase()
                 .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/[^a-z0-9]/g, "") === nomeNormalizado;
-        });
+                .replace(
+                    /[\u0300-\u036f]/g,
+                    ""
+                )
+                .replace(
+                    /[^a-z0-9]/g,
+                    ""
+                );
 
-        if (chaveEncontrada !== undefined) {
-            return linha[chaveEncontrada];
+        const chaveEncontrada =
+            chaves.find(
+                function (chave) {
+
+                    return String(chave)
+                        .trim()
+                        .toLowerCase()
+                        .normalize("NFD")
+                        .replace(
+                            /[\u0300-\u036f]/g,
+                            ""
+                        )
+                        .replace(
+                            /[^a-z0-9]/g,
+                            ""
+                        ) ===
+                        nomeNormalizado;
+                }
+            );
+
+        if (
+            chaveEncontrada !==
+            undefined
+        ) {
+
+            return linha[
+                chaveEncontrada
+            ];
         }
     }
 
@@ -371,65 +567,74 @@ function obterValorColunaProduto(linha, nomesPossiveis) {
 }
 
 
+// =====================================================
+// CRIAR PRODUTO A PARTIR DA PLANILHA
+// =====================================================
+
 function criarProdutoImportado(linha) {
 
     return {
 
-        nf: String(
-            obterValorColunaProduto(
-                linha,
-                [
-                    "NF",
-                    "Nota Fiscal",
-                    "Nota",
-                    "Número NF"
-                ]
-            ) || ""
-        ).trim(),
+        nf:
+            String(
+                obterValorColunaProduto(
+                    linha,
+                    [
+                        "NF",
+                        "Nota Fiscal",
+                        "Nota",
+                        "Número NF"
+                    ]
+                ) || ""
+            ).trim(),
 
-        codigo: String(
-            obterValorColunaProduto(
-                linha,
-                [
-                    "Código",
-                    "Codigo",
-                    "CODIGO",
-                    "Cod",
-                    "Código Produto",
-                    "Cod Produto",
-                    "SKU",
-                    "Material"
-                ]
-            ) || ""
-        ).trim(),
+        codigo:
+            String(
+                obterValorColunaProduto(
+                    linha,
+                    [
+                        "Código",
+                        "Codigo",
+                        "CODIGO",
+                        "Cod",
+                        "Código Produto",
+                        "Cod Produto",
+                        "SKU",
+                        "Material"
+                    ]
+                ) || ""
+            ).trim(),
 
-        descricao: String(
-            obterValorColunaProduto(
-                linha,
-                [
-                    "Descrição",
-                    "Descricao",
-                    "DESCRICAO",
-                    "Produto",
-                    "Descrição Produto",
-                    "Nome Produto"
-                ]
-            ) || ""
-        ).trim(),
+        descricao:
+            String(
+                obterValorColunaProduto(
+                    linha,
+                    [
+                        "Descrição",
+                        "Descricao",
+                        "DESCRICAO",
+                        "Produto",
+                        "Descrição Produto",
+                        "Nome Produto"
+                    ]
+                ) || ""
+            ).trim(),
 
-        descricaoDetalhada: String(
-            obterValorColunaProduto(
-                linha,
-                [
-                    "DESCRIÇÃO DETALHADA",
-                    "DESCRICAO DETALHADA",
-                    "Descrição Detalhada",
-                    "Descricao Detalhada"
-                ]
-            ) || ""
-        ).trim(),
+        descricaoDetalhada:
+            String(
+                obterValorColunaProduto(
+                    linha,
+                    [
+                        "DESCRIÇÃO DETALHADA",
+                        "DESCRICAO DETALHADA",
+                        "Descrição Detalhada",
+                        "Descricao Detalhada"
+                    ]
+                ) || ""
+            ).trim(),
 
-        cliente: "SMI",
+        cliente:
+            "SMI",
 
         quantidade:
             converterNumeroProduto(
@@ -438,23 +643,55 @@ function criarProdutoImportado(linha) {
                     [
                         "Quantidade",
                         "QUANTIDADE",
-                        "Qtde",
                         "Qtd",
+                        "Qtde",
+                        "QTD",
                         "Saldo",
                         "Quantidade Total"
                     ]
                 )
             ),
 
-        ncm: String(
-            obterValorColunaProduto(
-                linha,
-                [
-                    "NCM",
-                    "ncm"
-                ]
-            ) || ""
-        ).trim(),
+        minimo:
+            converterNumeroProduto(
+                obterValorColunaProduto(
+                    linha,
+                    [
+                        "Mínimo",
+                        "Minimo",
+                        "MÍNIMO",
+                        "MINIMO",
+                        "Estoque Mínimo",
+                        "Estoque Minimo"
+                    ]
+                )
+            ),
+
+        maximo:
+            converterNumeroProduto(
+                obterValorColunaProduto(
+                    linha,
+                    [
+                        "Máximo",
+                        "Maximo",
+                        "MÁXIMO",
+                        "MAXIMO",
+                        "Estoque Máximo",
+                        "Estoque Maximo"
+                    ]
+                )
+            ),
+
+        ncm:
+            String(
+                obterValorColunaProduto(
+                    linha,
+                    [
+                        "NCM",
+                        "ncm"
+                    ]
+                ) || ""
+            ).trim(),
 
         ipi:
             obterValorColunaProduto(
@@ -492,79 +729,73 @@ function criarProdutoImportado(linha) {
                 )
             ),
 
-        endereco: String(
-            obterValorColunaProduto(
-                linha,
-                [
-                    "POSICAO",
-                    "POSIÇÃO",
-                    "Posição",
-                    "Posicao",
-                    "Endereço",
-                    "Endereco",
-                    "Localização",
-                    "Localizacao"
-                ]
-            ) || ""
-        )
-            .trim()
-            .toUpperCase()
-            .replace(/\s+/g, "")
-
+        endereco:
+            String(
+                obterValorColunaProduto(
+                    linha,
+                    [
+                        "POSICAO",
+                        "POSIÇÃO",
+                        "Posição",
+                        "Posicao",
+                        "Endereço",
+                        "Endereco",
+                        "Localização",
+                        "Localizacao"
+                    ]
+                ) || ""
+            )
+                .trim()
+                .toUpperCase()
+                .replace(/\s+/g, "")
     };
-
 }
-
-
 // =====================================================
-// SUBSTITUI A IMPORTAÇÃO ANTIGA DO PRODUTOS.HTML
+// PROCESSAR PRODUTOS IMPORTADOS
 // =====================================================
 
 async function processarProdutosImportados(linhas) {
+
     const botaoImportar =
         document.getElementById(
             "btnImportarProdutos"
         );
 
     try {
+
         if (
             !Array.isArray(linhas) ||
             linhas.length === 0
         ) {
-            alert("A planilha está vazia.");
+            alert(
+                "A planilha está vazia."
+            );
             return;
         }
+
+        const produtosImportados =
+            linhas
+                .map(function (linha) {
+                    return criarProdutoImportado(
+                        linha
+                    );
+                })
+                .filter(function (produto) {
+                    return (
+                        produto.codigo !== "" ||
+                        produto.descricao !== "" ||
+                        produto.nf !== "" ||
+                        produto.endereco !== ""
+                    );
+                });
 
         if (
-            typeof criarProdutoImportado !==
-            "function"
+            produtosImportados.length === 0
         ) {
-            alert(
-                "A função de leitura da planilha não foi encontrada."
-            );
-
-            return;
-        }
-
-        const produtosImportados = linhas
-            .map(function (linha) {
-                return criarProdutoImportado(linha);
-            })
-            .filter(function (produto) {
-                return (
-                    produto.codigo !== "" ||
-                    produto.descricao !== "" ||
-                    produto.nf !== "" ||
-                    produto.endereco !== ""
-                );
-            });
-
-        if (produtosImportados.length === 0) {
             alert(
                 "Nenhum produto foi reconhecido.\n\n" +
                 "Verifique as colunas da planilha."
             );
-
             return;
         }
 
@@ -579,14 +810,18 @@ async function processarProdutosImportados(linhas) {
 
         let substituirEstoque = true;
 
-        if (produtosExistentes.length > 0) {
-            substituirEstoque = confirm(
-                "Já existem " +
-                produtosExistentes.length +
-                " produtos no banco.\n\n" +
-                "Clique em OK para SUBSTITUIR o estoque atual.\n" +
-                "Clique em Cancelar para ACRESCENTAR os novos produtos."
-            );
+        if (
+            produtosExistentes.length > 0
+        ) {
+
+            substituirEstoque =
+                confirm(
+                    "Já existem " +
+                    produtosExistentes.length +
+                    " produtos no banco.\n\n" +
+                    "Clique em OK para SUBSTITUIR o estoque atual.\n" +
+                    "Clique em Cancelar para ACRESCENTAR os novos produtos."
+                );
         }
 
         const salvou =
@@ -616,6 +851,7 @@ async function processarProdutosImportados(linhas) {
         );
 
     } catch (erro) {
+
         console.error(
             "Erro durante a importação:",
             erro
@@ -627,6 +863,7 @@ async function processarProdutosImportados(linhas) {
         );
 
     } finally {
+
         if (botaoImportar) {
             botaoImportar.disabled = false;
             botaoImportar.textContent =
@@ -644,19 +881,31 @@ async function atualizarProdutoSupabase(
     id,
     produto
 ) {
+
     if (!verificarConexaoSupabase()) {
         return false;
     }
 
     const dadosBanco =
-        prepararProdutoParaBanco(produto);
+        prepararProdutoParaBanco(
+            produto
+        );
 
-    const { error } = await window.supabaseClient
-        .from(NOME_TABELA_PRODUTOS)
-        .update(dadosBanco)
-        .eq("id", id);
+    const { error } =
+        await window.supabaseClient
+            .from(
+                NOME_TABELA_PRODUTOS
+            )
+            .update(
+                dadosBanco
+            )
+            .eq(
+                "id",
+                id
+            );
 
     if (error) {
+
         console.error(
             "Erro ao atualizar produto:",
             error
@@ -679,16 +928,24 @@ async function atualizarProdutoSupabase(
 // =====================================================
 
 async function excluirProdutoSupabase(id) {
+
     if (!verificarConexaoSupabase()) {
         return false;
     }
 
-    const { error } = await window.supabaseClient
-        .from(NOME_TABELA_PRODUTOS)
-        .delete()
-        .eq("id", id);
+    const { error } =
+        await window.supabaseClient
+            .from(
+                NOME_TABELA_PRODUTOS
+            )
+            .delete()
+            .eq(
+                "id",
+                id
+            );
 
     if (error) {
+
         console.error(
             "Erro ao excluir produto:",
             error
@@ -707,10 +964,11 @@ async function excluirProdutoSupabase(id) {
 
 
 // =====================================================
-// FORMATAÇÃO DA TABELA
+// FORMATAÇÃO
 // =====================================================
 
 function criarCelulaProduto(texto) {
+
     const celula =
         document.createElement("td");
 
@@ -726,31 +984,35 @@ function criarCelulaProduto(texto) {
 
 
 function formatarQuantidadeProduto(valor) {
-    return converterNumeroProduto(valor)
-        .toLocaleString(
-            "pt-BR",
-            {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 3
-            }
-        );
+
+    return converterNumeroProduto(
+        valor
+    ).toLocaleString(
+        "pt-BR",
+        {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 3
+        }
+    );
 }
 
 
 function formatarValorProduto(valor) {
-    return converterNumeroProduto(valor)
-        .toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        );
+
+    return converterNumeroProduto(
+        valor
+    ).toLocaleString(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL"
+        }
+    );
 }
 
 
 // =====================================================
-// CARREGAR TABELA
+// CARREGAR TABELA DE PRODUTOS
 // =====================================================
 
 async function carregarTabelaProdutosSupabase() {
@@ -766,7 +1028,7 @@ async function carregarTabelaProdutosSupabase() {
 
     tabela.innerHTML =
         "<tr>" +
-        "<td colspan='9' class='produtos-vazio'>" +
+        "<td colspan='12' class='produtos-vazio'>" +
         "Carregando produtos..." +
         "</td>" +
         "</tr>";
@@ -776,11 +1038,13 @@ async function carregarTabelaProdutosSupabase() {
 
     tabela.innerHTML = "";
 
-    if (produtos.length === 0) {
+    if (
+        produtos.length === 0
+    ) {
 
         tabela.innerHTML =
             "<tr>" +
-            "<td colspan='9' class='produtos-vazio'>" +
+            "<td colspan='12' class='produtos-vazio'>" +
             "Nenhum produto cadastrado." +
             "</td>" +
             "</tr>";
@@ -788,179 +1052,271 @@ async function carregarTabelaProdutosSupabase() {
         return;
     }
 
-    produtos.sort(function (a, b) {
+    produtos.sort(
+        function (a, b) {
 
-        return String(a.endereco || "")
-            .localeCompare(
-                String(b.endereco || ""),
+            return String(
+                a.endereco || ""
+            ).localeCompare(
+                String(
+                    b.endereco || ""
+                ),
                 "pt-BR",
                 {
                     numeric: true
                 }
             );
-
-    });
-
-    produtos.forEach(function (produto) {
-
-        const linha =
-            document.createElement("tr");
-
-        linha.dataset.id =
-            produto.id || "";
-
-        linha.dataset.codigo =
-            produto.codigo || "";
-
-        const quantidade =
-            converterNumeroProduto(
-                produto.quantidade
-            );
-
-        const valorTotal =
-            converterNumeroProduto(
-                produto.valor_total ??
-                produto.valorTotal ??
-                0
-            );
-
-        const descricaoDetalhada =
-            produto.descricao_detalhada ??
-            produto.descricaoDetalhada ??
-            "";
-
-        const ncm =
-            produto.ncm ??
-            produto.NCM ??
-            "";
-
-        const ipi =
-            produto.ipi ??
-            produto.IPI ??
-            "";
-
-        let valorUnitario =
-            converterNumeroProduto(
-                produto.valor_unitario ??
-                produto.valorUnitario ??
-                0
-            );
-
-        if (
-            valorUnitario === 0 &&
-            quantidade > 0 &&
-            valorTotal > 0
-        ) {
-
-            valorUnitario =
-                valorTotal / quantidade;
-
         }
+    );
 
-        linha.appendChild(
-            criarCelulaProduto(
-                produto.codigo
-            )
-        );
+    produtos.forEach(
+        function (produto) {
 
-        linha.appendChild(
-            criarCelulaProduto(
-                produto.descricao
-            )
-        );
+            const linha =
+                document.createElement(
+                    "tr"
+                );
 
-        linha.appendChild(
-            criarCelulaProduto(
-                descricaoDetalhada
-            )
-        );
+            linha.dataset.id =
+                produto.id || "";
 
-        linha.appendChild(
-            criarCelulaProduto(
-                formatarQuantidadeProduto(
-                    quantidade
+            linha.dataset.codigo =
+                produto.codigo || "";
+
+            const quantidade =
+                converterNumeroProduto(
+                    produto.quantidade
+                );
+
+            const minimo =
+                converterNumeroProduto(
+                    produto.minimo ??
+                    produto.estoque_minimo ??
+                    0
+                );
+
+            const maximo =
+                converterNumeroProduto(
+                    produto.maximo ??
+                    produto.estoque_maximo ??
+                    0
+                );
+
+            const abaixoDoMinimo =
+                minimo > 0 &&
+                quantidade < minimo;
+
+            const statusEstoque =
+                abaixoDoMinimo
+                    ? "Abaixo do mínimo"
+                    : "Normal";
+
+            const descricaoDetalhada =
+                produto.descricao_detalhada ??
+                produto.descricaoDetalhada ??
+                "";
+
+            const ncm =
+                produto.ncm ??
+                produto.NCM ??
+                "";
+
+            const ipi =
+                produto.ipi ??
+                produto.IPI ??
+                "";
+
+            const valorTotal =
+                converterNumeroProduto(
+                    produto.valor_total ??
+                    produto.valorTotal ??
+                    0
+                );
+
+            let valorUnitario =
+                converterNumeroProduto(
+                    produto.valor_unitario ??
+                    produto.valorUnitario ??
+                    0
+                );
+
+            if (
+                valorUnitario === 0 &&
+                quantidade > 0 &&
+                valorTotal > 0
+            ) {
+                valorUnitario =
+                    valorTotal /
+                    quantidade;
+            }
+
+            linha.appendChild(
+                criarCelulaProduto(
+                    produto.codigo
                 )
-            )
-        );
+            );
 
-        linha.appendChild(
-            criarCelulaProduto(
-                ncm
-            )
-        );
-
-        linha.appendChild(
-            criarCelulaProduto(
-                ipi
-            )
-        );
-
-        linha.appendChild(
-            criarCelulaProduto(
-                formatarValorProduto(
-                    valorUnitario
+            linha.appendChild(
+                criarCelulaProduto(
+                    produto.descricao
                 )
-            )
-        );
+            );
 
-        linha.appendChild(
-            criarCelulaProduto(
-                formatarValorProduto(
-                    valorTotal
+            linha.appendChild(
+                criarCelulaProduto(
+                    descricaoDetalhada
                 )
-            )
-        );
+            );
 
-        linha.appendChild(
-            criarCelulaProduto(
-                produto.endereco
-            )
-        );
+            linha.appendChild(
+                criarCelulaProduto(
+                    formatarQuantidadeProduto(
+                        quantidade
+                    )
+                )
+            );
 
-        tabela.appendChild(
-            linha
-        );
+            linha.appendChild(
+                criarCelulaProduto(
+                    formatarQuantidadeProduto(
+                        minimo
+                    )
+                )
+            );
 
-    });
+            linha.appendChild(
+                criarCelulaProduto(
+                    formatarQuantidadeProduto(
+                        maximo
+                    )
+                )
+            );
 
+           const celulaStatus =
+    criarCelulaProduto(
+        statusEstoque
+    );
+
+celulaStatus.innerHTML =
+    abaixoDoMinimo
+        ? '<span class="status-estoque status-baixo">Abaixo do mínimo</span>'
+        : '<span class="status-estoque status-normal">Normal</span>';
+
+linha.appendChild(
+    celulaStatus
+);
+
+            linha.appendChild(
+                criarCelulaProduto(
+                    ncm
+                )
+            );
+
+            linha.appendChild(
+                criarCelulaProduto(
+                    ipi
+                )
+            );
+
+            linha.appendChild(
+                criarCelulaProduto(
+                    formatarValorProduto(
+                        valorUnitario
+                    )
+                )
+            );
+
+            linha.appendChild(
+                criarCelulaProduto(
+                    formatarValorProduto(
+                        valorTotal
+                    )
+                )
+            );
+
+            linha.appendChild(
+                criarCelulaProduto(
+                    produto.endereco
+                )
+            );
+
+            tabela.appendChild(
+                linha
+            );
+        }
+    );
 }
 
+
 // =====================================================
-// EDITAR
+// EDITAR PRODUTO
 // =====================================================
 
-async function editarProdutoSupabase(produto) {
-    const novaDescricao = prompt(
-        "Descrição do produto:",
-        produto.descricao || ""
-    );
+async function editarProdutoSupabase(
+    produto
+) {
+
+    const novaDescricao =
+        prompt(
+            "Descrição do produto:",
+            produto.descricao || ""
+        );
 
     if (novaDescricao === null) {
         return;
     }
 
-    const novaQuantidade = prompt(
-        "Quantidade:",
-        produto.quantidade ?? 0
-    );
+    const novaQuantidade =
+        prompt(
+            "Quantidade:",
+            produto.quantidade ?? 0
+        );
 
     if (novaQuantidade === null) {
         return;
     }
 
-    const novoValorTotal = prompt(
-        "Valor Total:",
-        produto.valorTotal ?? 0
-    );
+    const novoMinimo =
+        prompt(
+            "Estoque Mínimo:",
+            produto.minimo ??
+            produto.estoque_minimo ??
+            0
+        );
+
+    if (novoMinimo === null) {
+        return;
+    }
+
+    const novoMaximo =
+        prompt(
+            "Estoque Máximo:",
+            produto.maximo ??
+            produto.estoque_maximo ??
+            0
+        );
+
+    if (novoMaximo === null) {
+        return;
+    }
+
+    const novoValorTotal =
+        prompt(
+            "Valor Total:",
+            produto.valorTotal ??
+            produto.valor_total ??
+            0
+        );
 
     if (novoValorTotal === null) {
         return;
     }
 
-    const novoEndereco = prompt(
-        "Endereço:",
-        produto.endereco || ""
-    );
+    const novoEndereco =
+        prompt(
+            "Endereço:",
+            produto.endereco || ""
+        );
 
     if (novoEndereco === null) {
         return;
@@ -970,22 +1326,64 @@ async function editarProdutoSupabase(produto) {
         await atualizarProdutoSupabase(
             produto.id,
             {
-                nf: produto.nf || "",
-                codigo: produto.codigo || "",
+                nf:
+                    produto.nf || "",
+
+                codigo:
+                    produto.codigo || "",
+
                 descricao:
-                    String(novaDescricao).trim(),
+                    String(
+                        novaDescricao
+                    ).trim(),
+
+                descricaoDetalhada:
+                    produto.descricao_detalhada ??
+                    produto.descricaoDetalhada ??
+                    "",
+
                 cliente:
                     produto.cliente || "SMI",
+
                 quantidade:
                     converterNumeroProduto(
                         novaQuantidade
                     ),
+
+                minimo:
+                    converterNumeroProduto(
+                        novoMinimo
+                    ),
+
+                maximo:
+                    converterNumeroProduto(
+                        novoMaximo
+                    ),
+
+                ncm:
+                    produto.ncm ??
+                    produto.NCM ??
+                    "",
+
+                ipi:
+                    produto.ipi ??
+                    produto.IPI ??
+                    "",
+
+                valorUnitario:
+                    produto.valor_unitario ??
+                    produto.valorUnitario ??
+                    0,
+
                 valorTotal:
                     converterNumeroProduto(
                         novoValorTotal
                     ),
+
                 endereco:
-                    String(novoEndereco).trim()
+                    String(
+                        novoEndereco
+                    ).trim()
             }
         );
 
@@ -999,24 +1397,24 @@ async function editarProdutoSupabase(produto) {
 
     await carregarTabelaProdutosSupabase();
 }
-
-
 // =====================================================
-// CONFIRMAR EXCLUSÃO
+// CONFIRMAR EXCLUSÃO DE PRODUTO
 // =====================================================
 
 async function confirmarExclusaoProdutoSupabase(
     produto
 ) {
-    const confirmou = confirm(
-        "Deseja excluir este produto?\n\n" +
-        "Código: " +
-        (produto.codigo || "-") +
-        "\nDescrição: " +
-        (produto.descricao || "-") +
-        "\nEndereço: " +
-        (produto.endereco || "-")
-    );
+
+    const confirmou =
+        confirm(
+            "Deseja excluir este produto?\n\n" +
+            "Código: " +
+            (produto.codigo || "-") +
+            "\nDescrição: " +
+            (produto.descricao || "-") +
+            "\nEndereço: " +
+            (produto.endereco || "-")
+        );
 
     if (!confirmou) {
         return;
@@ -1046,6 +1444,7 @@ async function confirmarExclusaoProdutoSupabase(
 function atualizarFiltroClientesSupabase(
     produtos
 ) {
+
     const filtro =
         document.getElementById(
             "filtroClienteProdutos"
@@ -1055,16 +1454,20 @@ function atualizarFiltroClientesSupabase(
         return;
     }
 
-    const clienteAtual = filtro.value;
+    const clienteAtual =
+        filtro.value;
 
     const clientes = [
         ...new Set(
             produtos
-                .map(function (produto) {
-                    return String(
-                        produto.cliente || ""
-                    ).trim();
-                })
+                .map(
+                    function (produto) {
+
+                        return String(
+                            produto.cliente || ""
+                        ).trim();
+                    }
+                )
                 .filter(Boolean)
         )
     ].sort();
@@ -1074,21 +1477,33 @@ function atualizarFiltroClientesSupabase(
         "Todos os clientes" +
         "</option>";
 
-    clientes.forEach(function (cliente) {
-        const opcao =
-            document.createElement("option");
+    clientes.forEach(
+        function (cliente) {
 
-        opcao.value = cliente;
-        opcao.textContent = cliente;
+            const opcao =
+                document.createElement(
+                    "option"
+                );
 
-        filtro.appendChild(opcao);
-    });
+            opcao.value =
+                cliente;
 
-    filtro.value = clienteAtual;
+            opcao.textContent =
+                cliente;
+
+            filtro.appendChild(
+                opcao
+            );
+        }
+    );
+
+    filtro.value =
+        clienteAtual;
 }
 
 
 function filtrarProdutosSupabase() {
+
     const filtro =
         document.getElementById(
             "filtroClienteProdutos"
@@ -1099,35 +1514,42 @@ function filtrarProdutosSupabase() {
     }
 
     const clienteSelecionado =
-        filtro.value.trim().toLowerCase();
+        filtro.value
+            .trim()
+            .toLowerCase();
 
     const linhas =
         document.querySelectorAll(
             "#listaProdutos tr"
         );
 
-    linhas.forEach(function (linha) {
-        const celulaCliente =
-            linha.querySelector(
-                ".cliente-produto"
-            );
+    linhas.forEach(
+        function (linha) {
 
-        if (!celulaCliente) {
-            return;
+            const celulaCliente =
+                linha.querySelector(
+                    ".cliente-produto"
+                );
+
+            if (!celulaCliente) {
+                return;
+            }
+
+            const clienteLinha =
+                celulaCliente
+                    .textContent
+                    .trim()
+                    .toLowerCase();
+
+            linha.style.display =
+                clienteSelecionado === "" ||
+                clienteLinha === clienteSelecionado
+                    ? ""
+                    : "none";
         }
-
-        const clienteLinha =
-            celulaCliente.textContent
-                .trim()
-                .toLowerCase();
-
-        linha.style.display =
-            clienteSelecionado === "" ||
-            clienteLinha === clienteSelecionado
-                ? ""
-                : "none";
-    });
+    );
 }
+
 
 // =====================================================
 // BUSCAR TODOS OS PRODUTOS PARA EXPORTAÇÃO
@@ -1137,21 +1559,32 @@ async function buscarTodosProdutosParaExportacao() {
 
     const todosProdutos = [];
     const tamanhoPagina = 1000;
+
     let inicio = 0;
 
     while (true) {
 
         const fim =
-            inicio + tamanhoPagina - 1;
+            inicio +
+            tamanhoPagina -
+            1;
 
         const { data, error } =
             await window.supabaseClient
-                .from("produtos")
+                .from(
+                    NOME_TABELA_PRODUTOS
+                )
                 .select("*")
-                .order("id", {
-                    ascending: true
-                })
-                .range(inicio, fim);
+                .order(
+                    "id",
+                    {
+                        ascending: true
+                    }
+                )
+                .range(
+                    inicio,
+                    fim
+                );
 
         if (error) {
             throw error;
@@ -1164,17 +1597,29 @@ async function buscarTodosProdutosParaExportacao() {
             break;
         }
 
-        todosProdutos.push(...data);
+        todosProdutos.push(
+            ...data
+        );
 
-        if (data.length < tamanhoPagina) {
+        if (
+            data.length <
+            tamanhoPagina
+        ) {
             break;
         }
 
-        inicio += tamanhoPagina;
+        inicio +=
+            tamanhoPagina;
     }
-console.log("TOTAL:", todosProdutos.length);
+
+    console.log(
+        "TOTAL:",
+        todosProdutos.length
+    );
+
     return todosProdutos;
 }
+
 
 // =====================================================
 // EXPORTAR ESTOQUE PARA EXCEL
@@ -1184,10 +1629,15 @@ async function exportarEstoqueExcel() {
 
     try {
 
-        if (typeof XLSX === "undefined") {
+        if (
+            typeof XLSX ===
+            "undefined"
+        ) {
+
             alert(
                 "A biblioteca do Excel não foi carregada."
             );
+
             return;
         }
 
@@ -1198,9 +1648,11 @@ async function exportarEstoqueExcel() {
             !Array.isArray(produtos) ||
             produtos.length === 0
         ) {
+
             alert(
                 "Não existem produtos para exportar."
             );
+
             return;
         }
 
@@ -1209,35 +1661,54 @@ async function exportarEstoqueExcel() {
                 function (produto) {
 
                     const quantidade =
-                        Number(
-                            produto.quantidade || 0
+                        converterNumeroProduto(
+                            produto.quantidade
+                        );
+
+                    const minimo =
+                        converterNumeroProduto(
+                            produto.minimo ??
+                            produto.estoque_minimo ??
+                            0
+                        );
+
+                    const maximo =
+                        converterNumeroProduto(
+                            produto.maximo ??
+                            produto.estoque_maximo ??
+                            0
                         );
 
                     const valorTotal =
-                        Number(
+                        converterNumeroProduto(
                             produto.valor_total ??
                             produto.valorTotal ??
                             0
                         );
 
                     let valorUnitario =
-                        Number(
+                        converterNumeroProduto(
                             produto.valor_unitario ??
                             produto.valorUnitario ??
                             0
                         );
 
                     if (
-                        (
-                            !Number.isFinite(valorUnitario) ||
-                            valorUnitario === 0
-                        ) &&
+                        valorUnitario === 0 &&
                         quantidade > 0 &&
                         valorTotal > 0
                     ) {
+
                         valorUnitario =
-                            valorTotal / quantidade;
+                            valorTotal /
+                            quantidade;
                     }
+
+                    const status =
+                        minimo > 0 &&
+                        quantidade < minimo
+                            ? "Abaixo do mínimo"
+                            : "Normal";
 
                     return {
 
@@ -1254,6 +1725,15 @@ async function exportarEstoqueExcel() {
 
                         "Quantidade":
                             quantidade,
+
+                        "Mínimo":
+                            minimo,
+
+                        "Máximo":
+                            maximo,
+
+                        "Status":
+                            status,
 
                         "NCM":
                             produto.ncm ??
@@ -1273,22 +1753,25 @@ async function exportarEstoqueExcel() {
 
                         "Posição":
                             produto.endereco || ""
-
                     };
-
                 }
             );
 
         const planilha =
-            XLSX.utils.json_to_sheet(
-                dadosExportacao
-            );
+            XLSX.utils
+                .json_to_sheet(
+                    dadosExportacao
+                );
 
         planilha["!cols"] = [
+
             { wch: 18 }, // Código
             { wch: 40 }, // Descrição
             { wch: 55 }, // Descrição detalhada
             { wch: 14 }, // Quantidade
+            { wch: 14 }, // Mínimo
+            { wch: 14 }, // Máximo
+            { wch: 20 }, // Status
             { wch: 18 }, // NCM
             { wch: 12 }, // IPI
             { wch: 18 }, // Valor Unitário
@@ -1299,16 +1782,22 @@ async function exportarEstoqueExcel() {
         const arquivoExcel =
             XLSX.utils.book_new();
 
-        XLSX.utils.book_append_sheet(
-            arquivoExcel,
-            planilha,
-            "Estoque"
-        );
+        XLSX.utils
+            .book_append_sheet(
+                arquivoExcel,
+                planilha,
+                "Estoque"
+            );
 
         const dataAtual =
             new Date()
-                .toLocaleDateString("pt-BR")
-                .replace(/\//g, "-");
+                .toLocaleDateString(
+                    "pt-BR"
+                )
+                .replace(
+                    /\//g,
+                    "-"
+                );
 
         XLSX.writeFile(
             arquivoExcel,
@@ -1333,10 +1822,9 @@ async function exportarEstoqueExcel() {
             "Não foi possível exportar o estoque.\n\n" +
             erro.message
         );
-
     }
-
 }
+
 
 // =====================================================
 // LIMPAR TODOS OS PRODUTOS DO SUPABASE
@@ -1368,15 +1856,22 @@ async function limparTodosProdutosSupabase() {
 
     try {
 
-        if (!verificarConexaoSupabase()) {
+        if (
+            !verificarConexaoSupabase()
+        ) {
             return;
         }
 
         const { error } =
             await window.supabaseClient
-                .from(NOME_TABELA_PRODUTOS)
+                .from(
+                    NOME_TABELA_PRODUTOS
+                )
                 .delete()
-                .neq("id", 0);
+                .neq(
+                    "id",
+                    0
+                );
 
         if (error) {
             throw error;
@@ -1401,7 +1896,6 @@ async function limparTodosProdutosSupabase() {
         );
     }
 }
-
 // =====================================================
 // DISPONIBILIZA AS FUNÇÕES PARA O PRODUTOS.HTML
 // =====================================================
@@ -1435,33 +1929,40 @@ window.editarProdutoSupabase =
 
 window.excluirProdutoSupabase =
     excluirProdutoSupabase;
-    window.exportarEstoqueExcel =
+
+window.exportarEstoqueExcel =
     exportarEstoqueExcel;
-    window.limparTodosProdutosSupabase =
+
+window.limparTodosProdutosSupabase =
     limparTodosProdutosSupabase;
 
-// =====================================================
-// INICIALIZAÇÃO DA TELA DE PRODUTOS
-// =====================================================
 
 // =====================================================
 // INICIALIZAÇÃO ÚNICA DA TELA DE PRODUTOS
 // =====================================================
 
 async function iniciarTelaProdutosSupabase() {
-    console.log("Produtos Supabase disponível.");
+
+    console.log(
+        "Produtos Supabase disponível."
+    );
 }
 
 
+if (
+    document.readyState ===
+    "loading"
+) {
 
-
-
-if (document.readyState === "loading") {
     document.addEventListener(
         "DOMContentLoaded",
         iniciarTelaProdutosSupabase,
-        { once: true }
+        {
+            once: true
+        }
     );
+
 } else {
+
     iniciarTelaProdutosSupabase();
 }

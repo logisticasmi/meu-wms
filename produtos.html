@@ -179,6 +179,9 @@
 <th>Descrição</th>
 <th>Descrição detalhada</th>
 <th>Quantidade</th>
+<th>Mínimo</th>
+<th>Máximo</th>
+<th>Status</th>
 <th>NCM</th>
 <th>IPI</th>
 <th>Valor Unitário</th>
@@ -190,7 +193,7 @@
                 <tbody id="listaProdutos">
                     <tr>
                         <td
-                            colspan="9"
+                            colspan="12"
                             class="produtos-vazio"
                         >
                             Nenhum produto cadastrado.
@@ -221,7 +224,7 @@ async function carregarTodosOsProdutosNaTela() {
 
     tabela.innerHTML = `
         <tr>
-            <td colspan="9" class="produtos-vazio">
+            <td colspan="12" class="produtos-vazio">
                 Carregando todos os produtos...
             </td>
         </tr>
@@ -280,7 +283,7 @@ async function carregarTodosOsProdutosNaTela() {
         if (todosProdutos.length === 0) {
             tabela.innerHTML = `
                 <tr>
-                    <td colspan="9" class="produtos-vazio">
+                    <td colspan="12" class="produtos-vazio">
                         Nenhum produto cadastrado.
                     </td>
                 </tr>
@@ -295,6 +298,48 @@ async function carregarTodosOsProdutosNaTela() {
             linha.dataset.codigo = produto.codigo || "";
 
             const quantidade = Number(produto.quantidade || 0);
+
+            const minimo = Number(
+    produto.minimo ??
+    produto.estoque_minimo ??
+    0
+);
+
+const maximo = Number(
+    produto.maximo ??
+    produto.estoque_maximo ??
+    0
+);
+
+const abaixoDoMinimo =
+    minimo > 0 &&
+    quantidade < minimo;
+
+const statusEstoque = abaixoDoMinimo
+    ? `
+        <span style="
+            background:#fde2e2;
+            color:#d93025;
+            padding:6px 12px;
+            border-radius:6px;
+            font-weight:600;
+            white-space:nowrap;
+        ">
+            Abaixo do mínimo
+        </span>
+      `
+    : `
+        <span style="
+            background:#e2f4e8;
+            color:#188038;
+            padding:6px 12px;
+            border-radius:6px;
+            font-weight:600;
+            white-space:nowrap;
+        ">
+            Normal
+        </span>
+      `;
 
             const valorTotal = Number(
                 produto.valor_total ??
@@ -346,6 +391,24 @@ async function carregarTodosOsProdutosNaTela() {
                     })}
                 </td>
 
+                <td>
+                    ${minimo.toLocaleString("pt-BR", {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 3
+                    })}
+                </td>
+
+                <td>
+                    ${maximo.toLocaleString("pt-BR", {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 3
+                    })}
+                </td>
+
+                <td>
+                    ${statusEstoque}
+                </td>
+
                 <td>${ncm || "-"}</td>
 
                 <td>${ipi === "" || ipi === null || ipi === undefined ? "-" : ipi}</td>
@@ -384,7 +447,7 @@ async function carregarTodosOsProdutosNaTela() {
 
         tabela.innerHTML = `
             <tr>
-                <td colspan="9" class="produtos-vazio">
+                <td colspan="12" class="produtos-vazio">
                     Erro ao carregar produtos:
                     ${erro.message}
                 </td>
