@@ -240,9 +240,9 @@ function realizarLogin() {
 const usuariosPermitidos = [
 
     {
-        login: "administrador",
+        login: "davi.smi",
         senha: "1234",
-        nome: "Administrador"
+        nome: "DAVI.SMI"
     },
 
     {
