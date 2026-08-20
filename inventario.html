@@ -266,6 +266,28 @@
             color: #64748b;
         }
 
+
+        .indicadores-inventario{display:grid;grid-template-columns:repeat(5,minmax(180px,1fr));gap:14px;margin-bottom:18px}
+        .indicador-inventario,.grafico-inventario-card{background:#fff;border:1px solid #e5ebf2;border-radius:14px;padding:17px;box-shadow:0 4px 14px rgba(0,30,69,.06)}
+        .indicador-inventario h3,.grafico-inventario-card h3{margin:0 0 14px;color:#062d63;font-size:13px}
+        .indicador-principal{display:flex;align-items:center;gap:12px;margin-bottom:13px}
+        .indicador-icone{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:22px}
+        .azul{background:#0b57d0}.verde{background:#16a34a}.laranja{background:#f97316}.vermelho{background:#dc2626}
+        .indicador-valor{color:#062d63;font-size:22px;font-weight:800}
+        .indicador-detalhes{border-top:1px solid #e5ebf2;padding-top:10px;display:grid;gap:7px;font-size:12px}
+        .indicador-linha{display:flex;justify-content:space-between;gap:8px}
+        .graficos-inventario{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+        .grafico-area{position:relative;height:240px}
+        .top5-divergencias-wrap{height:240px;overflow:auto}
+        .top5-divergencias{width:100%;border-collapse:collapse;font-size:12px}
+        .top5-divergencias th{background:#063b73;color:#fff;padding:9px 8px;text-align:left;white-space:nowrap}
+        .top5-divergencias td{padding:9px 8px;border-bottom:1px solid #e5ebf2}
+        .top5-divergencias th:first-child,.top5-divergencias td:first-child{text-align:center;width:34px}
+        .top5-divergencias th:last-child,.top5-divergencias td:last-child{text-align:right;white-space:nowrap}
+        .top5-positivo{color:#166534;font-weight:700}
+        .top5-negativo{color:#dc2626;font-weight:700}
+        @media(max-width:1200px){.indicadores-inventario{grid-template-columns:repeat(2,1fr)}.graficos-inventario{grid-template-columns:1fr}}
+
         @media (max-width: 800px) {
             .resumo-inventario {
                 grid-template-columns: repeat(2, 1fr);
@@ -426,29 +448,30 @@
                 <small id="resultadoPesquisaInventario"></small>
             </div>
 
-            <div class="resumo-inventario">
-
-                <div class="resumo-card">
-                    <span>Total de registros</span>
-                    <strong id="resumoTotalInventario">0</strong>
+            <section class="painel-indicadores-inventario">
+                <div class="indicadores-inventario">
+                    <div class="indicador-inventario"><h3>COBERTURA DO INVENTÁRIO</h3><div class="indicador-principal"><div class="indicador-icone azul">📋</div><div class="indicador-valor" id="indCobertura">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>Itens contados</span><strong id="indContados">—</strong></div><div class="indicador-linha"><span>Total de itens</span><strong id="indTotal">—</strong></div></div></div>
+                    <div class="indicador-inventario"><h3>ACURÁCIA DO INVENTÁRIO</h3><div class="indicador-principal"><div class="indicador-icone verde">🎯</div><div class="indicador-valor" id="indAcuracia">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>Itens sem divergência</span><strong id="indCorretos">—</strong></div><div class="indicador-linha"><span>Total de itens contados</span><strong id="indContados2">—</strong></div></div></div>
+                    <div class="indicador-inventario"><h3>DIVERGÊNCIA TOTAL (R$)</h3><div class="indicador-principal"><div class="indicador-icone laranja">$</div><div class="indicador-valor" id="indDivFinanceira">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>Divergência positiva</span><strong id="indDivPos">—</strong></div><div class="indicador-linha"><span>Divergência negativa</span><strong id="indDivNeg">—</strong></div></div></div>
+                    <div class="indicador-inventario"><h3>ITENS COM DIVERGÊNCIA</h3><div class="indicador-principal"><div class="indicador-icone vermelho">⚠</div><div class="indicador-valor" id="indDivergentes">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>% sobre o total contado</span><strong id="indPercDiv">—</strong></div></div></div>
+                    <div class="indicador-inventario"><h3>VALOR TOTAL INVENTARIADO</h3><div class="indicador-principal"><div class="indicador-icone azul">📦</div><div class="indicador-valor" id="indValorInventariado">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>Valor contábil</span><strong id="indValorContabil">—</strong></div><div class="indicador-linha"><span>Diferença</span><strong id="indDifValor">—</strong></div></div></div>
                 </div>
-
-                <div class="resumo-card">
-                    <span>Itens contados</span>
-                    <strong id="resumoContadosInventario">0</strong>
+                <div class="graficos-inventario">
+                    <div class="grafico-inventario-card"><h3>STATUS DO INVENTÁRIO</h3><div class="grafico-area"><canvas id="graficoStatusInventario"></canvas></div></div>
+                    <div class="grafico-inventario-card">
+                        <h3>TOP 5 ITENS COM MAIOR DIVERGÊNCIA (R$)</h3>
+                        <div class="top5-divergencias-wrap">
+                            <table class="top5-divergencias">
+                                <thead><tr><th>#</th><th>Código</th><th>Descrição</th><th>Posição</th><th>Dif. Qtde</th><th>Divergência (R$)</th></tr></thead>
+                                <tbody id="top5DivergenciasInventario">
+                                    <tr><td colspan="6" style="text-align:center;color:#64748b;">Nenhuma divergência contabilizada.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="resumo-card">
-                    <span>Itens corretos</span>
-                    <strong id="resumoOkInventario">0</strong>
-                </div>
-
-                <div class="resumo-card">
-                    <span>Divergências</span>
-                    <strong id="resumoDivergenciasInventario">0</strong>
-                </div>
-
-            </div>
+            </section>
+            <div style="display:none"><span id="resumoTotalInventario">0</span><span id="resumoContadosInventario">0</span><span id="resumoOkInventario">0</span><span id="resumoDivergenciasInventario">0</span></div>
 
             <div class="inventario-tabela-container">
 
@@ -503,6 +526,7 @@
 
     </main>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
@@ -515,6 +539,7 @@
     let mapaContagensGlobal = {};
     let paginaInventarioAtual = 1;
     let timerPesquisaInventario = null;
+    let graficoStatusInventarioInstancia = null;
 
     const ITENS_POR_PAGINA_INVENTARIO = 100;
 
@@ -637,6 +662,8 @@
             criarMapaContagensInventario(
                 registrosOnline
             );
+
+        atualizarPainelIndicadoresInventario(estoque);
 
         tabela.innerHTML = "";
 
@@ -1730,6 +1757,68 @@
             divergenciasElemento.textContent =
                 divergencias;
         }
+    }
+
+
+    function atualizarPainelIndicadoresInventario(estoque) {
+        const produtos=Array.isArray(estoque)?estoque:[];
+        let contados=0,corretos=0,divergentes=0,pendentes=0,divPos=0,divNeg=0,valorContabil=0,valorInventariado=0; const listaDivergencias=[];
+        produtos.forEach(function(p){
+            const reg=mapaContagensGlobal[criarChaveProdutoInventario(p)];
+            const qs=converterNumeroInventario(p.quantidade);
+            let vu=converterNumeroInventario(p.valor_unitario ?? p.valorUnitario ?? 0);
+            const vt=converterNumeroInventario(p.valor_total ?? p.valorTotal ?? 0);
+            if((!vu||!Number.isFinite(vu))&&qs>0&&vt>0) vu=vt/qs;
+            valorContabil+=qs*vu;
+            const tem=reg&&reg.quantidade_contada!==null&&reg.quantidade_contada!==undefined;
+            if(!tem){pendentes++;return;}
+            contados++;
+            const qc=converterNumeroInventario(reg.quantidade_contada), d=qc-qs, impacto=d*vu;
+            valorInventariado+=qc*vu;
+            if(d===0) corretos++; else {
+                divergentes++;
+                if(impacto>0)divPos+=impacto; else divNeg+=impacto;
+                listaDivergencias.push({
+                    codigo:String(p.codigo||"-"),
+                    descricao:String(p.descricao||"Sem descrição"),
+                    posicao:String(p.endereco||p.posicao||"-"),
+                    diferenca:d,
+                    impacto:impacto
+                });
+            }
+        });
+        const total=produtos.length,cob=total?contados/total*100:0,acu=contados?corretos/contados*100:0,pdiv=contados?divergentes/contados*100:0,dif=divPos+divNeg;
+        const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+        const moeda=v=>Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+        set("indCobertura",cob.toFixed(1).replace(".",",")+"%"); set("indContados",contados.toLocaleString("pt-BR")); set("indTotal",total.toLocaleString("pt-BR"));
+        set("indAcuracia",acu.toFixed(2).replace(".",",")+"%"); set("indCorretos",corretos.toLocaleString("pt-BR")); set("indContados2",contados.toLocaleString("pt-BR"));
+        set("indDivFinanceira",moeda(dif)); set("indDivPos",moeda(divPos)); set("indDivNeg",moeda(divNeg));
+        set("indDivergentes",divergentes.toLocaleString("pt-BR")); set("indPercDiv",pdiv.toFixed(2).replace(".",",")+"%");
+        set("indValorInventariado",moeda(valorInventariado)); set("indValorContabil",moeda(valorContabil)); set("indDifValor",moeda(dif));
+        const corpoTop5=document.getElementById("top5DivergenciasInventario");
+        if(corpoTop5){
+            const top5=listaDivergencias
+                .sort((a,b)=>Math.abs(b.impacto)-Math.abs(a.impacto))
+                .slice(0,5);
+            if(top5.length===0){
+                corpoTop5.innerHTML='<tr><td colspan="6" style="text-align:center;color:#64748b;">Nenhuma divergência contabilizada.</td></tr>';
+            }else{
+                corpoTop5.innerHTML=top5.map((item,i)=>{
+                    const classe=item.impacto>=0?"top5-positivo":"top5-negativo";
+                    return `<tr>
+                        <td>${i+1}</td>
+                        <td>${item.codigo}</td>
+                        <td>${item.descricao}</td>
+                        <td>${item.posicao}</td>
+                        <td class="${item.diferenca>=0?"top5-positivo":"top5-negativo"}">${formatarNumeroInventario(item.diferenca)}</td>
+                        <td class="${classe}">${moeda(item.impacto)}</td>
+                    </tr>`;
+                }).join("");
+            }
+        }
+        if(typeof Chart==="undefined")return;
+        const cs=document.getElementById("graficoStatusInventario");
+        if(cs){if(graficoStatusInventarioInstancia)graficoStatusInventarioInstancia.destroy();graficoStatusInventarioInstancia=new Chart(cs,{type:"doughnut",data:{labels:["Corretos","Divergentes","Pendentes"],datasets:[{data:[corretos,divergentes,pendentes],backgroundColor:["#16a34a","#dc2626","#fbbf24"]}]},options:{responsive:true,maintainAspectRatio:false,cutout:"62%",plugins:{legend:{position:"right"}}}});}
     }
 
     async function limparContagensInventario() {
