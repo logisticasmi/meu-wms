@@ -239,6 +239,33 @@
             line-height: 1.3;
         }
 
+
+        .inventario-busca {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .inventario-busca input {
+            width: 100%;
+            max-width: 520px;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .inventario-busca input:focus {
+            border-color: #1264e8;
+            box-shadow: 0 0 0 3px rgba(18, 100, 232, 0.12);
+        }
+
+        .inventario-busca small {
+            color: #64748b;
+        }
+
         @media (max-width: 800px) {
             .resumo-inventario {
                 grid-template-columns: repeat(2, 1fr);
@@ -387,6 +414,18 @@
 
             </div>
 
+
+            <div class="inventario-busca">
+                <input
+                    type="search"
+                    id="pesquisaInventario"
+                    placeholder="🔎 Digite ou bipe o SKU, descrição ou posição..."
+                    autocomplete="off"
+                    aria-label="Pesquisar em todo o inventário"
+                >
+                <small id="resultadoPesquisaInventario"></small>
+            </div>
+
             <div class="resumo-inventario">
 
                 <div class="resumo-card">
@@ -475,6 +514,7 @@
     let salvamentosEmAndamento = new Set();
     let mapaContagensGlobal = {};
     let paginaInventarioAtual = 1;
+    let timerPesquisaInventario = null;
 
     const ITENS_POR_PAGINA_INVENTARIO = 100;
 
@@ -630,11 +670,93 @@
             );
         });
 
+        const campoPesquisa =
+            document.getElementById(
+                "pesquisaInventario"
+            );
+
+        const termoPesquisa =
+            String(
+                campoPesquisa?.value || ""
+            )
+                .trim()
+                .toUpperCase();
+
+        const estoqueFiltrado =
+            termoPesquisa
+                ? estoque.filter(function (produto) {
+                    const codigo = String(
+                        produto.codigo || ""
+                    )
+                        .trim()
+                        .toUpperCase();
+
+                    const descricao = String(
+                        produto.descricao || ""
+                    )
+                        .trim()
+                        .toUpperCase();
+
+                    const posicao = String(
+                        produto.endereco ||
+                        produto.posicao ||
+                        ""
+                    )
+                        .trim()
+                        .toUpperCase();
+
+                    return (
+                        codigo.includes(termoPesquisa) ||
+                        descricao.includes(termoPesquisa) ||
+                        posicao.includes(termoPesquisa)
+                    );
+                })
+                : estoque;
+
+        const resultadoPesquisa =
+            document.getElementById(
+                "resultadoPesquisaInventario"
+            );
+
+        if (resultadoPesquisa) {
+            if (termoPesquisa) {
+                resultadoPesquisa.textContent =
+                    estoqueFiltrado.length +
+                    " item(ns) encontrado(s) em toda a base";
+            } else {
+                resultadoPesquisa.textContent = "";
+            }
+        }
+
+        if (estoqueFiltrado.length === 0) {
+            tabela.innerHTML =
+                "<tr>" +
+                    "<td colspan='11' class='inventario-vazio'>" +
+                        "Nenhum item encontrado para a pesquisa." +
+                    "</td>" +
+                "</tr>";
+
+            atualizarResumoInventario();
+
+            const totalElemento =
+                document.getElementById(
+                    "resumoTotalInventario"
+                );
+
+            if (totalElemento) {
+                totalElemento.textContent =
+                    estoque.length;
+            }
+
+            renderizarPaginacaoInventario(0);
+            return;
+        }
+
         const totalPaginas =
             Math.max(
                 1,
                 Math.ceil(
-                    estoque.length /
+                    estoqueFiltrado.length /
                     ITENS_POR_PAGINA_INVENTARIO
                 )
             );
@@ -648,7 +770,7 @@
             ITENS_POR_PAGINA_INVENTARIO;
 
         const produtosPagina =
-            estoque.slice(
+            estoqueFiltrado.slice(
                 inicioPagina,
                 inicioPagina +
                 ITENS_POR_PAGINA_INVENTARIO
@@ -949,7 +1071,7 @@
         }
 
         renderizarPaginacaoInventario(
-            estoque.length
+            estoqueFiltrado.length
         );
     }
 
@@ -1775,6 +1897,49 @@
                         );
                     }
                 );
+            }
+
+            const campoPesquisa =
+                document.getElementById(
+                    "pesquisaInventario"
+                );
+
+            if (campoPesquisa) {
+                campoPesquisa.addEventListener(
+                    "input",
+                    function () {
+                        clearTimeout(
+                            timerPesquisaInventario
+                        );
+
+                        timerPesquisaInventario =
+                            setTimeout(
+                                async function () {
+                                    paginaInventarioAtual = 1;
+                                    await carregarInventario();
+                                },
+                                250
+                            );
+                    }
+                );
+
+                campoPesquisa.addEventListener(
+                    "keydown",
+                    async function (evento) {
+                        if (evento.key === "Enter") {
+                            evento.preventDefault();
+
+                            clearTimeout(
+                                timerPesquisaInventario
+                            );
+
+                            paginaInventarioAtual = 1;
+                            await carregarInventario();
+                        }
+                    }
+                );
+
+                campoPesquisa.focus();
             }
 
             await carregarInventario();
