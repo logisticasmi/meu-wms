@@ -16,8 +16,12 @@
         rel="stylesheet"
         href="style.css"
     >
-    <link rel="icon" type="image/png" href="img/favicon.png">
 
+    <link
+        rel="icon"
+        type="image/png"
+        href="img/favicon.png"
+    >
 
 </head>
 
@@ -56,19 +60,31 @@
                 📤 Saídas
             </li>
 
-            <li class="ativo">
+            <li onclick="location.href='separacao.html'">
+                🛒 Separação
+            </li>
+
+            <li
+                class="ativo"
+                onclick="location.href='transferencias.html'"
+            >
                 🔄 Transferências
             </li>
 
             <li onclick="location.href='posicoes.html'">
                 📍 Posições
             </li>
+
             <li onclick="location.href='inventario.html'">
-    📋 Inventário
-</li>
+                📋 Inventário
+            </li>
 
             <li onclick="location.href='relatorios.html'">
                 📊 Relatórios
+            </li>
+
+            <li onclick="location.href='requisicao.html'">
+                📝 Requisição
             </li>
 
             <li onclick="location.href='configuracoes.html'">
@@ -156,13 +172,13 @@
                     placeholder="Novo Endereço"
                 >
 
-              <button
-    type="button"
-    id="btnRegistrarTransferencia"
-    class="btn"
->
-    🔄 Transferir Produto
-</button>
+                <button
+                    type="button"
+                    id="btnRegistrarTransferencia"
+                    class="btn"
+                >
+                    🔄 Transferir Produto
+                </button>
 
             </div>
 
@@ -224,12 +240,14 @@
     <!-- JAVASCRIPT -->
 
     <script src="app.js"></script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-<script src="sync-supabase.js"></script>
 
-<script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase.js"></script>
+
+    <script src="sync-supabase.js"></script>
+
+    <script src="app.js"></script>
 
 </body>
 

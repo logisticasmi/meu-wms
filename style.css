@@ -440,7 +440,9 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
     .importarExcel input, .btnImportar { width: 100%; }
     .tabela { display: block; overflow-x: auto; white-space: nowrap; }
     .dashboard-rodape { flex-direction: column; align-items: flex-start; }
-    /* =======================================
+}
+
+/* =======================================
    ÍCONE DO EXCEL
 ======================================= */
 
@@ -607,4 +609,836 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
 
     display:block !important;
 
+}
+
+/* =====================================================
+   DASHBOARD NOVO - VISUAL MODELO
+   Somente estilos do dashboard
+===================================================== */
+
+.dashboard-novo {
+    background: #f4f7fb;
+}
+
+/* TOPO */
+
+.dashboard-novo .topbar {
+    margin-bottom: 20px;
+}
+
+/* =====================================================
+   CARDS SUPERIORES
+===================================================== */
+
+.dashboard-cards-principais {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.card-dashboard-novo {
+    position: relative;
+    min-width: 0;
+    min-height: 150px;
+    padding: 18px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e3e9f1;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(0, 30, 69, 0.07);
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.card-dashboard-novo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 9px 24px rgba(0, 30, 69, 0.11);
+}
+
+.icone-card-novo {
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 25px;
+    color: white;
+}
+
+.card-info-novo {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-titulo-novo {
+    margin-bottom: 5px;
+    color: #0b2f5b;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.card-info-novo > strong {
+    color: #061c40;
+    font-size: 26px;
+    line-height: 1.1;
+    font-weight: 800;
+}
+
+.card-info-novo small {
+    margin-top: 6px;
+    color: #738196;
+    font-size: 11px;
+}
+
+.verde-texto {
+    color: #16a34a !important;
+    font-weight: 700;
+}
+
+.link-card {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    color: #1264e8;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.roxo-texto {
+    color: #6d4adf;
+}
+
+.turquesa-texto {
+    color: #00a6b8;
+}
+
+.amarelo-texto {
+    color: #f59e0b;
+}
+
+.vermelho-texto {
+    color: #dc2626;
+}
+
+.mini-grafico-novo {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 75px;
+    height: 35px;
+}
+
+.mini-grafico-novo canvas {
+    width: 75px !important;
+    height: 35px !important;
+}
+
+.novo-progresso {
+    max-width: 135px;
+    height: 6px;
+    margin-top: 12px;
+}
+
+/* =====================================================
+   FAIXA DE ALERTAS
+===================================================== */
+
+.dashboard-faixa-alertas {
+    width: 100%;
+    min-height: 74px;
+    margin-bottom: 18px;
+    padding: 12px 18px;
+    display: grid;
+    grid-template-columns: 1.35fr repeat(4, 1fr);
+    align-items: center;
+    gap: 0;
+    background: #ffffff;
+    border: 1px solid #e3e9f1;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 30, 69, 0.05);
+}
+
+.alerta-principal,
+.alerta-indicador {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.alerta-indicador {
+    padding-left: 20px;
+    border-left: 1px solid #e7ecf2;
+}
+
+.alerta-principal strong {
+    display: block;
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.alerta-principal small,
+.alerta-indicador small {
+    display: block;
+    margin-top: 4px;
+    color: #738196;
+    font-size: 10px;
+}
+
+.alerta-indicador strong {
+    display: block;
+    color: #102a4c;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.alerta-icone-grande {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    color: white;
+    background: #dc3545;
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.bolinha {
+    width: 17px;
+    height: 17px;
+    min-width: 17px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.vermelho-fundo {
+    background: #ef4444;
+}
+
+.escuro-fundo {
+    background: #293548;
+}
+
+.amarelo-fundo {
+    background: #f59e0b;
+}
+
+.azul-fundo {
+    background: #287cff;
+}
+
+/* =====================================================
+   GRÁFICOS
+===================================================== */
+
+.dashboard-graficos-novos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.dashboard-grafico-card {
+    min-height: 330px;
+    padding: 18px;
+    border-radius: 15px;
+}
+
+.dashboard-grafico-card canvas {
+    height: 270px !important;
+}
+
+.dashboard-cabecalho-grafico {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.dashboard-cabecalho-grafico h2 {
+    margin-bottom: 18px;
+}
+
+.filtro-grafico {
+    margin-bottom: 18px;
+    padding: 6px 10px;
+    color: #52657c;
+    background: #ffffff;
+    border: 1px solid #dbe3ec;
+    border-radius: 6px;
+    font-size: 10px;
+}
+
+/* =====================================================
+   QUATRO PAINÉIS INFERIORES
+===================================================== */
+
+.dashboard-grid-quatro {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.dashboard-painel-compacto {
+    min-width: 0;
+    min-height: 320px;
+    padding: 16px;
+    border-radius: 15px;
+}
+
+.dashboard-painel-compacto .dashboard-titulo-painel {
+    margin-bottom: 16px;
+}
+
+.dashboard-painel-compacto .dashboard-titulo-painel h2 {
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+.dashboard-painel-compacto .dashboard-titulo-painel small {
+    font-size: 10px;
+}
+
+.dashboard-painel-compacto .dashboard-badge {
+    padding: 5px 9px;
+    font-size: 9px;
+}
+
+.dashboard-painel-compacto .dashboard-ranking {
+    gap: 11px;
+}
+
+.dashboard-painel-compacto .dashboard-ranking-numero {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+}
+
+.dashboard-painel-compacto .dashboard-ranking-identificacao strong {
+    font-size: 11px;
+}
+
+.dashboard-painel-compacto .dashboard-ranking-identificacao small {
+    font-size: 9px;
+}
+
+.dashboard-painel-compacto .dashboard-ranking-valor {
+    font-size: 11px;
+}
+
+.dashboard-painel-compacto .dashboard-barra {
+    height: 5px;
+}
+
+.badge-amarelo {
+    color: #c27200;
+    background: #fff4df;
+    border-color: #ffe1a8;
+}
+
+.badge-roxo {
+    color: #6d4adf;
+    background: #f2edff;
+    border-color: #e2d7ff;
+}
+
+.dashboard-placeholder {
+    min-height: 210px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #8290a3;
+}
+
+.dashboard-placeholder .placeholder-icone {
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.dashboard-placeholder strong {
+    color: #52657c;
+    font-size: 12px;
+}
+
+.dashboard-placeholder small {
+    margin-top: 6px;
+    font-size: 10px;
+}
+
+/* =====================================================
+   RESUMO E MOVIMENTAÇÕES
+===================================================== */
+
+.dashboard-resumo-existente,
+.dashboard-movimentacoes-existentes {
+    border-radius: 15px;
+}
+
+/* =====================================================
+   RESPONSIVIDADE
+===================================================== */
+
+@media (max-width: 1250px) {
+
+    .dashboard-cards-principais {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .dashboard-grid-quatro {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 1100px) {
+
+    .dashboard-graficos-novos {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-faixa-alertas {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .alerta-indicador {
+        border-left: 0;
+        padding-left: 0;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .dashboard-cards-principais {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-grid-quatro {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-faixa-alertas {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* =====================================================
+   AJUSTE FINAL DO DASHBOARD - REFERÊNCIA 21/08/2026
+   SOMENTE VISUAL. NÃO ALTERA REGRAS OU JAVASCRIPT.
+===================================================== */
+
+body:has(.dashboard-novo) .sidebar {
+    width: 185px;
+}
+
+body:has(.dashboard-novo) .conteudo {
+    margin-left: 185px;
+    padding: 20px 20px 18px;
+}
+
+body:has(.dashboard-novo) .logo {
+    padding: 20px 12px 8px;
+}
+
+body:has(.dashboard-novo) .logo img {
+    width: 150px;
+}
+
+body:has(.dashboard-novo) .sidebar h2 {
+    margin: 4px 0 18px;
+    font-size: 24px;
+}
+
+body:has(.dashboard-novo) .sidebar ul {
+    padding: 6px 12px 18px;
+}
+
+body:has(.dashboard-novo) .sidebar li {
+    padding: 12px 11px;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.dashboard-novo .topbar {
+    margin-bottom: 20px;
+}
+
+.dashboard-novo .titulo-pagina h1 {
+    font-size: 29px;
+}
+
+.dashboard-novo .titulo-pagina small {
+    font-size: 13px;
+}
+
+.dashboard-novo .usuario {
+    font-size: 12px;
+}
+
+.dashboard-novo .dashboard-cards-principais {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.dashboard-novo .card-dashboard-novo {
+    min-height: 150px;
+    padding: 16px 12px;
+    border-radius: 13px;
+}
+
+.dashboard-novo .icone-card-novo {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+}
+
+.dashboard-novo .card-info-novo > strong {
+    font-size: 24px;
+}
+
+.dashboard-novo .dashboard-faixa-alertas {
+    min-height: 72px;
+    margin-bottom: 18px;
+}
+
+.dashboard-novo .dashboard-graficos-novos {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.dashboard-novo .dashboard-grafico-card {
+    min-height: 260px;
+    padding: 14px 16px;
+}
+
+.dashboard-novo .dashboard-grafico-card canvas {
+    height: 220px !important;
+}
+
+.dashboard-novo .dashboard-grid-quatro {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.dashboard-novo .dashboard-painel-compacto {
+    min-height: 300px;
+    padding: 14px;
+}
+
+/* A referência escolhida termina nos quatro painéis.
+   Estes blocos antigos continuam no HTML e no JS, apenas ficam ocultos no dashboard. */
+
+.dashboard-novo .dashboard-rodape {
+    margin-top: 0;
+    padding: 12px 14px;
+    background: #ffffff;
+    border: 1px solid #e3e9f1;
+    border-radius: 12px;
+}
+
+/* Responsividade sem afetar o desktop da referência */
+@media (max-width: 1250px) {
+    .dashboard-novo .dashboard-cards-principais {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .dashboard-novo .dashboard-grid-quatro {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    body:has(.dashboard-novo) .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+    body:has(.dashboard-novo) .conteudo {
+        margin-left: 0;
+    }
+
+    .dashboard-novo .dashboard-graficos-novos {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .dashboard-novo .dashboard-cards-principais,
+    .dashboard-novo .dashboard-grid-quatro,
+    .dashboard-novo .dashboard-faixa-alertas {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =====================================================
+   TOP 5 DIVERGÊNCIAS - VISUAL FINAL
+===================================================== */
+
+#topDivergencias {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dashboard-divergencia-item {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1.5fr) 62px 62px 68px;
+    align-items: center;
+    gap: 8px;
+    min-height: 58px;
+    padding: 8px 10px;
+    background: #ffffff;
+    border: 1px solid #e7ebf2;
+    border-radius: 10px;
+}
+
+.divergencia-ranking-numero {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #f2edff;
+    color: #5b35d5;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.divergencia-produto {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.divergencia-produto-icone {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #eef5ff;
+    font-size: 15px;
+}
+
+.divergencia-produto-info {
+    min-width: 0;
+}
+
+.divergencia-produto-info strong {
+    display: block;
+    overflow: hidden;
+    color: #102a4c;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.divergencia-produto-info small {
+    display: block;
+    margin-top: 2px;
+    color: #77869a;
+    font-size: 8px;
+}
+
+.divergencia-dado {
+    text-align: center;
+}
+
+.divergencia-dado span {
+    display: block;
+    margin-bottom: 3px;
+    color: #77869a;
+    font-size: 7px;
+    font-weight: 600;
+}
+
+.divergencia-dado strong {
+    color: #102a4c;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.valor-divergencia-negativa {
+    color: #dc2626 !important;
+}
+
+.valor-divergencia-positiva {
+    color: #16a34a !important;
+}
+
+.divergencia-diferenca {
+    border-left: 1px solid #edf0f5;
+    padding-left: 8px;
+}
+
+/* =====================================================
+   MENU LATERAL - TAMANHO MAIOR
+===================================================== */
+
+/* Itens do menu */
+.sidebar a,
+.sidebar nav a,
+.menu-lateral a,
+.sidebar-menu a {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+}
+
+/* Qualquer texto dentro dos itens */
+.sidebar a span,
+.sidebar nav a span,
+.menu-lateral a span,
+.sidebar-menu a span {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+}
+
+/* Ícones */
+.sidebar a i,
+.sidebar nav a i,
+.sidebar a .icone,
+.sidebar-menu a i {
+    font-size: 19px !important;
+}
+
+/* SMI WMS */
+.sidebar h1,
+.sidebar h2,
+.sidebar .titulo {
+    font-size: 26px !important;
+    font-weight: 700 !important;
+}
+/* =====================================================
+   MENU LATERAL - AJUSTE DEFINITIVO
+===================================================== */
+
+body:has(.dashboard-novo) .sidebar li,
+body:has(.dashboard-novo) .sidebar li a,
+body:has(.dashboard-novo) .sidebar a {
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+}
+
+body:has(.dashboard-novo) .sidebar li {
+    padding: 14px 12px !important;
+    margin-bottom: 6px !important;
+}
+
+body:has(.dashboard-novo) .sidebar h2 {
+    font-size: 26px !important;
+}
+/* =====================================================
+   MENU LATERAL - ALINHAMENTO ÍCONE + TEXTO
+===================================================== */
+
+body:has(.dashboard-novo) .sidebar li,
+body:has(.dashboard-novo) .sidebar li a {
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 9px !important;
+}
+
+/* Ícone sempre alinhado */
+body:has(.dashboard-novo) .sidebar li > span:first-child,
+body:has(.dashboard-novo) .sidebar li a > span:first-child {
+    flex: 0 0 auto !important;
+}
+
+/* Texto não quebra para outra linha */
+body:has(.dashboard-novo) .sidebar li,
+body:has(.dashboard-novo) .sidebar li a {
+    white-space: nowrap !important;
+}
+
+/* =====================================================
+   MENU LATERAL PADRÃO - TODAS AS TELAS DO WMS
+===================================================== */
+
+/* largura igual em todas as páginas */
+.sidebar {
+    width: 185px !important;
+}
+
+/* conteúdo acompanha a largura do menu */
+.conteudo {
+    margin-left: 185px !important;
+}
+
+/* logo */
+.logo {
+    padding: 20px 12px 8px !important;
+}
+
+.logo img {
+    width: 150px !important;
+}
+
+/* SMI WMS */
+.sidebar h2 {
+    margin: 4px 0 18px !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+}
+
+/* área dos itens */
+.sidebar ul {
+    padding: 6px 12px 18px !important;
+}
+
+/* todos os itens */
+.sidebar li {
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+
+    gap: 9px !important;
+
+    padding: 14px 12px !important;
+    margin-bottom: 6px !important;
+
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+
+    white-space: nowrap !important;
+}
+
+/* caso alguma página use links no menu */
+.sidebar a {
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
 }

@@ -23,53 +23,65 @@
 
 <div class="sidebar">
 
+    <div class="logo">
+        <img
+            src="img/logo.png"
+            alt="Logo SMI WMS"
+        >
+    </div>
+
     <h2>SMI WMS</h2>
 
+    <ul>
 
-    <a href="dashboard.html">
-        📊 Dashboard
-    </a>
+        <li onclick="location.href='dashboard.html'">
+            🏠 Dashboard
+        </li>
 
+        <li onclick="location.href='produtos.html'">
+            📦 Produtos
+        </li>
 
-    <a href="produtos.html">
-        📦 Produtos
-    </a>
+        <li onclick="location.href='entradas.html'">
+            📥 Entradas
+        </li>
 
+        <li onclick="location.href='saidas.html'">
+            📤 Saídas
+        </li>
 
-    <a href="posicoes.html">
-        🏭 Posições
-    </a>
+        <li onclick="location.href='separacao.html'">
+            🛒 Separação
+        </li>
 
+        <li onclick="location.href='transferencias.html'">
+            🔄 Transferências
+        </li>
 
-    <a href="entradas.html">
-        📥 Entradas
-    </a>
+        <li onclick="location.href='posicoes.html'">
+            📍 Posições
+        </li>
 
+        <li onclick="location.href='inventario.html'">
+            📋 Inventário
+        </li>
 
-    <a href="saidas.html">
-        📤 Saídas
-    </a>
+        <li onclick="location.href='relatorios.html'">
+            📊 Relatórios
+        </li>
 
+        <li onclick="location.href='requisicao.html'">
+            📝 Requisição
+        </li>
 
-    <a href="transferencias.html">
-        🔄 Transferências
-    </a>
+        <li
+            class="ativo"
+            onclick="location.href='configuracoes.html'"
+        >
+            ⚙ Configurações
+        </li>
 
-
-    <a href="relatorios.html">
-        📈 Relatórios
-    </a>
-
-
-    <a href="configuracoes.html" class="ativo">
-        ⚙️ Configurações
-    </a>
-
-
-    <button onclick="sairSistema()">
-        🚪 Sair
-    </button>
-
+    </ul>
 
 </div>
 
@@ -171,8 +183,10 @@ Faça uma cópia do estoque salvo no sistema.
 </p>
 
 
-<button class="btn"
-onclick="exportarEstoque()">
+<button
+    class="btn"
+    onclick="exportarEstoque()"
+>
 
 Exportar Backup
 
@@ -192,7 +206,6 @@ Exportar Backup
 
 <h2>
 ⚠️ Administração
-
 </h2>
 
 
@@ -201,9 +214,10 @@ Remover todos os dados gravados no navegador.
 </p>
 
 
-<button 
-class="btn btn-vermelho"
-onclick="limparSistema()">
+<button
+    class="btn btn-vermelho"
+    onclick="limparSistema()"
+>
 
 Limpar Dados
 
@@ -224,37 +238,40 @@ Limpar Dados
 <script>
 
 
-window.onload=function(){
+window.onload = function () {
 
     verificarLogin();
 
 
     let usuario =
-    localStorage.getItem("usuario");
+        localStorage.getItem("usuario");
 
 
-    if(usuario){
+    if (usuario) {
 
-        document.getElementById("usuarioConfig").innerHTML =
-        usuario;
+        document.getElementById(
+            "usuarioConfig"
+        ).innerHTML =
+            usuario;
 
     }
 
-
-}
-
+};
 
 
-function exportarEstoque(){
+
+function exportarEstoque() {
 
 
     let dados =
-    localStorage.getItem("estoque");
+        localStorage.getItem("estoque");
 
 
-    if(!dados){
+    if (!dados) {
 
-        alert("Nenhum estoque encontrado.");
+        alert(
+            "Nenhum estoque encontrado."
+        );
 
         return;
 
@@ -262,57 +279,62 @@ function exportarEstoque(){
 
 
     let arquivo =
-    new Blob(
-        [dados],
-        {
-            type:"application/json"
-        }
-    );
+        new Blob(
+            [dados],
+            {
+                type: "application/json"
+            }
+        );
 
 
     let link =
-    document.createElement("a");
+        document.createElement("a");
 
 
     link.href =
-    URL.createObjectURL(arquivo);
+        URL.createObjectURL(
+            arquivo
+        );
 
 
     link.download =
-    "backup_estoque_smi.json";
+        "backup_estoque_smi.json";
 
 
     link.click();
-
 
 }
 
 
 
-function limparSistema(){
+function limparSistema() {
 
 
-    if(confirm(
-    "Deseja apagar todos os dados do sistema?"
-    )){
+    if (
+        confirm(
+            "Deseja apagar todos os dados do sistema?"
+        )
+    ) {
 
 
-        localStorage.removeItem("estoque");
+        localStorage.removeItem(
+            "estoque"
+        );
 
 
-        localStorage.removeItem("movimentacoes");
+        localStorage.removeItem(
+            "movimentacoes"
+        );
 
 
         alert(
-        "Dados removidos com sucesso."
+            "Dados removidos com sucesso."
         );
 
 
         location.reload();
 
-
     }
-
 
 }
 
