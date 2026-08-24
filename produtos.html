@@ -193,8 +193,6 @@
 <th>Status</th>
 <th>NCM</th>
 <th>IPI</th>
-<th>Valor Unitário</th>
-<th>Valor Total</th>
 <th>Posição</th>
                     </tr>
                 </thead>
@@ -202,7 +200,7 @@
                 <tbody id="listaProdutos">
                     <tr>
                         <td
-                            colspan="12"
+                            colspan="10"
                             class="produtos-vazio"
                         >
                             Nenhum produto cadastrado.
@@ -233,7 +231,7 @@ async function carregarTodosOsProdutosNaTela() {
 
     tabela.innerHTML = `
         <tr>
-            <td colspan="12" class="produtos-vazio">
+            <td colspan="10" class="produtos-vazio">
                 Carregando todos os produtos...
             </td>
         </tr>
@@ -292,7 +290,7 @@ async function carregarTodosOsProdutosNaTela() {
         if (todosProdutos.length === 0) {
             tabela.innerHTML = `
                 <tr>
-                    <td colspan="12" class="produtos-vazio">
+                    <td colspan="10" class="produtos-vazio">
                         Nenhum produto cadastrado.
                     </td>
                 </tr>
@@ -422,19 +420,6 @@ const statusEstoque = abaixoDoMinimo
 
                 <td>${ipi === "" || ipi === null || ipi === undefined ? "-" : ipi}</td>
 
-                <td>
-                    ${valorUnitario.toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL"
-                    })}
-                </td>
-
-                <td>
-                    ${valorTotal.toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL"
-                    })}
-                </td>
 
                 <td>${produto.endereco || "-"}</td>
             `;
@@ -456,7 +441,7 @@ const statusEstoque = abaixoDoMinimo
 
         tabela.innerHTML = `
             <tr>
-                <td colspan="12" class="produtos-vazio">
+                <td colspan="10" class="produtos-vazio">
                     Erro ao carregar produtos:
                     ${erro.message}
                 </td>
