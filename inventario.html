@@ -709,13 +709,18 @@
             document.getElementById(
                 "pesquisaInventario"
             );
+const termoPesquisaBruto =
+    String(
+        campoPesquisa?.value || ""
+    )
+        .trim()
+        .toUpperCase();
 
-        const termoPesquisa =
-            String(
-                campoPesquisa?.value || ""
-            )
-                .trim()
-                .toUpperCase();
+
+const termoPesquisa =
+    termoPesquisaBruto.length > 8
+        ? termoPesquisaBruto.substring(0, 8)
+        : termoPesquisaBruto;
 
         const estoqueFiltrado =
             termoPesquisa
