@@ -943,162 +943,7 @@ function atualizarNovosIndicadoresDashboard(
     // =============================================
 
 
-    // =====================================================
-    // LISTA DE ESTOQUE CRÍTICO
-    // =====================================================
-
-    const containerCritico =
-        document.getElementById(
-            "estoqueCriticoDashboard"
-        );
-
-
-    if (containerCritico) {
-
-        const produtosCriticos =
-            produtos
-                .filter(
-                    function (produto) {
-
-                        return (
-                            produto.minimo > 0 &&
-                            produto.quantidade < produto.minimo
-                        );
-
-                    }
-                )
-                .sort(
-                    function (a, b) {
-
-                        const faltaA =
-                            a.minimo -
-                            a.quantidade;
-
-
-                        const faltaB =
-                            b.minimo -
-                            b.quantidade;
-
-
-                        return faltaB - faltaA;
-
-                    }
-                )
-                .slice(
-                    0,
-                    5
-                );
-
-
-        if (
-            produtosCriticos.length === 0
-        ) {
-
-            containerCritico.innerHTML = `
-
-                <div class="dashboard-vazio">
-
-                    Nenhum produto abaixo do mínimo.
-
-                </div>
-
-            `;
-
-        } else {
-
-            containerCritico.innerHTML =
-                "";
-
-
-            produtosCriticos.forEach(
-                function (
-                    produto,
-                    indice
-                ) {
-
-                    const item =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    item.className =
-                        "dashboard-ranking-item";
-
-
-                    item.innerHTML = `
-
-                        <div class="dashboard-ranking-cabecalho">
-
-                            <div class="dashboard-ranking-identificacao">
-
-                                <span
-                                    class="dashboard-ranking-numero"
-                                    style="
-                                        color:#dc2626;
-                                        background:#fee2e2;
-                                    "
-                                >
-
-                                    ${indice + 1}
-
-                                </span>
-
-                                <div>
-
-                                    <strong>
-
-                                        ${escaparHTML(
-                                            produto.codigo
-                                        )}
-
-                                    </strong>
-
-                                    <small>
-
-                                        Estoque atual:
-                                        ${produto.quantidade.toLocaleString(
-                                            "pt-BR"
-                                        )}
-
-                                        • Mínimo:
-                                        ${produto.minimo.toLocaleString(
-                                            "pt-BR"
-                                        )}
-
-                                    </small>
-
-                                </div>
-
-                            </div>
-
-                            <strong
-                                class="dashboard-ranking-valor"
-                                style="color:#dc2626;"
-                            >
-
-                                ${
-                                    produto.quantidade -
-                                    produto.minimo
-                                }
-
-                            </strong>
-
-                        </div>
-
-                    `;
-
-
-                    containerCritico.appendChild(
-                        item
-                    );
-
-                }
-            );
-
-        }
-
-    }
+   
 
         // =============================================
     // FAIXA ATENÇÃO DO ESTOQUE
@@ -1170,8 +1015,8 @@ while (true) {
         await window.supabaseClient
             .from("produtos")
             .select(
-                "codigo, endereco, quantidade, minimo"
-            )
+    "codigo, descricao, endereco, quantidade, minimo"
+)
             .order(
                 "id",
                 {
@@ -1266,6 +1111,176 @@ console.log(
 
         const totalAbaixoMinimo =
             produtosAbaixoMinimo.length;
+
+            // =====================================================
+// ESTOQUE CRÍTICO - TOP 5
+// =====================================================
+
+const containerCritico =
+    document.getElementById(
+        "estoqueCriticoDashboard"
+    );
+
+
+if (containerCritico) {
+
+    const topCriticos =
+        [...produtosAbaixoMinimo]
+            .sort(
+                function (a, b) {
+
+                    const minimoA =
+                        Number(
+                            a.minimo || 0
+                        );
+
+                    const minimoB =
+                        Number(
+                            b.minimo || 0
+                        );
+
+                    const quantidadeA =
+                        Number(
+                            a.quantidade || 0
+                        );
+
+                    const quantidadeB =
+                        Number(
+                            b.quantidade || 0
+                        );
+
+                    const faltaA =
+                        minimoA - quantidadeA;
+
+                    const faltaB =
+                        minimoB - quantidadeB;
+
+
+                    return (
+                        faltaB - faltaA
+                    );
+
+                }
+            )
+            .slice(
+                0,
+                5
+            );
+
+
+    if (
+        topCriticos.length === 0
+    ) {
+
+        containerCritico.innerHTML = `
+
+            <div class="dashboard-vazio">
+                Nenhum produto abaixo do mínimo.
+            </div>
+
+        `;
+
+    } else {
+
+        containerCritico.innerHTML =
+            "";
+
+
+        topCriticos.forEach(
+            function (
+                produto,
+                indice
+            ) {
+
+                const quantidade =
+                    Number(
+                        produto.quantidade || 0
+                    );
+
+
+                const minimo =
+                    Number(
+                        produto.minimo || 0
+                    );
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "dashboard-ranking-item";
+
+
+                item.innerHTML = `
+
+                    <div class="dashboard-ranking-cabecalho">
+
+                        <div class="dashboard-ranking-identificacao">
+
+                            <span
+                                class="dashboard-ranking-numero"
+                                style="
+                                    color:#dc2626;
+                                    background:#fee2e2;
+                                "
+                            >
+                                ${indice + 1}
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    ${escaparHTML(
+                                        produto.codigo || "-"
+                                    )}
+                                </strong>
+
+                                <small>
+
+                                    Estoque atual:
+                                    ${quantidade.toLocaleString(
+                                        "pt-BR"
+                                    )}
+
+                                    • Mínimo:
+                                    ${minimo.toLocaleString(
+                                        "pt-BR"
+                                    )}
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <strong
+                            class="dashboard-ranking-valor"
+                            style="color:#dc2626;"
+                        >
+                            ${
+                                quantidade - minimo
+                            }
+                        </strong>
+
+                    </div>
+
+                `;
+
+
+                containerCritico.appendChild(
+                    item
+                );
+
+            }
+        );
+
+    }
+
+}
 
 
         // =====================================================
