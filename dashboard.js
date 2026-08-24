@@ -936,89 +936,11 @@ function atualizarNovosIndicadoresDashboard(
         );
 
 
-    // =============================================
-    // DIVERGÊNCIAS DO INVENTÁRIO
-    // =============================================
-
-    let divergenciasInventario =
-        0;
-
-
-    try {
-
-        const dadosInventario =
-
-            JSON.parse(
-
-                localStorage.getItem(
-                    "inventario"
-                )
-
-            ) || [];
-
-
-        if (
-            Array.isArray(
-                dadosInventario
-            )
-        ) {
-
-            divergenciasInventario =
-
-                dadosInventario.filter(
-
-                    function (item) {
-
-                        if (
-                            !item
-                        ) {
-
-                            return false;
-
-                        }
-
-
-                        return (
-
-                            Number(
-                                item.diferenca ||
-                                0
-                            ) !== 0
-
-                        );
-
-                    }
-
-                ).length;
-
-        }
-
-    } catch (erro) {
-
-        console.warn(
-
-            "Não foi possível ler o inventário no dashboard:",
-
-            erro
-
-        );
-
-    }
-
+    
 
     // =============================================
     // ATUALIZAR OS NOVOS CARDS
     // =============================================
-
-    alterarTextoElemento(
-
-        "cardAbaixoMinimo",
-
-        abaixoDoMinimo.toLocaleString(
-            "pt-BR"
-        )
-
-    );
 
 
     // =====================================================
@@ -1195,19 +1117,6 @@ function atualizarNovosIndicadoresDashboard(
         indicadores.length >= 4
     ) {
 
-        indicadores[0].textContent =
-
-            abaixoDoMinimo.toLocaleString(
-                "pt-BR"
-            );
-
-
-        indicadores[2].textContent =
-
-            divergenciasInventario.toLocaleString(
-                "pt-BR"
-            );
-
 
         indicadores[3].textContent =
 
@@ -1223,14 +1132,18 @@ function atualizarNovosIndicadoresDashboard(
 // PRODUTOS SEM ESTOQUE - SUPABASE
 // =====================================================
 
-async function atualizarProdutosSemEstoqueDashboard() {
+// =====================================================
+// INDICADORES DE ESTOQUE - SUPABASE
+// =====================================================
+
+async function atualizarIndicadoresEstoqueSupabase() {
 
     try {
 
         if (!window.supabaseClient) {
 
             console.warn(
-                "Supabase ainda não disponível para produtos sem estoque."
+                "Supabase ainda não disponível para os indicadores de estoque."
             );
 
             return;
@@ -1238,41 +1151,95 @@ async function atualizarProdutosSemEstoqueDashboard() {
         }
 
 
-        const { data, error } =
-            await window.supabaseClient
-                .from("produtos")
-                .select("codigo, endereco, quantidade");
+       const produtos = [];
+
+const quantidadePorBusca = 1000;
+
+let inicio = 0;
 
 
-        if (error) {
+while (true) {
 
-            console.error(
-                "Erro ao buscar produtos sem estoque:",
-                error
+    const fim =
+        inicio +
+        quantidadePorBusca -
+        1;
+
+
+    const { data, error } =
+        await window.supabaseClient
+            .from("produtos")
+            .select(
+                "codigo, endereco, quantidade, minimo"
+            )
+            .order(
+                "id",
+                {
+                    ascending: true
+                }
+            )
+            .range(
+                inicio,
+                fim
             );
 
-            return;
 
-        }
+    if (error) {
+
+        console.error(
+            "Erro ao buscar indicadores de estoque:",
+            error
+        );
+
+        return;
+
+    }
 
 
-        const produtos =
-            Array.isArray(data)
-                ? data
-                : [];
+    if (
+        !Array.isArray(data) ||
+        data.length === 0
+    ) {
+
+        break;
+
+    }
 
 
-        const produtosZerados =
+    produtos.push(
+        ...data
+    );
+
+
+    if (
+        data.length <
+        quantidadePorBusca
+    ) {
+
+        break;
+
+    }
+
+
+    inicio +=
+        quantidadePorBusca;
+
+}
+
+
+console.log(
+    "Produtos carregados para os indicadores:",
+    produtos.length
+);
+
+
+        // =====================================================
+        // ABAIXO DO MÍNIMO
+        // =====================================================
+
+        const produtosAbaixoMinimo =
             produtos.filter(
                 function (produto) {
-
-                    const endereco =
-                        String(
-                            produto.endereco ||
-                            ""
-                        )
-                        .trim();
-
 
                     const quantidade =
                         Number(
@@ -1281,17 +1248,67 @@ async function atualizarProdutosSemEstoqueDashboard() {
                         );
 
 
+                   const minimo =
+    Number(
+        produto.minimo ?? 0
+    );
+
+
                     return (
-                        endereco !== "" &&
-                        quantidade <= 0
+                        minimo > 0 &&
+                        quantidade > 0 &&
+                        quantidade < minimo
                     );
 
                 }
             );
 
 
+        const totalAbaixoMinimo =
+            produtosAbaixoMinimo.length;
+
+
+        // =====================================================
+        // SEM ESTOQUE
+        // =====================================================
+
+    const produtosSemEstoque =
+    produtos.filter(
+        function (produto) {
+
+            const endereco =
+                String(
+                    produto.endereco || ""
+                ).trim();
+
+            const quantidade =
+                Number(
+                    produto.quantidade ||
+                    0
+                );
+
+            return (
+                endereco !== "" &&
+                quantidade <= 0
+            );
+
+        }
+    );
+
         const totalSemEstoque =
-            produtosZerados.length;
+            produtosSemEstoque.length;
+
+
+        // =====================================================
+        // CARDS SUPERIORES
+        // =====================================================
+
+        alterarTextoElemento(
+            "cardAbaixoMinimo",
+            totalAbaixoMinimo.toLocaleString(
+                "pt-BR"
+            )
+        );
 
 
         alterarTextoElemento(
@@ -1301,6 +1318,10 @@ async function atualizarProdutosSemEstoqueDashboard() {
             )
         );
 
+
+        // =====================================================
+        // FAIXA DE ALERTAS
+        // =====================================================
 
         const indicadores =
             document.querySelectorAll(
@@ -1312,6 +1333,12 @@ async function atualizarProdutosSemEstoqueDashboard() {
             indicadores.length >= 2
         ) {
 
+            indicadores[0].textContent =
+                totalAbaixoMinimo.toLocaleString(
+                    "pt-BR"
+                );
+
+
             indicadores[1].textContent =
                 totalSemEstoque.toLocaleString(
                     "pt-BR"
@@ -1321,7 +1348,13 @@ async function atualizarProdutosSemEstoqueDashboard() {
 
 
         console.log(
-            "Produtos zerados com posição:",
+            "Produtos abaixo do mínimo:",
+            totalAbaixoMinimo
+        );
+
+
+        console.log(
+            "Produtos sem estoque:",
             totalSemEstoque
         );
 
@@ -1329,14 +1362,13 @@ async function atualizarProdutosSemEstoqueDashboard() {
     } catch (erro) {
 
         console.error(
-            "Erro ao atualizar produtos sem estoque:",
+            "Erro ao atualizar indicadores de estoque:",
             erro
         );
 
     }
 
 }
-
 
 // =====================================================
 // INVENTÁRIO NO DASHBOARD - SUPABASE
@@ -1792,8 +1824,7 @@ document.addEventListener(
 
                 atualizarInventarioDashboardSupabase();
 
-                atualizarProdutosSemEstoqueDashboard();
-
+atualizarIndicadoresEstoqueSupabase();
             },
             1000
         );
