@@ -549,17 +549,6 @@ function atualizarCardsDashboard(
 
     alterarTextoElemento(
 
-        "cardProdutos",
-
-        totalProdutos.toLocaleString(
-            "pt-BR"
-        )
-
-    );
-
-
-    alterarTextoElemento(
-
         "cardQuantidade",
 
         quantidadeTotal.toLocaleString(
@@ -670,6 +659,166 @@ function atualizarCardsDashboard(
         progressoNiveis.style.width =
             percentualLimitado +
             "%";
+
+    }
+
+}
+// =====================================================
+// TOTAL DE PRODUTOS - BASE COMPLETA SUPABASE
+// =====================================================
+
+async function atualizarTotalProdutosSupabase() {
+
+    try {
+
+        if (!window.supabaseClient) {
+
+            console.warn(
+                "Supabase ainda não disponível para contar produtos."
+            );
+
+            return;
+
+        }
+
+
+        const produtos = [];
+
+        const quantidadePorBusca =
+            1000;
+
+        let inicio =
+            0;
+
+
+        while (true) {
+
+            const fim =
+                inicio +
+                quantidadePorBusca -
+                1;
+
+
+            const { data, error } =
+                await window.supabaseClient
+                    .from("produtos")
+                    .select("codigo")
+                    .order(
+                        "id",
+                        {
+                            ascending: true
+                        }
+                    )
+                    .range(
+                        inicio,
+                        fim
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Erro ao contar produtos:",
+                    error
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !Array.isArray(data) ||
+                data.length === 0
+            ) {
+
+                break;
+
+            }
+
+
+            produtos.push(
+                ...data
+            );
+
+
+            if (
+                data.length <
+                quantidadePorBusca
+            ) {
+
+                break;
+
+            }
+
+
+            inicio +=
+                quantidadePorBusca;
+
+        }
+
+
+        // =============================================
+        // CONTAR SOMENTE SKUs ÚNICOS
+        // =============================================
+
+        const codigosUnicos =
+            new Set();
+
+
+        produtos.forEach(
+            function (produto) {
+
+                const codigo =
+                    String(
+                        produto.codigo || ""
+                    )
+                    .trim()
+                    .toUpperCase();
+
+
+                if (codigo !== "") {
+
+                    codigosUnicos.add(
+                        codigo
+                    );
+
+                }
+
+            }
+        );
+
+
+        const totalProdutos =
+            codigosUnicos.size;
+
+
+        alterarTextoElemento(
+            "cardProdutos",
+            totalProdutos.toLocaleString(
+                "pt-BR"
+            )
+        );
+
+
+        console.log(
+            "Linhas carregadas da base:",
+            produtos.length
+        );
+
+
+        console.log(
+            "SKUs únicos:",
+            totalProdutos
+        );
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao atualizar total de produtos:",
+            erro
+        );
 
     }
 
@@ -1840,6 +1989,7 @@ document.addEventListener(
                 atualizarInventarioDashboardSupabase();
 
 atualizarIndicadoresEstoqueSupabase();
+atualizarTotalProdutosSupabase();
             },
             1000
         );
