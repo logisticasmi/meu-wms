@@ -532,7 +532,7 @@ function atualizarCardsDashboard(
 
 
     const capacidadeTotal =
-        360;
+        460;
 
 
     const percentualOcupacao =
@@ -1017,7 +1017,7 @@ function atualizarNovosIndicadoresDashboard(
     // =============================================
 
     const CAPACIDADE_TOTAL_POSICOES =
-        360;
+        460;
 
 
     const posicoesOcupadas =
@@ -2319,7 +2319,7 @@ function criarGraficoEstoqueCliente(
 
 
     const CAPACIDADE_TOTAL_POSICOES =
-        360;
+        460;
 
 
     const posicoesOcupadas =

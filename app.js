@@ -6136,7 +6136,7 @@ function atualizarResumoDashboard() {
 
 
     const totalPosicoesArmazem =
-        360;
+        460;
 
 
     const percentualOcupacao =
@@ -6155,12 +6155,6 @@ function atualizarResumoDashboard() {
 
     // Dashboard atual
 
-    alterarTextoDashboard(
-        "cardProdutos",
-        totalProdutos.toLocaleString(
-            "pt-BR"
-        )
-    );
 
 
     alterarTextoDashboard(
