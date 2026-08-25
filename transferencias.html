@@ -150,6 +150,7 @@
                     type="text"
                     id="codigoTransferencia"
                     placeholder="Código do Produto"
+                    maxlength="8"
                 >
 
                 <input
@@ -239,15 +240,57 @@
 
     <!-- JAVASCRIPT -->
 
-    <script src="app.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="supabase.js"></script>
 
+    <script src="app.js"></script>
+
     <script src="sync-supabase.js"></script>
 
-    <script src="app.js"></script>
+
+    <!-- =====================================================
+         QR CODE - CONSIDERAR SOMENTE OS 8 PRIMEIROS CARACTERES
+    ===================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const campoCodigo =
+                    document.getElementById(
+                        "codigoTransferencia"
+                    );
+
+
+                if (!campoCodigo) {
+                    return;
+                }
+
+
+                campoCodigo.addEventListener(
+                    "input",
+                    function () {
+
+                        campoCodigo.value =
+                            String(
+                                campoCodigo.value || ""
+                            )
+                            .substring(
+                                0,
+                                8
+                            )
+                            .toUpperCase();
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
 
 </body>
 
