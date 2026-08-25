@@ -51,7 +51,16 @@ button:hover { transform: translateY(-1px); }
     justify-content: center;
     align-items: center;
     padding: 24px;
-    background: linear-gradient(135deg, var(--azul-900), #0d5aa1);
+   background:
+    linear-gradient(
+        rgba(3, 45, 99, 0.68),
+        rgba(13, 90, 161, 0.68)
+    ),
+    url("img/operacao-login.png");
+
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
 }
 
 .login-box {
