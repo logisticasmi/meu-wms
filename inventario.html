@@ -293,6 +293,106 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+        /* =====================================================
+   VELOCÍMETRO - COBERTURA DO INVENTÁRIO
+===================================================== */
+
+.indicador-cobertura {
+    display: flex;
+    flex-direction: column;
+}
+
+.velocimetro-inventario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px 0 10px;
+}
+
+.velocimetro-arco {
+    position: relative;
+    width: 150px;
+    height: 75px;
+    overflow: hidden;
+}
+
+.velocimetro-arco::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: conic-gradient(
+        from 270deg,
+        #22c55e 0deg 90deg,
+        #f59e0b 90deg 144deg,
+        #ef4444 144deg 180deg,
+        #e5e7eb 180deg 360deg
+    );
+}
+
+.velocimetro-arco::after {
+    content: "";
+    position: absolute;
+    left: 24px;
+    top: 24px;
+    width: 102px;
+    height: 102px;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+.velocimetro-preenchimento {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 3px;
+    height: 58px;
+    background: #0f172a;
+    transform-origin: bottom center;
+    transform: translateX(-50%) rotate(-90deg);
+    z-index: 3;
+    border-radius: 3px;
+    transition: transform .5s ease;
+}
+
+.velocimetro-preenchimento::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -5px;
+    width: 10px;
+    height: 10px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: #0f172a;
+}
+
+.velocimetro-centro {
+    position: absolute;
+    left: 50%;
+    bottom: 3px;
+    transform: translateX(-50%);
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.velocimetro-centro strong {
+    color: #062d63;
+    font-size: 22px;
+    line-height: 1;
+}
+
+.velocimetro-centro span {
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 8px;
+    font-weight: 800;
+}
     </style>
 
     <link rel="icon" type="image/png" href="img/favicon.png">
@@ -458,7 +558,41 @@
 
             <section class="painel-indicadores-inventario">
                 <div class="indicadores-inventario">
-                    <div class="indicador-inventario"><h3>COBERTURA DO INVENTÁRIO</h3><div class="indicador-principal"><div class="indicador-icone azul">📋</div><div class="indicador-valor" id="indCobertura">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>Itens contados</span><strong id="indContados">—</strong></div><div class="indicador-linha"><span>Total de itens</span><strong id="indTotal">—</strong></div></div></div>
+                   <div class="indicador-inventario indicador-cobertura">
+
+    <h3>COBERTURA DO INVENTÁRIO</h3>
+
+    <div class="velocimetro-inventario">
+
+        <div class="velocimetro-arco">
+            <div
+                class="velocimetro-preenchimento"
+                id="velocimetroCobertura"
+            ></div>
+
+            <div class="velocimetro-centro">
+                <strong id="indCobertura">—</strong>
+                <span>CONCLUÍDO</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="indicador-detalhes">
+
+        <div class="indicador-linha">
+            <span>Itens contados</span>
+            <strong id="indContados">—</strong>
+        </div>
+
+        <div class="indicador-linha">
+            <span>Total de itens</span>
+            <strong id="indTotal">—</strong>
+        </div>
+
+    </div>
+
+</div>
                     <div class="indicador-inventario"><h3>ACURÁCIA DO INVENTÁRIO</h3><div class="indicador-principal"><div class="indicador-icone verde">🎯</div><div class="indicador-valor" id="indAcuracia">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>Itens sem divergência</span><strong id="indCorretos">—</strong></div><div class="indicador-linha"><span>Total de itens contados</span><strong id="indContados2">—</strong></div></div></div>
                     <div class="indicador-inventario"><h3>DIVERGÊNCIA TOTAL (R$)</h3><div class="indicador-principal"><div class="indicador-icone laranja">$</div><div class="indicador-valor" id="indDivFinanceira">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>Divergência positiva</span><strong id="indDivPos">—</strong></div><div class="indicador-linha"><span>Divergência negativa</span><strong id="indDivNeg">—</strong></div></div></div>
                     <div class="indicador-inventario"><h3>ITENS COM DIVERGÊNCIA</h3><div class="indicador-principal"><div class="indicador-icone vermelho">⚠</div><div class="indicador-valor" id="indDivergentes">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>% sobre o total contado</span><strong id="indPercDiv">—</strong></div></div></div>
@@ -1803,7 +1937,42 @@ const termoPesquisa =
         const total=produtos.length,cob=total?contados/total*100:0,acu=contados?corretos/contados*100:0,pdiv=contados?divergentes/contados*100:0,dif=divPos+divNeg;
         const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
         const moeda=v=>Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
-        set("indCobertura",cob.toFixed(1).replace(".",",")+"%"); set("indContados",contados.toLocaleString("pt-BR")); set("indTotal",total.toLocaleString("pt-BR"));
+        set("indCobertura",cob.toFixed(1).replace(".",",")+"%");
+
+// =====================================================
+// PONTEIRO DO VELOCÍMETRO - COBERTURA DO INVENTÁRIO
+// =====================================================
+
+const ponteiroCobertura =
+    document.getElementById(
+        "velocimetroCobertura"
+    );
+
+if (ponteiroCobertura) {
+
+    const percentualCobertura =
+        Math.max(
+            0,
+            Math.min(
+                cob,
+                100
+            )
+        );
+
+    const anguloCobertura =
+        -90 +
+        (
+            percentualCobertura *
+            1.8
+        );
+
+    ponteiroCobertura.style.transform =
+        "translateX(-50%) rotate(" +
+        anguloCobertura +
+        "deg)";
+}
+        
+        set("indContados",contados.toLocaleString("pt-BR")); set("indTotal",total.toLocaleString("pt-BR"));
         set("indAcuracia",acu.toFixed(2).replace(".",",")+"%"); set("indCorretos",corretos.toLocaleString("pt-BR")); set("indContados2",contados.toLocaleString("pt-BR"));
         set("indDivFinanceira",moeda(dif)); set("indDivPos",moeda(divPos)); set("indDivNeg",moeda(divNeg));
         set("indDivergentes",divergentes.toLocaleString("pt-BR")); set("indPercDiv",pdiv.toFixed(2).replace(".",",")+"%");
