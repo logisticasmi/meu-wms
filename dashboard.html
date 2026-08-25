@@ -236,45 +236,39 @@
         </div>
 
 
-        <!-- OCUPAÇÃO -->
+       <!-- =====================================================
+     OCUPAÇÃO DO ARMAZÉM - VELOCÍMETRO
+===================================================== -->
 
-        <div class="card-dashboard-novo">
+<div class="card-dashboard-novo card-velocimetro">
 
-            <div class="icone-card-novo turquesa">
-                🏭
-            </div>
+    <div class="velocimetro-cabecalho">
+        Ocupação do armazém
+    </div>
 
-            <div class="card-info-novo">
+    <div class="velocimetro-container">
 
-                <span class="card-titulo-novo">
-                    Níveis Utilizados
-                </span>
+        <canvas id="velocimetroOcupacao"></canvas>
 
-                <strong id="cardNiveis">
-                    0%
-                </strong>
+        <div class="velocimetro-info">
 
-                <small>
-                    Ocupação atual
-                </small>
+            <strong id="cardNiveis">
+                0%
+            </strong>
 
-                <div class="progresso-card novo-progresso">
+            <span>
+                OCUPADO
+            </span>
 
-                    <div
-                        id="progressoNiveis"
-                        class="progresso-card-preenchimento progresso-turquesa">
-                    </div>
-
-                </div>
-
-                <span class="link-card turquesa-texto">
-                    Ver ocupação →
-                </span>
-
-            </div>
+            <small id="posicoesLivresVelocimetro">
+                0 posições livres
+            </small>
 
         </div>
 
+    </div>
+
+</div>
 
         <!-- ABAIXO DO MÍNIMO -->
 
@@ -447,17 +441,37 @@
 
         <!-- OCUPAÇÃO -->
 
-        <div class="grafico-card dashboard-grafico-card">
+        <!-- =====================================================
+     TOP 5 OCUPAÇÃO DAS POSIÇÕES
+===================================================== -->
 
-            <h2>
-                Ocupação Geral
-            </h2>
+<div class="grafico-card dashboard-grafico-card">
 
-            <canvas id="graficoEstoque"></canvas>
+    <div class="dashboard-cabecalho-grafico">
 
+        <h2>
+            Top 5 Ocupação das Posições
+        </h2>
+
+        <span class="filtro-grafico">
+            Ocupação
+        </span>
+
+    </div>
+
+    <div
+        id="topOcupacaoPosicoes"
+        class="top-ocupacao-posicoes">
+
+        <div class="dashboard-vazio">
+            Carregando posições...
         </div>
 
     </div>
+
+</div>
+
+</div>
 
 
     <!-- =====================================================
@@ -504,43 +518,6 @@
         </div>
 
 
-        <!-- TOP POSIÇÕES -->
-
-        <div class="painel dashboard-painel dashboard-painel-compacto">
-
-            <div class="dashboard-titulo-painel">
-
-                <div>
-
-                    <h2>
-                        📍 Top 5 Posições
-                    </h2>
-
-                    <small>
-                        Endereços com maior volume armazenado
-                    </small>
-
-                </div>
-
-                <span class="dashboard-badge">
-                    Ocupação
-                </span>
-
-            </div>
-
-            <div
-                id="topPosicoes"
-                class="dashboard-ranking">
-
-                <div class="dashboard-vazio">
-                    Nenhuma posição ocupada.
-                </div>
-
-            </div>
-
-        </div>
-
-
         <!-- ESTOQUE CRÍTICO -->
 
         <div class="painel dashboard-painel dashboard-painel-compacto">
@@ -550,7 +527,7 @@
                 <div>
 
                     <h2>
-                        ⚠ Estoque Crítico
+                         ⚠ Top 5 Estoque Crítico
                     </h2>
 
                     <small>

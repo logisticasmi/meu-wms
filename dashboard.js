@@ -7,6 +7,7 @@ let graficoEstoqueDashboard = null;
 let graficoTendenciaProdutos = null;
 let graficoTendenciaQuantidade = null;
 let graficoTendenciaValor = null;
+let graficoVelocimetroOcupacao = null;
 
 
 // =====================================================
@@ -39,6 +40,9 @@ function atualizarDashboardCompleto() {
     atualizarCardsDashboard(
         estoque
     );
+    criarVelocimetroOcupacao(
+    estoque
+);
 
 
     // NOVOS CARDS DO DASHBOARD
@@ -72,6 +76,9 @@ function atualizarDashboardCompleto() {
     carregarTopPosicoes(
         estoque
     );
+    carregarTopOcupacaoPosicoes(
+    estoque
+);
 
 
     carregarResumoDoDia(
@@ -1997,6 +2004,322 @@ atualizarTotalProdutosSupabase();
     }
 );
 
+// =====================================================
+// VELOCÍMETRO - OCUPAÇÃO DO ARMAZÉM
+// =====================================================
+
+function criarVelocimetroOcupacao(
+    estoque
+) {
+
+    const canvas =
+        document.getElementById(
+            "velocimetroOcupacao"
+        );
+
+
+    if (
+        !canvas ||
+        typeof Chart === "undefined"
+    ) {
+
+        return;
+
+    }
+
+
+    const CAPACIDADE_TOTAL_POSICOES =
+        460;
+
+
+    const posicoesOcupadas =
+        new Set();
+
+
+    estoque.forEach(
+        function (produto) {
+
+            if (!produto) {
+                return;
+            }
+
+
+            const endereco =
+                String(
+                    produto.endereco || ""
+                )
+                .trim()
+                .toUpperCase();
+
+
+            const quantidade =
+                Number(
+                    produto.quantidade || 0
+                );
+
+
+            if (
+                endereco !== "" &&
+                quantidade > 0
+            ) {
+
+                posicoesOcupadas.add(
+                    endereco
+                );
+
+            }
+
+        }
+    );
+
+
+    const quantidadeOcupada =
+        posicoesOcupadas.size;
+
+
+    const quantidadeLivre =
+        Math.max(
+            CAPACIDADE_TOTAL_POSICOES -
+            quantidadeOcupada,
+            0
+        );
+
+
+    const percentual =
+        CAPACIDADE_TOTAL_POSICOES > 0
+
+            ? Math.min(
+                (
+                    quantidadeOcupada /
+                    CAPACIDADE_TOTAL_POSICOES
+                ) * 100,
+                100
+            )
+
+            : 0;
+
+
+    const cardNiveis =
+        document.getElementById(
+            "cardNiveis"
+        );
+
+
+    if (cardNiveis) {
+
+        cardNiveis.textContent =
+            percentual.toLocaleString(
+                "pt-BR",
+                {
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1
+                }
+            ) + "%";
+
+    }
+
+
+    const posicoesLivres =
+        document.getElementById(
+            "posicoesLivresVelocimetro"
+        );
+
+
+    if (posicoesLivres) {
+
+        posicoesLivres.textContent =
+            quantidadeLivre.toLocaleString(
+                "pt-BR"
+            ) +
+            " posições livres";
+
+    }
+
+
+    if (
+        graficoVelocimetroOcupacao
+    ) {
+
+        graficoVelocimetroOcupacao.destroy();
+
+    }
+
+
+    graficoVelocimetroOcupacao =
+        new Chart(
+            canvas,
+            {
+
+                type: "doughnut",
+
+                data: {
+
+                    datasets: [
+                        {
+
+                            data: [
+                                50,
+                                30,
+                                20
+                            ],
+
+                            backgroundColor: [
+                                "#22c55e",
+                                "#f59e0b",
+                                "#ef4444"
+                            ],
+
+                            borderWidth: 0,
+
+                            circumference: 180,
+
+                            rotation: 270
+
+                        }
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    cutout: "72%",
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        },
+
+                        tooltip: {
+                            enabled: false
+                        }
+
+                    }
+
+                },
+
+                plugins: [
+
+                    {
+
+                        id:
+                            "ponteiroVelocimetro",
+
+                        afterDatasetDraw(
+                            chart
+                        ) {
+
+                            const {
+                                ctx,
+                                chartArea
+                            } = chart;
+
+
+                            if (!chartArea) {
+                                return;
+                            }
+
+
+                            const centroX =
+                                (
+                                    chartArea.left +
+                                    chartArea.right
+                                ) / 2;
+
+
+                            const centroY =
+                                chartArea.bottom;
+
+
+                            const raio =
+                                Math.min(
+                                    chartArea.width / 2,
+                                    chartArea.height
+                                ) * 0.78;
+
+
+                            const angulo =
+                                Math.PI +
+                                (
+                                    percentual /
+                                    100
+                                ) * Math.PI;
+
+
+                            const pontaX =
+                                centroX +
+                                Math.cos(
+                                    angulo
+                                ) * raio;
+
+
+                            const pontaY =
+                                centroY +
+                                Math.sin(
+                                    angulo
+                                ) * raio;
+
+
+                            ctx.save();
+
+
+                            ctx.beginPath();
+
+                            ctx.moveTo(
+                                centroX,
+                                centroY
+                            );
+
+                            ctx.lineTo(
+                                pontaX,
+                                pontaY
+                            );
+
+                            ctx.strokeStyle =
+                                "#0f172a";
+
+                            ctx.lineWidth =
+                                3;
+
+                            ctx.lineCap =
+                                "round";
+
+                            ctx.stroke();
+
+
+                            ctx.beginPath();
+
+                            ctx.arc(
+                                centroX,
+                                centroY,
+                                5,
+                                0,
+                                Math.PI * 2
+                            );
+
+                            ctx.fillStyle =
+                                "#0f172a";
+
+                            ctx.fill();
+
+
+                            ctx.restore();
+
+                        }
+
+                    }
+
+                ]
+
+            }
+        );
+
+}
+
 
 // =====================================================
 // GRÁFICO: ENTRADAS X SAÍDAS
@@ -3121,7 +3444,203 @@ function carregarTopPosicoes(
     );
 
 }
+// =====================================================
+// TOP 5 OCUPAÇÃO DAS POSIÇÕES
+// =====================================================
 
+function carregarTopOcupacaoPosicoes(
+    estoque
+) {
+
+    const container =
+        document.getElementById(
+            "topOcupacaoPosicoes"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    const posicoes = {};
+
+
+    estoque.forEach(
+        function (produto) {
+
+            if (
+                !produto ||
+                !produto.endereco
+            ) {
+
+                return;
+
+            }
+
+
+            const endereco =
+                String(
+                    produto.endereco
+                )
+                .trim()
+                .toUpperCase();
+
+
+            if (!posicoes[endereco]) {
+
+                posicoes[endereco] = {
+                    endereco: endereco,
+                    quantidade: 0,
+                    produtos: new Set()
+                };
+
+            }
+
+
+            posicoes[endereco].quantidade +=
+                Number(
+                    produto.quantidade || 0
+                );
+
+
+            if (produto.codigo) {
+
+                posicoes[endereco]
+                    .produtos
+                    .add(
+                        String(
+                            produto.codigo
+                        )
+                    );
+
+            }
+
+        }
+    );
+
+
+    const ranking =
+        Object.values(
+            posicoes
+        )
+        .sort(
+            function (a, b) {
+
+                return (
+                    b.quantidade -
+                    a.quantidade
+                );
+
+            }
+        )
+        .slice(
+            0,
+            5
+        );
+
+
+    if (
+        ranking.length === 0
+    ) {
+
+        container.innerHTML = `
+            <div class="dashboard-vazio">
+                Nenhuma posição ocupada.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    const maiorQuantidade =
+        ranking[0].quantidade ||
+        1;
+
+
+    container.innerHTML =
+        "";
+
+
+    ranking.forEach(
+        function (
+            posicao,
+            indice
+        ) {
+
+            const percentual =
+                Math.max(
+                    5,
+                    (
+                        posicao.quantidade /
+                        maiorQuantidade
+                    ) * 100
+                );
+
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "top-ocupacao-item";
+
+
+            item.innerHTML = `
+
+                <div class="top-ocupacao-ranking">
+                    ${indice + 1}
+                </div>
+
+                <div class="top-ocupacao-posicao">
+
+                    <strong>
+                        Posição ${escaparHTML(
+                            posicao.endereco
+                        )}
+                    </strong>
+
+                    <small>
+                        ${posicao.produtos.size}
+                        SKU(s)
+                    </small>
+
+                </div>
+
+                <div class="top-ocupacao-barra">
+
+                    <div
+                        class="top-ocupacao-preenchimento"
+                        style="
+                            width:${percentual}%;
+                        ">
+                    </div>
+
+                </div>
+
+                <div class="top-ocupacao-valor">
+
+                    ${posicao.quantidade.toLocaleString(
+                        "pt-BR"
+                    )}
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
 
 // =====================================================
 // RESUMO DAS MOVIMENTAÇÕES DO DIA

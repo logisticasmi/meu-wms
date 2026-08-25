@@ -886,7 +886,7 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
 
 .dashboard-grid-quatro {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(, minmax(0, 1fr));
     gap: 14px;
     margin-bottom: 20px;
 }
@@ -1134,7 +1134,7 @@ body:has(.dashboard-novo) .sidebar li {
 }
 
 .dashboard-novo .dashboard-grid-quatro {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(, minmax(0, 1fr));
     gap: 12px;
     margin-bottom: 12px;
 }
@@ -1441,4 +1441,206 @@ body:has(.dashboard-novo) .sidebar li a {
     font-size: 17px !important;
     font-weight: 600 !important;
     white-space: nowrap !important;
+}
+
+/* =====================================================
+   VELOCÍMETRO - OCUPAÇÃO DO ARMAZÉM
+===================================================== */
+
+.card-velocimetro {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 16px;
+}
+
+.velocimetro-cabecalho {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f2747;
+    margin-bottom: 4px;
+}
+
+.velocimetro-container {
+    position: relative;
+    width: 100%;
+    height: 135px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#velocimetroOcupacao {
+    width: 100% !important;
+    height: 120px !important;
+}
+
+.velocimetro-info {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.velocimetro-info strong {
+    font-size: 26px;
+    line-height: 1;
+    color: #0796a6;
+}
+
+.velocimetro-info span {
+    margin-top: 5px;
+    font-size: 9px;
+    font-weight: 800;
+    color: #0796a6;
+}
+
+.velocimetro-info small {
+    margin-top: 5px;
+    font-size: 8px;
+    color: #64748b;
+    white-space: nowrap;
+}
+/* =====================================================
+   TOP 5 OCUPAÇÃO DAS POSIÇÕES
+===================================================== */
+
+.top-ocupacao-posicoes {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.top-ocupacao-item {
+    display: grid;
+    grid-template-columns: 34px 130px 1fr 70px;
+    align-items: center;
+    gap: 12px;
+}
+
+.top-ocupacao-ranking {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.top-ocupacao-posicao {
+    display: flex;
+    flex-direction: column;
+}
+
+.top-ocupacao-posicao strong {
+    color: #0f2747;
+    font-size: 13px;
+}
+
+.top-ocupacao-posicao small {
+    color: #64748b;
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+.top-ocupacao-barra {
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    overflow: hidden;
+}
+
+.top-ocupacao-preenchimento {
+    height: 100%;
+    border-radius: 999px;
+    background: #2563eb;
+}
+
+.top-ocupacao-valor {
+    text-align: right;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f2747;
+}
+/* =====================================================
+   DASHBOARD - 3 PAINÉIS INFERIORES LADO A LADO
+===================================================== */
+
+.dashboard-novo .dashboard-grid-quatro {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+    width: 100% !important;
+}
+
+/* =====================================================
+   DASHBOARD - TEXTOS DOS 3 PAINÉIS INFERIORES
+===================================================== */
+
+/* Títulos dos cards */
+.dashboard-novo .dashboard-grid-quatro .dashboard-titulo-painel h2 {
+    font-size: 16px !important;
+}
+
+/* Subtítulos */
+.dashboard-novo .dashboard-grid-quatro .dashboard-titulo-painel small {
+    font-size: 11px !important;
+}
+
+/* Nome dos produtos */
+.dashboard-novo .dashboard-grid-quatro .dashboard-ranking strong {
+    font-size: 12px !important;
+}
+
+/* Informações menores: código, estoque atual, mínimo etc. */
+.dashboard-novo .dashboard-grid-quatro .dashboard-ranking small {
+    font-size: 10px !important;
+}
+
+/* Valores principais */
+.dashboard-novo .dashboard-grid-quatro .dashboard-ranking-valor {
+    font-size: 12px !important;
+}
+
+/* =====================================================
+   TOP 5 DIVERGÊNCIAS - TEXTO MAIOR
+===================================================== */
+
+.dashboard-novo .dashboard-divergencia-item
+.divergencia-produto-info strong {
+    font-size: 12px !important;
+}
+
+.dashboard-novo .dashboard-divergencia-item
+.divergencia-produto-info small {
+    font-size: 9px !important;
+}
+
+.dashboard-novo .dashboard-divergencia-item
+.divergencia-dado span {
+    font-size: 8px !important;
+}
+
+.dashboard-novo .dashboard-divergencia-item
+.divergencia-dado strong {
+    font-size: 14px !important;
+}
+
+.dashboard-novo .divergencia-ranking-numero {
+    font-size: 13px !important;
 }
