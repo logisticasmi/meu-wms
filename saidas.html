@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -9,187 +10,1708 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>SMI WMS - Saídas</title>
+    <title>
+        SMI WMS - Saída de Estoque
+    </title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
-    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link
+        rel="icon"
+        type="image/png"
+        href="img/favicon.png"
+    >
+
+
+    <!-- =====================================================
+         VISUAL EXCLUSIVO DA TELA DE SAÍDAS
+    ===================================================== -->
+
+    <style>
+
+        /* =====================================================
+           TELA
+        ===================================================== */
+
+        .pagina-saidas {
+            background: #f4f7fb;
+        }
+
+
+        .pagina-saidas .conteudo {
+            padding: 24px 28px 30px !important;
+        }
+
+
+        .pagina-saidas .topbar {
+            margin-bottom: 18px;
+        }
+
+
+        .pagina-saidas .topbar h1 {
+            margin-bottom: 4px;
+
+            color: #062b60;
+
+            font-size: 32px;
+        }
+
+
+        .pagina-saidas .topbar small {
+            color: #52657c;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           PAINÉIS
+        ===================================================== */
+
+        .pagina-saidas .painel {
+            margin-top: 18px;
+
+            border:
+                1px solid #e3e9f1;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 18px
+                rgba(0, 30, 69, 0.06);
+        }
+
+
+        .pagina-saidas .painel h2 {
+            color: #062b60;
+
+            font-size: 18px;
+        }
+
+
+        /* =====================================================
+           NOVA SAÍDA
+        ===================================================== */
+
+        .pagina-saidas .painel-nova-saida {
+            padding: 20px 24px 22px;
+        }
+
+
+        .pagina-saidas .saida-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 14px 22px;
+
+            margin-top: 14px;
+        }
+
+
+        .pagina-saidas .saida-coluna {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+
+        .pagina-saidas .saida-coluna label {
+            color: #183759;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .pagina-saidas .saida-coluna input,
+        .pagina-saidas .saida-coluna select {
+            width: 100%;
+
+            height: 44px;
+
+            padding:
+                0 14px;
+
+            border:
+                1px solid #d5deea;
+
+            border-radius: 7px;
+
+            background: #ffffff;
+
+            color: #102d54;
+
+            font-size: 14px;
+        }
+
+
+        .pagina-saidas .saida-coluna input:focus,
+        .pagina-saidas .saida-coluna select:focus {
+            border-color: #0d4b8f;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(13, 75, 143, 0.08);
+        }
+
+
+        /* =====================================================
+           CAMPO COM ÍCONE
+        ===================================================== */
+
+        .pagina-saidas .campo-saida-com-icone {
+            position: relative;
+        }
+
+
+        .pagina-saidas .campo-saida-com-icone input,
+        .pagina-saidas .campo-saida-com-icone select {
+            padding-right: 42px;
+        }
+
+
+        .pagina-saidas .icone-campo-saida {
+            position: absolute;
+
+            top: 50%;
+            right: 14px;
+
+            transform:
+                translateY(-50%);
+
+            color: #55708f;
+
+            font-size: 15px;
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           PRODUTO LOCALIZADO
+        ===================================================== */
+
+        .pagina-saidas .card-produto-saida {
+            min-height: 62px;
+
+            padding:
+                10px 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            border:
+                1px solid #a9c9ef;
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #edf5ff,
+                    #f8fbff
+                );
+        }
+
+
+        .pagina-saidas .produto-saida-info {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .pagina-saidas .produto-saida-icone {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+
+        .pagina-saidas .produto-saida-info strong {
+            display: block;
+
+            color: #123d73;
+
+            font-size: 13px;
+        }
+
+
+        .pagina-saidas .produto-saida-info small {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #63758a;
+
+            font-size: 11px;
+        }
+
+
+        .pagina-saidas .produto-estoque-saida {
+            min-width: 100px;
+
+            text-align: right;
+        }
+
+
+        .pagina-saidas .produto-estoque-saida small {
+            display: block;
+
+            color: #60738b;
+
+            font-size: 11px;
+        }
+
+
+        .pagina-saidas .produto-estoque-saida strong {
+            margin-right: 3px;
+
+            color: #0d4b8f;
+
+            font-size: 24px;
+        }
+
+
+        /* =====================================================
+           NOVO SALDO
+        ===================================================== */
+
+        .pagina-saidas .card-novo-saldo-saida {
+            min-height: 62px;
+
+            padding:
+                10px 16px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            border:
+                1px solid #c8ead2;
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #effbf3,
+                    #f7fdf9
+                );
+        }
+
+
+        .pagina-saidas .novo-saldo-saida-icone {
+            width: 26px;
+            height: 26px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                2px solid #198754;
+
+            border-radius: 50%;
+
+            color: #198754;
+
+            font-size: 14px;
+
+            font-weight: 700;
+        }
+
+
+        .pagina-saidas .card-novo-saldo-saida small {
+            display: block;
+
+            color: #34704c;
+
+            font-size: 11px;
+        }
+
+
+        .pagina-saidas .card-novo-saldo-saida strong {
+            display: inline-block;
+
+            margin-top: 2px;
+            margin-right: 4px;
+
+            color: #198754;
+
+            font-size: 24px;
+        }
+
+
+        /* =====================================================
+           AVISO DA POSIÇÃO
+        ===================================================== */
+
+        .pagina-saidas .status-posicao-saida {
+            min-height: 34px;
+
+            padding:
+                0 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            border:
+                1px solid #f2d295;
+
+            border-radius: 7px;
+
+            background: #fff8e8;
+
+            color: #b67300;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           DESTINO
+        ===================================================== */
+
+        .pagina-saidas .status-destino-saida {
+            min-height: 34px;
+
+            padding:
+                0 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            border:
+                1px solid #dec8f7;
+
+            border-radius: 7px;
+
+            background: #f7f0ff;
+
+            color: #7442a8;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           BOTÃO
+        ===================================================== */
+
+        .pagina-saidas .saida-botao-linha {
+            grid-column:
+                1 / -1;
+        }
+
+
+        .pagina-saidas .btn-registrar-saida-novo {
+            width: 100%;
+
+            min-height: 52px;
+
+            border: 0;
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #063b73,
+                    #084d91
+                );
+
+            color: #ffffff;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .pagina-saidas .btn-registrar-saida-novo:hover {
+            box-shadow:
+                0 7px 17px
+                rgba(5, 58, 112, 0.18);
+        }
+
+
+        /* =====================================================
+           RESUMO DO DIA
+        ===================================================== */
+
+        .pagina-saidas .resumo-saidas-dia {
+            display: grid;
+
+            grid-template-columns:
+                1.1fr
+                repeat(4, 1fr);
+
+            align-items: center;
+
+            min-height: 92px;
+
+            padding:
+                14px 18px;
+        }
+
+
+        .pagina-saidas .resumo-saida-titulo {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: #123d73;
+
+            font-size: 14px;
+        }
+
+
+        .pagina-saidas .resumo-saida-item {
+            min-height: 62px;
+
+            padding-left: 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            border-left:
+                1px solid #dde5ef;
+        }
+
+
+        .pagina-saidas .resumo-saida-icone {
+            width: 44px;
+            height: 44px;
+
+            min-width: 44px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+
+        /* SAÍDAS HOJE */
+
+        .pagina-saidas
+        .resumo-saida-item:nth-child(2)
+        .resumo-saida-icone {
+            background: #ef3340;
+        }
+
+
+        /* UNIDADES EXPEDIDAS */
+
+        .pagina-saidas
+        .resumo-saida-item:nth-child(3)
+        .resumo-saida-icone {
+            background: #ff9600;
+        }
+
+
+        /* ÚLTIMA SAÍDA */
+
+        .pagina-saidas
+        .resumo-saida-item:nth-child(4)
+        .resumo-saida-icone {
+            background: #6928cc;
+        }
+
+
+        /* OPERADOR */
+
+        .pagina-saidas
+        .resumo-saida-item:nth-child(5)
+        .resumo-saida-icone {
+            background: #32a85a;
+        }
+
+
+        .pagina-saidas .resumo-saida-item small {
+            display: block;
+
+            color: #405974;
+
+            font-size: 11px;
+        }
+
+
+        .pagina-saidas .resumo-saida-item strong {
+            display: block;
+
+            margin:
+                2px 0;
+
+            color: #123d73;
+
+            font-size: 22px;
+        }
+
+
+        .pagina-saidas .resumo-saida-item span {
+            display: block;
+
+            color: #718197;
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           HISTÓRICO
+        ===================================================== */
+
+        .pagina-saidas .historico-saida-filtros {
+            margin:
+                14px 0 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 18px;
+        }
+
+
+        .pagina-saidas .busca-historico-saida {
+            width: 480px;
+
+            max-width: 100%;
+
+            padding:
+                0 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            border:
+                1px solid #d6e0ea;
+
+            border-radius: 7px;
+
+            background: #ffffff;
+        }
+
+
+        .pagina-saidas .busca-historico-saida input {
+            flex: 1;
+
+            height: 38px;
+
+            padding: 0;
+
+            border: 0;
+
+            outline: 0;
+
+            font-size: 13px;
+        }
+
+
+        .pagina-saidas .periodo-historico-saida {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: #263e59;
+
+            font-size: 13px;
+        }
+
+
+        .pagina-saidas .periodo-historico-saida select {
+            min-width: 150px;
+
+            height: 38px;
+
+            padding:
+                0 10px;
+
+            border:
+                1px solid #d6e0ea;
+
+            border-radius: 7px;
+
+            background: #ffffff;
+        }
+
+
+        /* =====================================================
+           TABELA
+        ===================================================== */
+
+        .pagina-saidas .tabela {
+            border-radius: 8px;
+
+            box-shadow: none;
+        }
+
+
+        .pagina-saidas .tabela th {
+            padding:
+                11px 10px;
+
+            font-size: 12px;
+        }
+
+
+        .pagina-saidas .tabela td {
+            padding:
+                11px 10px;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           RODAPÉ
+        ===================================================== */
+
+        .pagina-saidas .rodape-historico-saida {
+            padding-top: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            color: #60738a;
+
+            font-size: 12px;
+        }
+
+
+        .pagina-saidas .btn-exportar-saidas {
+            padding:
+                9px 14px;
+
+            border:
+                1px solid #ced9e5;
+
+            border-radius: 7px;
+
+            background: #ffffff;
+
+            color: #174c7e;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .pagina-saidas .toast-saida {
+            position: fixed;
+
+            left: 50%;
+            bottom: 22px;
+
+            min-width: 360px;
+
+            padding:
+                12px 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transform:
+                translate(
+                    -50%,
+                    25px
+                );
+
+            border:
+                1px solid #b9dfc4;
+
+            border-radius: 8px;
+
+            background: #edf9f0;
+
+            box-shadow:
+                0 7px 25px
+                rgba(0, 0, 0, 0.12);
+
+            color: #206e3d;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            z-index: 9999;
+
+            transition: 0.3s;
+        }
+
+
+        .pagina-saidas .toast-saida.mostrar {
+            opacity: 1;
+
+            transform:
+                translate(
+                    -50%,
+                    0
+                );
+        }
+
+
+        /* =====================================================
+           OCULTO
+        ===================================================== */
+
+        .pagina-saidas .oculto {
+            display: none !important;
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (
+            max-width: 1000px
+        ) {
+
+            .pagina-saidas .saida-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .pagina-saidas .saida-botao-linha {
+                grid-column: auto;
+            }
+
+
+            .pagina-saidas .resumo-saidas-dia {
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 12px;
+            }
+
+
+            .pagina-saidas .resumo-saida-item {
+                padding-left: 0;
+
+                border-left: 0;
+            }
+
+        }
+
+
+        @media (
+            max-width: 700px
+        ) {
+
+            .pagina-saidas .resumo-saidas-dia {
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .pagina-saidas
+            .historico-saida-filtros {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .pagina-saidas
+            .busca-historico-saida {
+                width: 100%;
+            }
+
+        }
+
+    </style>
 
 </head>
 
-<body>
 
-    <!-- MENU LATERAL -->
-    <div class="sidebar">
+<body class="pagina-saidas">
 
-        <div class="logo">
-            <img
-                src="img/logo.png"
-                alt="Logo SMI WMS"
-            >
-        </div>
 
-        <h2>SMI WMS</h2>
+<!-- =====================================================
+     MENU LATERAL
+===================================================== -->
 
-        <ul>
+<div class="sidebar">
 
-            <li onclick="location.href='dashboard.html'">
-                🏠 Dashboard
-            </li>
+    <div class="logo">
 
-            <li onclick="location.href='produtos.html'">
-                📦 Produtos
-            </li>
-
-            <li onclick="location.href='entradas.html'">
-                📥 Entradas
-            </li>
-
-            <li class="ativo" onclick="location.href='saidas.html'">
-                📤 Saídas
-            </li>
-
-            <li onclick="location.href='separacao.html'">
-                🛒 Separação
-            </li>
-
-            <li onclick="location.href='transferencias.html'">
-                🔄 Transferências
-            </li>
-
-            <li onclick="location.href='posicoes.html'">
-                📍 Posições
-            </li>
-
-            <li onclick="location.href='inventario.html'">
-                📋 Inventário
-            </li>
-
-            <li onclick="location.href='relatorios.html'">
-                📊 Relatórios
-            </li>
-
-            <li onclick="location.href='requisicao.html'">
-                📝 Requisição
-            </li>
-
-            <li onclick="location.href='configuracoes.html'">
-                ⚙️ Configurações
-            </li>
-
-        </ul>
+        <img
+            src="img/logo.png"
+            alt="Logo SMI WMS"
+        >
 
     </div>
 
-    <!-- CONTEÚDO -->
-    <div class="conteudo">
 
-        <!-- BARRA SUPERIOR -->
-        <div class="topbar">
+    <h2>
+        SMI WMS
+    </h2>
 
-            <div>
-                <h1>Saída de Estoque</h1>
-                <small>Registrar Saída</small>
+
+    <ul>
+
+        <li
+            onclick="
+                location.href=
+                'dashboard.html'
+            "
+        >
+            🏠 Dashboard
+        </li>
+
+
+        <li
+            onclick="
+                location.href=
+                'produtos.html'
+            "
+        >
+            📦 Produtos
+        </li>
+
+
+        <li
+            onclick="
+                location.href=
+                'entradas.html'
+            "
+        >
+            📥 Entradas
+        </li>
+
+
+        <li
+            class="ativo"
+            onclick="
+                location.href=
+                'saidas.html'
+            "
+        >
+            📤 Saídas
+        </li>
+
+
+        <li
+            onclick="
+                location.href=
+                'separacao.html'
+            "
+        >
+            🛒 Separação
+        </li>
+
+
+        <li
+            onclick="
+                location.href=
+                'transferencias.html'
+            "
+        >
+            🔄 Transferências
+        </li>
+
+
+        <li
+            onclick="
+                location.href=
+                'posicoes.html'
+            "
+        >
+            📍 Posições
+        </li>
+
+
+        <li
+            onclick="
+                location.href=
+                'inventario.html'
+            "
+        >
+            📋 Inventário
+        </li>
+
+
+        <li
+            onclick="
+                location.href=
+                'relatorios.html'
+            "
+        >
+            📊 Relatórios
+        </li>
+
+
+        <li
+            onclick="
+                location.href=
+                'requisicao.html'
+            "
+        >
+            📝 Requisição
+        </li>
+
+
+        <li
+            onclick="
+                location.href=
+                'configuracoes.html'
+            "
+        >
+            ⚙️ Configurações
+        </li>
+
+    </ul>
+
+</div>
+
+
+
+<!-- =====================================================
+     CONTEÚDO
+===================================================== -->
+
+<div class="conteudo">
+
+
+    <!-- =====================================================
+         TOPO
+    ===================================================== -->
+
+    <div class="topbar">
+
+        <div>
+
+            <h1>
+                Saída de Estoque
+            </h1>
+
+            <small>
+                Registrar Saída
+            </small>
+
+        </div>
+
+
+        <div class="usuario">
+
+            <span id="relogio"></span>
+
+            <span id="nomeUsuario"></span>
+
+
+            <button
+                type="button"
+                onclick="sairSistema()"
+            >
+                Sair
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         NOVA SAÍDA
+    ===================================================== -->
+
+    <div
+        class="
+            painel
+            painel-nova-saida
+        "
+    >
+
+        <h2>
+            Nova Saída
+        </h2>
+
+
+        <div class="saida-grid">
+
+
+            <!-- =================================================
+                 CÓDIGO
+            ================================================== -->
+
+            <div class="saida-coluna">
+
+                <label for="codigoSaida">
+                    Código do Produto
+                </label>
+
+
+                <div class="campo-saida-com-icone">
+
+                    <input
+                        id="codigoSaida"
+                        type="text"
+                        placeholder="Código do Produto"
+                        autocomplete="off"
+                    >
+
+                    <span class="icone-campo-saida">
+                        ▥
+                    </span>
+
+                </div>
+
+
+                <!-- PRODUTO ENCONTRADO -->
+
+                <div
+                    id="cardProdutoSaida"
+                    class="
+                        card-produto-saida
+                        oculto
+                    "
+                >
+
+                    <div class="produto-saida-info">
+
+                        <div class="produto-saida-icone">
+                            📦
+                        </div>
+
+
+                        <div>
+
+                            <strong
+                                id="produtoSaidaNome"
+                            >
+                                Selecione um produto
+                            </strong>
+
+
+                            <small
+                                id="produtoSaidaDetalhe"
+                            >
+                                Digite ou bіпe o código
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="produto-estoque-saida">
+
+                        <small>
+                            Estoque atual
+                        </small>
+
+
+                        <div>
+
+                            <strong
+                                id="estoqueAtualSaida"
+                            >
+                                --
+                            </strong>
+
+                            <span>
+                                un.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="usuario">
 
-                <span id="relogio"></span>
 
-                <span id="nomeUsuario"></span>
+            <!-- =================================================
+                 QUANTIDADE
+            ================================================== -->
+
+            <div class="saida-coluna">
+
+                <label for="quantidadeSaida">
+                    Quantidade
+                </label>
+
+
+                <input
+                    id="quantidadeSaida"
+                    type="number"
+                    min="1"
+                    step="1"
+                    placeholder="Quantidade"
+                >
+
+
+                <!-- NOVO SALDO -->
+
+                <div
+                    id="cardNovoSaldoSaida"
+                    class="
+                        card-novo-saldo-saida
+                        oculto
+                    "
+                >
+
+                    <div class="novo-saldo-saida-icone">
+                        ✓
+                    </div>
+
+
+                    <div>
+
+                        <small>
+                            Novo saldo após saída
+                        </small>
+
+
+                        <div>
+
+                            <strong
+                                id="novoSaldoSaida"
+                            >
+                                --
+                            </strong>
+
+                            <span>
+                                un.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ENDEREÇO
+            ================================================== -->
+
+            <div class="saida-coluna">
+
+                <label for="enderecoSaida">
+                    Endereço (posição de origem)
+                </label>
+
+
+                <div class="campo-saida-com-icone">
+
+                    <select id="enderecoSaida">
+
+                        <option value="">
+                            Selecione o Endereço
+                        </option>
+
+                    </select>
+
+
+                    <span class="icone-campo-saida">
+                        📍
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="statusPosicaoSaida"
+                    class="
+                        status-posicao-saida
+                        oculto
+                    "
+                >
+
+                    <span>
+                        ⓘ
+                    </span>
+
+
+                    <span id="textoStatusPosicaoSaida">
+                        Selecione o endereço de onde o produto será retirado
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DESTINO
+            ================================================== -->
+
+            <div class="saida-coluna">
+
+                <label for="requisitanteSaida">
+                    Destino
+                </label>
+
+
+                <select id="requisitanteSaida">
+
+                    <option value="">
+                        Selecione o Destino
+                    </option>
+
+                    <option value="VENDA">
+                        VENDA
+                    </option>
+
+                    <option value="GARANTIA">
+                        GARANTIA
+                    </option>
+
+                    <option value="VALDIR">
+                        VALDIR
+                    </option>
+
+                    <option value="JEFFERSON">
+                        JEFFERSON
+                    </option>
+
+                    <option value="DANILO">
+                        DANILO
+                    </option>
+
+                    <option value="FELIPE">
+                        FELIPE
+                    </option>
+
+                    <option value="RICARDO">
+                        RICARDO
+                    </option>
+
+                    <option value="GUSTAVO SOARES">
+                        GUSTAVO SOARES
+                    </option>
+
+                    <option value="GUSTAVO MARQUES">
+                        GUSTAVO MARQUES
+                    </option>
+
+                    <option value="CARLOS">
+                        CARLOS
+                    </option>
+
+                    <option value="ADEMAR ALVES">
+                        ADEMAR ALVES
+                    </option>
+
+                </select>
+
+
+                <div
+                    id="statusDestinoSaida"
+                    class="
+                        status-destino-saida
+                        oculto
+                    "
+                >
+
+                    <span>
+                        👤
+                    </span>
+
+
+                    <span id="textoStatusDestinoSaida">
+                        O destino será registrado nesta saída
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 BOTÃO
+            ================================================== -->
+
+            <div class="saida-botao-linha">
 
                 <button
                     type="button"
-                    onclick="sairSistema()"
+                    class="
+                        btn
+                        btn-registrar-saida-novo
+                    "
+                    id="btnRegistrarSaida"
                 >
-                    Sair
+
+                    ⇩ Registrar Saída
+
                 </button>
 
             </div>
 
+
         </div>
 
-        <!-- NOVA SAÍDA -->
-        <div class="painel">
+    </div>
 
-            <h2>Nova Saída</h2>
 
-            <div
-                style="
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 20px;
-                "
-            >
 
-                <input
-                    id="codigoSaida"
-                    type="text"
-                    placeholder="Código do Produto"
-                    autocomplete="off"
+    <!-- =====================================================
+         RESUMO DO DIA
+    ===================================================== -->
+
+    <div
+        class="
+            painel
+            resumo-saidas-dia
+        "
+    >
+
+
+        <div class="resumo-saida-titulo">
+
+            <span>
+                📋
+            </span>
+
+            <strong>
+                Resumo do Dia
+            </strong>
+
+        </div>
+
+
+
+        <!-- SAÍDAS -->
+
+        <div class="resumo-saida-item">
+
+            <div class="resumo-saida-icone">
+                ⇩
+            </div>
+
+
+            <div>
+
+                <small>
+                    Saídas hoje
+                </small>
+
+                <strong
+                    id="totalSaidasHoje"
                 >
-<input
-    id="quantidadeSaida"
-    type="number"
-    min="1"
-    step="1"
-    placeholder="Quantidade"
->
+                    0
+                </strong>
 
-<select id="requisitanteSaida">
-  <option value="">Selecione o Destino</option>
-    <option value="VENDA">VENDA</option>
-    <option value="GARANTIA">GARANTIA</option>
-    <option value="VALDIR">VALDIR</option>
-    <option value="JEFFERSON">JEFFERSON</option>
-    <option value="DANILO">DANILO</option>
-    <option value="FELIPE">FELIPE</option>
-    <option value="RICARDO">RICARDO</option>
-    <option value="GUSTAVO SOARES">GUSTAVO SOARES</option>
-    <option value="GUSTAVO MARQUES">GUSTAVO MARQUES</option>
-    <option value="CARLOS">CARLOS</option>
-    <option value="ADEMAR ALVES">ADEMAR ALVES</option>
-</select>
-<button
-    type="button"
-    class="btn"
-    id="btnRegistrarSaida"
->
-    Registrar Saída
-</button>
+                <span>
+                    movimentações
+                </span>
 
             </div>
 
         </div>
 
-        <!-- HISTÓRICO -->
-        <div class="painel">
 
-            <h2>Histórico de Saídas</h2>
+
+        <!-- UNIDADES -->
+
+        <div class="resumo-saida-item">
+
+            <div class="resumo-saida-icone">
+                📦
+            </div>
+
+
+            <div>
+
+                <small>
+                    Unidades expedidas
+                </small>
+
+                <strong
+                    id="totalUnidadesSaidaHoje"
+                >
+                    0
+                </strong>
+
+                <span>
+                    unidades
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ÚLTIMA SAÍDA -->
+
+        <div class="resumo-saida-item">
+
+            <div class="resumo-saida-icone">
+                ◷
+            </div>
+
+
+            <div>
+
+                <small>
+                    Última saída
+                </small>
+
+                <strong
+                    id="ultimaSaidaHoje"
+                >
+                    --
+                </strong>
+
+                <span
+                    id="dataUltimaSaidaHoje"
+                >
+                    --
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- OPERADOR -->
+
+        <div class="resumo-saida-item">
+
+            <div class="resumo-saida-icone">
+                👤
+            </div>
+
+
+            <div>
+
+                <small>
+                    Operador
+                </small>
+
+                <strong
+                    id="operadorResumoSaida"
+                >
+                    -
+                </strong>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         HISTÓRICO
+    ===================================================== -->
+
+    <div class="painel">
+
+        <h2>
+            Histórico de Saídas
+        </h2>
+
+
+        <!-- FILTROS -->
+
+        <div class="historico-saida-filtros">
+
+
+            <div class="busca-historico-saida">
+
+                <span>
+                    🔍
+                </span>
+
+
+                <input
+                    id="pesquisaHistoricoSaida"
+                    type="text"
+                    placeholder="Pesquisar código, descrição, endereço ou destino..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+
+            <div class="periodo-historico-saida">
+
+                <label for="periodoHistoricoSaida">
+                    Período:
+                </label>
+
+
+                <select id="periodoHistoricoSaida">
+
+                    <option value="hoje">
+                        Hoje
+                    </option>
+
+                    <option value="7">
+                        Últimos 7 dias
+                    </option>
+
+                    <option
+                        value="30"
+                        selected
+                    >
+                        Últimos 30 dias
+                    </option>
+
+                    <option value="todos">
+                        Todos
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TABELA -->
+
+        <div class="tabela-saida-container">
 
             <table class="tabela">
 
                 <thead>
+
                     <tr>
-                        <th>Código</th>
-                        <th>Descrição</th>
-                        <th>Quantidade</th>
-                        <th>Endereço</th>
-                        <th>Destino</th>
-                        <th>Data</th>
-                        <th>Operador</th>
+
+                        <th>
+                            Código
+                        </th>
+
+                        <th>
+                            Descrição
+                        </th>
+
+                        <th>
+                            Quantidade
+                        </th>
+
+                        <th>
+                            Endereço
+                        </th>
+
+                        <th>
+                            Destino
+                        </th>
+
+                        <th>
+                            Data
+                        </th>
+
+                        <th>
+                            Operador
+                        </th>
+
                     </tr>
+
                 </thead>
+
 
                 <tbody id="listaSaidas">
 
                     <tr>
+
                         <td
                             colspan="7"
-                            style="text-align: center;"
+                            style="
+                                text-align:center;
+                            "
                         >
                             Nenhuma saída registrada.
                         </td>
+
                     </tr>
 
                 </tbody>
@@ -198,583 +1720,79 @@
 
         </div>
 
+
+
+        <!-- RODAPÉ -->
+
+        <div class="rodape-historico-saida">
+
+            <span id="contadorHistoricoSaida">
+                0 saídas
+            </span>
+
+
+            <div
+                id="paginacaoHistoricoSaida"
+            >
+            </div>
+
+
+            <button
+                type="button"
+                class="btn-exportar-saidas"
+                id="btnExportarSaidas"
+            >
+                📊 Exportar Excel
+            </button>
+
+        </div>
+
     </div>
 
-    <!-- JAVASCRIPT PRINCIPAL -->
-    <script src="app.js"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          carregarHistoricoSaidasComRequisitante();
-          
-        });
+</div>
 
 
-        /* =====================================================
-           FUNÇÃO PRINCIPAL PARA REGISTRAR A SAÍDA
-        ===================================================== */
 
-        function registrarSaidaComRequisitante() {
-            const campoCodigo =
-                document.getElementById("codigoSaida");
+<!-- =====================================================
+     TOAST
+===================================================== -->
 
-            const campoQuantidade =
-                document.getElementById("quantidadeSaida");
+<div
+    id="toastSaida"
+    class="toast-saida"
+>
 
-                const campoRequisitante =
-    document.getElementById("requisitanteSaida");
+    <span>
+        ✓
+    </span>
 
-            const codigo = campoCodigo.value
-                .trim()
-                .toUpperCase();
 
-            const quantidadeSolicitada =
-                Number(campoQuantidade.value);
+    <span id="textoToastSaida">
+        Saída registrada com sucesso!
+    </span>
 
-                const requisitante =
-    campoRequisitante.value.trim();
+</div>
 
-            if (codigo === "") {
-                alert("Digite o código do produto.");
 
-                campoCodigo.focus();
-                return;
-            }
 
-            if (
-                !Number.isFinite(quantidadeSolicitada) ||
-                quantidadeSolicitada <= 0
-            ) {
-                alert("Digite uma quantidade válida.");
+<!-- =====================================================
+     SCRIPTS
+===================================================== -->
 
-                campoQuantidade.focus();
-                return;
-            }
+<script
+    src="
+        https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
+    "
+></script>
 
-            if (requisitante === "") {
-    alert("Digite o nome do requisitante.");
+<script src="supabase.js?v=20260826-01"></script>
 
-    campoRequisitante.focus();
-    return;
-}
+<script src="app.js?v=20260826-01"></script>
 
-            const estoque = obterEstoque();
+<script src="sync-supabase.js?v=20260826-01"></script>
 
-            if (estoque.length === 0) {
-                alert(
-                    "Não existem produtos cadastrados no estoque."
-                );
-
-                return;
-            }
-
-            /*
-             * Localiza todas as posições que possuem
-             * o código informado.
-             */
-            const posicoesProduto = estoque
-                .map(function (produto, indice) {
-                    return {
-                        produto: produto,
-                        indice: indice
-                    };
-                })
-                .filter(function (item) {
-                    return normalizarCodigo(
-                        item.produto.codigo
-                    ) === normalizarCodigo(codigo);
-                });
-
-            if (posicoesProduto.length === 0) {
-                alert(
-                    'Produto "' +
-                    codigo +
-                    '" não encontrado no estoque.'
-                );
-
-                campoCodigo.focus();
-                return;
-            }
-
-            const saldoDisponivel = posicoesProduto.reduce(
-                function (total, item) {
-                    return total +
-                        converterNumero(
-                            item.produto.quantidade
-                        );
-                },
-                0
-            );
-
-            if (quantidadeSolicitada > saldoDisponivel) {
-                alert(
-                    "Saldo insuficiente.\n\n" +
-                    "Código: " + codigo + "\n" +
-                    "Saldo disponível: " +
-                    formatarQuantidade(saldoDisponivel) +
-                    "\n" +
-                    "Quantidade solicitada: " +
-                    formatarQuantidade(
-                        quantidadeSolicitada
-                    )
-                );
-
-                campoQuantidade.focus();
-                return;
-            }
-
-            const confirmou = confirm(
-                "Confirmar saída de estoque?\n\n" +
-                "Código: " + codigo + "\n" +
-                "Quantidade: " +
-                formatarQuantidade(
-                    quantidadeSolicitada
-                ) +
-                "\n" +
-                "Saldo atual: " +
-                formatarQuantidade(saldoDisponivel)
-            );
-
-            if (!confirmou) {
-                return;
-            }
-
-            let quantidadeRestante =
-                quantidadeSolicitada;
-
-            const movimentacoes = [];
-
-            /*
-             * Caso o mesmo produto esteja em mais de um
-             * endereço, a saída será baixada posição por posição.
-             */
-            posicoesProduto.forEach(function (item) {
-                if (quantidadeRestante <= 0) {
-                    return;
-                }
-
-                const produto = item.produto;
-
-                const saldoPosicao = converterNumero(
-                    produto.quantidade
-                );
-
-                if (saldoPosicao <= 0) {
-                    return;
-                }
-
-                const quantidadeRetirada = Math.min(
-                    saldoPosicao,
-                    quantidadeRestante
-                );
-
-                produto.quantidade =
-                    saldoPosicao - quantidadeRetirada;
-
-                quantidadeRestante -=
-                    quantidadeRetirada;
-
-                movimentacoes.push({
-                    codigo: produto.codigo || codigo,
-                    descricao:
-                        produto.descricao ||
-                        "Sem descrição",
-
-                    quantidade:
-                        quantidadeRetirada,
-
-                    endereco:
-                        produto.endereco ||
-                        "-",
-
-                    cliente:
-                        produto.cliente ||
-                        "SMI",
-
-                    data:
-                        obterDataHoraAtual(),
-
-                operador:
-    obterNomeOperador(),
-
-requisitante:
-    requisitante
-                        
-                });
-            });
-
-            /*
-             * Mantém os produtos com saldo zero no estoque.
-             * Assim o cadastro não desaparece da tabela.
-             */
-            localStorage.setItem(
-                "estoque",
-                JSON.stringify(estoque)
-            );
-
-            salvarMovimentacoesSaida(
-                movimentacoes
-            );
-
-           carregarHistoricoSaidasComRequisitante();
-
-            campoCodigo.value = "";
-            campoQuantidade.value = "";
-            campoRequisitante.value = "";
-
-            campoCodigo.focus();
-
-            alert(
-                "Saída registrada com sucesso!\n\n" +
-                "Código: " + codigo + "\n" +
-                "Quantidade retirada: " +
-                formatarQuantidade(
-                    quantidadeSolicitada
-                ) +
-                "\n" +
-                "Novo saldo: " +
-                formatarQuantidade(
-                    saldoDisponivel -
-                    quantidadeSolicitada
-                )
-            );
-        }
-
-
-        /* =====================================================
-           RECUPERAÇÃO DO ESTOQUE
-        ===================================================== */
-
-        function obterEstoque() {
-            try {
-                const estoqueSalvo =
-                    localStorage.getItem("estoque");
-
-                if (!estoqueSalvo) {
-                    return [];
-                }
-
-                const estoque =
-                    JSON.parse(estoqueSalvo);
-
-                return Array.isArray(estoque)
-                    ? estoque
-                    : [];
-
-            } catch (erro) {
-                console.error(
-                    "Erro ao recuperar estoque:",
-                    erro
-                );
-
-                return [];
-            }
-        }
-
-
-        /* =====================================================
-           SALVAMENTO DAS SAÍDAS
-        ===================================================== */
-
-        function salvarMovimentacoesSaida(
-            movimentacoes
-        ) {
-            let historico = [];
-
-            try {
-                const historicoSalvo =
-                    JSON.parse(
-                        localStorage.getItem("saidas")
-                    );
-
-                if (Array.isArray(historicoSalvo)) {
-                    historico = historicoSalvo;
-                }
-
-            } catch (erro) {
-                console.error(
-                    "Erro ao recuperar saídas:",
-                    erro
-                );
-
-                historico = [];
-            }
-
-            movimentacoes.forEach(
-                function (movimentacao) {
-                    historico.unshift(
-                        movimentacao
-                    );
-                }
-            );
-
-            localStorage.setItem(
-                "saidas",
-                JSON.stringify(historico)
-            );
-        }
-
-
-        /* =====================================================
-           CARREGAMENTO DO HISTÓRICO
-        ===================================================== */
-
-      function carregarHistoricoSaidasComRequisitante() {
-            const tabela =
-                document.getElementById(
-                    "listaSaidas"
-                );
-
-            if (!tabela) {
-                return;
-            }
-
-            let historico = [];
-
-            try {
-                const dados =
-                    JSON.parse(
-                        localStorage.getItem("saidas")
-                    );
-
-                historico = Array.isArray(dados)
-                    ? dados
-                    : [];
-
-            } catch (erro) {
-                console.error(
-                    "Erro ao carregar histórico:",
-                    erro
-                );
-
-                historico = [];
-            }
-
-            tabela.innerHTML = "";
-
-            if (historico.length === 0) {
-                tabela.innerHTML = `
-                    <tr>
-                        <td
-                            colspan="6"
-                            style="text-align:center;"
-                        >
-                            Nenhuma saída registrada.
-                        </td>
-                    </tr>
-                `;
-
-                return;
-            }
-
-            historico.forEach(
-                function (saida) {
-                    const linha =
-                        document.createElement("tr");
-
-                    linha.appendChild(
-                        criarCelula(
-                            saida.codigo || "-"
-                        )
-                    );
-
-                    linha.appendChild(
-                        criarCelula(
-                            saida.descricao || "-"
-                        )
-                    );
-
-                    linha.appendChild(
-                        criarCelula(
-                            formatarQuantidade(
-                                saida.quantidade
-                            )
-                        )
-                    );
-
-                    linha.appendChild(
-                        criarCelula(
-                            saida.endereco || "-"
-                        )
-                    );
-linha.appendChild(
-    criarCelula(
-        saida.requisitante || "-"
-    )
-);
-                    linha.appendChild(
-                        criarCelula(
-                            saida.data || "-"
-                        )
-                    );
-
-                    linha.appendChild(
-                        criarCelula(
-                            saida.operador || "-"
-                        )
-                    );
-
-                    tabela.appendChild(linha);
-                }
-            );
-        }
-
-
-        /* =====================================================
-           FUNÇÕES AUXILIARES
-        ===================================================== */
-
-        function criarCelula(valor) {
-            const celula =
-                document.createElement("td");
-
-            celula.textContent = valor;
-
-            return celula;
-        }
-
-
-        function normalizarCodigo(codigo) {
-            return String(codigo || "")
-                .trim()
-                .toUpperCase();
-        }
-
-
-        function converterNumero(valor) {
-            if (
-                valor === undefined ||
-                valor === null ||
-                valor === ""
-            ) {
-                return 0;
-            }
-
-            if (typeof valor === "number") {
-                return Number.isFinite(valor)
-                    ? valor
-                    : 0;
-            }
-
-            let texto = String(valor)
-                .trim()
-                .replace(/\s/g, "");
-
-            if (
-                texto.includes(".") &&
-                texto.includes(",")
-            ) {
-                texto = texto
-                    .replace(/\./g, "")
-                    .replace(",", ".");
-
-            } else if (texto.includes(",")) {
-                texto = texto.replace(",", ".");
-            }
-
-            texto = texto.replace(
-                /[^0-9.-]/g,
-                ""
-            );
-
-            const numero = Number(texto);
-
-            return Number.isFinite(numero)
-                ? numero
-                : 0;
-        }
-
-
-        function formatarQuantidade(valor) {
-            const numero = converterNumero(valor);
-
-            return numero.toLocaleString(
-                "pt-BR",
-                {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 3
-                }
-            );
-        }
-
-
-        function obterDataHoraAtual() {
-            return new Date().toLocaleString(
-                "pt-BR"
-            );
-        }
-
-
-        function obterNomeOperador() {
-            const elementoNome =
-                document.getElementById(
-                    "nomeUsuario"
-                );
-
-            if (
-                elementoNome &&
-                elementoNome.textContent.trim() !== ""
-            ) {
-                return elementoNome.textContent.trim();
-            }
-
-            const chavesPossiveis = [
-                "nomeUsuario",
-                "usuarioLogado",
-                "usuario",
-                "operador"
-            ];
-
-            for (
-                const chave of chavesPossiveis
-            ) {
-                const valor =
-                    localStorage.getItem(chave);
-
-                if (
-                    valor &&
-                    valor.trim() !== ""
-                ) {
-                    try {
-                        const dados =
-                            JSON.parse(valor);
-
-                        if (
-                            dados &&
-                            typeof dados === "object"
-                        ) {
-                            return (
-                                dados.nome ||
-                                dados.usuario ||
-                                dados.login ||
-                                "Operador"
-                            );
-                        }
-                    } catch (erro) {
-                        return valor;
-                    }
-                }
-            }
-
-            return "Operador";
-        }
-
-
-        /*
-         * Deixa as funções disponíveis para outras
-         * partes do sistema.
-         */
-     window.registrarSaidaComRequisitante =
-    registrarSaidaComRequisitante;
-
-      window.carregarHistoricoSaidasComRequisitante =
-    carregarHistoricoSaidasComRequisitante;
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js?v=20260806-04"></script>
-<script src="app.js?v=20260806-04"></script>
-<script src="sync-supabase.js?v=20260806-04"></script>
 
 </body>
+
 </html>
-    
