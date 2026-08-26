@@ -15,9 +15,391 @@
 
     <link rel="icon" type="image/png" href="img/favicon.png">
 
+
+    <style>
+        /* =====================================================
+           RELATÓRIOS - NOVO VISUAL
+        ===================================================== */
+        .pagina-relatorios {
+            background: #f4f7fb;
+        }
+
+        .pagina-relatorios .conteudo {
+            padding: 24px 28px 36px !important;
+        }
+
+        .pagina-relatorios .topbar {
+            margin-bottom: 18px;
+        }
+
+        .pagina-relatorios .topbar h1 {
+            color: #062b60;
+            font-size: 32px;
+            margin-bottom: 4px;
+        }
+
+        .pagina-relatorios .topbar small {
+            color: #52657c;
+            font-size: 13px;
+        }
+
+        /* Cards superiores */
+        .rel-kpis {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .rel-kpi {
+            position: relative;
+            min-height: 122px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border: 1px solid #e1e8f0;
+            border-radius: 14px;
+            background: #ffffff;
+            box-shadow: 0 5px 18px rgba(0, 30, 69, 0.06);
+            overflow: hidden;
+        }
+
+        .rel-kpi-icone {
+            width: 54px;
+            height: 54px;
+            min-width: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            font-size: 25px;
+        }
+
+        .rel-kpi.produtos .rel-kpi-icone {
+            background: #eaf3ff;
+            color: #2f80ed;
+        }
+
+        .rel-kpi.quantidade .rel-kpi-icone {
+            background: #ecfaef;
+            color: #22a447;
+        }
+
+        .rel-kpi.valor .rel-kpi-icone {
+            background: #f2eafe;
+            color: #7339d6;
+        }
+
+        .rel-kpi.posicoes .rel-kpi-icone {
+            background: #fff1e4;
+            color: #f28c1b;
+        }
+
+        .rel-kpi small {
+            display: block;
+            color: #52657c;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .rel-kpi strong {
+            display: block;
+            color: #0b3a78;
+            font-size: 27px;
+            line-height: 1.1;
+        }
+
+        .rel-kpi.quantidade strong { color: #15983f; }
+        .rel-kpi.valor strong { color: #6b35cf; }
+        .rel-kpi.posicoes strong { color: #ed7f0b; }
+
+        .rel-kpi .subtexto {
+            display: block;
+            margin-top: 6px;
+            color: #7a8ba0;
+            font-size: 10px;
+        }
+
+        /* Painéis */
+        .rel-painel {
+            margin-bottom: 18px;
+            padding: 20px 22px;
+            border: 1px solid #e1e8f0;
+            border-radius: 14px;
+            background: #ffffff;
+            box-shadow: 0 5px 18px rgba(0, 30, 69, 0.06);
+        }
+
+        .rel-painel h2,
+        .rel-painel h3 {
+            margin: 0;
+            color: #082f67;
+        }
+
+        .rel-titulo-linha {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 15px;
+        }
+
+        .rel-titulo-linha h2 {
+            font-size: 18px;
+        }
+
+        /* Filtros */
+        .rel-filtros {
+            display: grid;
+            grid-template-columns: 190px 205px 205px auto auto auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .rel-campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .rel-campo label {
+            color: #36516f;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .rel-campo select,
+        .rel-campo input {
+            width: 100%;
+            height: 42px;
+            padding: 0 12px;
+            border: 1px solid #d2dce8;
+            border-radius: 7px;
+            background: #fff;
+            color: #18324f;
+            outline: none;
+        }
+
+        .rel-campo select:focus,
+        .rel-campo input:focus {
+            border-color: #1769c2;
+            box-shadow: 0 0 0 3px rgba(23,105,194,.08);
+        }
+
+        .rel-btn {
+            min-height: 42px;
+            padding: 0 18px;
+            border: 1px solid #0c4d91;
+            border-radius: 7px;
+            background: #0a4a89;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .rel-btn.secundario {
+            background: #fff;
+            color: #0b4f94;
+        }
+
+        /* Gráficos */
+        .rel-graficos {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .rel-grafico-card {
+            min-height: 250px;
+            padding: 16px;
+            border: 1px solid #e1e8f0;
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 5px 18px rgba(0, 30, 69, 0.06);
+        }
+
+        .rel-grafico-card h3 {
+            margin: 0 0 12px;
+            color: #082f67;
+            font-size: 13px;
+        }
+
+        .rel-grafico-wrap {
+            position: relative;
+            height: 195px;
+        }
+
+        /* Tabela */
+        .rel-detalhes-topo {
+            display: grid;
+            grid-template-columns: minmax(280px, 1fr) auto auto;
+            gap: 12px;
+            align-items: center;
+            margin: 14px 0 12px;
+        }
+
+        .rel-busca {
+            position: relative;
+        }
+
+        .rel-busca span {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6a7d92;
+        }
+
+        .rel-busca input {
+            width: 100%;
+            height: 40px;
+            padding: 0 12px 0 36px;
+            border: 1px solid #d2dce8;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        .rel-busca input:focus {
+            border-color: #1769c2;
+            box-shadow: 0 0 0 3px rgba(23,105,194,.08);
+        }
+
+        .rel-select-ordem,
+        .rel-filtro-mini {
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid #d2dce8;
+            border-radius: 7px;
+            background: #fff;
+            color: #17345c;
+            font-weight: 700;
+        }
+
+        .pagina-relatorios .tabela {
+            margin-top: 0;
+            box-shadow: none;
+            border-radius: 8px;
+        }
+
+        .pagina-relatorios .tabela th {
+            padding: 11px 10px;
+            font-size: 11px;
+        }
+
+        .pagina-relatorios .tabela td {
+            padding: 11px 10px;
+            font-size: 11px;
+        }
+
+        .tag-tipo-rel {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .tag-tipo-rel.entrada {
+            background: #eaf8ee;
+            color: #17833d;
+            border: 1px solid #bfe6ca;
+        }
+
+        .tag-tipo-rel.saida {
+            background: #fff0f0;
+            color: #c52d2d;
+            border: 1px solid #f1b7b7;
+        }
+
+        .tag-tipo-rel.transferencia {
+            background: #eaf3ff;
+            color: #1767d1;
+            border: 1px solid #bfd6f8;
+        }
+
+        .rel-rodape-tabela {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding-top: 14px;
+            color: #5f7289;
+            font-size: 11px;
+        }
+
+        .rel-paginacao {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .rel-paginacao button {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #d2dce8;
+            border-radius: 6px;
+            background: #fff;
+            color: #17345c;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .rel-paginacao button.ativo {
+            background: #073d77;
+            color: #fff;
+            border-color: #073d77;
+        }
+
+        @media (max-width: 1200px) {
+            .rel-graficos { grid-template-columns: 1fr 1fr; }
+            .rel-filtros { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 800px) {
+            .pagina-relatorios .conteudo {
+                padding: 14px 10px 28px !important;
+            }
+
+            .rel-kpis { grid-template-columns: 1fr 1fr; }
+            .rel-graficos { grid-template-columns: 1fr; }
+            .rel-filtros { grid-template-columns: 1fr 1fr; }
+            .rel-detalhes-topo { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 520px) {
+            .rel-kpis { grid-template-columns: 1fr; }
+            .rel-filtros { grid-template-columns: 1fr; }
+            .rel-kpi { min-height: 104px; }
+        }
+
+        @media print {
+            .sidebar,
+            .usuario,
+            .rel-filtros,
+            .rel-detalhes-topo,
+            .rel-rodape-tabela {
+                display: none !important;
+            }
+
+            .pagina-relatorios .conteudo {
+                margin-left: 0 !important;
+                padding: 0 !important;
+            }
+
+            .rel-painel,
+            .rel-grafico-card,
+            .rel-kpi {
+                box-shadow: none;
+            }
+        }
+    </style>
+
 </head>
 
-<body>
+<body class="pagina-relatorios">
 
     <!-- MENU LATERAL -->
     <div class="sidebar">
@@ -110,141 +492,161 @@
         </header>
 
         <!-- RESUMO -->
-        <div class="cards">
+        <section class="rel-kpis">
 
-            <div class="card">
-
-                <h3>Produtos</h3>
-
-                <span id="relProdutos">
-                    0
-                </span>
-
+            <div class="rel-kpi produtos">
+                <div class="rel-kpi-icone">📦</div>
+                <div>
+                    <small>Produtos</small>
+                    <strong id="relProdutos">0</strong>
+                    <span class="subtexto">Cadastros ativos</span>
+                </div>
             </div>
 
-            <div class="card">
-
-                <h3>Quantidade</h3>
-
-                <span id="relQuantidade">
-                    0
-                </span>
-
+            <div class="rel-kpi quantidade">
+                <div class="rel-kpi-icone">▦</div>
+                <div>
+                    <small>Quantidade</small>
+                    <strong id="relQuantidade">0</strong>
+                    <span class="subtexto">Total de unidades</span>
+                </div>
             </div>
 
-            <div class="card">
-
-                <h3>Valor Estoque</h3>
-
-                <span id="relValor">
-                    R$ 0,00
-                </span>
-
+            <div class="rel-kpi valor">
+                <div class="rel-kpi-icone">R$</div>
+                <div>
+                    <small>Valor do Estoque</small>
+                    <strong id="relValor">R$ 0,00</strong>
+                    <span class="subtexto">Valor total do estoque</span>
+                </div>
             </div>
 
-            <div class="card">
-
-                <h3>Posições</h3>
-
-                <span id="relPosicoes">
-                    0
-                </span>
-
+            <div class="rel-kpi posicoes">
+                <div class="rel-kpi-icone">📍</div>
+                <div>
+                    <small>Posições</small>
+                    <strong id="relPosicoes">0</strong>
+                    <span class="subtexto">Posições ocupadas</span>
+                </div>
             </div>
 
-        </div>
+        </section>
 
         <!-- FILTROS E BOTÕES -->
-        <div class="card">
+        <section class="rel-painel">
+            <div class="rel-titulo-linha">
+                <span>⚱</span>
+                <h2>Movimentações</h2>
+            </div>
 
-            <h2>Movimentações</h2>
+            <div class="rel-filtros">
 
-            <div
-                style="
-                    display: flex;
-                    align-items: center;
-                    flex-wrap: wrap;
-                    gap: 12px;
-                "
-            >
+                <div class="rel-campo">
+                    <label for="filtroMovimento">Tipo</label>
+                    <select id="filtroMovimento">
+                        <option value="TODOS">Todos</option>
+                        <option value="ENTRADA">Entradas</option>
+                        <option value="SAIDA">Saídas</option>
+                        <option value="TRANSFERENCIA">Transferências</option>
+                    </select>
+                </div>
 
-                <select
-                    id="filtroMovimento"
-                >
+                <div class="rel-campo">
+                    <label for="dataInicialRelatorio">Período - De</label>
+                    <input type="date" id="dataInicialRelatorio">
+                </div>
 
-                    <option value="TODOS">
-                        Todos
-                    </option>
+                <div class="rel-campo">
+                    <label for="dataFinalRelatorio">Período - Até</label>
+                    <input type="date" id="dataFinalRelatorio">
+                </div>
 
-                    <option value="ENTRADA">
-                        Entradas
-                    </option>
-
-                    <option value="SAIDA">
-                        Saídas
-                    </option>
-
-                    <option value="TRANSFERENCIA">
-                        Transferências
-                    </option>
-
-                </select>
-
-                <label for="dataInicialRelatorio">
-                    De:
-                </label>
-
-                <input
-                    type="date"
-                    id="dataInicialRelatorio"
-                >
-
-                <label for="dataFinalRelatorio">
-                    Até:
-                </label>
-
-                <input
-                    type="date"
-                    id="dataFinalRelatorio"
-                >
-
-                <button
-                    type="button"
-                    class="btn"
-                    onclick="filtrarRelatorio()"
-                >
+            <button
+    type="button"
+    class="rel-btn"
+    onclick="atualizarPainelRelatoriosNovo();"
+>
                     🔍 Consultar
                 </button>
 
-                <button
-                    type="button"
-                    class="btn"
-                    onclick="imprimirRelatorio()"
-                >
+                <button type="button" class="rel-btn secundario" onclick="imprimirRelatorio()">
                     🖨️ Imprimir
                 </button>
 
-                <button
-                    type="button"
-                    class="btn"
-                    onclick="exportarRelatorioExcel()"
-                >
+                <button type="button" class="rel-btn secundario" onclick="exportarRelatorioExcel()">
                     📊 Exportar para Excel
                 </button>
 
             </div>
+        </section>
 
-        </div>
+        <!-- GRÁFICOS -->
+        <section class="rel-graficos">
+
+            <div class="rel-grafico-card">
+                <h3>Movimentações por Tipo</h3>
+                <div class="rel-grafico-wrap">
+                    <canvas id="graficoTipoRelatorio"></canvas>
+                </div>
+            </div>
+
+            <div class="rel-grafico-card">
+                <h3>Movimentações por Dia (Período)</h3>
+                <div class="rel-grafico-wrap">
+                    <canvas id="graficoDiaRelatorio"></canvas>
+                </div>
+            </div>
+
+            <div class="rel-grafico-card">
+                <h3>Top 5 Produtos Mais Movimentados</h3>
+                <div class="rel-grafico-wrap">
+                    <canvas id="graficoTopProdutosRelatorio"></canvas>
+                </div>
+            </div>
+
+            <div class="rel-grafico-card">
+                <h3>Movimentações por Operador</h3>
+                <div class="rel-grafico-wrap">
+                    <canvas id="graficoOperadorRelatorio"></canvas>
+                </div>
+            </div>
+
+        </section>
 
         <!-- TABELA -->
-        <div class="card">
+        <section class="rel-painel">
 
-            <div style="overflow-x: auto;">
+            <div class="rel-titulo-linha">
+                <span>▦</span>
+                <h2>Detalhamento das Movimentações</h2>
+            </div>
 
+            <div class="rel-detalhes-topo">
+
+                <div class="rel-busca">
+                    <span>🔍</span>
+                    <input
+                        type="text"
+                        id="pesquisaRelatorios"
+                        placeholder="Buscar por código, descrição, origem, destino ou operador..."
+                        autocomplete="off"
+                    >
+                </div>
+
+                <button type="button" class="rel-filtro-mini" onclick="document.getElementById('filtroMovimento').focus()">
+                    ⚱ Filtros
+                </button>
+
+                <select id="ordemRelatorios" class="rel-select-ordem">
+                    <option value="recentes">Mais recentes</option>
+                    <option value="antigos">Mais antigos</option>
+                </select>
+
+            </div>
+
+            <div style="overflow-x:auto;">
                 <table class="tabela">
-
                     <thead>
-
                         <tr>
                             <th>Tipo</th>
                             <th>Código</th>
@@ -252,72 +654,68 @@
                             <th>Quantidade</th>
                             <th>Origem</th>
                             <th>Destino</th>
-                            <th>Data</th>
+                            <th>Data/Hora</th>
                             <th>Operador</th>
                         </tr>
-
                     </thead>
 
                     <tbody id="listaRelatorios">
-
                         <tr>
-                            <td
-                                colspan="8"
-                                style="text-align: center;"
-                            >
+                            <td colspan="8" style="text-align:center;">
                                 Nenhuma movimentação encontrada.
                             </td>
                         </tr>
-
                     </tbody>
-
                 </table>
-
             </div>
 
-        </div>
+            <div class="rel-rodape-tabela">
+                <span id="contadorRelatorios">0 movimentações</span>
+                <div id="paginacaoRelatorios" class="rel-paginacao"></div>
+            </div>
+
+        </section>
 
     </div>
 
-    <!-- BIBLIOTECA PARA CRIAR O EXCEL -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-    <script src="app.js"></script>
+    <!-- BIBLIOTECAS -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
-    <!-- JAVASCRIPT PRINCIPAL DO WMS -->
-    <script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- SUPABASE DO WMS -->
+<script src="supabase.js"></script>
+
+<!-- JAVASCRIPT PRINCIPAL DO WMS -->
+<script src="app.js"></script>
 
     <script>
-        document.addEventListener(
-            "DOMContentLoaded",
+      document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        setTimeout(
             function () {
 
                 atualizarCardsRelatorios();
 
-                /*
-                 * O app.js carrega a tabela automaticamente.
-                 * Este pequeno atraso garante a atualização
-                 * dos cards e a aplicação do filtro.
-                 */
-                setTimeout(
-                    function () {
+                if (
+                    typeof carregarRelatorios ===
+                    "function"
+                ) {
 
-                        atualizarCardsRelatorios();
+                    carregarRelatorios();
 
-                        if (
-                            typeof carregarRelatorios ===
-                            "function"
-                        ) {
+                }
 
-                            carregarRelatorios();
-
-                        }
-
-                    },
-                    150
-                );
-
-            }
+            },
+            500
         );
+
+    }
+);
 
 
         // =====================================================
@@ -325,6 +723,7 @@
         // =====================================================
 
         function atualizarCardsRelatorios() {
+            atualizarTotalProdutosRelatorioSupabase();
 
             const estoque =
                 typeof carregarEstoque === "function"
@@ -406,12 +805,6 @@
             );
 
 
-            alterarTextoRelatorio(
-                "relProdutos",
-                codigos.size.toLocaleString(
-                    "pt-BR"
-                )
-            );
 
 
             alterarTextoRelatorio(
@@ -447,6 +840,105 @@
 
         }
 
+        // =====================================================
+// TOTAL DE PRODUTOS - BASE COMPLETA SUPABASE
+// MESMA REGRA DO DASHBOARD
+// =====================================================
+
+async function atualizarTotalProdutosRelatorioSupabase() {
+
+    try {
+
+        // =============================================
+        // AGUARDAR O SUPABASE FICAR DISPONÍVEL
+        // =============================================
+
+        let tentativas = 0;
+
+        while (
+            !window.supabaseClient &&
+            tentativas < 30
+        ) {
+
+            await new Promise(
+                function (resolve) {
+                    setTimeout(
+                        resolve,
+                        200
+                    );
+                }
+            );
+
+            tentativas++;
+
+        }
+
+
+        if (!window.supabaseClient) {
+
+            console.warn(
+                "Supabase não ficou disponível para contar produtos."
+            );
+
+            return;
+
+        }
+
+
+        // =============================================
+        // CONTAR TODOS OS PRODUTOS
+        // =============================================
+
+        const { count, error } =
+            await window.supabaseClient
+                .from("produtos")
+                .select(
+                    "codigo",
+                    {
+                        count: "exact",
+                        head: true
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Erro ao contar produtos:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        alterarTextoRelatorio(
+            "relProdutos",
+            Number(
+                count || 0
+            ).toLocaleString(
+                "pt-BR"
+            )
+        );
+
+
+        console.log(
+            "Total de produtos carregado do Supabase:",
+            count
+        );
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao atualizar total de produtos:",
+            erro
+        );
+
+    }
+
+}
 
         // =====================================================
         // FILTRAR A TABELA
@@ -570,7 +1062,8 @@
                             : "none";
                 }
             );
-
+            
+    
         }
 
 
@@ -816,8 +1309,884 @@
         }
 
 
+        // =====================================================
+        // NOVO PAINEL - GRÁFICOS / PESQUISA / PAGINAÇÃO
+        // =====================================================
+
+        let relPaginaAtual = 1;
+        const relItensPorPagina = 10;
+        let relGraficos = {};
+
+        function obterMovimentacoesRelatorio() {
+            try {
+                const dados = JSON.parse(
+                    localStorage.getItem("movimentacoes") || "[]"
+                );
+
+                return Array.isArray(dados)
+                    ? dados
+                    : [];
+            } catch (erro) {
+                console.error(
+                    "Erro ao carregar movimentações do relatório:",
+                    erro
+                );
+
+                return [];
+            }
+        }
+
+        function obterMovimentacoesRelatorioFiltradas() {
+            const dados =
+                obterMovimentacoesRelatorio();
+
+            const filtro =
+                normalizarTipoRelatorio(
+                    document.getElementById(
+                        "filtroMovimento"
+                    )?.value || "TODOS"
+                );
+
+            const inicioValor =
+                document.getElementById(
+                    "dataInicialRelatorio"
+                )?.value || "";
+
+            const fimValor =
+                document.getElementById(
+                    "dataFinalRelatorio"
+                )?.value || "";
+
+            const pesquisa =
+                String(
+                    document.getElementById(
+                        "pesquisaRelatorios"
+                    )?.value || ""
+                )
+                .trim()
+                .toUpperCase();
+
+            const inicio =
+                inicioValor
+                    ? new Date(
+                        inicioValor +
+                        "T00:00:00"
+                    )
+                    : null;
+
+            const fim =
+                fimValor
+                    ? new Date(
+                        fimValor +
+                        "T23:59:59"
+                    )
+                    : null;
+
+            let resultado =
+                dados.filter(
+                    function (mov) {
+                        const tipo =
+                            normalizarTipoRelatorio(
+                                mov.tipo
+                            );
+
+                        const data =
+                            converterDataRelatorio(
+                                mov.data
+                            );
+
+                        const tipoOk =
+                            filtro === "TODOS" ||
+                            tipo === filtro;
+
+                        const inicioOk =
+                            !inicio ||
+                            (
+                                data &&
+                                data >= inicio
+                            );
+
+                        const fimOk =
+                            !fim ||
+                            (
+                                data &&
+                                data <= fim
+                            );
+
+                        const texto =
+                            [
+                                mov.codigo,
+                                mov.descricao,
+                                mov.origem,
+                                mov.endereco,
+                                mov.destino,
+                                mov.requisitante,
+                                mov.operador
+                            ]
+                            .join(" ")
+                            .toUpperCase();
+
+                        const pesquisaOk =
+                            !pesquisa ||
+                            texto.includes(
+                                pesquisa
+                            );
+
+                        return (
+                            tipoOk &&
+                            inicioOk &&
+                            fimOk &&
+                            pesquisaOk
+                        );
+                    }
+                );
+
+            const ordem =
+                document.getElementById(
+                    "ordemRelatorios"
+                )?.value || "recentes";
+
+            resultado.sort(
+                function (a, b) {
+                    const dataA =
+                        converterDataRelatorio(
+                            a.data
+                        );
+
+                    const dataB =
+                        converterDataRelatorio(
+                            b.data
+                        );
+
+                    const valorA =
+                        dataA
+                            ? dataA.getTime()
+                            : 0;
+
+                    const valorB =
+                        dataB
+                            ? dataB.getTime()
+                            : 0;
+
+                    return ordem === "antigos"
+                        ? valorA - valorB
+                        : valorB - valorA;
+                }
+            );
+
+            return resultado;
+        }
+
+        function criarTagTipoRelatorio(tipo) {
+            const normalizado =
+                normalizarTipoRelatorio(
+                    tipo
+                );
+
+            let classe = "";
+
+            if (normalizado === "ENTRADA") {
+                classe = "entrada";
+            } else if (normalizado === "SAIDA") {
+                classe = "saida";
+            } else if (
+                normalizado ===
+                "TRANSFERENCIA"
+            ) {
+                classe = "transferencia";
+            }
+
+            const texto =
+                normalizado === "TRANSFERENCIA"
+                    ? "TRANSFERÊNCIA"
+                    : (
+                        normalizado === "SAIDA"
+                            ? "SAÍDA"
+                            : normalizado
+                    );
+
+            return (
+                '<span class="tag-tipo-rel ' +
+                classe +
+                '">' +
+                texto +
+                "</span>"
+            );
+        }
+
+        function renderizarTabelaRelatoriosNova() {
+            const tabela =
+                document.getElementById(
+                    "listaRelatorios"
+                );
+
+            if (!tabela) {
+                return;
+            }
+
+            const dados =
+                obterMovimentacoesRelatorioFiltradas();
+
+            const totalPaginas =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        dados.length /
+                        relItensPorPagina
+                    )
+                );
+
+            if (
+                relPaginaAtual >
+                totalPaginas
+            ) {
+                relPaginaAtual =
+                    totalPaginas;
+            }
+
+            const inicio =
+                (
+                    relPaginaAtual -
+                    1
+                ) *
+                relItensPorPagina;
+
+            const fim =
+                Math.min(
+                    inicio +
+                    relItensPorPagina,
+                    dados.length
+                );
+
+            const pagina =
+                dados.slice(
+                    inicio,
+                    fim
+                );
+
+            tabela.innerHTML = "";
+
+            if (
+                pagina.length ===
+                0
+            ) {
+                tabela.innerHTML =
+                    '<tr><td colspan="8" style="text-align:center;">Nenhuma movimentação encontrada.</td></tr>';
+
+                atualizarRodapeRelatorio(
+                    0,
+                    0,
+                    0,
+                    1
+                );
+
+                return;
+            }
+
+            pagina.forEach(
+                function (mov) {
+                    const linha =
+                        document.createElement(
+                            "tr"
+                        );
+
+                    const origem =
+                        mov.origem ||
+                        mov.endereco ||
+                        "-";
+
+                    const destino =
+                        mov.requisitante ||
+                        mov.destino ||
+                        (
+                            normalizarTipoRelatorio(
+                                mov.tipo
+                            ) === "SAIDA"
+                                ? "VENDA"
+                                : "-"
+                        );
+
+                    linha.innerHTML =
+                        "<td>" +
+                        criarTagTipoRelatorio(
+                            mov.tipo
+                        ) +
+                        "</td>" +
+                        "<td>" +
+                        escaparHTMLRelatorio(
+                            mov.codigo || "-"
+                        ) +
+                        "</td>" +
+                        "<td>" +
+                        escaparHTMLRelatorio(
+                            mov.descricao || "-"
+                        ) +
+                        "</td>" +
+                        "<td>" +
+                        escaparHTMLRelatorio(
+                            formatarNumeroRelatorio(
+                                mov.quantidade
+                            )
+                        ) +
+                        "</td>" +
+                        "<td>" +
+                        escaparHTMLRelatorio(
+                            origem
+                        ) +
+                        "</td>" +
+                        "<td>" +
+                        escaparHTMLRelatorio(
+                            destino
+                        ) +
+                        "</td>" +
+                        "<td>" +
+                        escaparHTMLRelatorio(
+                            mov.data || "-"
+                        ) +
+                        "</td>" +
+                        "<td>" +
+                        escaparHTMLRelatorio(
+                            mov.operador || "-"
+                        ) +
+                        "</td>";
+
+                    tabela.appendChild(
+                        linha
+                    );
+                }
+            );
+
+            atualizarRodapeRelatorio(
+                inicio + 1,
+                fim,
+                dados.length,
+                totalPaginas
+            );
+        }
+
+        function atualizarRodapeRelatorio(
+            inicio,
+            fim,
+            total,
+            totalPaginas
+        ) {
+            const contador =
+                document.getElementById(
+                    "contadorRelatorios"
+                );
+
+            if (contador) {
+                contador.textContent =
+                    total === 0
+                        ? "0 movimentações"
+                        : (
+                            "Mostrando " +
+                            inicio +
+                            " a " +
+                            fim +
+                            " de " +
+                            total +
+                            " movimentações"
+                        );
+            }
+
+            const paginacao =
+                document.getElementById(
+                    "paginacaoRelatorios"
+                );
+
+            if (!paginacao) {
+                return;
+            }
+
+            paginacao.innerHTML = "";
+
+            if (
+                totalPaginas <= 1
+            ) {
+                return;
+            }
+
+            for (
+                let i = 1;
+                i <= totalPaginas;
+                i++
+            ) {
+                if (
+                    totalPaginas > 7 &&
+                    i !== 1 &&
+                    i !== totalPaginas &&
+                    Math.abs(
+                        i -
+                        relPaginaAtual
+                    ) > 1
+                ) {
+                    continue;
+                }
+
+                const botao =
+                    document.createElement(
+                        "button"
+                    );
+
+                botao.type =
+                    "button";
+
+                botao.textContent =
+                    i;
+
+                if (
+                    i ===
+                    relPaginaAtual
+                ) {
+                    botao.classList.add(
+                        "ativo"
+                    );
+                }
+
+                botao.addEventListener(
+                    "click",
+                    function () {
+                        relPaginaAtual =
+                            i;
+
+                        renderizarTabelaRelatoriosNova();
+                    }
+                );
+
+                paginacao.appendChild(
+                    botao
+                );
+            }
+        }
+
+        function formatarNumeroRelatorio(valor) {
+            return converterNumeroRelatorio(
+                valor
+            ).toLocaleString(
+                "pt-BR",
+                {
+                    maximumFractionDigits: 3
+                }
+            );
+        }
+
+        function escaparHTMLRelatorio(valor) {
+            return String(
+                valor ?? ""
+            )
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        }
+
+        function atualizarGraficosRelatorio() {
+            if (
+                typeof Chart ===
+                "undefined"
+            ) {
+                return;
+            }
+
+            const dados =
+                obterMovimentacoesRelatorioFiltradas();
+
+            Object.values(
+                relGraficos
+            ).forEach(
+                function (grafico) {
+                    if (
+                        grafico &&
+                        typeof grafico.destroy ===
+                        "function"
+                    ) {
+                        grafico.destroy();
+                    }
+                }
+            );
+
+            relGraficos = {};
+
+            // TIPO
+            const porTipo = {
+                ENTRADA: 0,
+                SAIDA: 0,
+                TRANSFERENCIA: 0
+            };
+
+            dados.forEach(
+                function (mov) {
+                    const tipo =
+                        normalizarTipoRelatorio(
+                            mov.tipo
+                        );
+
+                    if (
+                        porTipo[tipo] !==
+                        undefined
+                    ) {
+                        porTipo[tipo] += 1;
+                    }
+                }
+            );
+
+            const ctxTipo =
+                document.getElementById(
+                    "graficoTipoRelatorio"
+                );
+
+            if (ctxTipo) {
+                relGraficos.tipo =
+                    new Chart(
+                        ctxTipo,
+                        {
+                            type: "doughnut",
+                            data: {
+                                labels: [
+                                    "Saída",
+                                    "Transferência",
+                                    "Entrada"
+                                ],
+                                datasets: [
+                                    {
+                                        data: [
+                                            porTipo.SAIDA,
+                                            porTipo.TRANSFERENCIA,
+                                            porTipo.ENTRADA
+                                        ]
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: "right",
+                                        labels: {
+                                            boxWidth: 10,
+                                            font: {
+                                                size: 10
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    );
+            }
+
+            // POR DIA
+            const porDia = {};
+
+            dados.forEach(
+                function (mov) {
+                    const data =
+                        converterDataRelatorio(
+                            mov.data
+                        );
+
+                    if (!data) {
+                        return;
+                    }
+
+                    const chave =
+                        String(
+                            data.getDate()
+                        ).padStart(
+                            2,
+                            "0"
+                        ) +
+                        "/" +
+                        String(
+                            data.getMonth() +
+                            1
+                        ).padStart(
+                            2,
+                            "0"
+                        );
+
+                    porDia[chave] =
+                        (
+                            porDia[chave] ||
+                            0
+                        ) +
+                        1;
+                }
+            );
+
+            const dias =
+                Object.keys(
+                    porDia
+                );
+
+            const ctxDia =
+                document.getElementById(
+                    "graficoDiaRelatorio"
+                );
+
+            if (ctxDia) {
+                relGraficos.dia =
+                    new Chart(
+                        ctxDia,
+                        {
+                            type: "line",
+                            data: {
+                                labels: dias,
+                                datasets: [
+                                    {
+                                        label: "Movimentações",
+                                        data: dias.map(
+                                            function (dia) {
+                                                return porDia[dia];
+                                            }
+                                        ),
+                                        tension: 0.25,
+                                        fill: false
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        ticks: {
+                                            precision: 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    );
+            }
+
+            // TOP PRODUTOS
+            const produtos = {};
+
+            dados.forEach(
+                function (mov) {
+                    const codigo =
+                        String(
+                            mov.codigo ||
+                            "-"
+                        );
+
+                    produtos[codigo] =
+                        (
+                            produtos[codigo] ||
+                            0
+                        ) +
+                        converterNumeroRelatorio(
+                            mov.quantidade
+                        );
+                }
+            );
+
+            const top =
+                Object.entries(
+                    produtos
+                )
+                .sort(
+                    function (a, b) {
+                        return b[1] - a[1];
+                    }
+                )
+                .slice(
+                    0,
+                    5
+                );
+
+            const ctxTop =
+                document.getElementById(
+                    "graficoTopProdutosRelatorio"
+                );
+
+            if (ctxTop) {
+                relGraficos.top =
+                    new Chart(
+                        ctxTop,
+                        {
+                            type: "bar",
+                            data: {
+                                labels: top.map(
+                                    function (item) {
+                                        return item[0];
+                                    }
+                                ),
+                                datasets: [
+                                    {
+                                        data: top.map(
+                                            function (item) {
+                                                return item[1];
+                                            }
+                                        )
+                                    }
+                                ]
+                            },
+                            options: {
+                                indexAxis: "y",
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        }
+                    );
+            }
+
+            // OPERADORES
+            const operadores = {};
+
+            dados.forEach(
+                function (mov) {
+                    const operador =
+                        String(
+                            mov.operador ||
+                            "Sem operador"
+                        );
+
+                    operadores[operador] =
+                        (
+                            operadores[operador] ||
+                            0
+                        ) +
+                        1;
+                }
+            );
+
+            const itensOperador =
+                Object.entries(
+                    operadores
+                )
+                .sort(
+                    function (a, b) {
+                        return b[1] - a[1];
+                    }
+                );
+
+            const ctxOperador =
+                document.getElementById(
+                    "graficoOperadorRelatorio"
+                );
+
+            if (ctxOperador) {
+                relGraficos.operador =
+                    new Chart(
+                        ctxOperador,
+                        {
+                            type: "doughnut",
+                            data: {
+                                labels: itensOperador.map(
+                                    function (item) {
+                                        return item[0];
+                                    }
+                                ),
+                                datasets: [
+                                    {
+                                        data: itensOperador.map(
+                                            function (item) {
+                                                return item[1];
+                                            }
+                                        )
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: "right",
+                                        labels: {
+                                            boxWidth: 10,
+                                            font: {
+                                                size: 10
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    );
+            }
+        }
+
+        function atualizarPainelRelatoriosNovo() {
+            relPaginaAtual =
+                1;
+
+            renderizarTabelaRelatoriosNova();
+
+            atualizarGraficosRelatorio();
+        }
+
+        const filtrarRelatorioOriginal =
+            window.filtrarRelatorio;
+
         window.filtrarRelatorio =
-            filtrarRelatorio;
+            function () {
+                if (
+                    typeof filtrarRelatorioOriginal ===
+                    "function"
+                ) {
+                    filtrarRelatorioOriginal();
+                }
+
+                atualizarPainelRelatoriosNovo();
+            };
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+                const pesquisa =
+                    document.getElementById(
+                        "pesquisaRelatorios"
+                    );
+
+                if (pesquisa) {
+                    pesquisa.addEventListener(
+                        "input",
+                        atualizarPainelRelatoriosNovo
+                    );
+                }
+
+                const ordem =
+                    document.getElementById(
+                        "ordemRelatorios"
+                    );
+
+                if (ordem) {
+                    ordem.addEventListener(
+                        "change",
+                        atualizarPainelRelatoriosNovo
+                    );
+                }
+
+                setTimeout(
+                    function () {
+                        atualizarPainelRelatoriosNovo();
+                    },
+                    300
+                );
+            }
+        );
 
 
         window.imprimirRelatorio =

@@ -10628,14 +10628,6 @@ function carregarResumoRelatorios() {
 
 
     atualizarElementoRelatorio(
-        "relProdutos",
-        codigosUnicos.size.toLocaleString(
-            "pt-BR"
-        )
-    );
-
-
-    atualizarElementoRelatorio(
         "relQuantidade",
         quantidadeTotal.toLocaleString(
             "pt-BR"
