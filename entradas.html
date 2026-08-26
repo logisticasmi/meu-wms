@@ -13,66 +13,822 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link
+        rel="icon"
+        type="image/png"
+        href="img/favicon.png"
+    >
+
+    <style>
+
+        /* =====================================================
+           TELA DE ENTRADAS - NOVO VISUAL
+        ===================================================== */
+
+        .painel-nova-entrada {
+            padding: 26px;
+        }
+
+
+        .entrada-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 28px;
+            margin-top: 20px;
+        }
+
+
+        .entrada-coluna {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+
+        .entrada-coluna label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #17345c;
+        }
+
+
+        .entrada-coluna input {
+            width: 100%;
+            height: 50px;
+
+            box-sizing: border-box;
+
+            border: 1px solid #d5deea;
+            border-radius: 8px;
+
+            padding: 0 16px;
+
+            font-size: 15px;
+
+            color: #102d54;
+
+            background: #ffffff;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        .entrada-coluna input:focus {
+            border-color: #0d4b8f;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(13, 75, 143, 0.08);
+        }
+
+
+        /* =====================================================
+           CAMPO COM ÍCONE
+        ===================================================== */
+
+        .campo-com-icone {
+            position: relative;
+        }
+
+
+        .campo-com-icone input {
+            padding-right: 48px;
+        }
+
+
+        .icone-campo {
+            position: absolute;
+
+            right: 15px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color: #55708f;
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           CARD DO PRODUTO
+        ===================================================== */
+
+        .card-produto-entrada {
+            min-height: 68px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 12px 16px;
+
+            border:
+                1px solid #a9c9ef;
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #edf5ff,
+                    #f8fbff
+                );
+        }
+
+
+        .produto-entrada-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        .produto-entrada-icone {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+        }
+
+
+        .produto-entrada-info strong {
+            display: block;
+
+            color: #123d73;
+
+            font-size: 14px;
+        }
+
+
+        .produto-entrada-info small {
+            display: block;
+
+            margin-top: 4px;
+
+            color: #63758a;
+        }
+
+
+        .produto-estoque-atual {
+            text-align: right;
+
+            min-width: 110px;
+        }
+
+
+        .produto-estoque-atual small {
+            display: block;
+
+            color: #60738b;
+        }
+
+
+        .produto-estoque-atual strong {
+            font-size: 25px;
+
+            color: #0d4b8f;
+
+            margin-right: 4px;
+        }
+
+
+        /* =====================================================
+           NOVO SALDO
+        ===================================================== */
+
+        .card-novo-saldo {
+            min-height: 68px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 16px;
+
+            padding: 12px 20px;
+
+            border:
+                1px solid #c8ead2;
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #effbf3,
+                    #f7fdf9
+                );
+        }
+
+
+        .novo-saldo-icone {
+            width: 28px;
+            height: 28px;
+
+            border:
+                2px solid #198754;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #198754;
+
+            font-weight: 700;
+        }
+
+
+        .card-novo-saldo small {
+            display: block;
+
+            color: #34704c;
+        }
+
+
+        .card-novo-saldo strong {
+            display: inline-block;
+
+            margin-top: 3px;
+            margin-right: 5px;
+
+            font-size: 25px;
+
+            color: #198754;
+        }
+
+
+        /* =====================================================
+           STATUS ENDEREÇO
+        ===================================================== */
+
+        .status-endereco {
+            min-height: 38px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 0 14px;
+
+            background: #effbf3;
+
+            border:
+                1px solid #c9ead3;
+
+            border-radius: 7px;
+
+            color: #238147;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           BOTÃO
+        ===================================================== */
+
+        .entrada-botao-container {
+            justify-content: flex-end;
+        }
+
+
+        .btn-registrar-entrada-novo {
+            width: 100%;
+
+            min-height: 70px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #0b477f,
+                    #063a70
+                );
+
+            color: #ffffff;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+
+            transition: 0.2s;
+        }
+
+
+        .btn-registrar-entrada-novo:hover {
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 7px 17px
+                rgba(5, 58, 112, 0.18);
+        }
+
+
+        /* =====================================================
+           RESUMO DO DIA
+        ===================================================== */
+
+        .resumo-entrada-dia {
+            display: grid;
+
+            grid-template-columns:
+                1.1fr
+                1fr
+                1fr
+                1fr
+                1fr;
+
+            align-items: center;
+
+            gap: 0;
+
+            padding: 18px 24px;
+        }
+
+
+        .resumo-entrada-titulo {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            color: #123d73;
+        }
+
+
+        .resumo-item {
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            min-height: 70px;
+
+            padding-left: 22px;
+
+            border-left:
+                1px solid #dde5ef;
+        }
+
+
+        .resumo-icone {
+            min-width: 42px;
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #edf4fb;
+
+            font-size: 18px;
+        }
+
+
+        .resumo-item small,
+        .resumo-item span {
+            display: block;
+        }
+
+
+        .resumo-item small {
+            color: #405974;
+
+            font-size: 12px;
+        }
+
+
+        .resumo-item strong {
+            display: block;
+
+            color: #123d73;
+
+            font-size: 22px;
+
+            margin: 2px 0;
+        }
+
+
+        .resumo-item span {
+            color: #718197;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           HISTÓRICO
+        ===================================================== */
+
+        .historico-entrada-filtros {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin:
+                20px 0 14px;
+        }
+
+
+        .busca-historico-entrada {
+            width: 460px;
+
+            max-width: 100%;
+
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            border:
+                1px solid #d6e0ea;
+
+            border-radius: 7px;
+
+            padding: 0 13px;
+
+            background: #ffffff;
+        }
+
+
+        .busca-historico-entrada input {
+            flex: 1;
+
+            height: 42px;
+
+            border: none;
+
+            outline: none;
+
+            font-size: 14px;
+        }
+
+
+        .periodo-historico-entrada {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            color: #263e59;
+        }
+
+
+        .periodo-historico-entrada select {
+            min-width: 180px;
+
+            height: 42px;
+
+            border:
+                1px solid #d6e0ea;
+
+            border-radius: 7px;
+
+            padding: 0 12px;
+
+            background: white;
+
+            color: #263e59;
+        }
+
+
+        .tabela-entrada-container {
+            overflow-x: auto;
+        }
+
+
+        .rodape-historico-entrada {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding-top: 17px;
+
+            color: #60738a;
+
+            font-size: 13px;
+        }
+
+
+        .btn-exportar-entrada {
+            border:
+                1px solid #ced9e5;
+
+            background: white;
+
+            color: #174c7e;
+
+            padding: 10px 17px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .toast-entrada {
+            position: fixed;
+
+            left: 50%;
+            bottom: 25px;
+
+            transform:
+                translate(
+                    -50%,
+                    30px
+                );
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            min-width: 360px;
+
+            background: #edf9f0;
+
+            border:
+                1px solid #b9dfc4;
+
+            border-radius: 8px;
+
+            box-shadow:
+                0 7px 25px
+                rgba(0, 0, 0, 0.12);
+
+            padding: 14px 20px;
+
+            color: #206e3d;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            z-index: 9999;
+
+            transition: 0.3s;
+        }
+
+
+        .toast-entrada.mostrar {
+            opacity: 1;
+
+            transform:
+                translate(
+                    -50%,
+                    0
+                );
+        }
+
+
+        .toast-entrada-check {
+            width: 23px;
+            height: 23px;
+
+            border-radius: 50%;
+
+            background: #198754;
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .oculto {
+            display: none !important;
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (
+            max-width: 900px
+        ) {
+
+            .entrada-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .resumo-entrada-dia {
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 15px;
+            }
+
+
+            .resumo-item {
+                border-left: none;
+
+                padding-left: 0;
+            }
+
+
+            .historico-entrada-filtros {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .busca-historico-entrada {
+                width: 100%;
+
+                box-sizing: border-box;
+            }
+
+        }
+
+    </style>
 
 </head>
 
-<body>
 
-   <div class="sidebar">
+<body class="pagina-entradas"></body>
+
+
+<!-- =====================================================
+     MENU LATERAL
+===================================================== -->
+
+<div class="sidebar">
 
     <div class="logo">
+
         <img
             src="img/logo.png"
             alt="Logo SMI WMS"
         >
+
     </div>
 
-    <h2>SMI WMS</h2>
+
+    <h2>
+        SMI WMS
+    </h2>
+
 
     <ul>
 
-        <li onclick="location.href='dashboard.html'">
+        <li
+            onclick="
+                location.href=
+                'dashboard.html'
+            "
+        >
             🏠 Dashboard
         </li>
 
-        <li onclick="location.href='produtos.html'">
+
+        <li
+            onclick="
+                location.href=
+                'produtos.html'
+            "
+        >
             📦 Produtos
         </li>
 
-        <li class="ativo" onclick="location.href='entradas.html'">
+
+        <li
+            class="ativo"
+            onclick="
+                location.href=
+                'entradas.html'
+            "
+        >
             📥 Entradas
         </li>
 
-        <li onclick="location.href='saidas.html'">
+
+        <li
+            onclick="
+                location.href=
+                'saidas.html'
+            "
+        >
             📤 Saídas
         </li>
 
-        <li onclick="location.href='separacao.html'">
+
+        <li
+            onclick="
+                location.href=
+                'separacao.html'
+            "
+        >
             🛒 Separação
         </li>
 
-        <li onclick="location.href='transferencias.html'">
+
+        <li
+            onclick="
+                location.href=
+                'transferencias.html'
+            "
+        >
             🔄 Transferências
         </li>
 
-        <li onclick="location.href='posicoes.html'">
+
+        <li
+            onclick="
+                location.href=
+                'posicoes.html'
+            "
+        >
             📍 Posições
         </li>
 
-        <li onclick="location.href='inventario.html'">
+
+        <li
+            onclick="
+                location.href=
+                'inventario.html'
+            "
+        >
             📋 Inventário
         </li>
 
-        <li onclick="location.href='relatorios.html'">
+
+        <li
+            onclick="
+                location.href=
+                'relatorios.html'
+            "
+        >
             📊 Relatórios
         </li>
 
-        <li onclick="location.href='requisicao.html'">
+
+        <li
+            onclick="
+                location.href=
+                'requisicao.html'
+            "
+        >
             📝 Requisição
         </li>
 
-        <li onclick="location.href='configuracoes.html'">
+
+        <li
+            onclick="
+                location.href=
+                'configuracoes.html'
+            "
+        >
             ⚙️ Configurações
         </li>
 
@@ -80,50 +836,161 @@
 
 </div>
 
-    <div class="conteudo">
 
-        <div class="topbar">
 
-            <div>
-                <h1>Entrada de Estoque</h1>
-                <small>Registrar Entrada</small>
-            </div>
+<!-- =====================================================
+     CONTEÚDO
+===================================================== -->
 
-            <div class="usuario">
+<div class="conteudo">
 
-                <span id="relogio"></span>
 
-                <span id="nomeUsuario"></span>
+    <!-- =====================================================
+         TOPO
+    ===================================================== -->
 
-                <button
-                    type="button"
-                    onclick="sairSistema()"
-                >
-                    Sair
-                </button>
+    <div class="topbar">
 
-            </div>
+        <div>
+
+            <h1>
+                Entrada de Estoque
+            </h1>
+
+            <small>
+                Registrar Entrada
+            </small>
 
         </div>
 
-        <div class="painel">
 
-            <h2>Nova Entrada</h2>
+        <div class="usuario">
 
-            <div
-                style="
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 20px;
-                "
+            <span id="relogio"></span>
+
+            <span id="nomeUsuario"></span>
+
+            <button
+                type="button"
+                onclick="sairSistema()"
             >
+                Sair
+            </button>
 
-                <input
-                    id="codigoEntrada"
-                    type="text"
-                    placeholder="Código do Produto"
-                    autocomplete="off"
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         NOVA ENTRADA
+    ===================================================== -->
+
+    <div class="painel painel-nova-entrada">
+
+        <h2>
+            Nova Entrada
+        </h2>
+
+
+        <div class="entrada-grid">
+
+
+            <!-- CÓDIGO -->
+
+            <div class="entrada-coluna">
+
+                <label for="codigoEntrada">
+                    Código do Produto
+                </label>
+
+
+                <div class="campo-com-icone">
+
+                    <input
+                        id="codigoEntrada"
+                        type="text"
+                        placeholder="Código do Produto"
+                        autocomplete="off"
+                    >
+
+                    <span class="icone-campo">
+                        ▥
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="cardProdutoEntrada"
+                    class="
+                        card-produto-entrada
+                        oculto
+                    "
                 >
+
+                    <div class="produto-entrada-info">
+
+                        <div class="produto-entrada-icone">
+                            📦
+                        </div>
+
+
+                        <div>
+
+                            <strong
+                                id="produtoEntradaNome"
+                            >
+                                -
+                            </strong>
+
+                            <small
+                                id="produtoEntradaDetalhe"
+                            >
+                                Produto localizado
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="produto-estoque-atual">
+
+                        <small>
+                            Estoque atual
+                        </small>
+
+                        <div>
+
+                            <strong
+                                id="estoqueAtualEntrada"
+                            >
+                                0
+                            </strong>
+
+                            <span>
+                                un.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- QUANTIDADE -->
+
+            <div class="entrada-coluna">
+
+                <label for="quantidadeEntrada">
+                    Quantidade
+                </label>
 
                 <input
                     id="quantidadeEntrada"
@@ -133,51 +1000,388 @@
                     placeholder="Quantidade"
                 >
 
-                <input
-                    id="enderecoEntrada"
-                    type="text"
-                    placeholder="Endereço"
-                    autocomplete="off"
+
+                <div
+                    id="cardNovoSaldoEntrada"
+                    class="
+                        card-novo-saldo
+                        oculto
+                    "
                 >
+
+                    <div class="novo-saldo-icone">
+                        ✓
+                    </div>
+
+
+                    <div>
+
+                        <small>
+                            Novo saldo após entrada
+                        </small>
+
+                        <div>
+
+                            <strong
+                                id="novoSaldoEntrada"
+                            >
+                                0
+                            </strong>
+
+                            <span>
+                                un.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ENDEREÇO -->
+
+            <div class="entrada-coluna">
+
+                <label for="enderecoEntrada">
+                    Endereço (posição)
+                </label>
+
+
+                <div class="campo-com-icone">
+
+                    <input
+                        id="enderecoEntrada"
+                        type="text"
+                        placeholder="Endereço"
+                        autocomplete="off"
+                    >
+
+                    <span class="icone-campo">
+                        📍
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="statusEnderecoEntrada"
+                    class="
+                        status-endereco
+                        oculto
+                    "
+                >
+
+                    <span>
+                        ✓
+                    </span>
+
+                    <span
+                        id="textoStatusEndereco"
+                    >
+                        Posição informada
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BOTÃO -->
+
+            <div
+                class="
+                    entrada-coluna
+                    entrada-botao-container
+                "
+            >
 
                 <button
                     type="button"
-                    class="btn"
+                    class="
+                        btn
+                        btn-registrar-entrada-novo
+                    "
                     id="btnRegistrarEntrada"
                 >
+
+                    <span>
+                        ⇩
+                    </span>
+
                     Registrar Entrada
+
                 </button>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         RESUMO DO DIA
+    ===================================================== -->
+
+    <div class="painel resumo-entrada-dia">
+
+
+        <div class="resumo-entrada-titulo">
+
+            <span>
+                📅
+            </span>
+
+            <strong>
+                Resumo do Dia
+            </strong>
+
+        </div>
+
+
+
+        <div class="resumo-item">
+
+            <div class="resumo-icone">
+                ⇩
+            </div>
+
+            <div>
+
+                <small>
+                    Entradas hoje
+                </small>
+
+                <strong
+                    id="totalEntradasHoje"
+                >
+                    0
+                </strong>
+
+                <span>
+                    movimentações
+                </span>
 
             </div>
 
         </div>
 
-        <div class="painel">
 
-            <h2>Histórico</h2>
+
+        <div class="resumo-item">
+
+            <div class="resumo-icone">
+                📦
+            </div>
+
+            <div>
+
+                <small>
+                    Unidades recebidas
+                </small>
+
+                <strong
+                    id="totalUnidadesEntradaHoje"
+                >
+                    0
+                </strong>
+
+                <span>
+                    unidades
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="resumo-item">
+
+            <div class="resumo-icone">
+                ◷
+            </div>
+
+            <div>
+
+                <small>
+                    Última entrada
+                </small>
+
+                <strong
+                    id="ultimaEntradaHoje"
+                >
+                    --
+                </strong>
+
+                <span
+                    id="dataUltimaEntradaHoje"
+                >
+                    --
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="resumo-item">
+
+            <div class="resumo-icone">
+                👤
+            </div>
+
+            <div>
+
+                <small>
+                    Operador
+                </small>
+
+                <strong
+                    id="operadorResumoEntrada"
+                >
+                    -
+                </strong>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         HISTÓRICO
+    ===================================================== -->
+
+    <div class="painel">
+
+        <h2>
+            Histórico de Entradas
+        </h2>
+
+
+        <div class="historico-entrada-filtros">
+
+
+            <!-- BUSCA -->
+
+            <div class="busca-historico-entrada">
+
+                <span>
+                    🔍
+                </span>
+
+                <input
+                    id="pesquisaHistoricoEntrada"
+                    type="text"
+                    placeholder="Pesquisar código, descrição ou endereço..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+
+            <!-- PERÍODO -->
+
+            <div class="periodo-historico-entrada">
+
+                <label
+                    for="periodoHistoricoEntrada"
+                >
+                    Período:
+                </label>
+
+
+                <select
+                    id="periodoHistoricoEntrada"
+                >
+
+                    <option value="hoje">
+                        Hoje
+                    </option>
+
+                    <option value="7">
+                        Últimos 7 dias
+                    </option>
+
+                    <option value="30">
+                        Últimos 30 dias
+                    </option>
+
+                    <option value="todos">
+                        Todos
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="tabela-entrada-container">
 
             <table class="tabela">
 
                 <thead>
+
                     <tr>
-                        <th>Código</th>
-                        <th>Descrição</th>
-                        <th>Quantidade</th>
-                        <th>Endereço</th>
-                        <th>Data</th>
-                        <th>Operador</th>
+
+                        <th>
+                            Código
+                        </th>
+
+                        <th>
+                            Descrição
+                        </th>
+
+                        <th>
+                            Quantidade
+                        </th>
+
+                        <th>
+                            Endereço
+                        </th>
+
+                        <th>
+                            Data
+                        </th>
+
+                        <th>
+                            Operador
+                        </th>
+
                     </tr>
+
                 </thead>
+
 
                 <tbody id="listaEntradas">
 
                     <tr>
+
                         <td
                             colspan="6"
-                            style="text-align: center;"
+                            style="
+                                text-align:center;
+                            "
                         >
                             Nenhuma entrada registrada.
                         </td>
+
                     </tr>
 
                 </tbody>
@@ -186,12 +1390,72 @@
 
         </div>
 
+
+
+        <div class="rodape-historico-entrada">
+
+            <span
+                id="contadorHistoricoEntrada"
+            >
+                0 entradas
+            </span>
+
+
+            <button
+                type="button"
+                class="btn-exportar-entrada"
+                id="btnExportarEntradas"
+            >
+                📊 Exportar Excel
+            </button>
+
+        </div>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase.js"></script>
-  <script src="app.js?v=20260806-1925"></script>
+
+</div>
+
+
+
+<!-- =====================================================
+     TOAST DE SUCESSO
+===================================================== -->
+
+<div
+    id="toastEntrada"
+    class="toast-entrada"
+>
+
+    <span class="toast-entrada-check">
+        ✓
+    </span>
+
+    <span id="textoToastEntrada">
+        Entrada registrada com sucesso!
+    </span>
+
+</div>
+
+
+
+<!-- =====================================================
+     SCRIPTS
+===================================================== -->
+
+<script
+    src="
+        https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
+    "
+></script>
+
+<script src="supabase.js"></script>
+
+<script src="app.js?v=20260806-1925"></script>
+
 <script src="sync-supabase.js?v=20260806-1925"></script>
 
+
 </body>
+
 </html>

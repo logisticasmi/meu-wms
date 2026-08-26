@@ -3103,7 +3103,19 @@ window.sincronizarTransferenciaProdutoSupabase =
 // =====================================================
 // SMI WMS - APP.JS
 // PARTE 4 - ENTRADAS DE ESTOQUE
+// NOVO VISUAL + FUNCIONALIDADES
 // =====================================================
+
+
+// =====================================================
+// VARIÁVEIS DA TELA
+// =====================================================
+
+let produtoVisualEntrada = null;
+let estoqueAtualVisualEntrada = 0;
+
+let paginaAtualHistoricoEntrada = 1;
+const itensPorPaginaHistoricoEntrada = 10;
 
 
 // =====================================================
@@ -3120,12 +3132,51 @@ document.addEventListener(
             );
 
 
-        if (tabelaEntradas) {
+        /*
+            Só executa esta parte se estivermos
+            realmente na página de Entradas.
+        */
 
-            carregarHistoricoEntradas();
-
+        if (!tabelaEntradas) {
+            return;
         }
 
+
+        // Histórico inicial
+        carregarHistoricoEntradas();
+
+
+        // Resumo do dia
+        atualizarResumoDiaEntradas();
+
+
+        // Operador
+        atualizarOperadorResumoEntrada();
+
+
+        // =====================================================
+        // CAMPOS
+        // =====================================================
+
+        const campoCodigo =
+            document.getElementById(
+                "codigoEntrada"
+            );
+
+        const campoQuantidade =
+            document.getElementById(
+                "quantidadeEntrada"
+            );
+
+        const campoEndereco =
+            document.getElementById(
+                "enderecoEntrada"
+            );
+
+
+        // =====================================================
+        // BOTÃO REGISTRAR
+        // =====================================================
 
         const botaoEntrada =
             document.getElementById(
@@ -3143,19 +3194,117 @@ document.addEventListener(
         }
 
 
-        const campoQuantidade =
-            document.getElementById(
-                "quantidadeEntrada"
+        // =====================================================
+        // CÓDIGO DO PRODUTO
+        // =====================================================
+
+        if (campoCodigo) {
+
+            campoCodigo.addEventListener(
+                "change",
+                carregarResumoProdutoEntrada
             );
 
 
+            campoCodigo.addEventListener(
+                "blur",
+                carregarResumoProdutoEntrada
+            );
+
+
+            campoCodigo.addEventListener(
+                "keydown",
+                function (evento) {
+
+                    if (
+                        evento.key ===
+                        "Enter"
+                    ) {
+
+                        evento.preventDefault();
+
+                        carregarResumoProdutoEntrada()
+                            .then(
+                                function () {
+
+                                    if (campoQuantidade) {
+                                        campoQuantidade.focus();
+                                    }
+
+                                }
+                            );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        // =====================================================
+        // QUANTIDADE
+        // =====================================================
+
         if (campoQuantidade) {
+
+            campoQuantidade.addEventListener(
+                "input",
+                atualizarNovoSaldoEntrada
+            );
+
 
             campoQuantidade.addEventListener(
                 "keydown",
                 function (evento) {
 
-                    if (evento.key === "Enter") {
+                    if (
+                        evento.key ===
+                        "Enter"
+                    ) {
+
+                        evento.preventDefault();
+
+                        if (campoEndereco) {
+                            campoEndereco.focus();
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        // =====================================================
+        // ENDEREÇO
+        // =====================================================
+
+        if (campoEndereco) {
+
+            campoEndereco.addEventListener(
+                "input",
+                atualizarStatusEnderecoEntrada
+            );
+
+
+            campoEndereco.addEventListener(
+                "blur",
+                atualizarStatusEnderecoEntrada
+            );
+
+
+            campoEndereco.addEventListener(
+                "keydown",
+                function (evento) {
+
+                    if (
+                        evento.key ===
+                        "Enter"
+                    ) {
+
+                        evento.preventDefault();
 
                         registrarEntrada();
 
@@ -3166,8 +3315,468 @@ document.addEventListener(
 
         }
 
+
+        // =====================================================
+        // PESQUISA
+        // =====================================================
+
+        const pesquisa =
+            document.getElementById(
+                "pesquisaHistoricoEntrada"
+            );
+
+
+        if (pesquisa) {
+
+            pesquisa.addEventListener(
+                "input",
+                function () {
+
+                    paginaAtualHistoricoEntrada =
+                        1;
+
+                    carregarHistoricoEntradas();
+
+                }
+            );
+
+        }
+
+
+        // =====================================================
+        // PERÍODO
+        // =====================================================
+
+        const periodo =
+            document.getElementById(
+                "periodoHistoricoEntrada"
+            );
+
+
+        if (periodo) {
+
+            periodo.addEventListener(
+                "change",
+                function () {
+
+                    paginaAtualHistoricoEntrada =
+                        1;
+
+                    carregarHistoricoEntradas();
+
+                }
+            );
+
+        }
+
+
+        // =====================================================
+        // EXPORTAR
+        // =====================================================
+
+        const exportar =
+            document.getElementById(
+                "btnExportarEntradas"
+            );
+
+
+        if (exportar) {
+
+            exportar.addEventListener(
+                "click",
+                exportarHistoricoEntradasCSV
+            );
+
+        }
+
+
+        // Foco inicial
+        if (campoCodigo) {
+            campoCodigo.focus();
+        }
+
     }
 );
+
+
+// =====================================================
+// CARREGAR RESUMO DO PRODUTO
+// =====================================================
+
+async function carregarResumoProdutoEntrada() {
+
+    const campoCodigo =
+        document.getElementById(
+            "codigoEntrada"
+        );
+
+    const card =
+        document.getElementById(
+            "cardProdutoEntrada"
+        );
+
+
+    if (
+        !campoCodigo ||
+        !card
+    ) {
+        return;
+    }
+
+
+    const codigo =
+        normalizarCodigo(
+            campoCodigo.value
+        );
+
+
+    /*
+        Campo vazio.
+    */
+
+    if (!codigo) {
+
+        produtoVisualEntrada =
+            null;
+
+        estoqueAtualVisualEntrada =
+            0;
+
+
+        card.classList.add(
+            "oculto"
+        );
+
+
+        ocultarNovoSaldoEntrada();
+
+        return;
+    }
+
+
+    if (!window.supabaseClient) {
+
+        console.warn(
+            "Supabase não disponível para consultar o produto."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        /*
+            Busca todas as posições do SKU.
+        */
+
+        const produtos =
+            await buscarProdutosMovimentacaoSupabase(
+                codigo,
+                ""
+            );
+
+
+        if (
+            !Array.isArray(produtos) ||
+            produtos.length === 0
+        ) {
+
+            produtoVisualEntrada =
+                null;
+
+            estoqueAtualVisualEntrada =
+                0;
+
+
+            card.classList.add(
+                "oculto"
+            );
+
+
+            ocultarNovoSaldoEntrada();
+
+
+            return;
+        }
+
+
+        produtoVisualEntrada =
+            produtos[0];
+
+
+        /*
+            Soma o estoque do SKU em todas
+            as posições.
+        */
+
+        estoqueAtualVisualEntrada =
+            produtos.reduce(
+                function (
+                    total,
+                    produto
+                ) {
+
+                    return (
+                        total +
+                        converterNumero(
+                            produto.quantidade
+                        )
+                    );
+
+                },
+                0
+            );
+
+
+        // =====================================================
+        // NOME
+        // =====================================================
+
+        const nome =
+            document.getElementById(
+                "produtoEntradaNome"
+            );
+
+
+        if (nome) {
+
+            nome.textContent =
+                (
+                    produtoVisualEntrada.codigo ||
+                    codigo
+                ) +
+                " - " +
+                (
+                    produtoVisualEntrada.descricao ||
+                    "Sem descrição"
+                );
+
+        }
+
+
+        // =====================================================
+        // DESCRIÇÃO DETALHADA
+        // =====================================================
+
+        const detalhe =
+            document.getElementById(
+                "produtoEntradaDetalhe"
+            );
+
+
+        if (detalhe) {
+
+            detalhe.textContent =
+                produtoVisualEntrada
+                    .descricao_detalhada ||
+
+                produtoVisualEntrada
+                    .descricaoDetalhada ||
+
+                "Descrição detalhada não disponível";
+
+        }
+
+
+        // =====================================================
+        // ESTOQUE ATUAL
+        // =====================================================
+
+        const estoque =
+            document.getElementById(
+                "estoqueAtualEntrada"
+            );
+
+
+        if (estoque) {
+
+            estoque.textContent =
+                formatarQuantidade(
+                    estoqueAtualVisualEntrada
+                );
+
+        }
+
+
+        card.classList.remove(
+            "oculto"
+        );
+
+
+        atualizarNovoSaldoEntrada();
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar produto na tela de entrada:",
+            erro
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// ATUALIZAR NOVO SALDO
+// =====================================================
+
+function atualizarNovoSaldoEntrada() {
+
+    const campoQuantidade =
+        document.getElementById(
+            "quantidadeEntrada"
+        );
+
+    const card =
+        document.getElementById(
+            "cardNovoSaldoEntrada"
+        );
+
+    const elementoSaldo =
+        document.getElementById(
+            "novoSaldoEntrada"
+        );
+
+
+    if (
+        !campoQuantidade ||
+        !card ||
+        !elementoSaldo
+    ) {
+        return;
+    }
+
+
+    const quantidade =
+        converterNumero(
+            campoQuantidade.value
+        );
+
+
+    /*
+        Só mostra quando existir produto
+        e quantidade válida.
+    */
+
+    if (
+        !produtoVisualEntrada ||
+        quantidade <= 0
+    ) {
+
+        card.classList.add(
+            "oculto"
+        );
+
+        return;
+    }
+
+
+    const novoSaldo =
+        estoqueAtualVisualEntrada +
+        quantidade;
+
+
+    elementoSaldo.textContent =
+        formatarQuantidade(
+            novoSaldo
+        );
+
+
+    card.classList.remove(
+        "oculto"
+    );
+
+}
+
+
+// =====================================================
+// OCULTAR NOVO SALDO
+// =====================================================
+
+function ocultarNovoSaldoEntrada() {
+
+    const card =
+        document.getElementById(
+            "cardNovoSaldoEntrada"
+        );
+
+
+    if (card) {
+
+        card.classList.add(
+            "oculto"
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// STATUS DO ENDEREÇO
+// =====================================================
+
+function atualizarStatusEnderecoEntrada() {
+
+    const campoEndereco =
+        document.getElementById(
+            "enderecoEntrada"
+        );
+
+    const status =
+        document.getElementById(
+            "statusEnderecoEntrada"
+        );
+
+    const texto =
+        document.getElementById(
+            "textoStatusEndereco"
+        );
+
+
+    if (
+        !campoEndereco ||
+        !status ||
+        !texto
+    ) {
+        return;
+    }
+
+
+    const endereco =
+        normalizarEndereco(
+            campoEndereco.value
+        );
+
+
+    if (!endereco) {
+
+        status.classList.add(
+            "oculto"
+        );
+
+        return;
+    }
+
+
+    /*
+        Mostra a confirmação da leitura.
+        A validação definitiva acontece
+        no registro da entrada.
+    */
+
+    texto.textContent =
+        "Posição informada: " +
+        endereco;
+
+
+    status.classList.remove(
+        "oculto"
+    );
+
+}
 
 
 // =====================================================
@@ -3191,11 +3800,13 @@ async function registrarEntrada() {
             "enderecoEntrada"
         );
 
+
     if (
         !campoCodigo ||
         !campoQuantidade ||
         !campoEndereco
     ) {
+
         alert(
             "Os campos da entrada não foram encontrados."
         );
@@ -3203,29 +3814,40 @@ async function registrarEntrada() {
         return;
     }
 
+
     const codigo =
         normalizarCodigo(
             campoCodigo.value
         );
+
 
     const quantidadeEntrada =
         converterNumero(
             campoQuantidade.value
         );
 
+
     const endereco =
         normalizarEndereco(
             campoEndereco.value
         );
 
+
+    // =====================================================
+    // VALIDAÇÕES
+    // =====================================================
+
     if (codigo === "") {
+
         alert(
             "Digite o código do produto."
         );
 
         campoCodigo.focus();
+
         return;
     }
+
 
     if (
         !Number.isFinite(
@@ -3233,24 +3855,31 @@ async function registrarEntrada() {
         ) ||
         quantidadeEntrada <= 0
     ) {
+
         alert(
             "Digite uma quantidade válida."
         );
 
         campoQuantidade.focus();
+
         return;
     }
 
+
     if (endereco === "") {
+
         alert(
             "Digite o endereço de armazenagem."
         );
 
         campoEndereco.focus();
+
         return;
     }
 
+
     if (!window.supabaseClient) {
+
         alert(
             "A conexão com o banco online não foi carregada."
         );
@@ -3258,28 +3887,43 @@ async function registrarEntrada() {
         return;
     }
 
+
+    // =====================================================
+    // BUSCAR PRODUTO
+    // =====================================================
+
     const produtosMesmoCodigo =
         await buscarProdutosMovimentacaoSupabase(
             codigo,
             ""
         );
 
+
     if (
         produtosMesmoCodigo === null ||
         produtosMesmoCodigo.length === 0
     ) {
+
         alert(
             'O produto "' +
             codigo +
             '" não foi encontrado na base online.'
         );
 
+
         campoCodigo.focus();
+
         return;
     }
 
+
     const produtoReferencia =
         produtosMesmoCodigo[0];
+
+
+    // =====================================================
+    // ATUALIZAR SUPABASE
+    // =====================================================
 
     const sincronizouBanco =
         await sincronizarEntradaProdutoSupabase(
@@ -3288,60 +3932,83 @@ async function registrarEntrada() {
             quantidadeEntrada
         );
 
+
     if (!sincronizouBanco) {
         return;
     }
 
+
+    // =====================================================
+    // ATUALIZAR ESTOQUE LOCAL
+    // =====================================================
+
     const estoque =
         carregarEstoque();
+
 
     const produtoNaPosicao =
         estoque.find(
             function (produto) {
+
                 return (
                     normalizarCodigo(
                         produto.codigo
                     ) === codigo &&
+
                     normalizarEndereco(
                         produto.endereco
                     ) === endereco
                 );
+
             }
         );
+
 
     const quantidadeReferencia =
         converterNumero(
             produtoReferencia.quantidade
         );
 
+
     const valorTotalReferencia =
         converterNumero(
+
             produtoReferencia.valor_total ??
+
             produtoReferencia.valorTotal ??
+
             0
+
         );
+
 
     const valorUnitarioReferencia =
         quantidadeReferencia > 0
+
             ? valorTotalReferencia /
               quantidadeReferencia
+
             : 0;
 
-                if (produtoNaPosicao) {
+
+    if (produtoNaPosicao) {
 
         const quantidadeAnterior =
             converterNumero(
                 produtoNaPosicao.quantidade
             );
 
+
         const valorTotalAnterior =
             converterNumero(
                 produtoNaPosicao.valorTotal
             );
 
+
         produtoNaPosicao.quantidade =
             quantidadeAnterior +
             quantidadeEntrada;
+
 
         produtoNaPosicao.valorTotal =
             valorTotalAnterior +
@@ -3352,40 +4019,52 @@ async function registrarEntrada() {
 
     } else {
 
-        estoque.push({
-            nf:
-                produtoReferencia.nf ||
-                "",
+        estoque.push(
+            {
 
-            codigo:
-                produtoReferencia.codigo ||
-                codigo,
+                nf:
+                    produtoReferencia.nf ||
+                    "",
 
-            descricao:
-                produtoReferencia.descricao ||
-                "Sem descrição",
+                codigo:
+                    produtoReferencia.codigo ||
+                    codigo,
 
-            cliente:
-                produtoReferencia.cliente ||
-                "SMI",
+                descricao:
+                    produtoReferencia.descricao ||
+                    "Sem descrição",
 
-            quantidade:
-                quantidadeEntrada,
+                cliente:
+                    produtoReferencia.cliente ||
+                    "SMI",
 
-            valorTotal:
-                quantidadeEntrada *
-                valorUnitarioReferencia,
+                quantidade:
+                    quantidadeEntrada,
 
-            endereco:
-                endereco
-        });
+                valorTotal:
+                    quantidadeEntrada *
+                    valorUnitarioReferencia,
+
+                endereco:
+                    endereco
+
+            }
+        );
+
     }
+
 
     salvarEstoque(
         estoque
     );
 
+
+    // =====================================================
+    // MOVIMENTAÇÃO
+    // =====================================================
+
     const movimentacao = {
+
         tipo:
             "ENTRADA",
 
@@ -3418,43 +4097,75 @@ async function registrarEntrada() {
 
         operador:
             obterNomeUsuario()
+
     };
+
+
+    // =====================================================
+    // HISTÓRICOS
+    // =====================================================
 
     salvarHistoricoEntrada(
         movimentacao
     );
 
+
     salvarMovimentacaoGeral(
         movimentacao
     );
 
+
+    // =====================================================
+    // ATUALIZAR TELA
+    // =====================================================
+
+    mostrarToastEntrada(
+        movimentacao.codigo,
+        quantidadeEntrada,
+        endereco
+    );
+
+
     limparCamposEntrada();
 
+
+    produtoVisualEntrada =
+        null;
+
+
+    estoqueAtualVisualEntrada =
+        0;
+
+
+    ocultarCardsEntrada();
+
+
+    paginaAtualHistoricoEntrada =
+        1;
+
+
     carregarHistoricoEntradas();
+
+
+    atualizarResumoDiaEntradas();
+
 
     if (
         typeof window
             .carregarTabelaProdutosSupabase ===
         "function"
     ) {
+
         await window
             .carregarTabelaProdutosSupabase();
+
     }
 
-        alert(
-        "Entrada registrada e confirmada na base de Produtos!\n\n" +
-        "Código: " +
-        movimentacao.codigo +
-        "\nQuantidade: " +
-        formatarQuantidade(
-            quantidadeEntrada
-        ) +
-        "\nEndereço: " +
-        endereco
-    );
 
     campoCodigo.focus();
+
 }
+
 
 // =====================================================
 // SALVAR HISTÓRICO DE ENTRADAS
@@ -3469,14 +4180,17 @@ function salvarHistoricoEntrada(
             "entradas"
         );
 
+
     entradas.unshift(
         movimentacao
     );
+
 
     salvarListaLocalStorage(
         "entradas",
         entradas
     );
+
 }
 
 
@@ -3493,18 +4207,186 @@ function salvarMovimentacaoGeral(
             "movimentacoes"
         );
 
+
     movimentacoes.unshift(
         movimentacao
     );
+
 
     salvarListaLocalStorage(
         "movimentacoes",
         movimentacoes
     );
+
 }
 
+
 // =====================================================
-// CARREGAR HISTÓRICO DE ENTRADAS
+// OBTER ENTRADAS FILTRADAS
+// =====================================================
+
+function obterEntradasFiltradas() {
+
+    let entradas =
+        carregarListaLocalStorage(
+            "entradas"
+        );
+
+
+    const campoPesquisa =
+        document.getElementById(
+            "pesquisaHistoricoEntrada"
+        );
+
+
+    const campoPeriodo =
+        document.getElementById(
+            "periodoHistoricoEntrada"
+        );
+
+
+    const pesquisa =
+        String(
+            campoPesquisa
+                ? campoPesquisa.value
+                : ""
+        )
+        .trim()
+        .toUpperCase();
+
+
+    const periodo =
+        campoPeriodo
+            ? campoPeriodo.value
+            : "todos";
+
+
+    // =====================================================
+    // PESQUISA
+    // =====================================================
+
+    if (pesquisa) {
+
+        entradas =
+            entradas.filter(
+                function (entrada) {
+
+                    const texto =
+                        [
+                            entrada.codigo,
+                            entrada.descricao,
+                            entrada.endereco,
+                            entrada.destino,
+                            entrada.operador
+                        ]
+                        .join(
+                            " "
+                        )
+                        .toUpperCase();
+
+
+                    return texto.includes(
+                        pesquisa
+                    );
+
+                }
+            );
+
+    }
+
+
+    // =====================================================
+    // PERÍODO
+    // =====================================================
+
+    if (
+        periodo !==
+        "todos"
+    ) {
+
+        const hoje =
+            new Date();
+
+
+        hoje.setHours(
+            0,
+            0,
+            0,
+            0
+        );
+
+
+        entradas =
+            entradas.filter(
+                function (entrada) {
+
+                    const dataEntrada =
+                        converterDataEntradaParaDate(
+                            entrada.data
+                        );
+
+
+                    if (!dataEntrada) {
+                        return false;
+                    }
+
+
+                    dataEntrada.setHours(
+                        0,
+                        0,
+                        0,
+                        0
+                    );
+
+
+                    const diferencaDias =
+                        Math.floor(
+                            (
+                                hoje -
+                                dataEntrada
+                            ) /
+                            86400000
+                        );
+
+
+                    if (
+                        periodo ===
+                        "hoje"
+                    ) {
+
+                        return (
+                            diferencaDias ===
+                            0
+                        );
+
+                    }
+
+
+                    const quantidadeDias =
+                        Number(
+                            periodo
+                        );
+
+
+                    return (
+                        diferencaDias >= 0 &&
+                        diferencaDias <
+                        quantidadeDias
+                    );
+
+                }
+            );
+
+    }
+
+
+    return entradas;
+
+}
+
+
+// =====================================================
+// CARREGAR HISTÓRICO
 // =====================================================
 
 function carregarHistoricoEntradas() {
@@ -3516,39 +4398,108 @@ function carregarHistoricoEntradas() {
 
 
     if (!tabela) {
-
         return;
-
     }
 
 
     const entradas =
-        carregarListaLocalStorage(
-            "entradas"
+        obterEntradasFiltradas();
+
+
+    tabela.innerHTML =
+        "";
+
+
+    // =====================================================
+    // SEM RESULTADOS
+    // =====================================================
+
+    if (
+        entradas.length ===
+        0
+    ) {
+
+        tabela.innerHTML =
+            `
+                <tr>
+
+                    <td
+                        colspan="6"
+                        style="text-align:center;"
+                    >
+                        Nenhuma entrada encontrada.
+                    </td>
+
+                </tr>
+            `;
+
+
+        atualizarContadorHistoricoEntrada(
+            0,
+            0,
+            0
         );
 
 
-    tabela.innerHTML = "";
+        criarPaginacaoHistoricoEntrada(
+            0
+        );
 
-
-    if (entradas.length === 0) {
-
-        tabela.innerHTML =
-            "<tr>" +
-                "<td " +
-                    "colspan='6' " +
-                    "style='text-align:center;'" +
-                ">" +
-                    "Nenhuma entrada registrada." +
-                "</td>" +
-            "</tr>";
 
         return;
+    }
+
+
+    // =====================================================
+    // PAGINAÇÃO
+    // =====================================================
+
+    const totalPaginas =
+        Math.ceil(
+            entradas.length /
+            itensPorPaginaHistoricoEntrada
+        );
+
+
+    if (
+        paginaAtualHistoricoEntrada >
+        totalPaginas
+    ) {
+
+        paginaAtualHistoricoEntrada =
+            totalPaginas;
 
     }
 
 
-    entradas.forEach(
+    const inicio =
+        (
+            paginaAtualHistoricoEntrada -
+            1
+        ) *
+        itensPorPaginaHistoricoEntrada;
+
+
+    const fim =
+        Math.min(
+            inicio +
+            itensPorPaginaHistoricoEntrada,
+            entradas.length
+        );
+
+
+    const entradasPagina =
+        entradas.slice(
+            inicio,
+            fim
+        );
+
+
+    // =====================================================
+    // LINHAS
+    // =====================================================
+
+    entradasPagina.forEach(
         function (entrada) {
 
             const linha =
@@ -3614,19 +4565,554 @@ function carregarHistoricoEntradas() {
         }
     );
 
+
+    atualizarContadorHistoricoEntrada(
+        inicio + 1,
+        fim,
+        entradas.length
+    );
+
+
+    criarPaginacaoHistoricoEntrada(
+        totalPaginas
+    );
+
 }
 
 
 // =====================================================
-// LIMPAR CAMPOS DA ENTRADA
+// CONTADOR DO HISTÓRICO
+// =====================================================
+
+function atualizarContadorHistoricoEntrada(
+    inicio,
+    fim,
+    total
+) {
+
+    const contador =
+        document.getElementById(
+            "contadorHistoricoEntrada"
+        );
+
+
+    if (!contador) {
+        return;
+    }
+
+
+    if (total === 0) {
+
+        contador.textContent =
+            "0 entradas";
+
+        return;
+    }
+
+
+    contador.textContent =
+        "Mostrando " +
+        inicio +
+        " a " +
+        fim +
+        " de " +
+        total +
+        (
+            total === 1
+                ? " entrada"
+                : " entradas"
+        );
+
+}
+
+
+// =====================================================
+// CRIAR PAGINAÇÃO
+// =====================================================
+
+function criarPaginacaoHistoricoEntrada(
+    totalPaginas
+) {
+
+    const rodape =
+        document.querySelector(
+            ".pagina-entradas .rodape-historico-entrada"
+        );
+
+
+    if (!rodape) {
+        return;
+    }
+
+
+    let paginacao =
+        document.getElementById(
+            "paginacaoHistoricoEntrada"
+        );
+
+
+    if (!paginacao) {
+
+        paginacao =
+            document.createElement(
+                "div"
+            );
+
+
+        paginacao.id =
+            "paginacaoHistoricoEntrada";
+
+
+        paginacao.style.display =
+            "flex";
+
+
+        paginacao.style.alignItems =
+            "center";
+
+
+        paginacao.style.gap =
+            "6px";
+
+
+        /*
+            Coloca a paginação antes
+            do botão Exportar.
+        */
+
+        const botaoExportar =
+            document.getElementById(
+                "btnExportarEntradas"
+            );
+
+
+        if (botaoExportar) {
+
+            rodape.insertBefore(
+                paginacao,
+                botaoExportar
+            );
+
+        } else {
+
+            rodape.appendChild(
+                paginacao
+            );
+
+        }
+
+    }
+
+
+    paginacao.innerHTML =
+        "";
+
+
+    if (
+        totalPaginas <=
+        1
+    ) {
+        return;
+    }
+
+
+    // =====================================================
+    // PÁGINAS
+    // =====================================================
+
+    for (
+        let pagina = 1;
+        pagina <= totalPaginas;
+        pagina++
+    ) {
+
+        /*
+            Para históricos enormes,
+            não cria centenas de botões.
+        */
+
+        if (
+            totalPaginas > 7 &&
+            pagina !== 1 &&
+            pagina !== totalPaginas &&
+            Math.abs(
+                pagina -
+                paginaAtualHistoricoEntrada
+            ) > 1
+        ) {
+
+            continue;
+
+        }
+
+
+        const botao =
+            document.createElement(
+                "button"
+            );
+
+
+        botao.type =
+            "button";
+
+
+        botao.textContent =
+            pagina;
+
+
+        botao.style.width =
+            "32px";
+
+
+        botao.style.height =
+            "32px";
+
+
+        botao.style.borderRadius =
+            "6px";
+
+
+        botao.style.cursor =
+            "pointer";
+
+
+        botao.style.fontWeight =
+            "700";
+
+
+        if (
+            pagina ===
+            paginaAtualHistoricoEntrada
+        ) {
+
+            botao.style.background =
+                "#063b73";
+
+            botao.style.color =
+                "#ffffff";
+
+            botao.style.border =
+                "1px solid #063b73";
+
+        } else {
+
+            botao.style.background =
+                "#ffffff";
+
+            botao.style.color =
+                "#17345c";
+
+            botao.style.border =
+                "1px solid #d5deea";
+
+        }
+
+
+        botao.addEventListener(
+            "click",
+            function () {
+
+                paginaAtualHistoricoEntrada =
+                    pagina;
+
+
+                carregarHistoricoEntradas();
+
+            }
+        );
+
+
+        paginacao.appendChild(
+            botao
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// RESUMO DO DIA
+// =====================================================
+
+function atualizarResumoDiaEntradas() {
+
+    const entradas =
+        carregarListaLocalStorage(
+            "entradas"
+        );
+
+
+    const hoje =
+        new Date();
+
+
+    hoje.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    const entradasHoje =
+        entradas.filter(
+            function (entrada) {
+
+                const data =
+                    converterDataEntradaParaDate(
+                        entrada.data
+                    );
+
+
+                if (!data) {
+                    return false;
+                }
+
+
+                data.setHours(
+                    0,
+                    0,
+                    0,
+                    0
+                );
+
+
+                return (
+                    data.getTime() ===
+                    hoje.getTime()
+                );
+
+            }
+        );
+
+
+    // =====================================================
+    // MOVIMENTAÇÕES
+    // =====================================================
+
+    const totalEntradas =
+        document.getElementById(
+            "totalEntradasHoje"
+        );
+
+
+    if (totalEntradas) {
+
+        totalEntradas.textContent =
+            entradasHoje.length;
+
+    }
+
+
+    // =====================================================
+    // UNIDADES
+    // =====================================================
+
+    const unidades =
+        entradasHoje.reduce(
+            function (
+                total,
+                entrada
+            ) {
+
+                return (
+                    total +
+                    converterNumero(
+                        entrada.quantidade
+                    )
+                );
+
+            },
+            0
+        );
+
+
+    const totalUnidades =
+        document.getElementById(
+            "totalUnidadesEntradaHoje"
+        );
+
+
+    if (totalUnidades) {
+
+        totalUnidades.textContent =
+            formatarQuantidade(
+                unidades
+            );
+
+    }
+
+
+    // =====================================================
+    // ÚLTIMA ENTRADA
+    // =====================================================
+
+    const ultimaHora =
+        document.getElementById(
+            "ultimaEntradaHoje"
+        );
+
+
+    const ultimaData =
+        document.getElementById(
+            "dataUltimaEntradaHoje"
+        );
+
+
+    if (
+        entradasHoje.length >
+        0
+    ) {
+
+        const ultimaEntrada =
+            entradasHoje[0];
+
+
+        const textoData =
+            String(
+                ultimaEntrada.data ||
+                ""
+            );
+
+
+        const partes =
+            textoData.split(
+                ","
+            );
+
+
+        if (ultimaHora) {
+
+            ultimaHora.textContent =
+                partes[1]
+                    ? partes[1].trim()
+                    : "--";
+
+        }
+
+
+        if (ultimaData) {
+
+            ultimaData.textContent =
+                partes[0] ||
+                "--";
+
+        }
+
+    } else {
+
+        if (ultimaHora) {
+
+            ultimaHora.textContent =
+                "--";
+
+        }
+
+
+        if (ultimaData) {
+
+            ultimaData.textContent =
+                "--";
+
+        }
+
+    }
+
+
+    atualizarOperadorResumoEntrada();
+
+}
+
+
+// =====================================================
+// OPERADOR
+// =====================================================
+
+function atualizarOperadorResumoEntrada() {
+
+    const operador =
+        document.getElementById(
+            "operadorResumoEntrada"
+        );
+
+
+    if (!operador) {
+        return;
+    }
+
+
+    operador.textContent =
+        typeof obterNomeUsuario ===
+        "function"
+
+            ? obterNomeUsuario()
+
+            : (
+                localStorage.getItem(
+                    "usuario"
+                ) ||
+                "-"
+            );
+
+}
+
+
+// =====================================================
+// CONVERTER DATA DO HISTÓRICO
+// =====================================================
+
+function converterDataEntradaParaDate(
+    texto
+) {
+
+    if (!texto) {
+        return null;
+    }
+
+
+    const resultado =
+        String(
+            texto
+        ).match(
+            /(\d{2})\/(\d{2})\/(\d{4})/
+        );
+
+
+    if (!resultado) {
+        return null;
+    }
+
+
+    return new Date(
+        Number(
+            resultado[3]
+        ),
+
+        Number(
+            resultado[2]
+        ) - 1,
+
+        Number(
+            resultado[1]
+        )
+    );
+
+}
+
+
+// =====================================================
+// LIMPAR CAMPOS
 // =====================================================
 
 function limparCamposEntrada() {
 
     const campos = [
+
         "codigoEntrada",
         "quantidadeEntrada",
         "enderecoEntrada"
+
     ];
 
 
@@ -3641,11 +5127,272 @@ function limparCamposEntrada() {
 
             if (campo) {
 
-                campo.value = "";
+                campo.value =
+                    "";
 
             }
 
         }
+    );
+
+}
+
+
+// =====================================================
+// OCULTAR CARDS APÓS REGISTRO
+// =====================================================
+
+function ocultarCardsEntrada() {
+
+    const ids = [
+
+        "cardProdutoEntrada",
+        "cardNovoSaldoEntrada",
+        "statusEnderecoEntrada"
+
+    ];
+
+
+    ids.forEach(
+        function (id) {
+
+            const elemento =
+                document.getElementById(
+                    id
+                );
+
+
+            if (elemento) {
+
+                elemento.classList.add(
+                    "oculto"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// TOAST DE SUCESSO
+// =====================================================
+
+function mostrarToastEntrada(
+    codigo,
+    quantidade,
+    endereco
+) {
+
+    const toast =
+        document.getElementById(
+            "toastEntrada"
+        );
+
+
+    const texto =
+        document.getElementById(
+            "textoToastEntrada"
+        );
+
+
+    if (
+        !toast ||
+        !texto
+    ) {
+
+        /*
+            Fallback caso o HTML antigo
+            ainda esteja em cache.
+        */
+
+        alert(
+            "Entrada registrada com sucesso!"
+        );
+
+        return;
+    }
+
+
+    texto.textContent =
+        "Entrada registrada com sucesso!   " +
+        codigo +
+        " | " +
+        formatarQuantidade(
+            quantidade
+        ) +
+        " un. | Posição " +
+        endereco;
+
+
+    toast.classList.add(
+        "mostrar"
+    );
+
+
+    setTimeout(
+        function () {
+
+            toast.classList.remove(
+                "mostrar"
+            );
+
+        },
+        3500
+    );
+
+}
+
+
+// =====================================================
+// EXPORTAR HISTÓRICO
+// =====================================================
+
+function exportarHistoricoEntradasCSV() {
+
+    const entradas =
+        obterEntradasFiltradas();
+
+
+    if (
+        entradas.length ===
+        0
+    ) {
+
+        alert(
+            "Não existem entradas para exportar."
+        );
+
+        return;
+    }
+
+
+    const linhas = [
+
+        [
+            "Código",
+            "Descrição",
+            "Quantidade",
+            "Endereço",
+            "Data",
+            "Operador"
+        ]
+
+    ];
+
+
+    entradas.forEach(
+        function (entrada) {
+
+            linhas.push(
+                [
+
+                    entrada.codigo ||
+                    "",
+
+                    entrada.descricao ||
+                    "",
+
+                    entrada.quantidade ||
+                    0,
+
+                    entrada.endereco ||
+                    entrada.destino ||
+                    "",
+
+                    entrada.data ||
+                    "",
+
+                    entrada.operador ||
+                    ""
+
+                ]
+            );
+
+        }
+    );
+
+
+    const csv =
+        linhas
+            .map(
+                function (linha) {
+
+                    return linha
+                        .map(
+                            function (valor) {
+
+                                return (
+                                    '"' +
+                                    String(
+                                        valor
+                                    )
+                                    .replace(
+                                        /"/g,
+                                        '""'
+                                    ) +
+                                    '"'
+                                );
+
+                            }
+                        )
+                        .join(
+                            ";"
+                        );
+
+                }
+            )
+            .join(
+                "\n"
+            );
+
+
+    const blob =
+        new Blob(
+            [
+                "\uFEFF" +
+                csv
+            ],
+            {
+                type:
+                    "text/csv;charset=utf-8;"
+            }
+        );
+
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+
+    link.href =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    link.download =
+        "historico_entradas.csv";
+
+
+    document.body.appendChild(
+        link
+    );
+
+
+    link.click();
+
+
+    document.body.removeChild(
+        link
+    );
+
+
+    URL.revokeObjectURL(
+        link.href
     );
 
 }
@@ -3669,6 +5416,15 @@ window.carregarHistoricoEntradas =
 
 window.carregarEntradas =
     carregarHistoricoEntradas;
+
+window.carregarResumoProdutoEntrada =
+    carregarResumoProdutoEntrada;
+
+window.atualizarResumoDiaEntradas =
+    atualizarResumoDiaEntradas;
+
+window.mostrarToastEntrada =
+    mostrarToastEntrada;
     // =====================================================
 // SMI WMS - APP.JS
 // PARTE 5 - SAÍDAS DE ESTOQUE

@@ -1653,3 +1653,634 @@ body:has(.dashboard-novo) .sidebar li a {
 .dashboard-novo .divergencia-ranking-numero {
     font-size: 13px !important;
 }
+/* =====================================================
+   TELA DE ENTRADAS - VISUAL MODELO
+   Não altera as outras telas
+===================================================== */
+
+.pagina-entradas {
+    background: #f4f7fb;
+}
+
+
+/* CONTEÚDO */
+
+.pagina-entradas .conteudo {
+    padding: 24px 28px 30px !important;
+}
+
+
+/* TOPO */
+
+.pagina-entradas .topbar {
+    margin-bottom: 18px;
+}
+
+
+.pagina-entradas .topbar h1 {
+    font-size: 32px;
+    color: #062b60;
+    margin-bottom: 4px;
+}
+
+
+.pagina-entradas .topbar small {
+    font-size: 13px;
+    color: #52657c;
+}
+
+
+/* =====================================================
+   PAINÉIS
+===================================================== */
+
+.pagina-entradas .painel {
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0, 30, 69, 0.06);
+    border: 1px solid #e3e9f1;
+    margin-top: 18px;
+}
+
+
+.pagina-entradas .painel h2 {
+    font-size: 18px;
+    color: #062b60;
+}
+
+
+/* =====================================================
+   NOVA ENTRADA
+===================================================== */
+
+.pagina-entradas .painel-nova-entrada {
+    padding: 20px 24px 22px;
+}
+
+
+.pagina-entradas .entrada-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 22px;
+    margin-top: 14px;
+}
+
+
+.pagina-entradas .entrada-coluna {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+
+.pagina-entradas .entrada-coluna label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #183759;
+}
+
+
+.pagina-entradas .entrada-coluna input {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid #d5deea;
+    border-radius: 7px;
+    font-size: 14px;
+    color: #102d54;
+    background: #ffffff;
+}
+
+
+.pagina-entradas .entrada-coluna input:focus {
+    border-color: #0d4b8f;
+    box-shadow: 0 0 0 3px rgba(13, 75, 143, 0.08);
+}
+
+
+/* =====================================================
+   CAMPO COM ÍCONE
+===================================================== */
+
+.pagina-entradas .campo-com-icone {
+    position: relative;
+}
+
+
+.pagina-entradas .campo-com-icone input {
+    padding-right: 42px;
+}
+
+
+.pagina-entradas .icone-campo {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #4d6480;
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   CARD DO PRODUTO
+===================================================== */
+
+.pagina-entradas .card-produto-entrada {
+    min-height: 62px;
+    padding: 10px 14px;
+    border: 1px solid #a9c9ef;
+    border-radius: 7px;
+    background: linear-gradient(90deg, #edf5ff, #f8fbff);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+
+.pagina-entradas .produto-entrada-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.pagina-entradas .produto-entrada-icone {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+
+.pagina-entradas .produto-entrada-info strong {
+    display: block;
+    font-size: 13px;
+    color: #123d73;
+}
+
+
+.pagina-entradas .produto-entrada-info small {
+    display: block;
+    margin-top: 3px;
+    font-size: 11px;
+    color: #63758a;
+}
+
+
+.pagina-entradas .produto-estoque-atual {
+    min-width: 100px;
+    text-align: right;
+}
+
+
+.pagina-entradas .produto-estoque-atual small {
+    display: block;
+    font-size: 11px;
+    color: #60738b;
+}
+
+
+.pagina-entradas .produto-estoque-atual strong {
+    font-size: 24px;
+    color: #0d4b8f;
+    margin-right: 3px;
+}
+
+
+/* =====================================================
+   NOVO SALDO
+===================================================== */
+
+.pagina-entradas .card-novo-saldo {
+    min-height: 62px;
+    padding: 10px 16px;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    border: 1px solid #c8ead2;
+    border-radius: 7px;
+
+    background: linear-gradient(90deg, #effbf3, #f7fdf9);
+}
+
+
+.pagina-entradas .novo-saldo-icone {
+    width: 26px;
+    height: 26px;
+    border: 2px solid #198754;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #198754;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+.pagina-entradas .card-novo-saldo small {
+    display: block;
+    font-size: 11px;
+    color: #34704c;
+}
+
+
+.pagina-entradas .card-novo-saldo strong {
+    display: inline-block;
+    margin-top: 2px;
+    margin-right: 4px;
+
+    font-size: 24px;
+    color: #198754;
+}
+
+
+/* =====================================================
+   STATUS DO ENDEREÇO
+===================================================== */
+
+.pagina-entradas .status-endereco {
+    min-height: 34px;
+    padding: 0 12px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    border-radius: 7px;
+    border: 1px solid #c9ead3;
+
+    background: #effbf3;
+    color: #238147;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   BOTÃO REGISTRAR
+===================================================== */
+
+.pagina-entradas .entrada-botao-container {
+    justify-content: flex-end;
+}
+
+
+.pagina-entradas .btn-registrar-entrada-novo {
+    width: 100%;
+    min-height: 64px;
+
+    border: 0;
+    border-radius: 7px;
+
+    background: linear-gradient(90deg, #0b477f, #063a70);
+
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    cursor: pointer;
+}
+
+
+.pagina-entradas .btn-registrar-entrada-novo:hover {
+    box-shadow: 0 7px 17px rgba(5, 58, 112, 0.18);
+}
+
+
+/* =====================================================
+   RESUMO DO DIA
+===================================================== */
+
+.pagina-entradas .resumo-entrada-dia {
+    display: grid;
+    grid-template-columns: 1.1fr repeat(4, 1fr);
+    align-items: center;
+
+    padding: 14px 18px;
+    min-height: 92px;
+}
+
+
+.pagina-entradas .resumo-entrada-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 14px;
+    color: #123d73;
+}
+
+
+.pagina-entradas .resumo-item {
+    min-height: 62px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding-left: 18px;
+
+    border-left: 1px solid #dde5ef;
+}
+
+
+.pagina-entradas .resumo-icone {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    background: #edf4fb;
+
+    font-size: 18px;
+}
+
+
+.pagina-entradas .resumo-item small {
+    display: block;
+    font-size: 11px;
+    color: #405974;
+}
+
+
+.pagina-entradas .resumo-item strong {
+    display: block;
+    margin: 2px 0;
+
+    font-size: 22px;
+    color: #123d73;
+}
+
+
+.pagina-entradas .resumo-item span {
+    display: block;
+    font-size: 10px;
+    color: #718197;
+}
+
+
+/* =====================================================
+   HISTÓRICO
+===================================================== */
+
+.pagina-entradas .historico-entrada-filtros {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 18px;
+
+    margin: 14px 0 12px;
+}
+
+
+.pagina-entradas .busca-historico-entrada {
+    width: 480px;
+    max-width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    border: 1px solid #d6e0ea;
+    border-radius: 7px;
+
+    padding: 0 12px;
+
+    background: #ffffff;
+}
+
+
+.pagina-entradas .busca-historico-entrada input {
+    flex: 1;
+    height: 38px;
+
+    border: 0;
+    outline: 0;
+
+    font-size: 13px;
+}
+
+
+.pagina-entradas .periodo-historico-entrada {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 13px;
+    color: #263e59;
+}
+
+
+.pagina-entradas .periodo-historico-entrada select {
+    min-width: 150px;
+    height: 38px;
+
+    padding: 0 10px;
+
+    border: 1px solid #d6e0ea;
+    border-radius: 7px;
+
+    background: #ffffff;
+}
+
+
+/* TABELA */
+
+.pagina-entradas .tabela {
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+
+.pagina-entradas .tabela th {
+    padding: 11px 10px;
+    font-size: 12px;
+}
+
+
+.pagina-entradas .tabela td {
+    padding: 11px 10px;
+    font-size: 12px;
+}
+
+
+/* RODAPÉ */
+
+.pagina-entradas .rodape-historico-entrada {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-top: 14px;
+
+    font-size: 12px;
+    color: #60738a;
+}
+
+
+.pagina-entradas .btn-exportar-entrada {
+    padding: 9px 14px;
+
+    border: 1px solid #ced9e5;
+    border-radius: 7px;
+
+    background: #ffffff;
+    color: #174c7e;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.pagina-entradas .toast-entrada {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+
+    transform: translate(-50%, 25px);
+
+    opacity: 0;
+    pointer-events: none;
+
+    min-width: 360px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 18px;
+
+    border: 1px solid #b9dfc4;
+    border-radius: 8px;
+
+    background: #edf9f0;
+
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.12);
+
+    color: #206e3d;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    z-index: 9999;
+
+    transition: 0.3s;
+}
+
+
+.pagina-entradas .toast-entrada.mostrar {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+
+/* =====================================================
+   AUXILIAR
+===================================================== */
+
+.pagina-entradas .oculto {
+    display: none !important;
+}
+
+
+/* =====================================================
+   RESPONSIVO
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .pagina-entradas .entrada-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .pagina-entradas .resumo-entrada-dia {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+
+    .pagina-entradas .resumo-item {
+        border-left: 0;
+        padding-left: 0;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .pagina-entradas .resumo-entrada-dia {
+        grid-template-columns: 1fr;
+    }
+
+
+    .pagina-entradas .historico-entrada-filtros {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+
+    .pagina-entradas .busca-historico-entrada {
+        width: 100%;
+    }
+
+}
+/* =====================================================
+   ENTRADAS - CORES DO RESUMO DO DIA
+===================================================== */
+
+/* ENTRADAS HOJE - AZUL */
+.pagina-entradas .resumo-item:nth-child(2) .resumo-icone {
+    background: #2f80ed !important;
+    color: #ffffff !important;
+}
+
+
+/* UNIDADES RECEBIDAS - TURQUESA */
+.pagina-entradas .resumo-item:nth-child(3) .resumo-icone {
+    background: #20b7bd !important;
+    color: #ffffff !important;
+}
+
+
+/* ÚLTIMA ENTRADA - ROXO */
+.pagina-entradas .resumo-item:nth-child(4) .resumo-icone {
+    background: #6528c8 !important;
+    color: #ffffff !important;
+}
+
+
+/* OPERADOR - VERDE */
+.pagina-entradas .resumo-item:nth-child(5) .resumo-icone {
+    background: #35a85b !important;
+    color: #ffffff !important;
+}
