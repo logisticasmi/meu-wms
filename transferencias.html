@@ -23,11 +23,816 @@
         href="img/favicon.png"
     >
 
+
+    <style>
+
+        /* =====================================================
+           TRANSFERÊNCIAS - VISUAL EXCLUSIVO
+        ===================================================== */
+
+        .pagina-transferencias {
+            background: #f4f7fb;
+        }
+
+
+        .pagina-transferencias .conteudo {
+            padding: 24px 28px 35px !important;
+        }
+
+
+        /* =====================================================
+           TOPO
+        ===================================================== */
+
+        .pagina-transferencias .topbar {
+            margin-bottom: 18px;
+        }
+
+
+        .pagina-transferencias .topbar h1 {
+            margin-bottom: 4px;
+
+            color: #062b60;
+
+            font-size: 32px;
+        }
+
+
+        .pagina-transferencias .topbar small {
+            color: #52657c;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           PAINÉIS
+        ===================================================== */
+
+        .pagina-transferencias .painel-transferencia {
+            margin-top: 18px;
+
+            padding: 22px 24px;
+
+            border:
+                1px solid #e1e8f0;
+
+            border-radius: 14px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 5px 18px
+                rgba(0, 30, 69, 0.06);
+        }
+
+
+        /* =====================================================
+           CABEÇALHO DO FORMULÁRIO
+        ===================================================== */
+
+        .cabecalho-transferencia {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .titulo-transferencia {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        .icone-transferencia {
+            color: #0565d8;
+
+            font-size: 30px;
+
+            font-weight: bold;
+        }
+
+
+        .titulo-transferencia h2 {
+            margin: 0;
+
+            color: #082f67;
+
+            font-size: 21px;
+        }
+
+
+        .acoes-leitor {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .leitor-ativo {
+            padding: 9px 14px;
+
+            border-radius: 8px;
+
+            background: #eef9f2;
+
+            color: #198844;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .btn-bipar-tudo {
+            height: 38px;
+
+            padding: 0 15px;
+
+            border:
+                1px solid #4387e9;
+
+            border-radius: 8px;
+
+            background: #ffffff;
+
+            color: #1262d1;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           FORMULÁRIO
+        ===================================================== */
+
+        .grid-transferencia {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 14px 22px;
+        }
+
+
+        .campo-transferencia {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 6px;
+        }
+
+
+        .campo-transferencia label {
+            color: #17375d;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .campo-com-icone {
+            position: relative;
+        }
+
+
+        .campo-com-icone input,
+        .campo-com-icone select {
+            width: 100%;
+
+            height: 46px;
+
+            padding:
+                0 45px 0 14px;
+
+            border:
+                1px solid #d2dce8;
+
+            border-radius: 7px;
+
+            outline: none;
+
+            background: #ffffff;
+
+            color: #102d54;
+
+            font-size: 14px;
+        }
+
+
+        .campo-com-icone input:focus,
+        .campo-com-icone select:focus {
+            border-color: #1769c2;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(23, 105, 194, 0.08);
+        }
+
+
+        .icone-campo {
+            position: absolute;
+
+            top: 50%;
+            right: 14px;
+
+            transform: translateY(-50%);
+
+            color: #0765d7;
+
+            font-size: 17px;
+
+            pointer-events: none;
+        }
+
+
+        .quantidade-wrapper {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr) 82px;
+        }
+
+
+        .quantidade-wrapper input {
+            border-radius:
+                7px 0 0 7px;
+        }
+
+
+        .btn-max-transferencia {
+            border:
+                1px solid #d2dce8;
+
+            border-left: 0;
+
+            border-radius:
+                0 7px 7px 0;
+
+            background: #ffffff;
+
+            color: #143e78;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           SALDOS
+        ===================================================== */
+
+        .saldo-transferencia {
+            grid-column:
+                1 / -1;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            margin-top: 2px;
+
+            overflow: hidden;
+
+            border:
+                1px solid #cfe3d6;
+
+            border-radius: 8px;
+
+            background: #f7fbff;
+        }
+
+
+        .saldo-transferencia-item {
+            min-height: 67px;
+
+            padding: 10px 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            text-align: center;
+        }
+
+
+        .saldo-transferencia-item:first-child {
+            background:
+                linear-gradient(
+                    90deg,
+                    #f0faf3,
+                    #f8fdf9
+                );
+        }
+
+
+        .saldo-transferencia-item + .saldo-transferencia-item {
+            border-left:
+                1px solid #dbe4ef;
+        }
+
+
+        .saldo-transferencia-item small {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: #38526f;
+
+            font-size: 11px;
+        }
+
+
+        .saldo-transferencia-item strong {
+            display: block;
+
+            color: #14913f;
+
+            font-size: 22px;
+        }
+
+
+        .saldo-transferencia-item.saldo-depois strong {
+            color: #0862dc;
+        }
+
+
+        .saldo-status {
+            width: 28px;
+            height: 28px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                2px solid #1a9a49;
+
+            border-radius: 50%;
+
+            color: #1a9a49;
+
+            font-weight: bold;
+        }
+
+
+        .saldo-depois .saldo-status {
+            border-color: #0862dc;
+
+            color: #0862dc;
+        }
+
+
+        /* =====================================================
+           RESUMO
+        ===================================================== */
+
+        .resumo-transferencia {
+            grid-column:
+                1 / -1;
+
+            padding: 11px 14px;
+
+            border:
+                1px solid #cddff3;
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #eef6ff,
+                    #f7fbff
+                );
+
+            color: #173b6d;
+
+            font-size: 12px;
+        }
+
+
+        .resumo-transferencia strong {
+            color: #063e84;
+        }
+
+
+        .resumo-transferencia-titulo {
+            display: block;
+
+            margin-bottom: 5px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           BOTÕES
+        ===================================================== */
+
+        .acoes-transferencia {
+            grid-column:
+                1 / -1;
+
+            display: grid;
+
+            grid-template-columns:
+                .8fr .8fr 1.2fr;
+
+            gap: 12px;
+        }
+
+
+        .btn-secundario-transferencia {
+            min-height: 46px;
+
+            border:
+                1px solid #d1dce8;
+
+            border-radius: 7px;
+
+            background: #ffffff;
+
+            color: #1260cd;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .btn-transferir-principal {
+            min-height: 46px;
+
+            border: 0;
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #063b73,
+                    #0754a5
+                );
+
+            color: #ffffff;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 5px 13px
+                rgba(6, 59, 115, 0.15);
+        }
+
+
+        /* =====================================================
+           HISTÓRICO
+        ===================================================== */
+
+        .cabecalho-historico-transferencia {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .cabecalho-historico-transferencia h2 {
+            margin: 0;
+
+            color: #082f67;
+
+            font-size: 20px;
+        }
+
+
+        .filtros-transferencia {
+            display: grid;
+
+            grid-template-columns:
+                minmax(280px, 1fr)
+                auto
+                minmax(260px, auto)
+                auto;
+
+            gap: 12px;
+
+            align-items: center;
+
+            margin-bottom: 12px;
+        }
+
+
+        .pesquisa-transferencia {
+            position: relative;
+        }
+
+
+        .pesquisa-transferencia input {
+            width: 100%;
+
+            height: 39px;
+
+            padding:
+                0 13px 0 38px;
+
+            border:
+                1px solid #d2dce8;
+
+            border-radius: 7px;
+
+            outline: none;
+
+            font-size: 12px;
+        }
+
+
+        .pesquisa-transferencia span {
+            position: absolute;
+
+            left: 13px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color: #64788f;
+        }
+
+
+        .btn-filtro-transferencia,
+        .btn-exportar-transferencia {
+            height: 39px;
+
+            padding: 0 16px;
+
+            border:
+                1px solid #d1dce8;
+
+            border-radius: 7px;
+
+            background: #ffffff;
+
+            color: #145fc8;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .periodo-transferencia {
+            height: 39px;
+
+            padding: 0 13px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            border:
+                1px solid #d1dce8;
+
+            border-radius: 7px;
+
+            background: #ffffff;
+
+            color: #24446a;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           TABELA
+        ===================================================== */
+
+        .tabela-transferencia-container {
+            overflow-x: auto;
+        }
+
+
+        .pagina-transferencias .tabela {
+            margin-top: 0;
+
+            box-shadow: none;
+
+            border-radius: 8px;
+        }
+
+
+        .pagina-transferencias .tabela th {
+            padding: 11px 9px;
+
+            font-size: 11px;
+        }
+
+
+        .pagina-transferencias .tabela td {
+            padding: 11px 9px;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (
+            max-width: 900px
+        ) {
+
+            .grid-transferencia {
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .saldo-transferencia,
+            .resumo-transferencia,
+            .acoes-transferencia {
+                grid-column: auto;
+            }
+
+
+            .filtros-transferencia {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+        }
+
+
+        @media (
+            max-width: 700px
+        ) {
+
+            .pagina-transferencias .conteudo {
+                padding:
+                    14px 10px 30px !important;
+            }
+
+
+            .pagina-transferencias .topbar {
+                align-items: flex-start;
+            }
+
+
+            .pagina-transferencias .topbar h1 {
+                font-size: 26px;
+            }
+
+
+            .painel-transferencia {
+                padding: 17px 14px;
+            }
+
+
+            .cabecalho-transferencia {
+                align-items: flex-start;
+            }
+
+
+            .titulo-transferencia h2 {
+                font-size: 18px;
+            }
+
+
+            .acoes-leitor {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .leitor-ativo {
+                display: none;
+            }
+
+
+            .btn-bipar-tudo {
+                padding: 0 10px;
+
+                font-size: 11px;
+            }
+
+
+            .saldo-transferencia {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+
+            .saldo-transferencia-item {
+                min-height: 75px;
+
+                padding: 9px 7px;
+            }
+
+
+            .saldo-transferencia-item strong {
+                font-size: 18px;
+            }
+
+
+            .acoes-transferencia {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+
+            .btn-transferir-principal {
+                grid-column:
+                    1 / -1;
+
+                min-height: 53px;
+
+                font-size: 15px;
+            }
+
+
+            .filtros-transferencia {
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .periodo-transferencia {
+                display: none;
+            }
+
+        }
+
+
+        @media (
+            max-width: 480px
+        ) {
+
+            .saldo-transferencia-item small {
+                font-size: 10px;
+            }
+
+
+            .saldo-status {
+                display: none;
+            }
+
+
+            .acoes-transferencia {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+        }
+
+    </style>
+
 </head>
 
-<body>
 
-    <!-- MENU LATERAL -->
+<body class="pagina-transferencias">
+
+
+    <!-- =====================================================
+         MENU LATERAL
+    ===================================================== -->
 
     <div class="sidebar">
 
@@ -40,7 +845,11 @@
 
         </div>
 
-        <h2>SMI WMS</h2>
+
+        <h2>
+            SMI WMS
+        </h2>
+
 
         <ul>
 
@@ -88,7 +897,7 @@
             </li>
 
             <li onclick="location.href='configuracoes.html'">
-                ⚙ Configurações
+                ⚙️ Configurações
             </li>
 
         </ul>
@@ -96,23 +905,32 @@
     </div>
 
 
-    <!-- CONTEÚDO -->
+
+    <!-- =====================================================
+         CONTEÚDO
+    ===================================================== -->
 
     <div class="conteudo">
 
-        <!-- TOPO -->
+
+        <!-- =================================================
+             TOPO
+        ================================================== -->
 
         <div class="topbar">
 
             <div>
 
-                <h1>Transferência</h1>
+                <h1>
+                    Transferência
+                </h1>
 
                 <small>
                     Movimentação entre posições
                 </small>
 
             </div>
+
 
             <div class="usuario">
 
@@ -132,115 +950,486 @@
         </div>
 
 
-        <!-- FORMULÁRIO DE TRANSFERÊNCIA -->
 
-        <div class="painel">
+        <!-- =================================================
+             TRANSFERIR PRODUTO
+        ================================================== -->
 
-            <h2>Transferir Produto</h2>
+        <section class="painel-transferencia">
 
-            <div
-                style="
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 20px;
-                "
-            >
 
-                <input
-                    type="text"
-                    id="codigoTransferencia"
-                    placeholder="Código do Produto"
-                    maxlength="8"
-                >
+            <div class="cabecalho-transferencia">
 
-                <input
-                    type="number"
-                    id="quantidadeTransferencia"
-                    placeholder="Quantidade"
-                    min="0.001"
-                    step="0.001"
-                >
 
-                <input
-                    type="text"
-                    id="origemTransferencia"
-                    placeholder="Endereço Atual"
-                >
+                <div class="titulo-transferencia">
 
-                <input
-                    type="text"
-                    id="destinoTransferencia"
-                    placeholder="Novo Endereço"
-                >
+                    <span class="icone-transferencia">
+                        ⇄
+                    </span>
 
-                <button
-                    type="button"
-                    id="btnRegistrarTransferencia"
-                    class="btn"
-                >
-                    🔄 Transferir Produto
-                </button>
+                    <h2>
+                        Transferir Produto
+                    </h2>
+
+                </div>
+
+
+                <div class="acoes-leitor">
+
+                    <span class="leitor-ativo">
+                        ● Leitor ativo
+                    </span>
+
+
+                    <button
+                        type="button"
+                        class="btn-bipar-tudo"
+                        onclick="focarCodigoTransferencia()"
+                    >
+                        ▥ Bipar tudo
+                    </button>
+
+                </div>
+
 
             </div>
 
-        </div>
 
 
-        <!-- HISTÓRICO -->
+            <div class="grid-transferencia">
 
-        <div class="painel">
 
-            <h2>Histórico de Transferências</h2>
+                <!-- =============================================
+                     CÓDIGO
+                ============================================== -->
 
-            <table class="tabela">
+                <div class="campo-transferencia">
 
-                <thead>
+                    <label for="codigoTransferencia">
+                        Código do Produto
+                    </label>
 
-                    <tr>
 
-                        <th>Código</th>
+                    <div class="campo-com-icone">
 
-                        <th>Descrição</th>
-
-                        <th>Quantidade</th>
-
-                        <th>Origem</th>
-
-                        <th>Destino</th>
-
-                        <th>Data</th>
-
-                        <th>Operador</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="listaTransferencias">
-
-                    <tr>
-
-                        <td
-                            colspan="7"
-                            style="text-align: center;"
+                        <input
+                            type="text"
+                            id="codigoTransferencia"
+                            placeholder="Código do Produto"
+                            autocomplete="off"
                         >
-                            Nenhuma transferência registrada.
-                        </td>
 
-                    </tr>
+                        <span class="icone-campo">
+                            ▥
+                        </span>
 
-                </tbody>
+                    </div>
 
-            </table>
+                </div>
 
-        </div>
+
+
+                <!-- =============================================
+                     QUANTIDADE
+                ============================================== -->
+
+                <div class="campo-transferencia">
+
+                    <label for="quantidadeTransferencia">
+                        Quantidade
+                    </label>
+
+
+                    <div class="quantidade-wrapper">
+
+                        <input
+                            type="number"
+                            id="quantidadeTransferencia"
+                            placeholder="Quantidade"
+                            min="0.001"
+                            step="0.001"
+                        >
+
+
+                        <button
+                            type="button"
+                            class="btn-max-transferencia"
+                            id="btnMaxTransferencia"
+                        >
+                            Máx.
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     ORIGEM
+                ============================================== -->
+
+                <div class="campo-transferencia">
+
+                    <label for="origemTransferencia">
+                        Endereço Atual (Origem)
+                    </label>
+
+
+                    <div class="campo-com-icone">
+
+                        <input
+                            type="text"
+                            id="origemTransferencia"
+                            placeholder="Endereço Atual"
+                            autocomplete="off"
+                        >
+
+                        <span class="icone-campo">
+                            ▥
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     DESTINO
+                ============================================== -->
+
+                <div class="campo-transferencia">
+
+                    <label for="destinoTransferencia">
+                        Novo Endereço (Destino)
+                    </label>
+
+
+                    <div class="campo-com-icone">
+
+                        <input
+                            type="text"
+                            id="destinoTransferencia"
+                            placeholder="Novo Endereço"
+                            autocomplete="off"
+                        >
+
+                        <span class="icone-campo">
+                            ▥
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     SALDOS
+                ============================================== -->
+
+                <div class="saldo-transferencia">
+
+
+                    <div class="saldo-transferencia-item">
+
+                        <div>
+
+                            <small>
+                                Estoque disponível na origem
+                            </small>
+
+                            <strong id="estoqueOrigemTransferencia">
+                                0 unidades
+                            </strong>
+
+                        </div>
+
+
+                        <span class="saldo-status">
+                            ✓
+                        </span>
+
+                    </div>
+
+
+
+                    <div
+                        class="
+                            saldo-transferencia-item
+                            saldo-depois
+                        "
+                    >
+
+                        <div>
+
+                            <small>
+                                Após transferência
+                            </small>
+
+                            <strong id="estoqueDepoisTransferencia">
+                                0 unidades
+                            </strong>
+
+                        </div>
+
+
+                        <span class="saldo-status">
+                            ⓘ
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =============================================
+                     RESUMO
+                ============================================== -->
+
+                <div class="resumo-transferencia">
+
+                    <span class="resumo-transferencia-titulo">
+                        Resumo da transferência
+                    </span>
+
+
+                    <span>
+                        Produto:
+                        <strong id="resumoCodigoTransferencia">
+                            -
+                        </strong>
+
+                        &nbsp; • &nbsp;
+
+                        Quantidade:
+                        <strong id="resumoQuantidadeTransferencia">
+                            -
+                        </strong>
+
+                        &nbsp; • &nbsp;
+
+                        Origem:
+                        <strong id="resumoOrigemTransferencia">
+                            -
+                        </strong>
+
+                        &nbsp; • &nbsp;
+
+                        Destino:
+                        <strong id="resumoDestinoTransferencia">
+                            -
+                        </strong>
+                    </span>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     AÇÕES
+                ============================================== -->
+
+                <div class="acoes-transferencia">
+
+
+                    <button
+                        type="button"
+                        class="btn-secundario-transferencia"
+                        onclick="limparCamposTransferenciaVisual()"
+                    >
+                        🗑 Limpar campos
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="btn-secundario-transferencia"
+                        onclick="rolarHistoricoTransferencia()"
+                    >
+                        ◷ Ver histórico
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="btnRegistrarTransferencia"
+                        class="btn-transferir-principal"
+                    >
+                        ⇄ Transferir Produto
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             HISTÓRICO
+        ================================================== -->
+
+        <section
+            class="painel-transferencia"
+            id="historicoTransferencia"
+        >
+
+
+            <div class="cabecalho-historico-transferencia">
+
+                <span class="icone-transferencia">
+                    ⇄
+                </span>
+
+                <h2>
+                    Histórico de Transferências
+                </h2>
+
+            </div>
+
+
+
+            <!-- FILTROS -->
+
+            <div class="filtros-transferencia">
+
+
+                <div class="pesquisa-transferencia">
+
+                    <span>
+                        🔍
+                    </span>
+
+                    <input
+                        type="text"
+                        id="pesquisaTransferencia"
+                        placeholder="Buscar por código, descrição ou operador..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+
+                <button
+                    type="button"
+                    class="btn-filtro-transferencia"
+                >
+                    ▽ Filtros
+                </button>
+
+
+
+                <div class="periodo-transferencia">
+
+                    📅
+
+                    <span id="periodoTransferencia">
+                        Período atual
+                    </span>
+
+                </div>
+
+
+
+                <button
+                    type="button"
+                    class="btn-exportar-transferencia"
+                    id="btnExportarTransferencias"
+                >
+                    ↓ Exportar
+                </button>
+
+
+            </div>
+
+
+
+            <!-- TABELA -->
+
+            <div class="tabela-transferencia-container">
+
+                <table class="tabela">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Data/Hora
+                            </th>
+
+                            <th>
+                                Código
+                            </th>
+
+                            <th>
+                                Descrição
+                            </th>
+
+                            <th>
+                                Qtd.
+                            </th>
+
+                            <th>
+                                Origem
+                            </th>
+
+                            <th>
+                                Destino
+                            </th>
+
+                            <th>
+                                Operador
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="listaTransferencias">
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                style="text-align:center;"
+                            >
+                                Nenhuma transferência registrada.
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </section>
+
 
     </div>
 
 
-    <!-- JAVASCRIPT -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- =====================================================
+         JAVASCRIPT ORIGINAL
+    ===================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
 
     <script src="supabase.js"></script>
 
@@ -249,11 +1438,20 @@
     <script src="sync-supabase.js"></script>
 
 
+
     <!-- =====================================================
-         QR CODE - CONSIDERAR SOMENTE OS 8 PRIMEIROS CARACTERES
+         FUNCIONALIDADES VISUAIS DA NOVA TELA
     ===================================================== -->
 
     <script>
+
+        let estoqueAtualOrigemVisual =
+            0;
+
+
+        // =====================================================
+        // QR CODE - 8 PRIMEIROS CARACTERES
+        // =====================================================
 
         document.addEventListener(
             "DOMContentLoaded",
@@ -265,30 +1463,1039 @@
                     );
 
 
-                if (!campoCodigo) {
-                    return;
+                const campoQuantidade =
+                    document.getElementById(
+                        "quantidadeTransferencia"
+                    );
+
+
+                const campoOrigem =
+                    document.getElementById(
+                        "origemTransferencia"
+                    );
+
+
+                const campoDestino =
+                    document.getElementById(
+                        "destinoTransferencia"
+                    );
+
+
+                if (campoCodigo) {
+
+                    campoCodigo.addEventListener(
+                        "input",
+                        function () {
+
+                            /*
+                                MESMA REGRA DO INVENTÁRIO
+                                E DA SEPARAÇÃO:
+                                SOMENTE OS 8 PRIMEIROS
+                                CARACTERES DO QR CODE.
+                            */
+
+                            campoCodigo.value =
+                                String(
+                                    campoCodigo.value ||
+                                    ""
+                                )
+                                .substring(
+                                    0,
+                                    8
+                                )
+                                .toUpperCase();
+
+
+                            atualizarResumoTransferenciaVisual();
+
+                        }
+                    );
+
+
+                    campoCodigo.addEventListener(
+                        "change",
+                        atualizarEstoqueOrigemTransferencia
+                    );
+
+
+                    campoCodigo.addEventListener(
+                        "blur",
+                        atualizarEstoqueOrigemTransferencia
+                    );
+
                 }
 
 
-                campoCodigo.addEventListener(
-                    "input",
+                if (campoOrigem) {
+
+                    campoOrigem.addEventListener(
+                        "input",
+                        function () {
+
+                            campoOrigem.value =
+                                normalizarPosicaoTransferencia(
+                                    campoOrigem.value
+                                );
+
+
+                            atualizarResumoTransferenciaVisual();
+
+                        }
+                    );
+
+
+                    campoOrigem.addEventListener(
+                        "change",
+                        atualizarEstoqueOrigemTransferencia
+                    );
+
+
+                    campoOrigem.addEventListener(
+                        "blur",
+                        atualizarEstoqueOrigemTransferencia
+                    );
+
+                }
+
+
+                if (campoDestino) {
+
+                    campoDestino.addEventListener(
+                        "input",
+                        function () {
+
+                            campoDestino.value =
+                                normalizarPosicaoTransferencia(
+                                    campoDestino.value
+                                );
+
+
+                            atualizarResumoTransferenciaVisual();
+
+                        }
+                    );
+
+                }
+
+
+                if (campoQuantidade) {
+
+                    campoQuantidade.addEventListener(
+                        "input",
+                        function () {
+
+                            atualizarSaldoDepoisTransferencia();
+
+                            atualizarResumoTransferenciaVisual();
+
+                        }
+                    );
+
+                }
+
+
+                const botaoMax =
+                    document.getElementById(
+                        "btnMaxTransferencia"
+                    );
+
+
+                if (botaoMax) {
+
+                    botaoMax.addEventListener(
+                        "click",
+                        function () {
+
+                            if (
+                                !campoQuantidade ||
+                                estoqueAtualOrigemVisual <= 0
+                            ) {
+                                return;
+                            }
+
+
+                            campoQuantidade.value =
+                                estoqueAtualOrigemVisual;
+
+
+                            atualizarSaldoDepoisTransferencia();
+
+                            atualizarResumoTransferenciaVisual();
+
+                        }
+                    );
+
+                }
+
+
+                const pesquisa =
+                    document.getElementById(
+                        "pesquisaTransferencia"
+                    );
+
+
+                if (pesquisa) {
+
+                    pesquisa.addEventListener(
+                        "input",
+                        filtrarHistoricoTransferencias
+                    );
+
+                }
+
+
+                const exportar =
+                    document.getElementById(
+                        "btnExportarTransferencias"
+                    );
+
+
+                if (exportar) {
+
+                    exportar.addEventListener(
+                        "click",
+                        exportarTransferenciasCSV
+                    );
+
+                }
+
+
+                atualizarPeriodoTransferencia();
+
+                observarHistoricoTransferencias();
+
+            }
+        );
+
+
+
+        // =====================================================
+        // NORMALIZAR POSIÇÃO
+        // =====================================================
+
+        function normalizarPosicaoTransferencia(
+            valor
+        ) {
+
+            /*
+                Também aceita leitura de QR
+                com informação adicional.
+            */
+
+            return String(
+                valor || ""
+            )
+            .trim()
+            .toUpperCase()
+            .substring(
+                0,
+                8
+            );
+
+        }
+
+
+
+        // =====================================================
+        // ESTOQUE DA ORIGEM
+        // =====================================================
+
+        async function atualizarEstoqueOrigemTransferencia() {
+
+            const campoCodigo =
+                document.getElementById(
+                    "codigoTransferencia"
+                );
+
+
+            const campoOrigem =
+                document.getElementById(
+                    "origemTransferencia"
+                );
+
+
+            if (
+                !campoCodigo ||
+                !campoOrigem ||
+                !window.supabaseClient
+            ) {
+                return;
+            }
+
+
+            const codigo =
+                String(
+                    campoCodigo.value ||
+                    ""
+                )
+                .trim()
+                .toUpperCase()
+                .substring(
+                    0,
+                    8
+                );
+
+
+            const origem =
+                String(
+                    campoOrigem.value ||
+                    ""
+                )
+                .trim()
+                .toUpperCase();
+
+
+            if (
+                !codigo ||
+                !origem
+            ) {
+
+                estoqueAtualOrigemVisual =
+                    0;
+
+
+                atualizarExibicaoEstoqueTransferencia();
+
+                return;
+
+            }
+
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await window.supabaseClient
+                        .from(
+                            "produtos"
+                        )
+                        .select(
+                            "quantidade"
+                        )
+                        .eq(
+                            "codigo",
+                            codigo
+                        )
+                        .eq(
+                            "endereco",
+                            origem
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        "Erro ao consultar estoque da origem:",
+                        error
+                    );
+
+                    return;
+
+                }
+
+
+                estoqueAtualOrigemVisual =
+                    Array.isArray(data)
+
+                        ? data.reduce(
+                            function (
+                                total,
+                                produto
+                            ) {
+
+                                return (
+                                    total +
+                                    Number(
+                                        produto.quantidade ||
+                                        0
+                                    )
+                                );
+
+                            },
+                            0
+                        )
+
+                        : 0;
+
+
+                atualizarExibicaoEstoqueTransferencia();
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao consultar origem:",
+                    erro
+                );
+
+            }
+
+        }
+
+
+
+        // =====================================================
+        // MOSTRAR ESTOQUE
+        // =====================================================
+
+        function atualizarExibicaoEstoqueTransferencia() {
+
+            const elemento =
+                document.getElementById(
+                    "estoqueOrigemTransferencia"
+                );
+
+
+            if (elemento) {
+
+                elemento.textContent =
+                    estoqueAtualOrigemVisual
+                        .toLocaleString(
+                            "pt-BR"
+                        ) +
+                    " unidades";
+
+            }
+
+
+            atualizarSaldoDepoisTransferencia();
+
+        }
+
+
+
+        // =====================================================
+        // SALDO DEPOIS
+        // =====================================================
+
+        function atualizarSaldoDepoisTransferencia() {
+
+            const quantidade =
+                Number(
+                    document
+                        .getElementById(
+                            "quantidadeTransferencia"
+                        )
+                        ?.value ||
+                    0
+                );
+
+
+            const saldoDepois =
+                Math.max(
+                    0,
+                    estoqueAtualOrigemVisual -
+                    quantidade
+                );
+
+
+            const elemento =
+                document.getElementById(
+                    "estoqueDepoisTransferencia"
+                );
+
+
+            if (elemento) {
+
+                elemento.textContent =
+                    saldoDepois
+                        .toLocaleString(
+                            "pt-BR"
+                        ) +
+                    " unidades";
+
+            }
+
+        }
+
+
+
+        // =====================================================
+        // RESUMO
+        // =====================================================
+
+        function atualizarResumoTransferenciaVisual() {
+
+            const codigo =
+                String(
+                    document.getElementById(
+                        "codigoTransferencia"
+                    )?.value || ""
+                )
+                .trim()
+                .toUpperCase()
+                .substring(0, 8);
+
+
+            const quantidade =
+                Number(
+                    document.getElementById(
+                        "quantidadeTransferencia"
+                    )?.value || 0
+                );
+
+
+            const origem =
+                normalizarPosicaoTransferencia(
+                    document.getElementById(
+                        "origemTransferencia"
+                    )?.value || ""
+                );
+
+
+            const destino =
+                normalizarPosicaoTransferencia(
+                    document.getElementById(
+                        "destinoTransferencia"
+                    )?.value || ""
+                );
+
+
+            const resumoCodigo =
+                document.getElementById(
+                    "resumoCodigoTransferencia"
+                );
+
+            const resumoQuantidade =
+                document.getElementById(
+                    "resumoQuantidadeTransferencia"
+                );
+
+            const resumoOrigem =
+                document.getElementById(
+                    "resumoOrigemTransferencia"
+                );
+
+            const resumoDestino =
+                document.getElementById(
+                    "resumoDestinoTransferencia"
+                );
+
+
+            if (resumoCodigo) {
+                resumoCodigo.textContent =
+                    codigo || "-";
+            }
+
+
+            if (resumoQuantidade) {
+                resumoQuantidade.textContent =
+                    quantidade > 0
+                        ? quantidade.toLocaleString("pt-BR") + " unid."
+                        : "-";
+            }
+
+
+            if (resumoOrigem) {
+                resumoOrigem.textContent =
+                    origem || "-";
+            }
+
+
+            if (resumoDestino) {
+                resumoDestino.textContent =
+                    destino || "-";
+            }
+
+        }
+
+
+
+        // =====================================================
+        // LIMPAR CAMPOS / VISUAL
+        // =====================================================
+
+        function limparCamposTransferenciaVisual() {
+
+            const ids = [
+                "codigoTransferencia",
+                "quantidadeTransferencia",
+                "origemTransferencia",
+                "destinoTransferencia"
+            ];
+
+
+            ids.forEach(
+                function (id) {
+
+                    const campo =
+                        document.getElementById(id);
+
+                    if (campo) {
+                        campo.value = "";
+                    }
+
+                }
+            );
+
+
+            estoqueAtualOrigemVisual = 0;
+
+            atualizarExibicaoEstoqueTransferencia();
+
+            atualizarResumoTransferenciaVisual();
+
+
+            const campoCodigo =
+                document.getElementById(
+                    "codigoTransferencia"
+                );
+
+            if (campoCodigo) {
+                campoCodigo.focus();
+            }
+
+        }
+
+
+
+        // =====================================================
+        // FOCO PARA LEITOR
+        // =====================================================
+
+        function focarCodigoTransferencia() {
+
+            const campo =
+                document.getElementById(
+                    "codigoTransferencia"
+                );
+
+
+            if (!campo) {
+                return;
+            }
+
+
+            campo.focus();
+            campo.select();
+
+        }
+
+
+
+        // =====================================================
+        // ROLAR PARA HISTÓRICO
+        // =====================================================
+
+        function rolarHistoricoTransferencia() {
+
+            const historico =
+                document.getElementById(
+                    "historicoTransferencia"
+                );
+
+
+            if (historico) {
+                historico.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+
+        }
+
+
+
+        // =====================================================
+        // REORDENAR TABELA PARA O NOVO VISUAL
+        // DATA/HORA | CÓDIGO | DESCRIÇÃO | QTD | ORIGEM | DESTINO | OPERADOR
+        // =====================================================
+
+        function reordenarTabelaTransferenciasVisual() {
+
+            const tabela =
+                document.getElementById(
+                    "listaTransferencias"
+                );
+
+
+            if (!tabela) {
+                return;
+            }
+
+
+            tabela.querySelectorAll("tr").forEach(
+                function (linha) {
+
+                    const celulas =
+                        linha.querySelectorAll("td");
+
+
+                    if (
+                        celulas.length !== 7 ||
+                        linha.dataset.visualOrder === "1"
+                    ) {
+                        return;
+                    }
+
+
+                    /*
+                        O app.js gera:
+                        Código | Descrição | Quantidade | Origem |
+                        Destino | Data | Operador
+
+                        O novo visual mostra:
+                        Data | Código | Descrição | Quantidade |
+                        Origem | Destino | Operador
+                    */
+
+                    linha.insertBefore(
+                        celulas[5],
+                        celulas[0]
+                    );
+
+
+                    linha.dataset.visualOrder = "1";
+
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // PESQUISA NO HISTÓRICO
+        // =====================================================
+
+        function filtrarHistoricoTransferencias() {
+
+            reordenarTabelaTransferenciasVisual();
+
+
+            const pesquisa =
+                String(
+                    document.getElementById(
+                        "pesquisaTransferencia"
+                    )?.value || ""
+                )
+                .trim()
+                .toUpperCase();
+
+
+            const linhas =
+                document.querySelectorAll(
+                    "#listaTransferencias tr"
+                );
+
+
+            linhas.forEach(
+                function (linha) {
+
+                    const celulas =
+                        linha.querySelectorAll("td");
+
+
+                    if (celulas.length !== 7) {
+                        return;
+                    }
+
+
+                    const texto =
+                        linha.textContent
+                            .toUpperCase();
+
+
+                    linha.style.display =
+                        !pesquisa || texto.includes(pesquisa)
+                            ? ""
+                            : "none";
+
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // PERÍODO VISUAL
+        // =====================================================
+
+        function atualizarPeriodoTransferencia() {
+
+            const elemento =
+                document.getElementById(
+                    "periodoTransferencia"
+                );
+
+
+            if (!elemento) {
+                return;
+            }
+
+
+            const hoje = new Date();
+
+            const inicio = new Date(hoje);
+            inicio.setDate(
+                hoje.getDate() - 30
+            );
+
+
+            const formatar =
+                function (data) {
+                    return data.toLocaleDateString(
+                        "pt-BR",
+                        {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric"
+                        }
+                    );
+                };
+
+
+            elemento.textContent =
+                formatar(inicio) +
+                " até " +
+                formatar(hoje);
+
+        }
+
+
+
+        // =====================================================
+        // EXPORTAR HISTÓRICO PARA CSV / EXCEL
+        // =====================================================
+
+        function exportarTransferenciasCSV() {
+
+            reordenarTabelaTransferenciasVisual();
+
+
+            const linhasTabela =
+                Array.from(
+                    document.querySelectorAll(
+                        "#listaTransferencias tr"
+                    )
+                )
+                .filter(
+                    function (linha) {
+                        return linha.style.display !== "none";
+                    }
+                );
+
+
+            const dados = [
+                [
+                    "Data/Hora",
+                    "Código",
+                    "Descrição",
+                    "Quantidade",
+                    "Origem",
+                    "Destino",
+                    "Operador"
+                ]
+            ];
+
+
+            linhasTabela.forEach(
+                function (linha) {
+
+                    const celulas =
+                        Array.from(
+                            linha.querySelectorAll("td")
+                        );
+
+
+                    if (celulas.length !== 7) {
+                        return;
+                    }
+
+
+                    dados.push(
+                        celulas.map(
+                            function (celula) {
+                                return celula.textContent.trim();
+                            }
+                        )
+                    );
+
+                }
+            );
+
+
+            if (dados.length === 1) {
+                alert(
+                    "Não existem transferências para exportar."
+                );
+                return;
+            }
+
+
+            const csv =
+                dados
+                    .map(
+                        function (linha) {
+
+                            return linha
+                                .map(
+                                    function (valor) {
+                                        return (
+                                            '"' +
+                                            String(valor)
+                                                .replace(/"/g, '""') +
+                                            '"'
+                                        );
+                                    }
+                                )
+                                .join(";");
+
+                        }
+                    )
+                    .join("\n");
+
+
+            const blob =
+                new Blob(
+                    ["\uFEFF" + csv],
+                    {
+                        type: "text/csv;charset=utf-8;"
+                    }
+                );
+
+
+            const link =
+                document.createElement("a");
+
+            link.href =
+                URL.createObjectURL(blob);
+
+            link.download =
+                "historico_transferencias.csv";
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);
+
+            URL.revokeObjectURL(link.href);
+
+        }
+
+
+
+        // =====================================================
+        // OBSERVAR ATUALIZAÇÕES DO HISTÓRICO
+        // =====================================================
+
+        function observarHistoricoTransferencias() {
+
+            const tabela =
+                document.getElementById(
+                    "listaTransferencias"
+                );
+
+
+            if (!tabela) {
+                return;
+            }
+
+
+            reordenarTabelaTransferenciasVisual();
+
+
+            const observador =
+                new MutationObserver(
                     function () {
 
-                        campoCodigo.value =
-                            String(
-                                campoCodigo.value || ""
-                            )
-                            .substring(
-                                0,
-                                8
-                            )
-                            .toUpperCase();
+                        reordenarTabelaTransferenciasVisual();
+
+                        filtrarHistoricoTransferencias();
 
                     }
                 );
 
-            }
-        );
+
+            observador.observe(
+                tabela,
+                {
+                    childList: true
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // ATUALIZAR VISUAL APÓS TRANSFERÊNCIA
+        // =====================================================
+
+        const botaoTransferenciaVisual =
+            document.getElementById(
+                "btnRegistrarTransferencia"
+            );
+
+
+        if (botaoTransferenciaVisual) {
+
+            botaoTransferenciaVisual.addEventListener(
+                "click",
+                function () {
+
+                    /*
+                        O app.js executa a transferência.
+                        Depois damos um pequeno tempo para atualizar
+                        os cards visuais e o histórico.
+                    */
+
+                    setTimeout(
+                        function () {
+
+                            const codigo =
+                                document.getElementById(
+                                    "codigoTransferencia"
+                                );
+
+
+                            if (
+                                codigo &&
+                                !String(codigo.value || "").trim()
+                            ) {
+
+                                estoqueAtualOrigemVisual = 0;
+
+                                atualizarExibicaoEstoqueTransferencia();
+
+                                atualizarResumoTransferenciaVisual();
+
+                            } else {
+
+                                atualizarEstoqueOrigemTransferencia();
+
+                            }
+
+
+                            reordenarTabelaTransferenciasVisual();
+
+                        },
+                        500
+                    );
+
+                }
+            );
+
+        }
+
+
+        // =====================================================
+        // DISPONIBILIZAÇÃO GLOBAL
+        // =====================================================
+
+        window.limparCamposTransferenciaVisual =
+            limparCamposTransferenciaVisual;
+
+        window.rolarHistoricoTransferencia =
+            rolarHistoricoTransferencia;
+
+        window.focarCodigoTransferencia =
+            focarCodigoTransferencia;
+
 
     </script>
 
