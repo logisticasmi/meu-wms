@@ -458,7 +458,7 @@ function atualizarCardsDashboard(
 
 
     const totalProdutos =
-        codigosUnicos.size;
+        produtosValidos.length;
 
 
     const quantidadeTotal =
@@ -797,7 +797,7 @@ async function atualizarTotalProdutosSupabase() {
 
 
         const totalProdutos =
-            codigosUnicos.size;
+            produtos.length;
 
 
         alterarTextoElemento(
