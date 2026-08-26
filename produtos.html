@@ -432,9 +432,24 @@ function atualizarIndicadoresProdutos() {
         Number(produto.quantidade || 0) > 0
     ).length;
 
-    const semEstoque = todosProdutosTela.filter(produto =>
-        Number(produto.quantidade || 0) <= 0
-    ).length;
+  const semEstoque = todosProdutosTela.filter(produto => {
+
+    const quantidade =
+        Number(produto.quantidade || 0);
+
+    const posicao =
+        String(
+            produto.endereco ||
+            produto.posicao ||
+            ""
+        ).trim();
+
+    return (
+        posicao !== "" &&
+        quantidade <= 0
+    );
+
+}).length;
 
     const abaixoMinimo = todosProdutosTela.filter(produto => {
         const quantidade = Number(produto.quantidade || 0);
