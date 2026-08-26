@@ -1,312 +1,986 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a3f7a">
     <title>SMI WMS - Separação</title>
-
-    <link
-        rel="icon"
-        type="image/png"
-        href="img/favicon.png"
-    >
+    <link rel="icon" type="image/png" href="img/favicon.png">
 
     <style>
-    * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        background: linear-gradient(135deg, #eef4fb 0%, #f7f9fc 55%, #edf3f9 100%);
-        color: #1f2937;
-        min-height: 100vh;
-    }
+        :root {
+            --azul-900: #062b59;
+            --azul-800: #0a3f7a;
+            --azul-700: #0d4e92;
+            --azul-100: #eaf3ff;
+            --texto: #18324f;
+            --texto-claro: #6b7f95;
+            --borda: #dce5ef;
+            --fundo: #f2f6fb;
+            --verde: #1b9b48;
+            --verde-fundo: #eef9f1;
+            --amarelo-fundo: #fff8df;
+            --amarelo-borda: #f4dda0;
+            --vermelho: #c62828;
+            --vermelho-fundo: #fff0f0;
+        }
 
-    .pagina {
-        width: 100%;
-        max-width: 620px;
-        margin: 0 auto;
-        padding: 28px 18px 40px;
-    }
+        html {
+            scroll-behavior: smooth;
+        }
 
-    .topo {
-        background: linear-gradient(135deg, #062b59, #0a4b91);
-        border-radius: 18px;
-        padding: 22px;
-        margin-bottom: 18px;
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        box-shadow: 0 10px 30px rgba(10, 45, 95, 0.18);
-    }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--texto);
+            background:
+                linear-gradient(
+                    180deg,
+                    #eef4fb 0%,
+                    #f8fafc 55%,
+                    #eef3f8 100%
+                );
+        }
 
-    .topo-logo {
-        width: 115px;
-        flex-shrink: 0;
-    }
+        button,
+        input,
+        select {
+            font: inherit;
+        }
 
-    .topo-logo img {
-        width: 100%;
-        display: block;
-    }
+        button {
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    .topo-texto { flex: 1; }
+        .pagina {
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 16px 14px 96px;
+        }
 
-    .identificacao {
-        display: inline-block;
-        margin-bottom: 5px;
-        color: #9cc9ff;
-        font-size: 11px;
-        font-weight: bold;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-    }
+        /* =====================================================
+           CABEÇALHO
+        ===================================================== */
 
-    .topo h1 {
-        margin: 0;
-        color: #ffffff;
-        font-size: 28px;
-        font-weight: 700;
-    }
+        .topo {
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 14px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-radius: 22px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #062b59 0%,
+                    #0b4f94 100%
+                );
+            box-shadow: 0 12px 30px rgba(10, 45, 95, 0.18);
+        }
 
-    .topo p {
-        margin: 6px 0 0;
-        color: #dbeafe;
-        font-size: 14px;
-        line-height: 1.4;
-    }
+        .topo::after {
+            content: "";
+            position: absolute;
+            right: -70px;
+            top: -80px;
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+        }
 
-    .painel {
-        background: #ffffff;
-        border: 1px solid #e1e8f0;
-        border-radius: 18px;
-        padding: 24px;
-        box-shadow: 0 10px 35px rgba(15, 42, 80, 0.10);
-    }
+        .topo-conteudo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
 
-    .titulo-operacao {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 22px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #e5eaf0;
-    }
+        .topo-logo {
+            width: 95px;
+            flex: 0 0 auto;
+        }
 
-    .titulo-operacao-icone {
-        width: 38px;
-        height: 38px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #e8f1ff;
-        border-radius: 10px;
-        font-size: 19px;
-    }
+        .topo-logo img {
+            width: 100%;
+            display: block;
+        }
 
-    .titulo-operacao h2 {
-        margin: 0;
-        font-size: 18px;
-        color: #0a2d5f;
-    }
+        .topo-texto {
+            min-width: 0;
+        }
 
-    .titulo-operacao small { color: #64748b; }
+        .identificacao {
+            display: inline-block;
+            margin-bottom: 4px;
+            color: #9cc9ff;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
-    .campo { margin-bottom: 17px; }
+        .topo h1 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 29px;
+            line-height: 1.05;
+        }
 
-    .campo label {
-        display: block;
-        margin-bottom: 7px;
-        color: #243b5a;
-        font-size: 14px;
-        font-weight: 700;
-    }
+        .topo p {
+            margin: 7px 0 0;
+            max-width: 420px;
+            color: #dcecff;
+            font-size: 13px;
+            line-height: 1.45;
+        }
 
-    .campo input,
-    .campo select {
-        width: 100%;
-        height: 50px;
-        padding: 0 14px;
-        border: 1px solid #cbd6e2;
-        border-radius: 10px;
-        outline: none;
-        background: #ffffff;
-        font-size: 16px;
-        color: #172033;
-        transition: border-color .2s, box-shadow .2s;
-    }
+        .btn-bipar-topo {
+            position: relative;
+            z-index: 2;
+            width: 74px;
+            min-height: 74px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            border-radius: 16px;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.07);
+            cursor: pointer;
+        }
 
-    .campo input:focus,
-    .campo select:focus {
-        border-color: #1769c2;
-        box-shadow: 0 0 0 3px rgba(23, 105, 194, 0.12);
-    }
+        .btn-bipar-topo .icone {
+            font-size: 26px;
+            line-height: 1;
+        }
 
-    .campo input[readonly],
-    .campo select:disabled {
-        background: #f4f7fb;
-        color: #243b5a;
-        font-weight: 600;
-    }
+        .btn-bipar-topo span:last-child {
+            font-size: 11px;
+            font-weight: 700;
+        }
 
-    .busca {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 118px;
-        gap: 10px;
-    }
+        /* =====================================================
+           CARDS
+        ===================================================== */
 
-    button {
-        min-height: 50px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 15px;
-        font-weight: 700;
-        transition: transform .1s, opacity .2s, box-shadow .2s;
-    }
+        .card {
+            background: #ffffff;
+            border: 1px solid var(--borda);
+            border-radius: 18px;
+            box-shadow: 0 9px 28px rgba(15, 42, 80, 0.08);
+        }
 
-    button:active { transform: scale(.98); }
+        .painel-operacao {
+            padding: 20px;
+        }
 
-    .btn-buscar {
-        padding: 0 18px;
-        background: linear-gradient(135deg, #0a2d5f, #0d4e92);
-        color: #ffffff;
-        box-shadow: 0 5px 12px rgba(10, 45, 95, .18);
-    }
+        .titulo-operacao {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #e8edf3;
+        }
 
-    .btn-buscar:hover { opacity: .94; }
+        .titulo-operacao-esquerda {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
 
-    .btn-confirmar {
-        width: 100%;
-        margin-top: 5px;
-        background: linear-gradient(135deg, #13843e, #16964a);
-        color: #ffffff;
-        box-shadow: 0 5px 14px rgba(21, 128, 61, .18);
-    }
+        .titulo-operacao-icone {
+            width: 42px;
+            height: 42px;
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--azul-100);
+            font-size: 20px;
+        }
 
-    .btn-confirmar:hover:not(:disabled) { opacity: .94; }
+        .titulo-operacao h2 {
+            margin: 0;
+            color: #0a2d5f;
+            font-size: 19px;
+        }
 
-    .btn-confirmar:disabled {
-        background: #a8b2c0;
-        cursor: not-allowed;
-        box-shadow: none;
-    }
+        .titulo-operacao small {
+            display: block;
+            margin-top: 2px;
+            color: var(--texto-claro);
+            font-size: 12px;
+        }
 
-    .mensagem {
-        display: none;
-        margin-top: 17px;
-        padding: 13px 15px;
-        border-radius: 10px;
-        font-size: 14px;
-        font-weight: 600;
-    }
+        .status-leitor {
+            flex: 0 0 auto;
+            padding: 8px 10px;
+            border: 1px solid #b9d7fb;
+            border-radius: 9px;
+            background: #eef6ff;
+            color: #1769c2;
+            font-size: 11px;
+            font-weight: 700;
+        }
 
-    .mensagem.sucesso {
-        display: block;
-        background: #e9f9ef;
-        border: 1px solid #b7ebc8;
-        color: #126b34;
-    }
+        /* =====================================================
+           FORMULÁRIO
+        ===================================================== */
 
-    .mensagem.erro {
-        display: block;
-        background: #fff0f0;
-        border: 1px solid #f4c2c2;
-        color: #a11d1d;
-    }
+        .campo {
+            margin-bottom: 15px;
+        }
 
-    .rodape-separacao {
-        margin-top: 17px;
-        text-align: center;
-        color: #7a899c;
-        font-size: 11px;
-    }
+        .campo label {
+            display: block;
+            margin-bottom: 7px;
+            color: #203b5d;
+            font-size: 13px;
+            font-weight: 700;
+        }
 
-    @media (max-width: 600px) {
-        .pagina { padding: 14px 12px 30px; }
-        .topo { padding: 18px; border-radius: 14px; }
-        .topo-logo { width: 85px; }
-        .topo h1 { font-size: 23px; }
-        .topo p { font-size: 12px; }
-        .painel { padding: 18px; border-radius: 14px; }
-        .busca { grid-template-columns: minmax(0, 1fr) 105px; }
-    }
-</style>
+        .campo input,
+        .campo select {
+            width: 100%;
+            height: 50px;
+            padding: 0 14px;
+            border: 1px solid #ccd8e5;
+            border-radius: 10px;
+            outline: none;
+            background: #ffffff;
+            color: #172033;
+            font-size: 16px;
+            transition: 0.2s;
+        }
 
+        .campo input:focus,
+        .campo select:focus {
+            border-color: #1769c2;
+            box-shadow: 0 0 0 3px rgba(23, 105, 194, 0.10);
+        }
+
+        .campo input[readonly],
+        .campo select:disabled {
+            background: #f4f7fb;
+            color: #243b5a;
+            font-weight: 600;
+        }
+
+        .busca {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 122px;
+            gap: 10px;
+        }
+
+        .campo-codigo-wrapper {
+            position: relative;
+        }
+
+        .campo-codigo-wrapper input {
+            padding-right: 44px;
+        }
+
+        .codigo-icone {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #0d4e92;
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        .linha-dupla {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .estoque-destaque {
+            color: #16843f !important;
+            background: #f1fbf4 !important;
+            border-color: #c9ead3 !important;
+        }
+
+        .quantidade-linha {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 82px;
+            gap: 10px;
+        }
+
+        .btn-buscar,
+        .btn-max,
+        .btn-confirmar,
+        .acao-rapida,
+        .btn-bipar-topo {
+            border: none;
+        }
+
+        .btn-buscar {
+            min-height: 50px;
+            padding: 0 18px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0a2d5f, #0d4e92);
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 12px rgba(10, 45, 95, 0.16);
+        }
+
+        .btn-max {
+            min-height: 50px;
+            border: 1px solid #c8d7e8;
+            border-radius: 10px;
+            background: #f5f8fc;
+            color: #1769c2;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .saldo-preview {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin: 4px 0 14px;
+            border: 1px solid #cfe0f1;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #f6fbff, #fbfdff);
+            overflow: hidden;
+        }
+
+        .saldo-preview-item {
+            padding: 14px 12px;
+            text-align: center;
+        }
+
+        .saldo-preview-item + .saldo-preview-item {
+            border-left: 1px solid #d8e3ee;
+        }
+
+        .saldo-preview-item small {
+            display: block;
+            margin-bottom: 4px;
+            color: #5e7186;
+            font-size: 11px;
+        }
+
+        .saldo-preview-item strong {
+            display: block;
+            color: #0a2d5f;
+            font-size: 22px;
+        }
+
+        .saldo-preview-item.disponivel strong {
+            color: var(--verde);
+        }
+
+        .btn-confirmar {
+            width: 100%;
+            min-height: 56px;
+            padding: 0 18px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #08366c, #0c4f95);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 14px rgba(10, 45, 95, 0.18);
+        }
+
+        .btn-confirmar:disabled {
+            background: #a7b3c2;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .dica {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin-top: 14px;
+            padding: 12px 13px;
+            border-radius: 10px;
+            background: #edf6ff;
+            color: #27496c;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .dica strong {
+            color: #0d4e92;
+        }
+
+        .mensagem {
+            display: none;
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .mensagem.sucesso {
+            display: block;
+            background: #e9f9ef;
+            border: 1px solid #b7ebc8;
+            color: #126b34;
+        }
+
+        .mensagem.erro {
+            display: block;
+            background: var(--vermelho-fundo);
+            border: 1px solid #f4c2c2;
+            color: #a11d1d;
+        }
+
+        /* =====================================================
+           RESUMO
+        ===================================================== */
+
+        .secao-abaixo {
+            margin-top: 16px;
+        }
+
+        .card-resumo,
+        .card-ultimas,
+        .card-acoes {
+            padding: 18px;
+        }
+
+        .cabecalho-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding-bottom: 12px;
+            margin-bottom: 4px;
+            border-bottom: 1px solid #e7edf4;
+        }
+
+        .cabecalho-card h3 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #0a2d5f;
+            font-size: 16px;
+        }
+
+        .resumo-linha {
+            display: grid;
+            grid-template-columns: 1fr minmax(0, 1.4fr);
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #edf1f5;
+            font-size: 12px;
+        }
+
+        .resumo-linha:last-child {
+            border-bottom: 0;
+        }
+
+        .resumo-linha span:first-child {
+            color: #66798f;
+        }
+
+        .resumo-linha strong {
+            text-align: right;
+            color: #17345c;
+            overflow-wrap: anywhere;
+        }
+
+        .resumo-linha .verde {
+            color: var(--verde);
+        }
+
+        /* =====================================================
+           ÚLTIMAS / AÇÕES
+        ===================================================== */
+
+        .grade-secundaria {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(220px, .65fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .link-simples {
+            color: #1769c2;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .lista-ultimas {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ultima-item {
+            display: grid;
+            grid-template-columns: 28px 48px minmax(0, 1fr) auto;
+            gap: 8px;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .ultima-item:last-child {
+            border-bottom: 0;
+        }
+
+        .ultima-check {
+            width: 23px;
+            height: 23px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #edf9f0;
+            color: var(--verde);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .ultima-hora {
+            color: #214164;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .ultima-produto strong {
+            display: block;
+            color: #17345c;
+            font-size: 11px;
+        }
+
+        .ultima-produto small {
+            display: block;
+            margin-top: 2px;
+            color: #7b8b9f;
+            font-size: 10px;
+        }
+
+        .ultima-qtd {
+            color: var(--verde);
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .acoes-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .acao-rapida {
+            min-height: 45px;
+            padding: 0 12px;
+            border: 1px solid #d5e0eb;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #144277;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        /* =====================================================
+           COMO SEPARAR
+        ===================================================== */
+
+        .como-separar {
+            margin-top: 16px;
+            padding: 16px 18px;
+            border: 1px solid var(--amarelo-borda);
+            border-radius: 16px;
+            background: var(--amarelo-fundo);
+        }
+
+        .como-separar h3 {
+            margin: 0 0 12px;
+            color: #18324f;
+            font-size: 14px;
+        }
+
+        .passos {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .passo {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .passo-icone {
+            width: 34px;
+            height: 34px;
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #fff3bf;
+            font-size: 17px;
+        }
+
+        .passo strong {
+            display: block;
+            color: #273e59;
+            font-size: 10px;
+            line-height: 1.3;
+        }
+
+        .passo span {
+            display: block;
+            margin-top: 2px;
+            color: #6b7280;
+            font-size: 9px;
+            line-height: 1.25;
+        }
+
+        /* =====================================================
+           NAVEGAÇÃO MOBILE
+        ===================================================== */
+
+        .nav-mobile {
+            position: fixed;
+            left: 50%;
+            bottom: 10px;
+            z-index: 1000;
+            width: calc(100% - 20px);
+            max-width: 820px;
+            transform: translateX(-50%);
+            display: none;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            padding: 7px;
+            border: 1px solid #dbe4ee;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.97);
+            box-shadow: 0 8px 24px rgba(21, 47, 75, 0.16);
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-mobile a {
+            min-height: 56px;
+            padding: 6px 3px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            border-radius: 12px;
+            color: #60738a;
+            font-size: 9px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-mobile a .nav-icone {
+            font-size: 17px;
+        }
+
+        .nav-mobile a.ativo {
+            background: linear-gradient(135deg, #07366e, #0a4b91);
+            color: #ffffff;
+        }
+
+        /* =====================================================
+           RESPONSIVO - CELULAR
+        ===================================================== */
+
+        @media (max-width: 700px) {
+            .pagina {
+                padding: 0 10px 92px;
+            }
+
+            .topo {
+                margin: 0 -10px 14px;
+                padding: 18px 14px 18px 18px;
+                border-radius: 0 0 22px 22px;
+            }
+
+            .topo-conteudo {
+                gap: 10px;
+            }
+
+            .topo-logo {
+                width: 72px;
+            }
+
+            .topo h1 {
+                font-size: 25px;
+            }
+
+            .topo p {
+                max-width: 250px;
+                font-size: 12px;
+            }
+
+            .btn-bipar-topo {
+                width: 65px;
+                min-height: 68px;
+            }
+
+            .painel-operacao,
+            .card-resumo,
+            .card-ultimas,
+            .card-acoes {
+                padding: 16px;
+            }
+
+            .titulo-operacao {
+                align-items: flex-start;
+            }
+
+            .titulo-operacao h2 {
+                font-size: 17px;
+            }
+
+            .status-leitor {
+                font-size: 10px;
+                padding: 7px 8px;
+            }
+
+            .busca {
+                grid-template-columns: minmax(0, 1fr) 105px;
+            }
+
+            .campo input,
+            .campo select {
+                height: 52px;
+                font-size: 16px;
+            }
+
+            .linha-dupla {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .saldo-preview-item {
+                padding: 13px 8px;
+            }
+
+            .saldo-preview-item strong {
+                font-size: 21px;
+            }
+
+            .grade-secundaria {
+                grid-template-columns: minmax(0, 1.3fr) minmax(145px, .7fr);
+                gap: 10px;
+            }
+
+            .passos {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 5px;
+            }
+
+            .passo {
+                display: block;
+                text-align: center;
+            }
+
+            .passo-icone {
+                margin: 0 auto 5px;
+            }
+
+            .passo strong {
+                font-size: 9px;
+            }
+
+            .passo span {
+                display: none;
+            }
+
+            .nav-mobile {
+                display: grid;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topo-logo {
+                width: 60px;
+            }
+
+            .topo h1 {
+                font-size: 23px;
+            }
+
+            .topo p {
+                font-size: 11px;
+            }
+
+            .titulo-operacao {
+                gap: 8px;
+            }
+
+            .status-leitor {
+                display: none;
+            }
+
+            .busca {
+                grid-template-columns: minmax(0, 1fr) 92px;
+            }
+
+            .btn-buscar {
+                padding: 0 10px;
+                font-size: 13px;
+            }
+
+            .linha-dupla {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .campo label {
+                font-size: 12px;
+            }
+
+            .grade-secundaria {
+                grid-template-columns: 1fr;
+            }
+
+            .card-acoes .acoes-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .acao-rapida {
+                min-height: 58px;
+                padding: 6px;
+                text-align: center;
+                font-size: 10px;
+            }
+
+            .resumo-linha {
+                grid-template-columns: .9fr 1.4fr;
+            }
+
+            .passo-icone {
+                width: 31px;
+                height: 31px;
+            }
+        }
+
+        @media print {
+            .nav-mobile,
+            .btn-bipar-topo,
+            .btn-buscar,
+            .btn-max,
+            .btn-confirmar,
+            .card-acoes,
+            .como-separar,
+            .dica {
+                display: none !important;
+            }
+
+            body {
+                background: #ffffff;
+            }
+
+            .pagina {
+                max-width: none;
+                padding: 0;
+            }
+
+            .card,
+            .topo {
+                box-shadow: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
-
     <main class="pagina">
 
-       <div class="topo">
+        <!-- =====================================================
+             CABEÇALHO
+        ===================================================== -->
+        <section class="topo">
+            <div class="topo-conteudo">
+                <div class="topo-logo">
+                    <img src="img/logo.png" alt="SMI do Brasil">
+                </div>
 
-    <div class="topo-logo">
+                <div class="topo-texto">
+                    <span class="identificacao">SMI WMS</span>
+                    <h1>Separação</h1>
+                    <p>
+                        Consulte o produto, localize a posição e registre a quantidade separada.
+                    </p>
+                </div>
+            </div>
 
-        <img
-            src="img/logo.png"
-            alt="SMI do Brasil"
-        >
+            <button
+                type="button"
+                class="btn-bipar-topo"
+                onclick="focarCodigoSeparacao()"
+                title="Focar campo para leitura"
+            >
+                <span class="icone">▥</span>
+                <span>Bipar</span>
+            </button>
+        </section>
 
-    </div>
+        <!-- =====================================================
+             OPERAÇÃO
+        ===================================================== -->
+        <section class="card painel-operacao">
 
-    <div class="topo-texto">
+            <div class="titulo-operacao">
+                <div class="titulo-operacao-esquerda">
+                    <div class="titulo-operacao-icone">📦</div>
 
-        <span class="identificacao">
-            SMI WMS
-        </span>
+                    <div>
+                        <h2>Separação de Produto</h2>
+                        <small>Localização e baixa de estoque</small>
+                    </div>
+                </div>
 
-        <h1>Separação</h1>
+                <div class="status-leitor">▥ Leitor ativo</div>
+            </div>
 
-        <p>
-            Consulte o produto,
-            localize a posição
-            e registre a quantidade separada.
-        </p>
-
-    </div>
-
-</div>
-
-        <section class="painel">
-
-    <div class="titulo-operacao">
-
-        <div class="titulo-operacao-icone">
-            📦
-        </div>
-
-        <div>
-            <h2>Separação de Produto</h2>
-
-            <small>
-                Localização e baixa de estoque
-            </small>
-        </div>
-
-    </div>
-
-    <div class="campo">
-
-                <label for="codigoProduto">
-                    Código do Produto
-                </label>
+            <!-- CÓDIGO -->
+            <div class="campo">
+                <label for="codigoProduto">Código do Produto</label>
 
                 <div class="busca">
+                    <div class="campo-codigo-wrapper">
+                        <input
+                            type="text"
+                            id="codigoProduto"
+                            placeholder="Digite o código ou bipar"
+                            autocomplete="off"
+                            autocapitalize="characters"
+                        >
 
-                    <input
-                        type="text"
-                        id="codigoProduto"
-                        placeholder="Digite o código"
-                        autocomplete="off"
-                    >
+                        <span class="codigo-icone">▥</span>
+                    </div>
 
                     <button
                         type="button"
@@ -315,77 +989,84 @@
                     >
                         Buscar
                     </button>
-
                 </div>
-
             </div>
 
-
+            <!-- DESCRIÇÃO -->
             <div class="campo">
-
-                <label for="descricaoProduto">
-                    Descrição
-                </label>
+                <label for="descricaoProduto">Descrição do Produto</label>
 
                 <input
                     type="text"
                     id="descricaoProduto"
                     readonly
                 >
-
             </div>
 
+            <!-- POSIÇÃO + ESTOQUE -->
+            <div class="linha-dupla">
+                <div class="campo">
+                    <label for="posicaoProduto">Posição</label>
 
+                    <select
+                        id="posicaoProduto"
+                        disabled
+                        onchange="alterarPosicaoSeparacao()"
+                    >
+                        <option value="">-</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="quantidadeDisponivel">Estoque Atual</label>
+
+                    <input
+                        type="text"
+                        id="quantidadeDisponivel"
+                        class="estoque-destaque"
+                        readonly
+                    >
+                </div>
+            </div>
+
+            <!-- QUANTIDADE -->
             <div class="campo">
+                <label for="quantidadeSeparar">Quantidade a Separar</label>
 
-                <label for="posicaoProduto">
-                    Posição
-                </label>
+                <div class="quantidade-linha">
+                    <input
+                        type="number"
+                        id="quantidadeSeparar"
+                        min="0.001"
+                        step="0.001"
+                        inputmode="decimal"
+                        placeholder="Informe a quantidade"
+                    >
 
-                <select
-                    id="posicaoProduto"
-                    disabled
-                    onchange="alterarPosicaoSeparacao()"
-                >
-                    <option value="">
-                        -
-                    </option>
-                </select>
-
+                    <button
+                        type="button"
+                        class="btn-max"
+                        onclick="usarQuantidadeMaximaSeparacao()"
+                    >
+                        Máx.
+                    </button>
+                </div>
             </div>
 
+            <!-- PREVIEW SALDO -->
+            <div class="saldo-preview">
+                <div class="saldo-preview-item disponivel">
+                    <small>Disponível para separação</small>
+                    <strong id="saldoDisponivelPreview">0</strong>
+                    <small>unidades</small>
+                </div>
 
-            <div class="campo">
-
-                <label for="quantidadeDisponivel">
-                    Quantidade em Estoque
-                </label>
-
-                <input
-                    type="text"
-                    id="quantidadeDisponivel"
-                    readonly
-                >
-
+                <div class="saldo-preview-item">
+                    <small>Após separação</small>
+                    <strong id="saldoDepoisPreview">0</strong>
+                    <small>unidades</small>
+                </div>
             </div>
-
-
-            <div class="campo">
-
-                <label for="quantidadeSeparar">
-                    Quantidade a Separar
-                </label>
-
-                <input
-                    type="number"
-                    id="quantidadeSeparar"
-                    min="0.001"
-                    step="0.001"
-                    placeholder="Informe a quantidade"
-                >
-
-            </div>
-
 
             <button
                 type="button"
@@ -394,72 +1075,225 @@
                 onclick="confirmarSeparacao()"
                 disabled
             >
-                Confirmar Separação
+                ✓ Confirmar Separação
             </button>
 
+            <div class="dica">
+                <span>ⓘ</span>
+                <div>
+                    <strong>Dica:</strong>
+                    Bipar o código do produto preenche automaticamente os campos.
+                </div>
+            </div>
 
             <div
                 id="mensagemSeparacao"
                 class="mensagem"
             ></div>
-
         </section>
-        <div class="rodape-separacao">
-    SMI WMS • Controle de Estoque
-</div>
+
+        <!-- =====================================================
+             RESUMO
+        ===================================================== -->
+        <section class="card card-resumo secao-abaixo" id="resumoSeparacaoCard">
+            <div class="cabecalho-card">
+                <h3>📋 Resumo da Separação</h3>
+            </div>
+
+            <div class="resumo-linha">
+                <span>Produto</span>
+                <strong id="resumoProdutoSeparacao">-</strong>
+            </div>
+
+            <div class="resumo-linha">
+                <span>Posição</span>
+                <strong id="resumoPosicaoSeparacao">-</strong>
+            </div>
+
+            <div class="resumo-linha">
+                <span>Estoque Atual</span>
+                <strong id="resumoEstoqueSeparacao" class="verde">0 unidades</strong>
+            </div>
+
+            <div class="resumo-linha">
+                <span>Quantidade a Separar</span>
+                <strong id="resumoQuantidadeSeparar">-</strong>
+            </div>
+
+            <div class="resumo-linha">
+                <span>Após Separação</span>
+                <strong id="resumoAposSeparacao">-</strong>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             ÚLTIMAS + AÇÕES
+        ===================================================== -->
+        <div class="grade-secundaria">
+
+            <section class="card card-ultimas" id="ultimasSeparacoesCard">
+                <div class="cabecalho-card">
+                    <h3>◷ Últimas Separações</h3>
+                    <span class="link-simples" onclick="rolarParaUltimasSeparacoes()">Ver todas</span>
+                </div>
+
+                <div id="listaUltimasSeparacoes" class="lista-ultimas">
+                    <div class="ultima-item">
+                        <div class="ultima-check">✓</div>
+                        <div class="ultima-hora">--:--</div>
+                        <div class="ultima-produto">
+                            <strong>Nenhuma separação recente</strong>
+                            <small>-</small>
+                        </div>
+                        <div class="ultima-qtd">-</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card card-acoes">
+                <div class="cabecalho-card">
+                    <h3>⚡ Ações Rápidas</h3>
+                </div>
+
+                <div class="acoes-grid">
+                    <button
+                        type="button"
+                        class="acao-rapida"
+                        onclick="limparTelaSeparacao()"
+                    >
+                        🧹 Limpar
+                    </button>
+
+                    <button
+                        type="button"
+                        class="acao-rapida"
+                        onclick="rolarParaUltimasSeparacoes()"
+                    >
+                        📋 Histórico
+                    </button>
+
+                    <button
+                        type="button"
+                        class="acao-rapida"
+                        onclick="window.print()"
+                    >
+                        🖨️ Imprimir
+                    </button>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- =====================================================
+             COMO SEPARAR
+        ===================================================== -->
+        <section class="como-separar">
+            <h3>Como separar?</h3>
+
+            <div class="passos">
+                <div class="passo">
+                    <div class="passo-icone">▥</div>
+                    <div>
+                        <strong>1. Digite ou bipar</strong>
+                        <span>o código do produto</span>
+                    </div>
+                </div>
+
+                <div class="passo">
+                    <div class="passo-icone">◎</div>
+                    <div>
+                        <strong>2. Localize a posição</strong>
+                        <span>indicada no WMS</span>
+                    </div>
+                </div>
+
+                <div class="passo">
+                    <div class="passo-icone">📦</div>
+                    <div>
+                        <strong>3. Separe a quantidade</strong>
+                        <span>solicitada</span>
+                    </div>
+                </div>
+
+                <div class="passo">
+                    <div class="passo-icone">✓</div>
+                    <div>
+                        <strong>4. Confirme</strong>
+                        <span>para baixar do estoque</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </main>
 
+    <!-- =====================================================
+         NAVEGAÇÃO MOBILE
+    ===================================================== -->
+    <nav class="nav-mobile">
+        <a href="dashboard.html">
+            <span class="nav-icone">⌂</span>
+            Dashboard
+        </a>
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-    ></script>
+        <a href="produtos.html">
+            <span class="nav-icone">📦</span>
+            Produtos
+        </a>
 
+        <a href="separacao.html" class="ativo">
+            <span class="nav-icone">🛒</span>
+            Separação
+        </a>
+
+        <a href="transferencias.html">
+            <span class="nav-icone">⇄</span>
+            Transferências
+        </a>
+
+        <a href="dashboard.html">
+            <span class="nav-icone">•••</span>
+            Mais
+        </a>
+    </nav>
+
+    <!-- =====================================================
+         SCRIPTS
+    ===================================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
-
     <script src="sync-supabase.js"></script>
 
-
     <script>
-
         let produtosEncontrados = [];
-
         let produtoSelecionado = null;
 
-
         // =====================================================
-        // REGISTRAR A SEPARAÇÃO COMO SAÍDA / VENDA
+        // STORAGE / MOVIMENTAÇÃO
         // =====================================================
 
         function carregarListaSeparacao(chave) {
-
             try {
-
-                const dados =
-                    JSON.parse(
-                        localStorage.getItem(chave)
-                    );
+                const dados = JSON.parse(
+                    localStorage.getItem(chave)
+                );
 
                 return Array.isArray(dados)
                     ? dados
                     : [];
 
             } catch (erro) {
-
                 console.error(
                     "Erro ao carregar " + chave + ":",
                     erro
                 );
 
                 return [];
-
             }
-
         }
 
 
         function obterDataHoraSeparacao() {
-
             return new Date().toLocaleString(
                 "pt-BR",
                 {
@@ -470,7 +1304,6 @@
                     minute: "2-digit"
                 }
             );
-
         }
 
 
@@ -478,82 +1311,56 @@
             produto,
             quantidade
         ) {
-
             const endereco =
                 produto.endereco || "-";
 
             let operador = "DAVI.SMI";
 
-try {
+            try {
+                const usuarioLogado =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "usuarioLogado"
+                        ) || "{}"
+                    );
 
-    const usuarioLogado =
-        JSON.parse(
-            localStorage.getItem(
-                "usuarioLogado"
-            ) || "{}"
-        );
+                operador =
+                    usuarioLogado.nome ||
+                    usuarioLogado.usuario ||
+                    usuarioLogado.login ||
+                    localStorage.getItem("usuario") ||
+                    "DAVI.SMI";
 
-    operador =
-        usuarioLogado.nome ||
-        usuarioLogado.usuario ||
-        usuarioLogado.login ||
-        localStorage.getItem("usuario") ||
-        "DAVI.SMI";
+            } catch (erro) {
+                operador =
+                    localStorage.getItem("usuario") ||
+                    "DAVI.SMI";
+            }
 
-} catch (erro) {
-
-    operador =
-        localStorage.getItem("usuario") ||
-        "DAVI.SMI";
-
-}
-
-if (
-    String(operador)
-        .trim()
-        .toLowerCase() ===
-    "administrador"
-) {
-
-    operador = "DAVI.SMI";
-
-}
-
+            if (
+                String(operador)
+                    .trim()
+                    .toLowerCase() ===
+                "administrador"
+            ) {
+                operador = "DAVI.SMI";
+            }
 
             const movimentacao = {
-
-                tipo:
-                    "SAIDA",
-
-                codigo:
-                    produto.codigo || "",
-
+                tipo: "SAIDA",
+                codigo: produto.codigo || "",
                 descricao:
                     produto.descricao ||
                     "Sem descrição",
-
-                quantidade:
-                    quantidade,
-
-                origem:
-                    endereco,
-
-                endereco:
-                    endereco,
-
-                destino:
-                    "Venda",
-
-                data:
-                    obterDataHoraSeparacao(),
-
-                operador:
-                    operador
-
+                quantidade: quantidade,
+                origem: endereco,
+                endereco: endereco,
+                destino: "Venda",
+                requisitante: "VENDA",
+                data: obterDataHoraSeparacao(),
+                operador: operador
             };
 
-
-            // Histórico de Saídas
             const saidas =
                 carregarListaSeparacao(
                     "saidas"
@@ -568,8 +1375,6 @@ if (
                 JSON.stringify(saidas)
             );
 
-
-            // Movimentações gerais / Dashboard / Relatórios
             const movimentacoes =
                 carregarListaSeparacao(
                     "movimentacoes"
@@ -586,52 +1391,49 @@ if (
                 )
             );
 
-
-            console.log(
-                "Separação registrada como SAÍDA / Venda:",
-                movimentacao
-            );
-
+            atualizarUltimasSeparacoes();
         }
 
+
+        // =====================================================
+        // MENSAGENS
+        // =====================================================
 
         function mostrarMensagem(
             texto,
             tipo
         ) {
-
             const mensagem =
                 document.getElementById(
                     "mensagemSeparacao"
                 );
 
-            mensagem.textContent = texto;
+            mensagem.textContent =
+                texto;
 
             mensagem.className =
                 "mensagem " + tipo;
-
         }
 
 
         function limparMensagem() {
-
             const mensagem =
                 document.getElementById(
                     "mensagemSeparacao"
                 );
 
             mensagem.textContent = "";
-
-            mensagem.className =
-                "mensagem";
-
+            mensagem.className = "mensagem";
         }
 
+
+        // =====================================================
+        // NÚMEROS
+        // =====================================================
 
         function converterNumeroSeparacao(
             valor
         ) {
-
             if (
                 valor === undefined ||
                 valor === null ||
@@ -649,12 +1451,28 @@ if (
             return Number.isFinite(numero)
                 ? numero
                 : 0;
-
         }
 
 
-        function preencherProdutoSelecionado() {
+        function formatarQuantidadeSeparacao(
+            valor
+        ) {
+            return converterNumeroSeparacao(
+                valor
+            ).toLocaleString(
+                "pt-BR",
+                {
+                    maximumFractionDigits: 3
+                }
+            );
+        }
 
+
+        // =====================================================
+        // INTERFACE / RESUMO
+        // =====================================================
+
+        function preencherProdutoSelecionado() {
             const descricao =
                 document.getElementById(
                     "descricaoProduto"
@@ -671,10 +1489,12 @@ if (
                 );
 
             if (!produtoSelecionado) {
-
                 descricao.value = "";
                 quantidade.value = "";
                 botao.disabled = true;
+
+                atualizarPreviewSeparacao();
+                atualizarResumoSeparacao();
 
                 return;
             }
@@ -684,22 +1504,133 @@ if (
                 "";
 
             quantidade.value =
-                converterNumeroSeparacao(
+                formatarQuantidadeSeparacao(
                     produtoSelecionado.quantidade
-                ).toLocaleString(
-                    "pt-BR",
-                    {
-                        maximumFractionDigits: 3
-                    }
                 );
 
             botao.disabled = false;
 
+            atualizarPreviewSeparacao();
+            atualizarResumoSeparacao();
         }
 
 
-        function alterarPosicaoSeparacao() {
+        function atualizarPreviewSeparacao() {
+            const quantidadeEstoque =
+                produtoSelecionado
+                    ? converterNumeroSeparacao(
+                        produtoSelecionado.quantidade
+                    )
+                    : 0;
 
+            const quantidadeSeparar =
+                converterNumeroSeparacao(
+                    document.getElementById(
+                        "quantidadeSeparar"
+                    ).value
+                );
+
+            const saldoDepois =
+                Math.max(
+                    0,
+                    quantidadeEstoque -
+                    quantidadeSeparar
+                );
+
+            document.getElementById(
+                "saldoDisponivelPreview"
+            ).textContent =
+                formatarQuantidadeSeparacao(
+                    quantidadeEstoque
+                );
+
+            document.getElementById(
+                "saldoDepoisPreview"
+            ).textContent =
+                formatarQuantidadeSeparacao(
+                    saldoDepois
+                );
+
+            atualizarResumoSeparacao();
+        }
+
+
+        function atualizarResumoSeparacao() {
+            const quantidadeSeparar =
+                converterNumeroSeparacao(
+                    document.getElementById(
+                        "quantidadeSeparar"
+                    ).value
+                );
+
+            const quantidadeEstoque =
+                produtoSelecionado
+                    ? converterNumeroSeparacao(
+                        produtoSelecionado.quantidade
+                    )
+                    : 0;
+
+            const saldoDepois =
+                Math.max(
+                    0,
+                    quantidadeEstoque -
+                    quantidadeSeparar
+                );
+
+            document.getElementById(
+                "resumoProdutoSeparacao"
+            ).textContent =
+                produtoSelecionado
+                    ? (
+                        produtoSelecionado.descricao ||
+                        produtoSelecionado.codigo ||
+                        "-"
+                    )
+                    : "-";
+
+            document.getElementById(
+                "resumoPosicaoSeparacao"
+            ).textContent =
+                produtoSelecionado
+                    ? (
+                        produtoSelecionado.endereco ||
+                        "-"
+                    )
+                    : "-";
+
+            document.getElementById(
+                "resumoEstoqueSeparacao"
+            ).textContent =
+                formatarQuantidadeSeparacao(
+                    quantidadeEstoque
+                ) +
+                " unidades";
+
+            document.getElementById(
+                "resumoQuantidadeSeparar"
+            ).textContent =
+                quantidadeSeparar > 0
+                    ? formatarQuantidadeSeparacao(
+                        quantidadeSeparar
+                    ) + " unidades"
+                    : "-";
+
+            document.getElementById(
+                "resumoAposSeparacao"
+            ).textContent =
+                quantidadeSeparar > 0
+                    ? formatarQuantidadeSeparacao(
+                        saldoDepois
+                    ) + " unidades"
+                    : "-";
+        }
+
+
+        // =====================================================
+        // POSIÇÃO
+        // =====================================================
+
+        function alterarPosicaoSeparacao() {
             const select =
                 document.getElementById(
                     "posicaoProduto"
@@ -711,21 +1642,22 @@ if (
             produtoSelecionado =
                 produtosEncontrados.find(
                     function (produto) {
-
-                        return Number(
-                            produto.id
-                        ) === id;
-
+                        return (
+                            Number(produto.id) ===
+                            id
+                        );
                     }
                 ) || null;
 
             preencherProdutoSelecionado();
-
         }
 
 
-        async function buscarProdutoSeparacao() {
+        // =====================================================
+        // BUSCAR PRODUTO
+        // =====================================================
 
+        async function buscarProdutoSeparacao() {
             limparMensagem();
 
             const campoCodigo =
@@ -733,24 +1665,40 @@ if (
                     "codigoProduto"
                 );
 
-            const codigo =
-                String(
-                    campoCodigo.value || ""
-                )
-                    .trim()
-                    .toUpperCase();
+            let codigo =
+    String(
+        campoCodigo.value ||
+        ""
+    )
+    .trim()
+    .toUpperCase();
+
+// QR CODE - CONSIDERAR SOMENTE OS 8 PRIMEIROS CARACTERES
+codigo =
+    codigo
+        .substring(0, 8)
+        .trim();
+
+campoCodigo.value =
+    codigo;
 
             if (codigo === "") {
-
                 mostrarMensagem(
                     "Digite o código do produto.",
                     "erro"
                 );
 
                 campoCodigo.focus();
+                return;
+            }
+
+            if (!window.supabaseClient) {
+                mostrarMensagem(
+                    "A conexão com o banco online não foi carregada.",
+                    "erro"
+                );
 
                 return;
-
             }
 
             const { data, error } =
@@ -775,7 +1723,6 @@ if (
                     );
 
             if (error) {
-
                 console.error(
                     "Erro ao buscar produto:",
                     error
@@ -787,14 +1734,12 @@ if (
                 );
 
                 return;
-
             }
 
             if (
                 !Array.isArray(data) ||
                 data.length === 0
             ) {
-
                 produtosEncontrados = [];
                 produtoSelecionado = null;
 
@@ -816,10 +1761,10 @@ if (
                 );
 
                 return;
-
             }
 
-            produtosEncontrados = data;
+            produtosEncontrados =
+                data;
 
             const select =
                 document.getElementById(
@@ -830,7 +1775,6 @@ if (
 
             data.forEach(
                 function (produto) {
-
                     const opcao =
                         document.createElement(
                             "option"
@@ -840,13 +1784,19 @@ if (
                         produto.id;
 
                     opcao.textContent =
-                        produto.endereco ||
-                        "Sem posição";
+                        (
+                            produto.endereco ||
+                            "Sem posição"
+                        ) +
+                        " — " +
+                        formatarQuantidadeSeparacao(
+                            produto.quantidade
+                        ) +
+                        " un.";
 
                     select.appendChild(
                         opcao
                     );
-
                 }
             );
 
@@ -863,234 +1813,467 @@ if (
                     "quantidadeSeparar"
                 )
                 .focus();
-
         }
 
 
-       async function confirmarSeparacao() {
+        // =====================================================
+        // QUANTIDADE MÁXIMA
+        // =====================================================
 
-    limparMensagem();
-
-    if (!produtoSelecionado) {
-
-        mostrarMensagem(
-            "Busque um produto antes de separar.",
-            "erro"
-        );
-
-        return;
-    }
-
-    const campoQuantidade =
-        document.getElementById(
-            "quantidadeSeparar"
-        );
-
-    const quantidadeSeparar =
-        converterNumeroSeparacao(
-            campoQuantidade.value
-        );
-
-    const quantidadeAtual =
-        converterNumeroSeparacao(
-            produtoSelecionado.quantidade
-        );
-
-    if (quantidadeSeparar <= 0) {
-
-        mostrarMensagem(
-            "Informe uma quantidade válida.",
-            "erro"
-        );
-
-        campoQuantidade.focus();
-
-        return;
-    }
-
-    if (
-        quantidadeSeparar >
-        quantidadeAtual
-    ) {
-
-        mostrarMensagem(
-            "Quantidade maior que o estoque disponível.",
-            "erro"
-        );
-
-        return;
-    }
-
-
-    const novaQuantidade =
-        quantidadeAtual -
-        quantidadeSeparar;
-
-
-    const valorTotalAtual =
-        converterNumeroSeparacao(
-            produtoSelecionado.valor_total
-        );
-
-
-    const valorUnitario =
-        quantidadeAtual > 0
-            ? valorTotalAtual /
-              quantidadeAtual
-            : 0;
-
-
-    const novoValorTotal =
-        Math.max(
-            0,
-            valorTotalAtual -
-            (
-                quantidadeSeparar *
-                valorUnitario
-            )
-        );
-
-
-    const { data, error } =
-        await window.supabaseClient
-            .from("produtos")
-            .update(
-                {
-                    quantidade:
-                        novaQuantidade,
-
-                    valor_total:
-                        novoValorTotal
-                }
-            )
-            .eq(
-                "id",
-                produtoSelecionado.id
-            )
-            .eq(
-                "quantidade",
-                quantidadeAtual
-            )
-            .select(
-                "id,codigo,descricao,quantidade,endereco,valor_total"
-            )
-            .maybeSingle();
-
-
-    if (error) {
-
-        console.error(
-            "Erro na separação:",
-            error
-        );
-
-        mostrarMensagem(
-            "Não foi possível registrar a separação.",
-            "erro"
-        );
-
-        return;
-    }
-
-
-    if (!data) {
-
-        mostrarMensagem(
-            "O saldo mudou enquanto você fazia a separação. Busque o produto novamente.",
-            "erro"
-        );
-
-        return;
-    }
-
-
-    // REGISTRA NO HISTÓRICO COMO SAÍDA / VENDA
-    registrarMovimentacaoSeparacao(
-        produtoSelecionado,
-        quantidadeSeparar
-    );
-
-
-    mostrarMensagem(
-        "Separação registrada com sucesso.",
-        "sucesso"
-    );
-
-
-    // LIMPA A TELA APÓS A SEPARAÇÃO
-
-    document.getElementById(
-        "codigoProduto"
-    ).value = "";
-
-    document.getElementById(
-        "descricaoProduto"
-    ).value = "";
-
-    document.getElementById(
-        "quantidadeDisponivel"
-    ).value = "";
-
-    document.getElementById(
-        "quantidadeSeparar"
-    ).value = "";
-
-
-    const selectPosicao =
-        document.getElementById(
-            "posicaoProduto"
-        );
-
-    selectPosicao.innerHTML =
-        '<option value="">-</option>';
-
-    selectPosicao.disabled = true;
-
-
-    document.getElementById(
-        "btnConfirmarSeparacao"
-    ).disabled = true;
-
-
-    // LIMPA OS DADOS INTERNOS
-
-    produtosEncontrados = [];
-    produtoSelecionado = null;
-
-
-    // VOLTA O CURSOR PARA O CÓDIGO
-
-    document.getElementById(
-        "codigoProduto"
-    ).focus();
-
-}
-
-
-// ENTER NO CAMPO CÓDIGO TAMBÉM FAZ A BUSCA
-
-document
-    .getElementById(
-        "codigoProduto"
-    )
-    .addEventListener(
-        "keydown",
-        function (evento) {
-
-            if (
-                evento.key ===
-                "Enter"
-            ) {
-
-                buscarProdutoSeparacao();
-
+        function usarQuantidadeMaximaSeparacao() {
+            if (!produtoSelecionado) {
+                mostrarMensagem(
+                    "Busque um produto antes de usar a quantidade máxima.",
+                    "erro"
+                );
+                return;
             }
 
+            const campo =
+                document.getElementById(
+                    "quantidadeSeparar"
+                );
+
+            campo.value =
+                converterNumeroSeparacao(
+                    produtoSelecionado.quantidade
+                );
+
+            atualizarPreviewSeparacao();
+            campo.focus();
         }
-    );
 
+
+        // =====================================================
+        // CONFIRMAR SEPARAÇÃO
+        // =====================================================
+
+        async function confirmarSeparacao() {
+            limparMensagem();
+
+            if (!produtoSelecionado) {
+                mostrarMensagem(
+                    "Busque um produto antes de separar.",
+                    "erro"
+                );
+
+                return;
+            }
+
+            const campoQuantidade =
+                document.getElementById(
+                    "quantidadeSeparar"
+                );
+
+            const quantidadeSeparar =
+                converterNumeroSeparacao(
+                    campoQuantidade.value
+                );
+
+            const quantidadeAtual =
+                converterNumeroSeparacao(
+                    produtoSelecionado.quantidade
+                );
+
+            if (quantidadeSeparar <= 0) {
+                mostrarMensagem(
+                    "Informe uma quantidade válida.",
+                    "erro"
+                );
+
+                campoQuantidade.focus();
+                return;
+            }
+
+            if (
+                quantidadeSeparar >
+                quantidadeAtual
+            ) {
+                mostrarMensagem(
+                    "Quantidade maior que o estoque disponível.",
+                    "erro"
+                );
+
+                campoQuantidade.focus();
+                return;
+            }
+
+            const novaQuantidade =
+                quantidadeAtual -
+                quantidadeSeparar;
+
+            const valorTotalAtual =
+                converterNumeroSeparacao(
+                    produtoSelecionado.valor_total
+                );
+
+            const valorUnitario =
+                quantidadeAtual > 0
+                    ? valorTotalAtual /
+                      quantidadeAtual
+                    : 0;
+
+            const novoValorTotal =
+                Math.max(
+                    0,
+                    valorTotalAtual -
+                    (
+                        quantidadeSeparar *
+                        valorUnitario
+                    )
+                );
+
+            const confirmou =
+                confirm(
+                    "Confirmar separação?\n\n" +
+                    "Produto: " +
+                    (produtoSelecionado.descricao || produtoSelecionado.codigo) +
+                    "\nPosição: " +
+                    (produtoSelecionado.endereco || "-") +
+                    "\nQuantidade: " +
+                    formatarQuantidadeSeparacao(quantidadeSeparar) +
+                    "\nSaldo após separação: " +
+                    formatarQuantidadeSeparacao(novaQuantidade)
+                );
+
+            if (!confirmou) {
+                return;
+            }
+
+            const { data, error } =
+                await window.supabaseClient
+                    .from("produtos")
+                    .update(
+                        {
+                            quantidade:
+                                novaQuantidade,
+
+                            valor_total:
+                                novoValorTotal
+                        }
+                    )
+                    .eq(
+                        "id",
+                        produtoSelecionado.id
+                    )
+                    .eq(
+                        "quantidade",
+                        quantidadeAtual
+                    )
+                    .select(
+                        "id,codigo,descricao,quantidade,endereco,valor_total"
+                    )
+                    .maybeSingle();
+
+            if (error) {
+                console.error(
+                    "Erro na separação:",
+                    error
+                );
+
+                mostrarMensagem(
+                    "Não foi possível registrar a separação.",
+                    "erro"
+                );
+
+                return;
+            }
+
+            if (!data) {
+                mostrarMensagem(
+                    "O saldo mudou enquanto você fazia a separação. Busque o produto novamente.",
+                    "erro"
+                );
+
+                return;
+            }
+
+            registrarMovimentacaoSeparacao(
+                produtoSelecionado,
+                quantidadeSeparar
+            );
+
+            mostrarMensagem(
+                "Separação registrada com sucesso.",
+                "sucesso"
+            );
+
+            limparCamposDepoisDaSeparacao();
+        }
+
+
+        // =====================================================
+        // LIMPEZA
+        // =====================================================
+
+        function limparCamposDepoisDaSeparacao() {
+            document.getElementById(
+                "codigoProduto"
+            ).value = "";
+
+            document.getElementById(
+                "descricaoProduto"
+            ).value = "";
+
+            document.getElementById(
+                "quantidadeDisponivel"
+            ).value = "";
+
+            document.getElementById(
+                "quantidadeSeparar"
+            ).value = "";
+
+            const selectPosicao =
+                document.getElementById(
+                    "posicaoProduto"
+                );
+
+            selectPosicao.innerHTML =
+                '<option value="">-</option>';
+
+            selectPosicao.disabled = true;
+
+            document.getElementById(
+                "btnConfirmarSeparacao"
+            ).disabled = true;
+
+            produtosEncontrados = [];
+            produtoSelecionado = null;
+
+            atualizarPreviewSeparacao();
+            atualizarResumoSeparacao();
+
+            document.getElementById(
+                "codigoProduto"
+            ).focus();
+        }
+
+
+        function limparTelaSeparacao() {
+            limparMensagem();
+            limparCamposDepoisDaSeparacao();
+        }
+
+
+        function focarCodigoSeparacao() {
+            const campo =
+                document.getElementById(
+                    "codigoProduto"
+                );
+
+            campo.focus();
+            campo.select();
+        }
+
+
+        // =====================================================
+        // ÚLTIMAS SEPARAÇÕES
+        // =====================================================
+
+        function atualizarUltimasSeparacoes() {
+            const lista =
+                document.getElementById(
+                    "listaUltimasSeparacoes"
+                );
+
+            if (!lista) {
+                return;
+            }
+
+            const saidas =
+                carregarListaSeparacao(
+                    "saidas"
+                )
+                .filter(
+                    function (saida) {
+                        return (
+                            String(
+                                saida.tipo ||
+                                "SAIDA"
+                            ).toUpperCase() ===
+                            "SAIDA"
+                        );
+                    }
+                )
+                .slice(0, 3);
+
+            if (saidas.length === 0) {
+                lista.innerHTML = `
+                    <div class="ultima-item">
+                        <div class="ultima-check">✓</div>
+                        <div class="ultima-hora">--:--</div>
+                        <div class="ultima-produto">
+                            <strong>Nenhuma separação recente</strong>
+                            <small>-</small>
+                        </div>
+                        <div class="ultima-qtd">-</div>
+                    </div>
+                `;
+
+                return;
+            }
+
+            lista.innerHTML = "";
+
+            saidas.forEach(
+                function (saida) {
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
+
+                    item.className =
+                        "ultima-item";
+
+                    const data =
+                        String(
+                            saida.data ||
+                            ""
+                        );
+
+                    const horaEncontrada =
+                        data.match(
+                            /(\d{2}:\d{2})/
+                        );
+
+                    const hora =
+                        horaEncontrada
+                            ? horaEncontrada[1]
+                            : "--:--";
+
+                    item.innerHTML = `
+                        <div class="ultima-check">✓</div>
+
+                        <div class="ultima-hora">
+                            ${hora}
+                        </div>
+
+                        <div class="ultima-produto">
+                            <strong>
+                                ${escaparHTMLSeparacao(
+                                    saida.descricao ||
+                                    saida.codigo ||
+                                    "Produto"
+                                )}
+                            </strong>
+
+                            <small>
+                                ${escaparHTMLSeparacao(
+                                    saida.endereco ||
+                                    saida.origem ||
+                                    "-"
+                                )}
+                            </small>
+                        </div>
+
+                        <div class="ultima-qtd">
+                            ${formatarQuantidadeSeparacao(
+                                saida.quantidade
+                            )} unid.
+                        </div>
+                    `;
+
+                    lista.appendChild(
+                        item
+                    );
+                }
+            );
+        }
+
+
+        function escaparHTMLSeparacao(
+            valor
+        ) {
+            return String(
+                valor ||
+                ""
+            )
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        }
+
+
+        function rolarParaUltimasSeparacoes() {
+            document.getElementById(
+                "ultimasSeparacoesCard"
+            ).scrollIntoView(
+                {
+                    behavior: "smooth",
+                    block: "start"
+                }
+            );
+        }
+
+
+        // =====================================================
+        // EVENTOS
+        // =====================================================
+
+        document
+            .getElementById(
+                "codigoProduto"
+            )
+            .addEventListener(
+                "keydown",
+                function (evento) {
+                    if (
+                        evento.key ===
+                        "Enter"
+                    ) {
+                        evento.preventDefault();
+                        buscarProdutoSeparacao();
+                    }
+                }
+            );
+
+
+        document
+            .getElementById(
+                "quantidadeSeparar"
+            )
+            .addEventListener(
+                "input",
+                atualizarPreviewSeparacao
+            );
+
+
+        document
+            .getElementById(
+                "quantidadeSeparar"
+            )
+            .addEventListener(
+                "keydown",
+                function (evento) {
+                    if (
+                        evento.key ===
+                        "Enter"
+                    ) {
+                        evento.preventDefault();
+
+                        if (
+                            !document.getElementById(
+                                "btnConfirmarSeparacao"
+                            ).disabled
+                        ) {
+                            confirmarSeparacao();
+                        }
+                    }
+                }
+            );
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+                atualizarUltimasSeparacoes();
+                atualizarPreviewSeparacao();
+                atualizarResumoSeparacao();
+                focarCodigoSeparacao();
+            }
+        );
     </script>
-
 </body>
-
 </html>
