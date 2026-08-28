@@ -2754,40 +2754,34 @@ async function sincronizarSaidaProdutoSupabase(
 
         let produtoAlterado = null;
 
-        if (novaQuantidade <= 0) {
-            const resposta =
-                await supabase
-                    .from("produtos")
-                    .delete()
-                    .eq("id", produto.id)
-                    .select(
-                        "id, codigo, quantidade, endereco"
-                    )
-                    .maybeSingle();
+        const resposta =
+    await supabase
+        .from("produtos")
+        .update({
+            quantidade: Math.max(
+                0,
+                novaQuantidade
+            ),
 
-            error = resposta.error;
-            produtoAlterado = resposta.data;
-        } else {
-            const resposta =
-                await supabase
-                    .from("produtos")
-                    .update({
-                        quantidade:
-                            novaQuantidade,
+            valor_total: Math.max(
+                0,
+                novoValor
+            )
+        })
+        .eq(
+            "id",
+            produto.id
+        )
+        .select(
+            "id, codigo, quantidade, endereco"
+        )
+        .maybeSingle();
 
-                        valor_total:
-                            novoValor
-                    })
-                    .eq("id", produto.id)
-                    .select(
-                        "id, codigo, quantidade, endereco"
-                    )
-                    .maybeSingle();
+error =
+    resposta.error;
 
-            error = resposta.error;
-            produtoAlterado = resposta.data;
-        }
-
+produtoAlterado =
+    resposta.data;
         if (error) {
             console.error(
                 "Erro ao registrar saída no banco:",
