@@ -2498,6 +2498,750 @@
 
 
     </script>
+    <script>
+
+// =====================================================
+// TRANSFERÊNCIA - BUSCA AUTOMÁTICA DE POSIÇÃO + ESTOQUE
+// =====================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const campoCodigo =
+            document.getElementById(
+                "codigoTransferencia"
+            );
+
+        let campoOrigem =
+            document.getElementById(
+                "origemTransferencia"
+            );
+
+
+        // =====================================================
+        // TRANSFORMAR ORIGEM EM LISTA DE POSIÇÕES
+        // =====================================================
+
+        if (
+            campoOrigem &&
+            campoOrigem.tagName !== "SELECT"
+        ) {
+
+            const selectOrigem =
+                document.createElement(
+                    "select"
+                );
+
+
+            selectOrigem.id =
+                "origemTransferencia";
+
+
+            selectOrigem.innerHTML = `
+                <option value="">
+                    Selecione a posição de origem
+                </option>
+            `;
+
+
+            campoOrigem.replaceWith(
+                selectOrigem
+            );
+
+
+            campoOrigem =
+                selectOrigem;
+
+        }
+
+
+
+        // =====================================================
+        // CONTROLE DA BUSCA
+        // =====================================================
+
+        let timerBuscaTransferencia =
+            null;
+
+        let ultimaBuscaTransferencia =
+            0;
+
+
+
+        // =====================================================
+        // LIMPAR POSIÇÕES
+        // =====================================================
+
+        function limparPosicoesTransferenciaAutomatico() {
+
+            const origem =
+                document.getElementById(
+                    "origemTransferencia"
+                );
+
+
+            if (origem) {
+
+                origem.innerHTML = `
+                    <option value="">
+                        Selecione a posição de origem
+                    </option>
+                `;
+
+            }
+
+
+            estoqueAtualOrigemVisual =
+                0;
+
+
+            if (
+                typeof atualizarExibicaoEstoqueTransferencia ===
+                "function"
+            ) {
+
+                atualizarExibicaoEstoqueTransferencia();
+
+            }
+
+
+            if (
+                typeof atualizarResumoTransferenciaVisual ===
+                "function"
+            ) {
+
+                atualizarResumoTransferenciaVisual();
+
+            }
+
+        }
+
+
+
+        // =====================================================
+        // MOSTRAR ESTOQUE DA POSIÇÃO SELECIONADA
+        // =====================================================
+
+        function atualizarEstoquePosicaoSelecionada() {
+
+            const origem =
+                document.getElementById(
+                    "origemTransferencia"
+                );
+
+
+            if (!origem) {
+
+                estoqueAtualOrigemVisual =
+                    0;
+
+                return;
+
+            }
+
+
+            const opcao =
+                origem.options[
+                    origem.selectedIndex
+                ];
+
+
+            estoqueAtualOrigemVisual =
+                Number(
+                    opcao?.dataset?.quantidade ||
+                    0
+                );
+
+
+            if (
+                typeof atualizarExibicaoEstoqueTransferencia ===
+                "function"
+            ) {
+
+                atualizarExibicaoEstoqueTransferencia();
+
+            }
+
+
+            if (
+                typeof atualizarResumoTransferenciaVisual ===
+                "function"
+            ) {
+
+                atualizarResumoTransferenciaVisual();
+
+            }
+
+        }
+
+
+
+        // =====================================================
+        // BUSCAR PRODUTO E TODAS AS POSIÇÕES NO SUPABASE
+        // =====================================================
+
+        async function buscarPosicoesProdutoTransferencia() {
+
+            const codigoInput =
+                document.getElementById(
+                    "codigoTransferencia"
+                );
+
+
+            const origem =
+                document.getElementById(
+                    "origemTransferencia"
+                );
+
+
+            if (
+                !codigoInput ||
+                !origem ||
+                !window.supabaseClient
+            ) {
+
+                return;
+
+            }
+
+
+            const codigo =
+                String(
+                    codigoInput.value || ""
+                )
+                .trim()
+                .toUpperCase()
+                .substring(
+                    0,
+                    8
+                );
+
+
+            if (!codigo) {
+
+                limparPosicoesTransferenciaAutomatico();
+
+                return;
+
+            }
+
+
+            const idBusca =
+                ++ultimaBuscaTransferencia;
+
+
+            try {
+
+                origem.innerHTML = `
+                    <option value="">
+                        Buscando posições...
+                    </option>
+                `;
+
+
+                estoqueAtualOrigemVisual =
+                    0;
+
+
+                if (
+                    typeof atualizarExibicaoEstoqueTransferencia ===
+                    "function"
+                ) {
+
+                    atualizarExibicaoEstoqueTransferencia();
+
+                }
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await window.supabaseClient
+                        .from(
+                            "produtos"
+                        )
+                        .select(
+                            "codigo,endereco,quantidade"
+                        )
+                        .eq(
+                            "codigo",
+                            codigo
+                        );
+
+
+                // IGNORA BUSCA ANTIGA CASO O USUÁRIO
+                // DIGITE OUTRO CÓDIGO RAPIDAMENTE
+
+                if (
+                    idBusca !==
+                    ultimaBuscaTransferencia
+                ) {
+
+                    return;
+
+                }
+
+
+                if (error) {
+
+                    console.error(
+                        "Erro ao buscar posições do produto:",
+                        error
+                    );
+
+
+                    origem.innerHTML = `
+                        <option value="">
+                            Erro ao consultar produto
+                        </option>
+                    `;
+
+
+                    estoqueAtualOrigemVisual =
+                        0;
+
+
+                    if (
+                        typeof atualizarExibicaoEstoqueTransferencia ===
+                        "function"
+                    ) {
+
+                        atualizarExibicaoEstoqueTransferencia();
+
+                    }
+
+
+                    return;
+
+                }
+
+
+
+                const produtos =
+                    Array.isArray(data)
+                        ? data
+                        : [];
+
+
+
+                // =====================================================
+                // AGRUPAR ESTOQUE POR POSIÇÃO
+                // =====================================================
+
+                const estoquePorPosicao =
+                    {};
+
+
+                produtos.forEach(
+                    function (produto) {
+
+                        const endereco =
+                            String(
+                                produto.endereco ||
+                                ""
+                            )
+                            .trim()
+                            .toUpperCase();
+
+
+                        const quantidade =
+                            Number(
+                                produto.quantidade ||
+                                0
+                            );
+
+
+                        if (!endereco) {
+
+                            return;
+
+                        }
+
+
+                        if (
+                            !Object.prototype
+                                .hasOwnProperty
+                                .call(
+                                    estoquePorPosicao,
+                                    endereco
+                                )
+                        ) {
+
+                            estoquePorPosicao[
+                                endereco
+                            ] =
+                                0;
+
+                        }
+
+
+                        estoquePorPosicao[
+                            endereco
+                        ] +=
+                            quantidade;
+
+                    }
+                );
+
+
+
+                // =====================================================
+                // SOMENTE POSIÇÕES COM ESTOQUE
+                // =====================================================
+
+                const posicoes =
+                    Object.entries(
+                        estoquePorPosicao
+                    )
+                    .filter(
+                        function (item) {
+
+                            return (
+                                Number(
+                                    item[1]
+                                ) >
+                                0
+                            );
+
+                        }
+                    );
+
+
+
+                origem.innerHTML =
+                    "";
+
+
+
+                // =====================================================
+                // PRODUTO NÃO ENCONTRADO OU SEM ESTOQUE
+                // =====================================================
+
+                if (
+                    posicoes.length ===
+                    0
+                ) {
+
+                    const opcao =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    opcao.value =
+                        "";
+
+
+                    opcao.textContent =
+                        "Produto sem posição ou sem estoque";
+
+
+                    origem.appendChild(
+                        opcao
+                    );
+
+
+                    estoqueAtualOrigemVisual =
+                        0;
+
+
+                    if (
+                        typeof atualizarExibicaoEstoqueTransferencia ===
+                        "function"
+                    ) {
+
+                        atualizarExibicaoEstoqueTransferencia();
+
+                    }
+
+
+                    if (
+                        typeof atualizarResumoTransferenciaVisual ===
+                        "function"
+                    ) {
+
+                        atualizarResumoTransferenciaVisual();
+
+                    }
+
+
+                    return;
+
+                }
+
+
+
+                // =====================================================
+                // CRIAR LISTA DE POSIÇÕES
+                //
+                // EXEMPLO:
+                //
+                // 9F — 26 un.
+                // 10A — 8 un.
+                // =====================================================
+
+                posicoes.forEach(
+                    function (
+                        [
+                            endereco,
+                            quantidade
+                        ]
+                    ) {
+
+                        const opcao =
+                            document.createElement(
+                                "option"
+                            );
+
+
+                        opcao.value =
+                            endereco;
+
+
+                        opcao.dataset.quantidade =
+                            quantidade;
+
+
+                        opcao.textContent =
+                            endereco +
+                            " — " +
+                            Number(
+                                quantidade
+                            )
+                            .toLocaleString(
+                                "pt-BR"
+                            ) +
+                            " un.";
+
+
+                        origem.appendChild(
+                            opcao
+                        );
+
+                    }
+                );
+
+
+
+                // =====================================================
+                // PRIMEIRA POSIÇÃO JÁ FICA SELECIONADA
+                // =====================================================
+
+                origem.selectedIndex =
+                    0;
+
+
+                atualizarEstoquePosicaoSelecionada();
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao carregar posições da transferência:",
+                    erro
+                );
+
+            }
+
+        }
+
+
+
+        // =====================================================
+        // AO DIGITAR OU BIPAR O CÓDIGO
+        // =====================================================
+
+        if (campoCodigo) {
+
+            campoCodigo.addEventListener(
+                "input",
+                function () {
+
+                    campoCodigo.value =
+                        String(
+                            campoCodigo.value ||
+                            ""
+                        )
+                        .trim()
+                        .toUpperCase()
+                        .substring(
+                            0,
+                            8
+                        );
+
+
+                    clearTimeout(
+                        timerBuscaTransferencia
+                    );
+
+
+                    if (
+                        !campoCodigo.value
+                    ) {
+
+                        limparPosicoesTransferenciaAutomatico();
+
+                        return;
+
+                    }
+
+
+                    timerBuscaTransferencia =
+                        setTimeout(
+                            function () {
+
+                                buscarPosicoesProdutoTransferencia();
+
+                            },
+                            250
+                        );
+
+                }
+            );
+
+
+
+            // LEITOR DE CÓDIGO NORMALMENTE
+            // DISPARA CHANGE OU BLUR
+
+            campoCodigo.addEventListener(
+                "change",
+                buscarPosicoesProdutoTransferencia
+            );
+
+
+            campoCodigo.addEventListener(
+                "blur",
+                buscarPosicoesProdutoTransferencia
+            );
+
+        }
+
+
+
+        // =====================================================
+        // AO ESCOLHER OUTRA POSIÇÃO
+        // =====================================================
+
+        if (campoOrigem) {
+
+            campoOrigem.addEventListener(
+                "change",
+                function () {
+
+                    atualizarEstoquePosicaoSelecionada();
+
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // BOTÃO MÁXIMO
+        // CONTINUA USANDO O ESTOQUE DA POSIÇÃO
+        // =====================================================
+
+        const botaoMax =
+            document.getElementById(
+                "btnMaxTransferencia"
+            );
+
+
+        if (botaoMax) {
+
+            botaoMax.addEventListener(
+                "click",
+                function () {
+
+                    setTimeout(
+                        function () {
+
+                            if (
+                                typeof atualizarResumoTransferenciaVisual ===
+                                "function"
+                            ) {
+
+                                atualizarResumoTransferenciaVisual();
+
+                            }
+
+                        },
+                        50
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // APÓS TRANSFERIR, ATUALIZAR POSIÇÕES
+        // CASO O CÓDIGO CONTINUE PREENCHIDO
+        // =====================================================
+
+        const botaoTransferir =
+            document.getElementById(
+                "btnRegistrarTransferencia"
+            );
+
+
+        if (botaoTransferir) {
+
+            botaoTransferir.addEventListener(
+                "click",
+                function () {
+
+                    setTimeout(
+                        function () {
+
+                            const codigoAtual =
+                                String(
+                                    document
+                                        .getElementById(
+                                            "codigoTransferencia"
+                                        )
+                                        ?.value ||
+                                    ""
+                                )
+                                .trim();
+
+
+                            if (
+                                codigoAtual
+                            ) {
+
+                                buscarPosicoesProdutoTransferencia();
+
+                            }
+
+                        },
+                        800
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // DISPONIBILIZAÇÃO GLOBAL
+        // =====================================================
+
+        window.buscarPosicoesProdutoTransferencia =
+            buscarPosicoesProdutoTransferencia;
+
+    }
+);
+
+</script>
 
 </body>
 
