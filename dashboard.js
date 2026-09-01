@@ -2350,11 +2350,11 @@ function criarGraficoMovimentacoes(
 
 
     const entradas =
-        new Array(7).fill(0);
+        new Array(14).fill(0);
 
 
     const saidas =
-        new Array(7).fill(0);
+        new Array(14).fill(0);
 
 
     movimentacoes.forEach(
@@ -2440,6 +2440,81 @@ function criarGraficoMovimentacoes(
         }
     );
 
+    // =====================================================
+// CALCULAR LINHA DE TENDÊNCIA
+// =====================================================
+
+function calcularTendencia(dados) {
+
+    const n = dados.length;
+
+    let somaX = 0;
+    let somaY = 0;
+    let somaXY = 0;
+    let somaX2 = 0;
+
+    for (let i = 0; i < n; i++) {
+
+        somaX += i;
+        somaY += dados[i];
+        somaXY += i * dados[i];
+        somaX2 += i * i;
+
+    }
+
+    const denominador =
+        (n * somaX2) -
+        (somaX * somaX);
+
+    if (denominador === 0) {
+
+        return dados.map(
+            function () {
+                return 0;
+            }
+        );
+
+    }
+
+    const inclinacao =
+        (
+            (n * somaXY) -
+            (somaX * somaY)
+        ) /
+        denominador;
+
+    const intercepto =
+        (
+            somaY -
+            (inclinacao * somaX)
+        ) /
+        n;
+
+    return dados.map(
+        function (_, indice) {
+
+            return Math.max(
+                0,
+                intercepto +
+                (inclinacao * indice)
+            );
+
+        }
+    );
+
+}
+
+
+const tendenciaEntradas =
+    calcularTendencia(
+        entradas
+    );
+
+
+const tendenciaSaidas =
+    calcularTendencia(
+        saidas
+    );
 
     if (
         graficoMovimentacoesDashboard
@@ -2504,7 +2579,59 @@ function criarGraficoMovimentacoes(
 
                             borderRadius: 7
 
-                        }
+                        },
+{
+    label: "Tendência Entradas",
+
+    type: "line",
+
+    data: tendenciaEntradas,
+
+    borderColor:
+        "rgba(22, 163, 74, 1)",
+
+    backgroundColor:
+        "transparent",
+
+    borderWidth: 2,
+
+    borderDash: [8, 6],
+
+    pointRadius: 0,
+
+    pointHoverRadius: 4,
+
+    tension: 0,
+
+    fill: false
+},
+
+{
+    label: "Tendência Saídas",
+
+    type: "line",
+
+    data: tendenciaSaidas,
+
+    borderColor:
+        "rgba(220, 38, 38, 1)",
+
+    backgroundColor:
+        "transparent",
+
+    borderWidth: 2,
+
+    borderDash: [8, 6],
+
+    pointRadius: 0,
+
+    pointHoverRadius: 4,
+
+    tension: 0,
+
+    fill: false
+}
+
 
                     ]
 
@@ -4098,7 +4225,7 @@ function gerarUltimosSeteDias() {
 
 
     for (
-        let indice = 6;
+        let indice = 13;
         indice >= 0;
         indice--
     ) {
