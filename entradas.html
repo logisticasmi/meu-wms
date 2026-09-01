@@ -267,6 +267,205 @@
             color: #198754;
         }
 
+/* =====================================================
+   ENDEREÇAMENTO INTELIGENTE
+===================================================== */
+
+.endereco-inteligente-entrada {
+
+    grid-column:
+        1 / -1;
+
+    padding:
+        16px 18px;
+
+    border:
+        1px solid #bfe3ca;
+
+    border-radius:
+        10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #f1fbf4,
+            #f8fdf9
+        );
+
+}
+
+
+.endereco-inteligente-cabecalho {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+.endereco-inteligente-icone {
+
+    font-size:
+        20px;
+
+}
+
+
+.endereco-inteligente-cabecalho strong {
+
+    display:
+        block;
+
+    color:
+        #16733a;
+
+    font-size:
+        15px;
+
+}
+
+
+.endereco-inteligente-cabecalho small {
+
+    display:
+        block;
+
+    margin-top:
+        2px;
+
+    color:
+        #5e7b69;
+
+    font-size:
+        12px;
+
+}
+
+
+.endereco-inteligente-lista {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        8px;
+
+}
+
+
+.endereco-inteligente-item {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr auto;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+    padding:
+        10px 12px;
+
+    border:
+        1px solid #d9eadf;
+
+    border-radius:
+        8px;
+
+    background:
+        #ffffff;
+
+    color:
+        #17345c;
+
+    font-size:
+        13px;
+
+}
+
+
+.endereco-inteligente-posicao {
+
+    font-weight:
+        700;
+
+    color:
+        #123d73;
+
+}
+
+
+.endereco-inteligente-quantidade {
+
+    color:
+        #506b5a;
+
+}
+
+
+.endereco-inteligente-sugerido {
+
+    padding:
+        5px 10px;
+
+    border-radius:
+        999px;
+
+    background:
+        #dff5e6;
+
+    color:
+        #1e7a3e;
+
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.endereco-inteligente-recomendacao {
+
+    margin-top:
+        12px;
+
+    padding-top:
+        10px;
+
+    border-top:
+        1px solid #d6eadc;
+
+    color:
+        #267844;
+
+    font-size:
+        12px;
+
+    font-weight:
+        600;
+
+}
 
         /* =====================================================
            STATUS ENDEREÇO
@@ -1045,8 +1244,54 @@
             </div>
 
 
-
             <!-- ENDEREÇO -->
+
+
+<!-- =====================================================
+     ENDEREÇAMENTO INTELIGENTE
+===================================================== -->
+
+<div
+    id="cardEnderecoInteligenteEntrada"
+    class="endereco-inteligente-entrada oculto"
+>
+
+    <div class="endereco-inteligente-cabecalho">
+
+        <span class="endereco-inteligente-icone">
+            📍
+        </span>
+
+        <div>
+            <strong>
+                Endereçamento Inteligente
+            </strong>
+
+            <small>
+                Posições atuais deste produto
+            </small>
+        </div>
+
+    </div>
+
+
+    <div
+        id="listaEnderecosInteligentesEntrada"
+        class="endereco-inteligente-lista"
+    >
+    </div>
+
+
+    <div
+        id="recomendacaoEnderecoEntrada"
+        class="endereco-inteligente-recomendacao"
+    >
+    </div>
+
+</div>
+
+
+<!-- ENDEREÇO INFORMADO -->
 
             <div class="entrada-coluna">
 

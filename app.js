@@ -2102,7 +2102,8 @@ function normalizarProdutoImportado(
 
         codigo:
             normalizarCodigo(
-                obterValorColuna(
+
+                                obterValorColuna(
                     linha,
                     [
                         "CODIGO",
@@ -3409,6 +3410,21 @@ async function carregarResumoProdutoEntrada() {
             "cardProdutoEntrada"
         );
 
+    const cardEnderecoInteligente =
+        document.getElementById(
+            "cardEnderecoInteligenteEntrada"
+        );
+
+    const listaEnderecos =
+        document.getElementById(
+            "listaEnderecosInteligentesEntrada"
+        );
+
+    const recomendacaoEndereco =
+        document.getElementById(
+            "recomendacaoEnderecoEntrada"
+        );
+
 
     if (
         !campoCodigo ||
@@ -3416,6 +3432,28 @@ async function carregarResumoProdutoEntrada() {
     ) {
         return;
     }
+
+
+    const ocultarEnderecoInteligente =
+        function () {
+
+            if (cardEnderecoInteligente) {
+                cardEnderecoInteligente.classList.add(
+                    "oculto"
+                );
+            }
+
+            if (listaEnderecos) {
+                listaEnderecos.innerHTML =
+                    "";
+            }
+
+            if (recomendacaoEndereco) {
+                recomendacaoEndereco.textContent =
+                    "";
+            }
+
+        };
 
 
     const codigo =
@@ -3441,6 +3479,7 @@ async function carregarResumoProdutoEntrada() {
             "oculto"
         );
 
+        ocultarEnderecoInteligente();
 
         ocultarNovoSaldoEntrada();
 
@@ -3453,6 +3492,8 @@ async function carregarResumoProdutoEntrada() {
         console.warn(
             "Supabase não disponível para consultar o produto."
         );
+
+        ocultarEnderecoInteligente();
 
         return;
     }
@@ -3487,9 +3528,9 @@ async function carregarResumoProdutoEntrada() {
                 "oculto"
             );
 
+            ocultarEnderecoInteligente();
 
             ocultarNovoSaldoEntrada();
-
 
             return;
         }
@@ -3598,6 +3639,243 @@ async function carregarResumoProdutoEntrada() {
         );
 
 
+        // =====================================================
+        // ENDEREÇAMENTO INTELIGENTE
+        // =====================================================
+
+        if (
+            cardEnderecoInteligente &&
+            listaEnderecos &&
+            recomendacaoEndereco
+        ) {
+
+            /*
+                Agrupa os registros do mesmo SKU
+                por posição e soma suas quantidades.
+            */
+
+            const mapaPosicoes =
+                new Map();
+
+
+            produtos.forEach(
+                function (produto) {
+
+                    const endereco =
+                        normalizarEndereco(
+                            produto.endereco
+                        );
+
+
+                    if (!endereco) {
+                        return;
+                    }
+
+
+                    const quantidade =
+                        converterNumero(
+                            produto.quantidade
+                        );
+
+
+                    mapaPosicoes.set(
+                        endereco,
+                        (
+                            mapaPosicoes.get(
+                                endereco
+                            ) || 0
+                        ) +
+                        quantidade
+                    );
+
+                }
+            );
+
+
+            const posicoesProduto =
+                Array.from(
+                    mapaPosicoes.entries()
+                )
+                .map(
+                    function (item) {
+
+                        return {
+                            endereco:
+                                item[0],
+
+                            quantidade:
+                                item[1]
+                        };
+
+                    }
+                );
+
+
+            if (
+                posicoesProduto.length === 0
+            ) {
+
+                listaEnderecos.innerHTML =
+                    `
+                        <div class="endereco-inteligente-item">
+
+                            <span class="endereco-inteligente-posicao">
+                                Sem posição atual
+                            </span>
+
+                            <span class="endereco-inteligente-quantidade">
+                                Produto ainda não endereçado
+                            </span>
+
+                        </div>
+                    `;
+
+
+                recomendacaoEndereco.textContent =
+                    "Selecione uma posição disponível para armazenagem.";
+
+
+                cardEnderecoInteligente.classList.remove(
+                    "oculto"
+                );
+
+            } else {
+
+                /*
+                    A posição com maior quantidade
+                    será exibida como sugestão.
+                */
+
+                posicoesProduto.sort(
+                    function (a, b) {
+
+                        if (
+                            b.quantidade !==
+                            a.quantidade
+                        ) {
+                            return (
+                                b.quantidade -
+                                a.quantidade
+                            );
+                        }
+
+                        return a.endereco.localeCompare(
+                            b.endereco,
+                            "pt-BR",
+                            {
+                                numeric: true
+                            }
+                        );
+
+                    }
+                );
+
+
+                const posicaoSugerida =
+                    posicoesProduto[0];
+
+
+                listaEnderecos.innerHTML =
+                    "";
+
+
+                posicoesProduto.forEach(
+                    function (
+                        posicao,
+                        indice
+                    ) {
+
+                        const item =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        item.className =
+                            "endereco-inteligente-item";
+
+
+                        const elementoPosicao =
+                            document.createElement(
+                                "span"
+                            );
+
+                        elementoPosicao.className =
+                            "endereco-inteligente-posicao";
+
+                        elementoPosicao.textContent =
+                            "📍 " +
+                            posicao.endereco;
+
+
+                        const elementoQuantidade =
+                            document.createElement(
+                                "span"
+                            );
+
+                        elementoQuantidade.className =
+                            "endereco-inteligente-quantidade";
+
+                        elementoQuantidade.textContent =
+                            formatarQuantidade(
+                                posicao.quantidade
+                            ) +
+                            " un.";
+
+
+                        item.appendChild(
+                            elementoPosicao
+                        );
+
+                        item.appendChild(
+                            elementoQuantidade
+                        );
+
+
+                        if (indice === 0) {
+
+                            const selo =
+                                document.createElement(
+                                    "span"
+                                );
+
+                            selo.className =
+                                "endereco-inteligente-sugerido";
+
+                            selo.textContent =
+                                "✓ POSIÇÃO SUGERIDA";
+
+
+                            item.appendChild(
+                                selo
+                            );
+
+                        }
+
+
+                        listaEnderecos.appendChild(
+                            item
+                        );
+
+                    }
+                );
+
+
+                recomendacaoEndereco.textContent =
+                    "Recomendação: utilize a posição " +
+                    posicaoSugerida.endereco +
+                    " para manter o estoque organizado.";
+
+
+                cardEnderecoInteligente.classList.remove(
+                    "oculto"
+                );
+
+            }
+
+        }
+
+
         atualizarNovoSaldoEntrada();
 
     } catch (erro) {
@@ -3607,10 +3885,11 @@ async function carregarResumoProdutoEntrada() {
             erro
         );
 
+        ocultarEnderecoInteligente();
+
     }
 
 }
-
 
 // =====================================================
 // ATUALIZAR NOVO SALDO
@@ -3927,7 +4206,8 @@ async function registrarEntrada() {
         );
 
 
-    if (!sincronizouBanco) {
+
+            if (!sincronizouBanco) {
         return;
     }
 
@@ -5142,7 +5422,8 @@ function ocultarCardsEntrada() {
 
         "cardProdutoEntrada",
         "cardNovoSaldoEntrada",
-        "statusEnderecoEntrada"
+        "statusEnderecoEntrada",
+        "cardEnderecoInteligenteEntrada"
 
     ];
 
@@ -5166,6 +5447,29 @@ function ocultarCardsEntrada() {
 
         }
     );
+
+
+    const listaEnderecos =
+        document.getElementById(
+            "listaEnderecosInteligentesEntrada"
+        );
+
+    const recomendacaoEndereco =
+        document.getElementById(
+            "recomendacaoEnderecoEntrada"
+        );
+
+
+    if (listaEnderecos) {
+        listaEnderecos.innerHTML =
+            "";
+    }
+
+
+    if (recomendacaoEndereco) {
+        recomendacaoEndereco.textContent =
+            "";
+    }
 
 }
 
@@ -6006,7 +6310,9 @@ async function carregarResumoProdutoSaida() {
 
             /*
                 Caso exista apenas uma posição,
-                já seleciona automaticamente.
+
+
+                                já seleciona automaticamente.
             */
 
             if (
@@ -10212,7 +10518,8 @@ function carregarUltimasMovimentacoes() {
                     "class='dashboard-sem-registro'" +
                 ">" +
                     "Nenhuma movimentação registrada." +
-                "</td>" +
+
+                                    "</td>" +
             "</tr>";
 
         return;
