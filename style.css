@@ -2284,3 +2284,34 @@ body:has(.dashboard-novo) .sidebar li a {
     background: #35a85b !important;
     color: #ffffff !important;
 }
+
+/* =====================================================
+   STATUS DA CONTAGEM - PRODUTOS
+===================================================== */
+
+.status-contagem-produto {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-contagem-produto.contado {
+    color: #15803d;
+    background: #dcfce7;
+}
+
+.status-contagem-produto.pendente {
+    color: #b45309;
+    background: #fef3c7;
+}
+
+.status-contagem-produto.sem-posicao {
+    color: #64748b;
+    background: #f1f5f9;
+}

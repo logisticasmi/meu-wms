@@ -314,6 +314,7 @@ body.pagina-produtos{background:#f4f7fb}
 <th>Mínimo</th>
 <th>Máximo</th>
 <th>Status</th>
+<th>Contagem</th>
 <th>NCM</th>
 <th>IPI</th>
 <th>Posição</th>
@@ -323,7 +324,7 @@ body.pagina-produtos{background:#f4f7fb}
                 <tbody id="listaProdutos">
                     <tr>
                         <td
-                            colspan="10"
+                            colspan="11"
                             class="produtos-vazio"
                         >
                             Nenhum produto cadastrado.
@@ -364,6 +365,209 @@ body.pagina-produtos{background:#f4f7fb}
 let todosProdutosTela = [];
 let paginaAtualProdutos = 1;
 
+// =====================================================
+// STATUS DE CONTAGEM DO INVENTÁRIO NA TELA DE PRODUTOS
+// =====================================================
+
+let mapaContagemProdutos = {};
+
+
+function criarChaveContagemProduto(
+    codigo,
+    posicao
+) {
+
+    return (
+        String(codigo || "")
+            .trim()
+            .toUpperCase() +
+        "__" +
+        String(posicao || "")
+            .trim()
+            .toUpperCase()
+    );
+
+}
+
+
+async function carregarStatusContagemProdutos() {
+
+    mapaContagemProdutos = {};
+
+    if (!window.supabaseClient) {
+        return;
+    }
+
+    try {
+
+        const registros = [];
+
+        const quantidadePorBusca = 1000;
+
+        let inicio = 0;
+
+
+        while (true) {
+
+            const fim =
+                inicio +
+                quantidadePorBusca -
+                1;
+
+
+            const { data, error } =
+                await window.supabaseClient
+                    .from("inventario")
+                    .select(
+                        "codigo, posicao, quantidade_contada, atualizado_em"
+                    )
+                    .order(
+                        "atualizado_em",
+                        {
+                            ascending: true
+                        }
+                    )
+                    .range(
+                        inicio,
+                        fim
+                    );
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            if (
+                !Array.isArray(data) ||
+                data.length === 0
+            ) {
+                break;
+            }
+
+
+            registros.push(...data);
+
+
+            if (
+                data.length <
+                quantidadePorBusca
+            ) {
+                break;
+            }
+
+
+            inicio +=
+                quantidadePorBusca;
+
+        }
+
+
+        registros.forEach(
+            function (registro) {
+
+                const chave =
+                    criarChaveContagemProduto(
+                        registro.codigo,
+                        registro.posicao
+                    );
+
+
+                mapaContagemProdutos[chave] =
+                    registro;
+
+            }
+        );
+
+
+        console.log(
+            "Status de contagem carregados:",
+            registros.length
+        );
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar status das contagens:",
+            erro
+        );
+
+    }
+
+}
+
+
+function obterStatusContagemProduto(
+    produto
+) {
+
+    const codigo =
+        String(
+            produto.codigo || ""
+        )
+            .trim()
+            .toUpperCase();
+
+
+    const posicao =
+        String(
+            produto.endereco ||
+            produto.posicao ||
+            ""
+        )
+            .trim()
+            .toUpperCase();
+
+
+    if (!posicao) {
+
+        return `
+            <span class="status-contagem-produto sem-posicao">
+                ● Sem posição
+            </span>
+        `;
+
+    }
+
+
+    const chave =
+        criarChaveContagemProduto(
+            codigo,
+            posicao
+        );
+
+
+    const registro =
+        mapaContagemProdutos[chave];
+
+
+    const possuiContagem =
+        registro &&
+        registro.quantidade_contada !== null &&
+        registro.quantidade_contada !== undefined;
+
+
+    if (possuiContagem) {
+
+        return `
+            <span class="status-contagem-produto contado">
+                ● Contado
+            </span>
+        `;
+
+    }
+
+
+    return `
+        <span class="status-contagem-produto pendente">
+            ● Pendente
+        </span>
+    `;
+
+}
+
+
 async function carregarTodosOsProdutosNaTela() {
     const tabela = document.getElementById("listaProdutos");
     if (!tabela) return;
@@ -375,11 +579,11 @@ async function carregarTodosOsProdutosNaTela() {
     }
 
     if (!window.supabaseClient) {
-        tabela.innerHTML = '<tr><td colspan="10" class="produtos-vazio">Não foi possível conectar ao banco de produtos.</td></tr>';
+        tabela.innerHTML = '<tr><td colspan="11" class="produtos-vazio">Não foi possível conectar ao banco de produtos.</td></tr>';
         return;
     }
 
-    tabela.innerHTML = '<tr><td colspan="10" class="produtos-vazio">Carregando todos os produtos...</td></tr>';
+    tabela.innerHTML = '<tr><td colspan="11" class="produtos-vazio">Carregando todos os produtos...</td></tr>';
 
     try {
         const todosProdutos = [];
@@ -411,7 +615,7 @@ async function carregarTodosOsProdutosNaTela() {
                 { numeric: true }
             )
         );
-
+await carregarStatusContagemProdutos();
         todosProdutosTela = todosProdutos;
 
         atualizarFiltroComTodosOsProdutos(todosProdutosTela);
@@ -425,7 +629,7 @@ async function carregarTodosOsProdutosNaTela() {
     } catch (erro) {
         console.error("Erro ao carregar todos os produtos:", erro);
         tabela.innerHTML =
-            '<tr><td colspan="10" class="produtos-vazio">Erro ao carregar produtos: ' +
+            '<tr><td colspan="11" class="produtos-vazio">Erro ao carregar produtos: ' +
             escaparHTMLProduto(erro.message) +
             '</td></tr>';
     }
@@ -559,7 +763,7 @@ function renderizarProdutosPaginados() {
     tabela.innerHTML = "";
 
     if (pagina.length === 0) {
-        tabela.innerHTML = '<tr><td colspan="10" class="produtos-vazio">Nenhum produto encontrado.</td></tr>';
+        tabela.innerHTML = '<tr><td colspan="11" class="produtos-vazio">Nenhum produto encontrado.</td></tr>';
         atualizarRodapeProdutos(0, 0, 0, 1);
         return;
     }
@@ -575,6 +779,10 @@ function renderizarProdutosPaginados() {
         const statusEstoque = abaixoDoMinimo
             ? '<span class="status-produto abaixo">Abaixo do mínimo</span>'
             : '<span class="status-produto normal">● Normal</span>';
+            const statusContagem =
+    obterStatusContagemProduto(
+        produto
+    );
 
         const descricaoDetalhada = produto.descricao_detalhada ?? produto.descricaoDetalhada ?? "-";
         const ncm = produto.ncm ?? produto.NCM ?? "-";
@@ -588,6 +796,7 @@ function renderizarProdutosPaginados() {
             <td>${formatarQuantidadeProduto(minimo)}</td>
             <td>${formatarQuantidadeProduto(maximo)}</td>
             <td>${statusEstoque}</td>
+            <td>${statusContagem}</td>
             <td>${escaparHTMLProduto(ncm || "-")}</td>
             <td>${ipi === "" || ipi === null || ipi === undefined ? "-" : escaparHTMLProduto(ipi)}</td>
             <td>${escaparHTMLProduto(produto.endereco || "-")}</td>
