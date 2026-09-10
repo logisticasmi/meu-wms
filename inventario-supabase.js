@@ -3,6 +3,7 @@
 // =====================================================
 
 const NOME_TABELA_INVENTARIO = "inventario";
+const NOME_TABELA_PRODUTOS = "produtos";
 
 
 // =====================================================
@@ -93,6 +94,91 @@ function obterUsuarioAtualInventario() {
 
 
 // =====================================================
+// BUSCAR TODOS OS PRODUTOS PARA O INVENTÁRIO
+// =====================================================
+
+async function buscarProdutosInventarioSupabase() {
+    if (!verificarConexaoInventarioSupabase()) {
+        return null;
+    }
+
+    const produtos = [];
+    const quantidadePorBusca = 1000;
+    let inicio = 0;
+
+    while (true) {
+        const fim =
+            inicio +
+            quantidadePorBusca -
+            1;
+
+        const { data, error } =
+            await window.supabaseClient
+                .from(NOME_TABELA_PRODUTOS)
+                .select("*")
+                .order("id", {
+                    ascending: true
+                })
+                .range(
+                    inicio,
+                    fim
+                );
+
+        if (error) {
+            console.error(
+                "Erro ao buscar produtos para o Inventário:",
+                error
+            );
+
+            alert(
+                "Não foi possível carregar os produtos atualizados para o Inventário.\n\n" +
+                error.message
+            );
+
+            return null;
+        }
+
+        if (
+            !Array.isArray(data) ||
+            data.length === 0
+        ) {
+            break;
+        }
+
+        produtos.push(
+            ...data
+        );
+
+        if (
+            data.length <
+            quantidadePorBusca
+        ) {
+            break;
+        }
+
+        inicio +=
+            quantidadePorBusca;
+    }
+
+    /*
+       O Inventário considera somente produtos que possuem
+       posição/endereço, inclusive quando a quantidade é zero.
+    */
+    return produtos.filter(
+        function (produto) {
+            const posicao =
+                normalizarTextoInventario(
+                    produto.endereco ||
+                    produto.posicao
+                );
+
+            return posicao !== "";
+        }
+    );
+}
+
+
+// =====================================================
 // BUSCAR TODAS AS CONTAGENS
 // =====================================================
 
@@ -177,7 +263,6 @@ async function buscarContagemProdutoSupabase(
         ? data[0]
         : null;
 }
-
 
 // =====================================================
 // SALVAR OU ATUALIZAR CONTAGEM
@@ -392,7 +477,7 @@ async function limparContagensInventarioSupabase() {
 
     return true;
 }
-   
+
 
 // =====================================================
 // APROVAR CONTAGEM E AJUSTAR PRODUTO
@@ -524,7 +609,7 @@ async function aprovarContagemInventarioSupabase(
             produtoEncontrado.quantidade
         );
 
-    /*
+            /*
        Atualiza a quantidade oficial do produto.
     */
 
@@ -772,7 +857,6 @@ async function reprovarContagemInventarioSupabase(
     };
 }
 
-
 // =====================================================
 // CRIAR MAPA DAS CONTAGENS
 // =====================================================
@@ -817,6 +901,9 @@ function criarMapaContagensInventario(
 // =====================================================
 // DISPONIBILIZAR FUNÇÕES PARA O HTML
 // =====================================================
+
+window.buscarProdutosInventarioSupabase =
+    buscarProdutosInventarioSupabase;
 
 window.buscarContagensInventarioSupabase =
     buscarContagensInventarioSupabase;

@@ -688,19 +688,57 @@
 
     const ITENS_POR_PAGINA_INVENTARIO = 100;
 
-    function obterEstoqueInventario() {
+    async function obterEstoqueInventario() {
+        /*
+           Fonte principal: tabela "produtos" do Supabase.
+           Dessa forma, qualquer planilha importada em Produtos
+           passa a refletir diretamente no Inventário.
+        */
+        if (
+            typeof buscarProdutosInventarioSupabase ===
+            "function"
+        ) {
+            const produtosOnline =
+                await buscarProdutosInventarioSupabase();
+
+            if (
+                Array.isArray(produtosOnline)
+            ) {
+                return produtosOnline;
+            }
+        }
+
+        /*
+           Fallback de segurança:
+           usa o estoque local apenas se a consulta online falhar.
+           Mantém somente itens com posição e não remove itens zerados.
+        */
         try {
             const dados = JSON.parse(
                 localStorage.getItem("estoque")
             );
 
-            return Array.isArray(dados)
-                ? dados
-                : [];
+            const estoqueLocal =
+                Array.isArray(dados)
+                    ? dados
+                    : [];
+
+            return estoqueLocal.filter(
+                function (produto) {
+                    const posicao =
+                        String(
+                            produto.endereco ||
+                            produto.posicao ||
+                            ""
+                        ).trim();
+
+                    return posicao !== "";
+                }
+            );
 
         } catch (erro) {
             console.error(
-                "Erro ao carregar estoque:",
+                "Erro ao carregar estoque local de contingência:",
                 erro
             );
 
@@ -798,7 +836,7 @@
         }
 
         const estoque =
-            obterEstoqueInventario();
+            await obterEstoqueInventario();
 
         const registrosOnline =
             await buscarContagensInventarioSupabase();
