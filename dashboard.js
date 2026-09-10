@@ -40,9 +40,10 @@ function atualizarDashboardCompleto() {
     atualizarCardsDashboard(
         estoque
     );
+
     criarVelocimetroOcupacao(
-    estoque
-);
+        estoque
+    );
 
 
     // NOVOS CARDS DO DASHBOARD
@@ -76,9 +77,10 @@ function atualizarDashboardCompleto() {
     carregarTopPosicoes(
         estoque
     );
+
     carregarTopOcupacaoPosicoes(
-    estoque
-);
+        estoque
+    );
 
 
     carregarResumoDoDia(
@@ -611,22 +613,22 @@ function atualizarCardsDashboard(
     );
 
 
- alterarTextoElemento(
+    alterarTextoElemento(
 
-    "cardNiveis",
+        "cardNiveis",
 
-    Math.min(
-        percentualOcupacao,
-        100
-    ).toLocaleString(
-        "pt-BR",
-        {
-            minimumFractionDigits: 1,
-            maximumFractionDigits: 1
-        }
-    ) + "%"
+        Math.min(
+            percentualOcupacao,
+            100
+        ).toLocaleString(
+            "pt-BR",
+            {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1
+            }
+        ) + "%"
 
-);
+    );
 
 
     const progressoPosicoes =
@@ -670,6 +672,8 @@ function atualizarCardsDashboard(
     }
 
 }
+
+
 // =====================================================
 // TOTAL DE PRODUTOS - BASE COMPLETA SUPABASE
 // =====================================================
@@ -848,7 +852,7 @@ function atualizarNovosIndicadoresDashboard(
 
             ? estoque
 
-            : [];
+                        : [];
 
 
     // =============================================
@@ -1769,8 +1773,7 @@ async function atualizarInventarioDashboardSupabase() {
         const totalDivergencias =
             listaDivergencias.length;
 
-
-        // =====================================================
+                    // =====================================================
         // ATUALIZAR FAIXA DO DASHBOARD
         // =====================================================
 
@@ -1995,14 +1998,16 @@ document.addEventListener(
 
                 atualizarInventarioDashboardSupabase();
 
-atualizarIndicadoresEstoqueSupabase();
-atualizarTotalProdutosSupabase();
+                atualizarIndicadoresEstoqueSupabase();
+                atualizarTotalProdutosSupabase();
+
             },
             1000
         );
 
     }
 );
+
 
 // =====================================================
 // VELOCÍMETRO - OCUPAÇÃO DO ARMAZÉM
@@ -2040,7 +2045,9 @@ function criarVelocimetroOcupacao(
         function (produto) {
 
             if (!produto) {
+
                 return;
+
             }
 
 
@@ -2220,7 +2227,9 @@ function criarVelocimetroOcupacao(
 
 
                             if (!chartArea) {
+
                                 return;
+
                             }
 
 
@@ -2350,11 +2359,11 @@ function criarGraficoMovimentacoes(
 
 
     const entradas =
-        new Array(14).fill(0);
+        new Array(7).fill(0);
 
 
     const saidas =
-        new Array(14).fill(0);
+        new Array(7).fill(0);
 
 
     movimentacoes.forEach(
@@ -2440,81 +2449,6 @@ function criarGraficoMovimentacoes(
         }
     );
 
-    // =====================================================
-// CALCULAR LINHA DE TENDÊNCIA
-// =====================================================
-
-function calcularTendencia(dados) {
-
-    const n = dados.length;
-
-    let somaX = 0;
-    let somaY = 0;
-    let somaXY = 0;
-    let somaX2 = 0;
-
-    for (let i = 0; i < n; i++) {
-
-        somaX += i;
-        somaY += dados[i];
-        somaXY += i * dados[i];
-        somaX2 += i * i;
-
-    }
-
-    const denominador =
-        (n * somaX2) -
-        (somaX * somaX);
-
-    if (denominador === 0) {
-
-        return dados.map(
-            function () {
-                return 0;
-            }
-        );
-
-    }
-
-    const inclinacao =
-        (
-            (n * somaXY) -
-            (somaX * somaY)
-        ) /
-        denominador;
-
-    const intercepto =
-        (
-            somaY -
-            (inclinacao * somaX)
-        ) /
-        n;
-
-    return dados.map(
-        function (_, indice) {
-
-            return Math.max(
-                0,
-                intercepto +
-                (inclinacao * indice)
-            );
-
-        }
-    );
-
-}
-
-
-const tendenciaEntradas =
-    calcularTendencia(
-        entradas
-    );
-
-
-const tendenciaSaidas =
-    calcularTendencia(
-        saidas
-    );
 
     if (
         graficoMovimentacoesDashboard
@@ -2579,59 +2513,7 @@ const tendenciaSaidas =
 
                             borderRadius: 7
 
-                        },
-{
-    label: "Tendência Entradas",
-
-    type: "line",
-
-    data: tendenciaEntradas,
-
-    borderColor:
-        "rgba(22, 163, 74, 1)",
-
-    backgroundColor:
-        "transparent",
-
-    borderWidth: 2,
-
-    borderDash: [8, 6],
-
-    pointRadius: 0,
-
-    pointHoverRadius: 4,
-
-    tension: 0,
-
-    fill: false
-},
-
-{
-    label: "Tendência Saídas",
-
-    type: "line",
-
-    data: tendenciaSaidas,
-
-    borderColor:
-        "rgba(220, 38, 38, 1)",
-
-    backgroundColor:
-        "transparent",
-
-    borderWidth: 2,
-
-    borderDash: [8, 6],
-
-    pointRadius: 0,
-
-    pointHoverRadius: 4,
-
-    tension: 0,
-
-    fill: false
-}
-
+                        }
 
                     ]
 
@@ -2775,8 +2657,7 @@ function criarGraficoEstoqueCliente(
     const posicoesOcupadas =
         new Set();
 
-
-    estoque.forEach(
+            estoque.forEach(
         function (produto) {
 
             if (
@@ -3571,6 +3452,8 @@ function carregarTopPosicoes(
     );
 
 }
+
+
 // =====================================================
 // TOP 5 OCUPAÇÃO DAS POSIÇÕES
 // =====================================================
@@ -3586,7 +3469,9 @@ function carregarTopOcupacaoPosicoes(
 
 
     if (!container) {
+
         return;
+
     }
 
 
@@ -3617,9 +3502,13 @@ function carregarTopOcupacaoPosicoes(
             if (!posicoes[endereco]) {
 
                 posicoes[endereco] = {
+
                     endereco: endereco,
+
                     quantidade: 0,
+
                     produtos: new Set()
+
                 };
 
             }
@@ -3672,9 +3561,11 @@ function carregarTopOcupacaoPosicoes(
     ) {
 
         container.innerHTML = `
+
             <div class="dashboard-vazio">
                 Nenhuma posição ocupada.
             </div>
+
         `;
 
         return;
@@ -4225,7 +4116,7 @@ function gerarUltimosSeteDias() {
 
 
     for (
-        let indice = 13;
+        let indice = 6;
         indice >= 0;
         indice--
     ) {
@@ -4440,7 +4331,6 @@ function obterChaveData(
     );
 
 }
-
 
 function formatarDataMovimentacao(
     valor
@@ -5203,3 +5093,4 @@ function criarMiniGrafico(
     );
 
 }
+
