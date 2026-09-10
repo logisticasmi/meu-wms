@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SMI WMS - Inventário Mobile</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+
+    <style>
+        :root {
+            --azul:#063b73;
+            --azul2:#0b57a4;
+            --fundo:#f4f7fb;
+            --texto:#0f2d54;
+            --cinza:#64748b;
+            --borda:#dbe5f0;
+            --verde:#16a34a;
+            --verde-claro:#dcfce7;
+            --vermelho:#dc2626;
+            --vermelho-claro:#fee2e2;
+            --amarelo:#f59e0b;
+            --amarelo-claro:#fef3c7;
+            --branco:#fff;
+            --sombra:0 6px 18px rgba(15,45,84,.08);
+        }
+
+        * { box-sizing:border-box; }
+        html,body { margin:0; min-height:100%; background:var(--fundo); }
+        body { font-family:Arial,Helvetica,sans-serif; color:var(--texto); }
+        button,input { font:inherit; }
+        button { -webkit-tap-highlight-color:transparent; }
+
+        .topo-mobile {
+            position:sticky;
+            top:0;
+            z-index:900;
+            min-height:64px;
+            padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
+            display:flex;
+            align-items:center;
+            gap:12px;
+            background:linear-gradient(135deg,var(--azul),var(--azul2));
+            color:#fff;
+            box-shadow:0 4px 14px rgba(6,59,115,.22);
+        }
+
+        .botao-menu {
+            width:42px;
+            height:42px;
+            flex:0 0 42px;
+            border:0;
+            border-radius:11px;
+            display:grid;
+            place-items:center;
+            background:rgba(255,255,255,.12);
+            color:#fff;
+            font-size:23px;
+            cursor:pointer;
+        }
+
+        .marca-mobile { min-width:0; display:flex; align-items:center; gap:9px; flex:1; }
+        .marca-mobile img { width:34px; height:34px; object-fit:contain; background:#fff; border-radius:8px; padding:3px; }
+        .marca-mobile strong { display:block; font-size:19px; white-space:nowrap; }
+        .marca-mobile small { display:block; margin-top:2px; opacity:.82; font-size:10px; }
+
+        .usuario-mobile {
+            min-width:38px;
+            min-height:38px;
+            padding:0 10px;
+            border-radius:20px;
+            display:grid;
+            place-items:center;
+            background:rgba(255,255,255,.16);
+            color:#fff;
+            font-size:10px;
+            font-weight:700;
+            white-space:nowrap;
+        }
+
+        .overlay-mobile { display:none; position:fixed; inset:0; z-index:980; background:rgba(15,23,42,.48); }
+        .overlay-mobile.ativo { display:block; }
+
+        .menu-lateral-mobile {
+            position:fixed;
+            top:0;
+            left:0;
+            bottom:0;
+            z-index:1000;
+            width:min(82vw,300px);
+            padding:calc(18px + env(safe-area-inset-top)) 14px 20px;
+            background:#052f5f;
+            color:#fff;
+            transform:translateX(-105%);
+            transition:transform .23s ease;
+            overflow-y:auto;
+            box-shadow:10px 0 30px rgba(15,23,42,.25);
+        }
+        .menu-lateral-mobile.aberto { transform:translateX(0); }
+        .menu-cabecalho { display:flex; align-items:center; gap:10px; padding:4px 5px 15px; border-bottom:1px solid rgba(255,255,255,.14); }
+        .menu-cabecalho img { width:42px; height:42px; object-fit:contain; background:#fff; border-radius:10px; padding:4px; }
+        .menu-cabecalho strong { display:block; font-size:18px; }
+        .menu-cabecalho small { opacity:.72; }
+        .menu-links { display:grid; gap:5px; margin-top:16px; }
+        .menu-links a { color:#fff; text-decoration:none; padding:12px 11px; border-radius:10px; font-size:14px; }
+        .menu-links a.ativo,.menu-links a:hover { background:rgba(255,255,255,.13); }
+        .menu-sair { width:100%; margin-top:15px; padding:12px; border:1px solid rgba(255,255,255,.2); border-radius:10px; background:transparent; color:#fff; cursor:pointer; }
+
+        .pagina-mobile { width:100%; max-width:820px; margin:0 auto; padding:15px 12px calc(28px + env(safe-area-inset-bottom)); }
+        .titulo-area { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin:3px 2px 14px; }
+        .titulo-area h1 { margin:0; color:#062d63; font-size:27px; line-height:1.1; }
+        .titulo-area p { margin:5px 0 0; color:var(--cinza); font-size:12px; }
+        .selo-mobile { flex:0 0 auto; padding:7px 9px; border-radius:10px; background:#eaf3ff; color:#0b57a4; font-size:10px; font-weight:700; }
+
+        .barra-busca { display:flex; align-items:center; gap:9px; width:100%; min-height:49px; padding:0 12px; border:1px solid #bfd0e3; border-radius:12px; background:#fff; box-shadow:0 2px 7px rgba(15,45,84,.04); }
+        .barra-busca span { font-size:20px; }
+        .barra-busca input { width:100%; border:0; outline:0; background:transparent; color:var(--texto); font-size:14px; }
+        .barra-busca button { flex:0 0 40px; height:38px; border:0; border-radius:9px; background:#eef5fd; color:var(--azul); cursor:pointer; }
+        .resultado-busca { min-height:16px; margin:5px 3px 0; color:var(--cinza); font-size:10px; }
+
+        .acoes-topo { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:11px 0 14px; }
+        .acao { min-height:43px; padding:8px 6px; border:0; border-radius:10px; color:#fff; font-weight:700; font-size:12px; cursor:pointer; }
+        .acao.azul { background:#07549d; }
+        .acao.verde { background:var(--verde); }
+        .acao.vermelha { background:#ef3138; }
+        .acao.secundaria { color:var(--azul); background:#fff; border:1px solid #bfd0e3; }
+        .acao.exportar { grid-column:1 / span 2; }
+        .acao:disabled { opacity:.55; cursor:not-allowed; }
+
+        .indicadores { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+        .card-indicador { min-width:0; min-height:108px; padding:13px; border:1px solid var(--borda); border-radius:14px; background:#fff; box-shadow:var(--sombra); }
+        .card-indicador.destaque { grid-column:1 / -1; min-height:142px; }
+        .card-indicador h3 { margin:0 0 9px; color:var(--azul); font-size:11px; line-height:1.25; }
+        .valor-indicador { color:#062d63; font-size:20px; font-weight:800; overflow-wrap:anywhere; }
+        .detalhe-indicador { margin-top:4px; color:var(--cinza); font-size:10px; line-height:1.35; }
+
+        .cobertura-flex { display:flex; align-items:center; justify-content:space-around; gap:12px; }
+        .anel-cobertura { position:relative; width:100px; height:100px; flex:0 0 100px; border-radius:50%; background:conic-gradient(var(--verde) 0deg,var(--verde) 0deg,#fbbf24 0deg,#fbbf24 360deg); }
+        .anel-cobertura::after { content:""; position:absolute; inset:16px; border-radius:50%; background:#fff; }
+        .anel-centro { position:absolute; inset:0; z-index:2; display:grid; place-content:center; text-align:center; }
+        .anel-centro strong { color:#062d63; font-size:20px; }
+        .anel-centro small { color:var(--cinza); font-size:9px; }
+        .legenda-cobertura { min-width:135px; display:grid; gap:7px; color:var(--cinza); font-size:10px; }
+        .legenda-linha { display:grid; grid-template-columns:10px 1fr auto; align-items:center; gap:6px; }
+        .bolinha { width:9px; height:9px; border-radius:50%; }
+        .bolinha.verde { background:var(--verde); }
+        .bolinha.vermelha { background:var(--vermelho); }
+        .bolinha.amarela { background:#fbbf24; }
+        .legenda-linha strong { color:var(--texto); }
+
+        .secao-itens { margin-top:15px; }
+        .secao-titulo { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:9px; padding:11px 12px; border-radius:11px; background:#eaf1f8; }
+        .secao-titulo h2 { margin:0; font-size:15px; color:#062d63; }
+        .secao-titulo span { color:var(--azul); font-size:11px; font-weight:700; }
+        .lista-cards { display:grid; gap:11px; }
+
+        .card-produto { position:relative; padding:14px; border:1px solid #f2d27c; border-radius:14px; background:#fffdf7; box-shadow:0 4px 14px rgba(15,45,84,.05); }
+        .card-produto.ok,.card-produto.aprovado { border-color:#86efac; background:#f3fff7; }
+        .card-produto.divergente { border-color:#fca5a5; background:#fff7f7; }
+        .card-topo { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
+
+        .status-chip,.aprovacao-chip { display:inline-flex; align-items:center; gap:5px; min-height:26px; padding:5px 9px; border-radius:18px; font-size:10px; font-weight:800; }
+        .status-chip.pendente,.aprovacao-chip.pendente { color:#92400e; background:var(--amarelo-claro); }
+        .status-chip.ok,.aprovacao-chip.aprovado { color:#166534; background:var(--verde-claro); }
+        .status-chip.divergente,.aprovacao-chip.reprovado { color:#991b1b; background:var(--vermelho-claro); }
+
+        .seletor-item { display:flex; align-items:center; gap:7px; color:var(--cinza); font-size:10px; }
+        .seletor-item input { width:18px; height:18px; }
+        .grade-produto { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 13px; }
+        .campo-info { min-width:0; }
+        .campo-info.full { grid-column:1 / -1; }
+        .campo-info span { display:block; margin-bottom:3px; color:var(--cinza); font-size:9px; }
+        .campo-info strong { display:block; color:#062d63; font-size:13px; line-height:1.3; overflow-wrap:anywhere; }
+
+        .input-contagem { width:100%; min-height:40px; padding:9px 10px; border:1px solid #b9cbe0; border-radius:9px; outline:none; background:#fff; color:#062d63; font-size:14px; }
+        .input-contagem:focus { border-color:#1264e8; box-shadow:0 0 0 3px rgba(18,100,232,.1); }
+        .input-contagem:disabled { background:#eef2f7; color:#64748b; }
+        .diferenca-positiva { color:#166534 !important; }
+        .diferenca-negativa { color:#dc2626 !important; }
+
+        .acoes-card { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:12px; }
+        .botao-card { min-height:40px; border:0; border-radius:9px; color:#fff; font-size:11px; font-weight:800; cursor:pointer; }
+        .botao-card.aprovar { background:var(--verde); }
+        .botao-card.reprovar { background:#ef3138; }
+        .botao-card:disabled { opacity:.45; cursor:not-allowed; }
+
+        .paginacao-mobile { display:flex; align-items:center; justify-content:center; gap:9px; margin-top:15px; }
+        .paginacao-mobile button { min-height:40px; padding:8px 12px; border:1px solid #bfd0e3; border-radius:9px; background:#fff; color:var(--azul); font-weight:700; cursor:pointer; }
+        .paginacao-mobile button:disabled { opacity:.45; }
+        .paginacao-mobile strong { font-size:11px; color:var(--azul); }
+
+        .estado-lista { padding:26px 15px; border:1px dashed #c6d4e4; border-radius:12px; background:#fff; color:var(--cinza); text-align:center; font-size:12px; }
+        .toast-mobile { position:fixed; left:50%; bottom:calc(18px + env(safe-area-inset-bottom)); z-index:1200; width:calc(100% - 28px); max-width:430px; padding:11px 13px; border-radius:10px; background:#0f2d54; color:#fff; text-align:center; font-size:11px; box-shadow:0 8px 25px rgba(15,23,42,.25); transform:translate(-50%,130px); opacity:0; transition:.22s ease; pointer-events:none; }
+        .toast-mobile.ativo { transform:translate(-50%,0); opacity:1; }
+
+        @media (min-width:700px) {
+            .pagina-mobile { padding-left:20px; padding-right:20px; }
+            .indicadores { grid-template-columns:repeat(3,minmax(0,1fr)); }
+            .card-indicador.destaque { grid-column:span 2; }
+            .lista-cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay-mobile" id="overlayMobile"></div>
+
+    <aside class="menu-lateral-mobile" id="menuLateralMobile">
+        <div class="menu-cabecalho">
+            <img src="img/logo.png" alt="SMI WMS">
+            <div>
+                <strong>SMI WMS</strong>
+                <small>Menu principal</small>
+            </div>
+        </div>
+
+        <nav class="menu-links">
+            <a href="dashboard.html">📊 Dashboard</a>
+            <a href="produtos.html">📦 Produtos</a>
+            <a href="entradas.html">📥 Entradas</a>
+            <a href="saidas.html">📤 Saídas</a>
+            <a href="separacao.html">🛒 Separação</a>
+            <a href="transferencias.html">🔄 Transferências</a>
+            <a href="transferencia-mobile.html">📱 Transf. Mobile</a>
+            <a href="posicoes.html">📍 Posições</a>
+            <a href="inventario-mobile.html" class="ativo">📋 Inventário Mobile</a>
+            <a href="inventario.html">🖥️ Inventário Desktop</a>
+            <a href="relatorios.html">📈 Relatórios</a>
+            <a href="requisicao.html">📝 Requisição</a>
+            <a href="configuracoes.html">⚙️ Configurações</a>
+        </nav>
+
+        <button type="button" class="menu-sair" onclick="sairInventarioMobile()">🚪 Sair</button>
+    </aside>
+
+    <header class="topo-mobile">
+        <button type="button" class="botao-menu" onclick="abrirMenuInventarioMobile()" aria-label="Abrir menu">☰</button>
+
+        <div class="marca-mobile">
+            <img src="img/logo.png" alt="Logo SMI">
+            <div>
+                <strong>SMI WMS</strong>
+                <small>Inventário Mobile</small>
+            </div>
+        </div>
+
+        <div class="usuario-mobile" id="usuarioInventarioMobile">—</div>
+    </header>
+
+    <main class="pagina-mobile">
+        <section class="titulo-area">
+            <div>
+                <h1>Inventário</h1>
+                <p>Contagem física e conferência do estoque</p>
+            </div>
+            <div class="selo-mobile">📦 Estoque</div>
+        </section>
+
+        <div class="barra-busca">
+            <span>🔎</span>
+            <input type="search" id="pesquisaInventarioMobile" placeholder="Digite ou bipe o SKU, descrição ou posição..." autocomplete="off" inputmode="search">
+            <button type="button" onclick="focarBuscaInventarioMobile()" title="Bipar código">▥</button>
+        </div>
+        <div class="resultado-busca" id="resultadoPesquisaMobile"></div>
+
+        <div class="acoes-topo">
+            <button type="button" class="acao azul" onclick="carregarInventarioMobile(true)">🔄 Atualizar</button>
+            <button type="button" class="acao verde" onclick="aprovarSelecionadosMobile()">✅ Aprovar</button>
+            <button type="button" class="acao vermelha" onclick="reprovarSelecionadosMobile()">❌ Recusar</button>
+            <button type="button" class="acao secundaria exportar" onclick="exportarInventarioMobile()">📄 Exportar Excel</button>
+            <button type="button" class="acao secundaria" onclick="limparContagensMobile()">🗑️ Limpar</button>
+        </div>
+
+        <section class="indicadores">
+            <article class="card-indicador destaque">
+                <h3>COBERTURA DO INVENTÁRIO</h3>
+                <div class="cobertura-flex">
+                    <div class="anel-cobertura" id="anelCoberturaMobile">
+                        <div class="anel-centro">
+                            <strong id="indCoberturaMobile">0%</strong>
+                            <small>CONCLUÍDO</small>
+                        </div>
+                    </div>
+                    <div class="legenda-cobertura">
+                        <div class="legenda-linha"><i class="bolinha verde"></i><span>Corretos</span><strong id="indCorretosMobile">0</strong></div>
+                        <div class="legenda-linha"><i class="bolinha vermelha"></i><span>Divergentes</span><strong id="indDivergentesMobile">0</strong></div>
+                        <div class="legenda-linha"><i class="bolinha amarela"></i><span>Pendentes</span><strong id="indPendentesMobile">0</strong></div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card-indicador">
+                <h3>ACURÁCIA DO INVENTÁRIO</h3>
+                <div class="valor-indicador" id="indAcuraciaMobile">0,00%</div>
+                <div class="detalhe-indicador">Itens corretos sobre itens contados</div>
+            </article>
+
+            <article class="card-indicador">
+                <h3>DIVERGÊNCIA TOTAL (R$)</h3>
+                <div class="valor-indicador" id="indDivFinanceiraMobile">R$ 0,00</div>
+                <div class="detalhe-indicador">Impacto financeiro das divergências</div>
+            </article>
+
+            <article class="card-indicador">
+                <h3>ITENS COM DIVERGÊNCIA</h3>
+                <div class="valor-indicador" id="indQtdDivergentesMobile">0</div>
+                <div class="detalhe-indicador" id="indPercDivMobile">0,00% dos itens contados</div>
+            </article>
+
+            <article class="card-indicador">
+                <h3>VALOR TOTAL INVENTARIADO</h3>
+                <div class="valor-indicador" id="indValorInventariadoMobile">R$ 0,00</div>
+                <div class="detalhe-indicador">Valor dos itens já contados</div>
+            </article>
+
+            <article class="card-indicador">
+                <h3>TOTAL DE ITENS CONTADOS</h3>
+                <div class="valor-indicador" id="indTotalContadosMobile">0 de 0</div>
+                <div class="detalhe-indicador">Progresso geral do inventário</div>
+            </article>
+        </section>
+
+        <section class="secao-itens">
+            <div class="secao-titulo">
+                <h2>Itens do Inventário</h2>
+                <span id="totalItensMobile">0 itens</span>
+            </div>
+
+            <div class="lista-cards" id="listaInventarioMobile">
+                <div class="estado-lista">Carregando inventário...</div>
+            </div>
+
+            <div class="paginacao-mobile" id="paginacaoInventarioMobile"></div>
+        </section>
+    </main>
+
+    <div class="toast-mobile" id="toastInventarioMobile"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="app.js"></script>
+    <script src="inventario-supabase.js"></script>
+
+    <script>
+        let produtosInventarioMobile = [];
+        let registrosInventarioMobile = [];
+        let mapaInventarioMobile = {};
+        let paginaInventarioMobile = 1;
+        let timerPesquisaMobile = null;
+        let timerAtualizacaoMobile = null;
+        let salvamentosMobile = new Set();
+
+        const ITENS_POR_PAGINA_MOBILE = 20;
+
+        function textoMobile(valor) {
+            return String(valor ?? "").trim();
+        }
+
+        function numeroMobile(valor) {
+            if (valor === null || valor === undefined || textoMobile(valor) === "") return 0;
+            let texto = textoMobile(valor).replace(/\s/g, "");
+            if (texto.includes(".") && texto.includes(",")) texto = texto.replace(/\./g, "").replace(",", ".");
+            else if (texto.includes(",")) texto = texto.replace(",", ".");
+            texto = texto.replace(/[^0-9.-]/g, "");
+            const numero = Number(texto);
+            return Number.isFinite(numero) ? numero : 0;
+        }
+
+        function formatarNumeroMobile(valor) {
+            return numeroMobile(valor).toLocaleString("pt-BR", { minimumFractionDigits:0, maximumFractionDigits:3 });
+        }
+
+        function moedaMobile(valor) {
+            return numeroMobile(valor).toLocaleString("pt-BR", { style:"currency", currency:"BRL" });
+        }
+
+        function escaparHtmlMobile(valor) {
+            return textoMobile(valor)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function chaveProdutoMobile(produto) {
+            return textoMobile(produto?.codigo).toUpperCase() + "__" + textoMobile(produto?.endereco || produto?.posicao).toUpperCase();
+        }
+
+        function obterUsuarioMobile() {
+            return localStorage.getItem("usuario") || localStorage.getItem("nomeUsuario") || "Administrador";
+        }
+
+        function mostrarToastMobile(mensagem) {
+            const toast = document.getElementById("toastInventarioMobile");
+            if (!toast) return;
+            toast.textContent = mensagem;
+            toast.classList.add("ativo");
+            clearTimeout(mostrarToastMobile.timer);
+            mostrarToastMobile.timer = setTimeout(() => toast.classList.remove("ativo"), 2500);
+        }
+
+        function abrirMenuInventarioMobile() {
+            document.getElementById("menuLateralMobile")?.classList.add("aberto");
+            document.getElementById("overlayMobile")?.classList.add("ativo");
+        }
+
+        function fecharMenuInventarioMobile() {
+            document.getElementById("menuLateralMobile")?.classList.remove("aberto");
+            document.getElementById("overlayMobile")?.classList.remove("ativo");
+        }
+
+        function sairInventarioMobile() {
+            if (typeof sairSistema === "function") {
+                sairSistema();
+                return;
+            }
+            localStorage.removeItem("usuario");
+            localStorage.removeItem("nomeUsuario");
+            location.href = "index.html";
+        }
+
+        function focarBuscaInventarioMobile() {
+            const campo = document.getElementById("pesquisaInventarioMobile");
+            if (!campo) return;
+            campo.focus();
+            campo.select();
+        }
+
+        async function buscarProdutosMobile() {
+            if (typeof buscarProdutosInventarioSupabase === "function") {
+                const online = await buscarProdutosInventarioSupabase();
+                if (Array.isArray(online)) return online;
+            }
+
+            try {
+                const local = JSON.parse(localStorage.getItem("estoque")) || [];
+                return Array.isArray(local)
+                    ? local.filter(p => textoMobile(p.endereco || p.posicao) !== "")
+                    : [];
+            } catch (erro) {
+                console.error("Erro ao carregar estoque local:", erro);
+                return [];
+            }
+        }
+
+        function obterProdutosFiltradosMobile() {
+            const campo = document.getElementById("pesquisaInventarioMobile");
+            const bruto = textoMobile(campo?.value).toUpperCase();
+            const termo = bruto.length > 8 ? bruto.substring(0, 8) : bruto;
+
+            if (!termo) return [...produtosInventarioMobile];
+
+            return produtosInventarioMobile.filter(produto => {
+                const codigo = textoMobile(produto.codigo).toUpperCase();
+                const descricao = textoMobile(produto.descricao).toUpperCase();
+                const posicao = textoMobile(produto.endereco || produto.posicao).toUpperCase();
+                return codigo.includes(termo) || descricao.includes(termo) || posicao.includes(termo);
+            });
+        }
+
+        function ordenarProdutosMobile(produtos) {
+            return [...produtos].sort((a,b) => {
+                const pa = textoMobile(a.endereco || a.posicao);
+                const pb = textoMobile(b.endereco || b.posicao);
+                const pos = pa.localeCompare(pb, "pt-BR", { numeric:true, sensitivity:"base" });
+                if (pos !== 0) return pos;
+                return textoMobile(a.codigo).localeCompare(textoMobile(b.codigo), "pt-BR", { numeric:true, sensitivity:"base" });
+            });
+        }
+
+        async function carregarInventarioMobile(forcarMensagem = false) {
+            const lista = document.getElementById("listaInventarioMobile");
+            if (!lista) return;
+
+            if (forcarMensagem) lista.innerHTML = '<div class="estado-lista">Atualizando inventário...</div>';
+
+            if (
+                typeof buscarContagensInventarioSupabase !== "function" ||
+                typeof criarMapaContagensInventario !== "function"
+            ) {
+                lista.innerHTML = '<div class="estado-lista">O módulo online do Inventário não foi carregado.</div>';
+                return;
+            }
+
+            try {
+                const [produtos, registros] = await Promise.all([
+                    buscarProdutosMobile(),
+                    buscarContagensInventarioSupabase()
+                ]);
+
+                produtosInventarioMobile = ordenarProdutosMobile(produtos);
+                registrosInventarioMobile = Array.isArray(registros) ? registros : [];
+                mapaInventarioMobile = criarMapaContagensInventario(registrosInventarioMobile);
+
+                atualizarIndicadoresMobile();
+                renderizarListaMobile();
+
+                if (forcarMensagem) mostrarToastMobile("Inventário atualizado.");
+            } catch (erro) {
+                console.error("Erro ao carregar Inventário Mobile:", erro);
+                lista.innerHTML = '<div class="estado-lista">Não foi possível carregar o inventário.</div>';
+            }
+        }
+
+        function atualizarIndicadoresMobile() {
+            const produtos = produtosInventarioMobile;
+            let contados = 0;
+            let corretos = 0;
+            let divergentes = 0;
+            let divFinanceira = 0;
+            let valorInventariado = 0;
+
+            produtos.forEach(produto => {
+                const registro = mapaInventarioMobile[chaveProdutoMobile(produto)];
+                const qs = numeroMobile(produto.quantidade);
+                let vu = numeroMobile(produto.valor_unitario ?? produto.valorUnitario ?? 0);
+                const vt = numeroMobile(produto.valor_total ?? produto.valorTotal ?? 0);
+                if ((!vu || !Number.isFinite(vu)) && qs > 0 && vt > 0) vu = vt / qs;
+
+                const temContagem = registro && registro.quantidade_contada !== null && registro.quantidade_contada !== undefined;
+                if (!temContagem) return;
+
+                contados++;
+                const qc = numeroMobile(registro.quantidade_contada);
+                const diferenca = qc - qs;
+                const impacto = diferenca * vu;
+                valorInventariado += qc * vu;
+                divFinanceira += impacto;
+                if (diferenca === 0) corretos++;
+                else divergentes++;
+            });
+
+            const total = produtos.length;
+            const pendentes = Math.max(0, total - contados);
+            const cobertura = total ? (contados / total) * 100 : 0;
+            const acuracia = contados ? (corretos / contados) * 100 : 0;
+            const percentualDivergencia = contados ? (divergentes / contados) * 100 : 0;
+
+            const set = (id, valor) => {
+                const elemento = document.getElementById(id);
+                if (elemento) elemento.textContent = valor;
+            };
+
+            set("indCoberturaMobile", cobertura.toFixed(1).replace(".", ",") + "%");
+            set("indCorretosMobile", corretos.toLocaleString("pt-BR"));
+            set("indDivergentesMobile", divergentes.toLocaleString("pt-BR"));
+            set("indPendentesMobile", pendentes.toLocaleString("pt-BR"));
+            set("indAcuraciaMobile", acuracia.toFixed(2).replace(".", ",") + "%");
+            set("indDivFinanceiraMobile", moedaMobile(divFinanceira));
+            set("indQtdDivergentesMobile", divergentes.toLocaleString("pt-BR"));
+            set("indPercDivMobile", percentualDivergencia.toFixed(2).replace(".", ",") + "% dos itens contados");
+            set("indValorInventariadoMobile", moedaMobile(valorInventariado));
+            set("indTotalContadosMobile", contados.toLocaleString("pt-BR") + " de " + total.toLocaleString("pt-BR"));
+
+            const grausVerde = Math.max(0, Math.min(360, cobertura * 3.6));
+            const anel = document.getElementById("anelCoberturaMobile");
+            if (anel) {
+                anel.style.background = `conic-gradient(var(--verde) 0deg, var(--verde) ${grausVerde}deg, #fbbf24 ${grausVerde}deg, #fbbf24 360deg)`;
+            }
+        }
+
+        function renderizarListaMobile() {
+            const lista = document.getElementById("listaInventarioMobile");
+            const resultado = document.getElementById("resultadoPesquisaMobile");
+            const totalLabel = document.getElementById("totalItensMobile");
+            if (!lista) return;
+
+            const filtrados = ordenarProdutosMobile(obterProdutosFiltradosMobile());
+            const campo = document.getElementById("pesquisaInventarioMobile");
+            const pesquisando = textoMobile(campo?.value) !== "";
+
+            if (resultado) {
+                resultado.textContent = pesquisando
+                    ? `${filtrados.length.toLocaleString("pt-BR")} item(ns) encontrado(s) em toda a base`
+                    : "";
+            }
+
+            if (totalLabel) totalLabel.textContent = `${filtrados.length.toLocaleString("pt-BR")} itens`;
+
+            if (filtrados.length === 0) {
+                lista.innerHTML = '<div class="estado-lista">Nenhum item encontrado.</div>';
+                renderizarPaginacaoMobile(0);
+                return;
+            }
+
+            const totalPaginas = Math.max(1, Math.ceil(filtrados.length / ITENS_POR_PAGINA_MOBILE));
+            if (paginaInventarioMobile > totalPaginas) paginaInventarioMobile = totalPaginas;
+            if (paginaInventarioMobile < 1) paginaInventarioMobile = 1;
+
+            const inicio = (paginaInventarioMobile - 1) * ITENS_POR_PAGINA_MOBILE;
+            const pagina = filtrados.slice(inicio, inicio + ITENS_POR_PAGINA_MOBILE);
+
+            lista.innerHTML = pagina.map((produto, indice) => montarCardMobile(produto, inicio + indice + 1)).join("");
+            ativarEventosCardsMobile();
+            renderizarPaginacaoMobile(filtrados.length);
+        }
+
+        function montarCardMobile(produto, numeroItem) {
+            const chave = chaveProdutoMobile(produto);
+            const registro = mapaInventarioMobile[chave];
+            const qs = numeroMobile(produto.quantidade);
+            const temContagem = registro && registro.quantidade_contada !== null && registro.quantidade_contada !== undefined;
+            const qc = temContagem ? numeroMobile(registro.quantidade_contada) : null;
+            const diferenca = temContagem ? qc - qs : null;
+            const situacao = textoMobile(registro?.situacao_aprovacao || "PENDENTE").toUpperCase();
+
+            let classeStatus = "pendente";
+            let textoStatus = "🟡 Pendente";
+            if (temContagem && diferenca === 0) { classeStatus = "ok"; textoStatus = "🟢 OK"; }
+            if (temContagem && diferenca !== 0) { classeStatus = "divergente"; textoStatus = "🔴 Divergente"; }
+
+            let classeAprovacao = "pendente";
+            let textoAprovacao = temContagem ? "🟡 Pendente" : "🟡 Sem contagem";
+            if (situacao === "APROVADO") { classeAprovacao = "aprovado"; textoAprovacao = "🟢 Aprovado"; }
+            if (situacao === "REPROVADO") { classeAprovacao = "reprovado"; textoAprovacao = "🔴 Reprovado"; }
+
+            const classeCard = situacao === "APROVADO" ? "aprovado" : classeStatus;
+            const bloqueado = situacao === "APROVADO" ? "disabled" : "";
+            const checkBloqueado = (!temContagem || situacao === "APROVADO") ? "disabled" : "";
+            const diferencaClasse = diferenca === null ? "" : diferenca > 0 ? "diferenca-positiva" : diferenca < 0 ? "diferenca-negativa" : "";
+
+            return `
+                <article class="card-produto ${classeCard}" data-chave="${escaparHtmlMobile(chave)}">
+                    <div class="card-topo">
+                        <span class="status-chip ${classeStatus}">${textoStatus}</span>
+                        <label class="seletor-item">
+                            #${numeroItem}
+                            <input type="checkbox" class="check-mobile" data-chave="${escaparHtmlMobile(chave)}" ${checkBloqueado}>
+                        </label>
+                    </div>
+
+                    <div class="grade-produto">
+                        <div class="campo-info">
+                            <span>Código</span>
+                            <strong>${escaparHtmlMobile(produto.codigo || "-")}</strong>
+                        </div>
+                        <div class="campo-info">
+                            <span>Posição</span>
+                            <strong>${escaparHtmlMobile(produto.endereco || produto.posicao || "-")}</strong>
+                        </div>
+
+                        <div class="campo-info full">
+                            <span>Descrição</span>
+                            <strong>${escaparHtmlMobile(produto.descricao || "Sem descrição")}</strong>
+                        </div>
+
+                        <div class="campo-info">
+                            <span>Qtde Sistema</span>
+                            <strong>${formatarNumeroMobile(qs)}</strong>
+                        </div>
+                        <div class="campo-info">
+                            <span>Qtde Contada</span>
+                            <input
+                                type="number"
+                                min="0"
+                                step="0.001"
+                                class="input-contagem"
+                                data-chave="${escaparHtmlMobile(chave)}"
+                                placeholder="Digite a quantidade"
+                                value="${temContagem ? escaparHtmlMobile(registro.quantidade_contada) : ""}"
+                                ${bloqueado}
+                            >
+                        </div>
+
+                        <div class="campo-info">
+                            <span>Diferença</span>
+                            <strong class="diferenca-mobile ${diferencaClasse}">${diferenca === null ? "-" : formatarNumeroMobile(diferenca)}</strong>
+                        </div>
+                        <div class="campo-info">
+                            <span>Contado por</span>
+                            <strong>${escaparHtmlMobile(registro?.usuario || "-")}</strong>
+                        </div>
+
+                        <div class="campo-info full">
+                            <span>Aprovação</span>
+                            <span class="aprovacao-chip ${classeAprovacao}">${textoAprovacao}</span>
+                        </div>
+                    </div>
+
+                    <div class="acoes-card">
+                        <button type="button" class="botao-card aprovar btn-aprovar-card" data-chave="${escaparHtmlMobile(chave)}" ${(!temContagem || situacao === "APROVADO") ? "disabled" : ""}>✅ Aprovar</button>
+                        <button type="button" class="botao-card reprovar btn-reprovar-card" data-chave="${escaparHtmlMobile(chave)}" ${(!temContagem || situacao === "APROVADO") ? "disabled" : ""}>❌ Recusar</button>
+                    </div>
+                </article>
+            `;
+        }
+
+        function ativarEventosCardsMobile() {
+            document.querySelectorAll(".input-contagem").forEach(input => {
+                let timer = null;
+
+                input.addEventListener("input", () => {
+                    atualizarVisualCardMobile(input.dataset.chave, input.value);
+                    clearTimeout(timer);
+
+                    if (textoMobile(input.value) === "") return;
+
+                    timer = setTimeout(async () => {
+                        const chave = input.dataset.chave;
+                        const produto = produtosInventarioMobile.find(p => chaveProdutoMobile(p) === chave);
+                        if (!produto || typeof salvarContagemInventarioSupabase !== "function") return;
+
+                        salvamentosMobile.add(chave);
+                        input.disabled = true;
+
+                        try {
+                            const resposta = await salvarContagemInventarioSupabase(produto, input.value);
+                            if (resposta?.sucesso && resposta.registro) {
+                                mapaInventarioMobile[chave] = resposta.registro;
+                                registrosInventarioMobile = Object.values(mapaInventarioMobile);
+                                atualizarIndicadoresMobile();
+                                mostrarToastMobile("Contagem salva.");
+                            }
+                        } finally {
+                            salvamentosMobile.delete(chave);
+                            const situacao = textoMobile(mapaInventarioMobile[chave]?.situacao_aprovacao).toUpperCase();
+                            if (situacao !== "APROVADO") input.disabled = false;
+                            renderizarListaMobile();
+                        }
+                    }, 600);
+                });
+            });
+
+            document.querySelectorAll(".btn-aprovar-card").forEach(botao => {
+                botao.addEventListener("click", () => aprovarRegistroMobile(botao.dataset.chave));
+            });
+
+            document.querySelectorAll(".btn-reprovar-card").forEach(botao => {
+                botao.addEventListener("click", () => reprovarRegistroMobile(botao.dataset.chave));
+            });
+        }
+
+        function atualizarVisualCardMobile(chave, valor) {
+            const card = document.querySelector(`.card-produto[data-chave="${CSS.escape(chave)}"]`);
+            if (!card) return;
+            const produto = produtosInventarioMobile.find(p => chaveProdutoMobile(p) === chave);
+            if (!produto) return;
+
+            const elementoDif = card.querySelector(".diferenca-mobile");
+            const status = card.querySelector(".status-chip");
+            if (!elementoDif || !status) return;
+
+            elementoDif.classList.remove("diferenca-positiva","diferenca-negativa");
+            card.classList.remove("ok","divergente");
+            status.classList.remove("ok","divergente","pendente");
+
+            if (textoMobile(valor) === "") {
+                elementoDif.textContent = "-";
+                status.classList.add("pendente");
+                status.textContent = "🟡 Pendente";
+                return;
+            }
+
+            const diferenca = numeroMobile(valor) - numeroMobile(produto.quantidade);
+            elementoDif.textContent = formatarNumeroMobile(diferenca);
+
+            if (diferenca === 0) {
+                card.classList.add("ok");
+                status.classList.add("ok");
+                status.textContent = "🟢 OK";
+            } else {
+                card.classList.add("divergente");
+                status.classList.add("divergente");
+                status.textContent = "🔴 Divergente";
+                elementoDif.classList.add(diferenca > 0 ? "diferenca-positiva" : "diferenca-negativa");
+            }
+        }
+
+        async function aprovarRegistroMobile(chave) {
+            const registro = mapaInventarioMobile[chave];
+            if (!registro || typeof aprovarContagemInventarioSupabase !== "function") {
+                alert("Este item ainda não possui uma contagem salva.");
+                return;
+            }
+
+            const confirmou = confirm(
+                "Deseja aprovar esta contagem?\n\n" +
+                "Código: " + (registro.codigo || "-") +
+                "\nQuantidade atual: " + registro.quantidade_sistema +
+                "\nQuantidade contada: " + registro.quantidade_contada +
+                "\n\nO estoque oficial será ajustado."
+            );
+            if (!confirmou) return;
+
+            const resultado = await aprovarContagemInventarioSupabase(registro);
+            if (resultado?.sucesso) {
+                mostrarToastMobile("Inventário aprovado e estoque ajustado.");
+                await carregarInventarioMobile();
+            }
+        }
+
+        async function reprovarRegistroMobile(chave) {
+            const registro = mapaInventarioMobile[chave];
+            if (!registro || typeof reprovarContagemInventarioSupabase !== "function") {
+                alert("Este item ainda não possui uma contagem salva.");
+                return;
+            }
+
+            const motivo = prompt("Informe o motivo da reprovação:", "");
+            if (motivo === null) return;
+
+            const resultado = await reprovarContagemInventarioSupabase(registro, motivo);
+            if (resultado?.sucesso) {
+                mostrarToastMobile("Contagem recusada. O estoque não foi alterado.");
+                await carregarInventarioMobile();
+            }
+        }
+
+        async function aprovarSelecionadosMobile() {
+            const checks = Array.from(document.querySelectorAll(".check-mobile:checked"));
+            if (checks.length === 0) {
+                alert("Selecione pelo menos um item contado.");
+                return;
+            }
+
+            if (!confirm(`Deseja aprovar ${checks.length} item(ns) selecionado(s)?\n\nAs quantidades oficiais serão ajustadas.`)) return;
+
+            let aprovados = 0;
+            let falhas = 0;
+
+            for (const check of checks) {
+                const registro = mapaInventarioMobile[check.dataset.chave];
+                if (!registro) { falhas++; continue; }
+                const resultado = await aprovarContagemInventarioSupabase(registro);
+                if (resultado?.sucesso) aprovados++;
+                else falhas++;
+            }
+
+            await carregarInventarioMobile();
+            alert(`Aprovação concluída.\n\nAprovados: ${aprovados}${falhas ? `\nNão processados: ${falhas}` : ""}`);
+        }
+
+        async function reprovarSelecionadosMobile() {
+            const checks = Array.from(document.querySelectorAll(".check-mobile:checked"));
+            if (checks.length === 0) {
+                alert("Selecione pelo menos um item contado.");
+                return;
+            }
+
+            const motivo = prompt("Informe o motivo da recusa dos itens selecionados:", "Contagem recusada em lote.");
+            if (motivo === null) return;
+
+            let reprovados = 0;
+            let falhas = 0;
+
+            for (const check of checks) {
+                const registro = mapaInventarioMobile[check.dataset.chave];
+                if (!registro) { falhas++; continue; }
+                const resultado = await reprovarContagemInventarioSupabase(registro, motivo);
+                if (resultado?.sucesso) reprovados++;
+                else falhas++;
+            }
+
+            await carregarInventarioMobile();
+            alert(`Recusa concluída.\n\nRecusados: ${reprovados}${falhas ? `\nNão processados: ${falhas}` : ""}`);
+        }
+
+        async function limparContagensMobile() {
+            if (typeof limparContagensInventarioSupabase !== "function") return;
+
+            const confirmou = confirm(
+                "Deseja limpar todas as contagens compartilhadas?\n\n" +
+                "Essa ação será aplicada para todos os usuários."
+            );
+            if (!confirmou) return;
+
+            const sucesso = await limparContagensInventarioSupabase();
+            if (!sucesso) return;
+
+            mostrarToastMobile("Contagens compartilhadas limpas.");
+            await carregarInventarioMobile();
+        }
+
+        function exportarInventarioMobile() {
+            if (typeof XLSX === "undefined") {
+                alert("A biblioteca de exportação Excel não foi carregada.");
+                return;
+            }
+
+            const produtos = obterProdutosFiltradosMobile();
+            if (produtos.length === 0) {
+                alert("Não há dados para exportar.");
+                return;
+            }
+
+            const dados = produtos.map(produto => {
+                const registro = mapaInventarioMobile[chaveProdutoMobile(produto)];
+                const qs = numeroMobile(produto.quantidade);
+                const tem = registro && registro.quantidade_contada !== null && registro.quantidade_contada !== undefined;
+                const qc = tem ? numeroMobile(registro.quantidade_contada) : null;
+                const d = tem ? qc - qs : null;
+                let status = "Pendente";
+                if (tem && d === 0) status = "OK";
+                if (tem && d !== 0) status = "Divergente";
+
+                return {
+                    "Código": produto.codigo || "",
+                    "Descrição": produto.descricao || "",
+                    "Posição": produto.endereco || produto.posicao || "",
+                    "Qtde Sistema": qs,
+                    "Qtde Contada": tem ? qc : "",
+                    "Diferença": d === null ? "" : d,
+                    "Status": status,
+                    "Contado por": registro?.usuario || "",
+                    "Aprovação": registro?.situacao_aprovacao || "PENDENTE"
+                };
+            });
+
+            const planilha = XLSX.utils.json_to_sheet(dados);
+            const livro = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(livro, planilha, "Inventário");
+            XLSX.writeFile(livro, "inventario_mobile_smi.xlsx");
+        }
+
+        function renderizarPaginacaoMobile(totalItens) {
+            const area = document.getElementById("paginacaoInventarioMobile");
+            if (!area) return;
+            area.innerHTML = "";
+            if (totalItens === 0) return;
+
+            const totalPaginas = Math.max(1, Math.ceil(totalItens / ITENS_POR_PAGINA_MOBILE));
+
+            const anterior = document.createElement("button");
+            anterior.type = "button";
+            anterior.textContent = "⬅ Anterior";
+            anterior.disabled = paginaInventarioMobile <= 1;
+            anterior.onclick = () => {
+                if (paginaInventarioMobile <= 1) return;
+                paginaInventarioMobile--;
+                renderizarListaMobile();
+                window.scrollTo({ top:document.querySelector(".secao-itens").offsetTop - 70, behavior:"smooth" });
+            };
+
+            const texto = document.createElement("strong");
+            texto.textContent = `Página ${paginaInventarioMobile} de ${totalPaginas}`;
+
+            const proxima = document.createElement("button");
+            proxima.type = "button";
+            proxima.textContent = "Próxima ➡";
+            proxima.disabled = paginaInventarioMobile >= totalPaginas;
+            proxima.onclick = () => {
+                if (paginaInventarioMobile >= totalPaginas) return;
+                paginaInventarioMobile++;
+                renderizarListaMobile();
+                window.scrollTo({ top:document.querySelector(".secao-itens").offsetTop - 70, behavior:"smooth" });
+            };
+
+            area.append(anterior, texto, proxima);
+        }
+
+        async function atualizarInventarioMobileAutomatico() {
+            if (document.querySelector(".check-mobile:checked")) return;
+            if (salvamentosMobile.size > 0) return;
+
+            const ativo = document.activeElement;
+            if (ativo && ativo.classList?.contains("input-contagem")) return;
+            if (ativo?.id === "pesquisaInventarioMobile") return;
+
+            await carregarInventarioMobile();
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const usuario = document.getElementById("usuarioInventarioMobile");
+            if (usuario) usuario.textContent = obterUsuarioMobile();
+
+            document.getElementById("overlayMobile")?.addEventListener("click", fecharMenuInventarioMobile);
+            document.querySelectorAll(".menu-links a").forEach(link => link.addEventListener("click", fecharMenuInventarioMobile));
+
+            const pesquisa = document.getElementById("pesquisaInventarioMobile");
+            if (pesquisa) {
+                pesquisa.addEventListener("input", () => {
+                    clearTimeout(timerPesquisaMobile);
+                    timerPesquisaMobile = setTimeout(() => {
+                        paginaInventarioMobile = 1;
+                        renderizarListaMobile();
+                    }, 180);
+                });
+
+                pesquisa.addEventListener("keydown", evento => {
+                    if (evento.key === "Enter") {
+                        evento.preventDefault();
+                        paginaInventarioMobile = 1;
+                        renderizarListaMobile();
+                    }
+                });
+            }
+
+            await carregarInventarioMobile();
+            focarBuscaInventarioMobile();
+
+            timerAtualizacaoMobile = setInterval(atualizarInventarioMobileAutomatico, 5000);
+        });
+    </script>
+</body>
+</html>
