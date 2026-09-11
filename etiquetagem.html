@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Etiquetagem | SMI WMS</title>
+
+    <!-- CÓDIGO DE BARRAS -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+
+    <!-- QR CODE -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f3f6fa;
+            color: #14213d;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           MENU LATERAL
+        ========================= */
+
+        .sidebar {
+            width: 235px;
+            min-height: 100vh;
+            background: #101d2f;
+            color: white;
+            padding: 25px 12px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 35px;
+            padding-left: 15px;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin-bottom: 7px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #d7e0eb;
+            text-decoration: none;
+            padding: 13px 15px;
+            border-radius: 8px;
+            transition: 0.2s;
+            font-size: 15px;
+        }
+
+        .menu a:hover {
+            background: #1d3049;
+            color: white;
+        }
+
+        .menu a.ativo {
+            background: #087bea;
+            color: white;
+            font-weight: 700;
+        }
+
+        .icone {
+            font-size: 19px;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* =========================
+           CONTEÚDO
+        ========================= */
+
+        .conteudo {
+            margin-left: 235px;
+            width: calc(100% - 235px);
+            padding: 30px;
+        }
+
+        .titulo-pagina {
+            margin-bottom: 25px;
+        }
+
+        .titulo-pagina h1 {
+            font-size: 30px;
+            margin-bottom: 7px;
+        }
+
+        .titulo-pagina p {
+            color: #637083;
+            font-size: 15px;
+        }
+
+        .grid-principal {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 13px;
+            padding: 24px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 22px;
+        }
+
+        /* =========================
+           FORMULÁRIO
+        ========================= */
+
+        .campo {
+            margin-bottom: 17px;
+        }
+
+        .campo label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .campo input {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #cad3df;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .campo input:focus {
+            border-color: #087bea;
+            box-shadow: 0 0 0 3px rgba(8, 123, 234, 0.10);
+        }
+
+        .campo-pequeno {
+            max-width: 180px;
+        }
+
+        .botoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-gerar {
+            background: #087bea;
+            color: white;
+        }
+
+        .btn-limpar {
+            background: #e4e9ef;
+            color: #14213d;
+        }
+
+        .btn-imprimir {
+            background: #18a957;
+            color: white;
+        }
+
+        /* =========================
+           PRÉ-VISUALIZAÇÃO
+        ========================= */
+
+        .preview-area {
+            background: #edf1f5;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 430px;
+            overflow: auto;
+        }
+
+        .mensagem-vazia {
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #7a8797;
+        }
+
+        .etiqueta {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border: 1px solid #727272;
+            border-radius: 7px;
+            padding: 18px;
+            margin: 0 auto 20px;
+            color: black;
+        }
+
+        .cabecalho-etiqueta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid black;
+            padding-bottom: 12px;
+            margin-bottom: 14px;
+        }
+
+        .logo-etiqueta {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo-etiqueta span {
+            color: #087bea;
+        }
+
+        .status-etiqueta {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .corpo-etiqueta {
+            display: grid;
+            grid-template-columns: 1fr 105px;
+            gap: 10px;
+        }
+
+        .dados-etiqueta p {
+            font-size: 17px;
+            margin-bottom: 9px;
+        }
+
+        .dados-etiqueta strong {
+            display: inline-block;
+            min-width: 80px;
+        }
+
+        .qrcode {
+            width: 100px;
+            height: 100px;
+        }
+
+        .qrcode img {
+            max-width: 100%;
+        }
+
+        .codigo-barras {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .codigo-barras svg {
+            max-width: 100%;
+        }
+
+        .volume-destaque {
+            font-weight: bold;
+        }
+
+        /* =========================
+           HISTÓRICO
+        ========================= */
+
+        .historico {
+            margin-top: 22px;
+        }
+
+        .tabela-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e7ed;
+            text-align: left;
+        }
+
+        th {
+            background: #eef3f8;
+        }
+
+        .status-pronto {
+            display: inline-block;
+            background: #dff7e8;
+            color: #118143;
+            padding: 6px 10px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           RESPONSIVO
+        ========================= */
+
+        @media(max-width: 1000px) {
+
+            .grid-principal {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width: 700px) {
+
+            .sidebar {
+                width: 75px;
+            }
+
+            .logo {
+                font-size: 15px;
+                padding-left: 5px;
+            }
+
+            .menu a span.texto {
+                display: none;
+            }
+
+            .conteudo {
+                margin-left: 75px;
+                width: calc(100% - 75px);
+                padding: 15px;
+            }
+
+        }
+
+        /* =========================
+           IMPRESSÃO
+        ========================= */
+
+        @media print {
+
+            body * {
+                visibility: hidden;
+            }
+
+            #areaImpressao,
+            #areaImpressao * {
+                visibility: visible;
+            }
+
+            #areaImpressao {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white;
+                padding: 0;
+            }
+
+            .etiqueta {
+                page-break-after: always;
+                box-shadow: none;
+                border: 2px solid black;
+                max-width: none;
+            }
+
+            .etiqueta:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- MENU -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            SMI WMS
+        </div>
+
+        <ul class="menu">
+
+            <li>
+                <a href="index.html">
+                    <span class="icone">📊</span>
+                    <span class="texto">Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="produtos.html">
+                    <span class="icone">📦</span>
+                    <span class="texto">Produtos</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="posicoes.html">
+                    <span class="icone">🏭</span>
+                    <span class="texto">Posições</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="entradas.html">
+                    <span class="icone">📥</span>
+                    <span class="texto">Entradas</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="saidas.html">
+                    <span class="icone">📤</span>
+                    <span class="texto">Saídas</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="transferencias.html">
+                    <span class="icone">🔄</span>
+                    <span class="texto">Transferências</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="requisicao.html">
+                    <span class="icone">🧾</span>
+                    <span class="texto">Requisição</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="relatorios.html">
+                    <span class="icone">📈</span>
+                    <span class="texto">Relatórios</span>
+                </a>
+            </li>
+
+            <li>
+                <a
+                    href="etiquetagem.html"
+                    class="ativo"
+                >
+                    <span class="icone">🏷️</span>
+                    <span class="texto">Etiquetagem</span>
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+    <main class="conteudo">
+
+        <div class="titulo-pagina">
+
+            <h1>🏷️ Etiquetagem de Pedidos</h1>
+
+            <p>
+                Preencha os dados do cliente para gerar e imprimir
+                as etiquetas do pedido separado.
+            </p>
+
+        </div>
+
+        <div class="grid-principal">
+
+            <!-- FORMULÁRIO -->
+            <section class="card">
+
+                <h2>Dados do Pedido</h2>
+
+                <div class="campo">
+
+                    <label for="cliente">
+                        Nome do Cliente
+                    </label>
+
+                    <input
+                        type="text"
+                        id="cliente"
+                        placeholder="Ex.: Supermercado Exemplo Ltda"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <div class="campo">
+
+                    <label for="nf">
+                        Número da Nota Fiscal
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nf"
+                        placeholder="Ex.: 45879"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <div class="campo">
+
+                    <label for="pedido">
+                        Número do Pedido
+                    </label>
+
+                    <input
+                        type="text"
+                        id="pedido"
+                        placeholder="Ex.: 1700130710"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <div class="campo campo-pequeno">
+
+                    <label for="volumes">
+                        Quantidade de Volumes
+                    </label>
+
+                    <input
+                        type="number"
+                        id="volumes"
+                        value="1"
+                        min="1"
+                        max="100"
+                    >
+
+                </div>
+
+                <div class="botoes">
+
+                    <button
+                        class="btn-gerar"
+                        onclick="gerarEtiquetas()"
+                    >
+                        🏷️ Gerar Etiqueta
+                    </button>
+
+                    <button
+                        class="btn-limpar"
+                        onclick="limparCampos()"
+                    >
+                        🔄 Limpar
+                    </button>
+
+                    <button
+                        class="btn-imprimir"
+                        onclick="imprimirEtiquetas()"
+                    >
+                        🖨️ Imprimir Etiqueta
+                    </button>
+
+                </div>
+
+            </section>
+
+            <!-- PREVIEW -->
+            <section class="card">
+
+                <h2>Pré-visualização da Etiqueta</h2>
+
+                <div
+                    class="preview-area"
+                    id="areaImpressao"
+                >
+
+                    <div
+                        id="mensagemVazia"
+                        class="mensagem-vazia"
+                    >
+                        Preencha os dados do pedido e clique em
+                        <strong>&nbsp;Gerar Etiqueta</strong>.
+                    </div>
+
+                    <div id="listaEtiquetas"></div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- HISTÓRICO -->
+        <section class="card historico">
+
+            <h2>📋 Etiquetas Geradas Hoje</h2>
+
+            <div class="tabela-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Cliente</th>
+                            <th>NF</th>
+                            <th>Pedido</th>
+                            <th>Volumes</th>
+                            <th>Data/Hora</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="historicoEtiquetas">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    let etiquetasAtuais = [];
+
+
+    // ===============================================
+    // GERAR ETIQUETAS
+    // ===============================================
+
+    function gerarEtiquetas() {
+
+        const cliente =
+            document.getElementById("cliente").value.trim();
+
+        const nf =
+            document.getElementById("nf").value.trim();
+
+        const pedido =
+            document.getElementById("pedido").value.trim();
+
+        const volumes =
+            parseInt(
+                document.getElementById("volumes").value
+            );
+
+
+        if (!cliente) {
+
+            alert("Informe o nome do cliente.");
+
+            document
+                .getElementById("cliente")
+                .focus();
+
+            return;
+        }
+
+
+        if (!nf) {
+
+            alert("Informe o número da Nota Fiscal.");
+
+            document
+                .getElementById("nf")
+                .focus();
+
+            return;
+        }
+
+
+        if (!pedido) {
+
+            alert("Informe o número do pedido.");
+
+            document
+                .getElementById("pedido")
+                .focus();
+
+            return;
+        }
+
+
+        if (
+            !volumes ||
+            volumes < 1
+        ) {
+
+            alert("Informe a quantidade de volumes.");
+
+            return;
+        }
+
+
+        const lista =
+            document.getElementById("listaEtiquetas");
+
+
+        const mensagem =
+            document.getElementById("mensagemVazia");
+
+
+        mensagem.style.display = "none";
+
+        lista.innerHTML = "";
+
+        etiquetasAtuais = [];
+
+
+        for (
+            let volume = 1;
+            volume <= volumes;
+            volume++
+        ) {
+
+            const id =
+                Date.now() +
+                "-" +
+                volume;
+
+
+            const dadosCodigo =
+                pedido +
+                "|" +
+                nf +
+                "|" +
+                volume +
+                "/" +
+                volumes;
+
+
+            const etiqueta =
+                document.createElement("div");
+
+
+            etiqueta.className = "etiqueta";
+
+
+            etiqueta.innerHTML = `
+
+                <div class="cabecalho-etiqueta">
+
+                    <div class="logo-etiqueta">
+                        <span>SMI</span> WMS
+                    </div>
+
+                    <div class="status-etiqueta">
+                        PEDIDO SEPARADO
+                    </div>
+
+                </div>
+
+
+                <div class="corpo-etiqueta">
+
+                    <div class="dados-etiqueta">
+
+                        <p>
+                            <strong>Cliente:</strong>
+                            ${escaparHTML(cliente)}
+                        </p>
+
+                        <p>
+                            <strong>NF:</strong>
+                            ${escaparHTML(nf)}
+                        </p>
+
+                        <p>
+                            <strong>Pedido:</strong>
+                            ${escaparHTML(pedido)}
+                        </p>
+
+                        <p class="volume-destaque">
+                            <strong>Volume:</strong>
+                            ${volume}/${volumes}
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="qrcode"
+                        id="qr-${id}"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="codigo-barras">
+
+                    <svg
+                        id="barcode-${id}"
+                    >
+                    </svg>
+
+                </div>
+
+            `;
+
+
+            lista.appendChild(etiqueta);
+
+
+            // QR CODE
+            new QRCode(
+                document.getElementById(
+                    `qr-${id}`
+                ),
+                {
+                    text: dadosCodigo,
+
+                    width: 100,
+
+                    height: 100,
+
+                    correctLevel:
+                        QRCode.CorrectLevel.M
+                }
+            );
+
+
+            // CÓDIGO DE BARRAS
+            JsBarcode(
+                `#barcode-${id}`,
+
+                pedido,
+
+                {
+                    format: "CODE128",
+
+                    width: 2,
+
+                    height: 65,
+
+                    displayValue: true,
+
+                    fontSize: 16,
+
+                    margin: 5
+                }
+            );
+
+
+            etiquetasAtuais.push({
+
+                cliente,
+
+                nf,
+
+                pedido,
+
+                volume,
+
+                volumes
+
+            });
+
+        }
+
+
+        salvarHistorico(
+            cliente,
+            nf,
+            pedido,
+            volumes
+        );
+
+    }
+
+
+
+    // ===============================================
+    // IMPRIMIR
+    // ===============================================
+
+    function imprimirEtiquetas() {
+
+        if (
+            etiquetasAtuais.length === 0
+        ) {
+
+            alert(
+                "Primeiro gere a etiqueta."
+            );
+
+            return;
+        }
+
+
+        window.print();
+
+    }
+
+
+
+    // ===============================================
+    // LIMPAR
+    // ===============================================
+
+    function limparCampos() {
+
+        document.getElementById(
+            "cliente"
+        ).value = "";
+
+
+        document.getElementById(
+            "nf"
+        ).value = "";
+
+
+        document.getElementById(
+            "pedido"
+        ).value = "";
+
+
+        document.getElementById(
+            "volumes"
+        ).value = 1;
+
+
+        document.getElementById(
+            "listaEtiquetas"
+        ).innerHTML = "";
+
+
+        document.getElementById(
+            "mensagemVazia"
+        ).style.display = "flex";
+
+
+        etiquetasAtuais = [];
+
+
+        document.getElementById(
+            "cliente"
+        ).focus();
+
+    }
+
+
+
+    // ===============================================
+    // HISTÓRICO
+    // ===============================================
+
+    function salvarHistorico(
+        cliente,
+        nf,
+        pedido,
+        volumes
+    ) {
+
+        let historico =
+            JSON.parse(
+                localStorage.getItem(
+                    "wms_etiquetas"
+                )
+            ) || [];
+
+
+        const agora =
+            new Date();
+
+
+        const registro = {
+
+            cliente,
+
+            nf,
+
+            pedido,
+
+            volumes,
+
+            data:
+                agora.toLocaleDateString(
+                    "pt-BR"
+                ),
+
+            hora:
+                agora.toLocaleTimeString(
+                    "pt-BR",
+                    {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }
+                )
+
+        };
+
+
+        historico.unshift(
+            registro
+        );
+
+
+        if (
+            historico.length > 100
+        ) {
+
+            historico =
+                historico.slice(
+                    0,
+                    100
+                );
+
+        }
+
+
+        localStorage.setItem(
+            "wms_etiquetas",
+            JSON.stringify(historico)
+        );
+
+
+        carregarHistorico();
+
+    }
+
+
+
+    // ===============================================
+    // CARREGAR HISTÓRICO
+    // ===============================================
+
+    function carregarHistorico() {
+
+        const tabela =
+            document.getElementById(
+                "historicoEtiquetas"
+            );
+
+
+        const historico =
+            JSON.parse(
+                localStorage.getItem(
+                    "wms_etiquetas"
+                )
+            ) || [];
+
+
+        const hoje =
+            new Date()
+                .toLocaleDateString(
+                    "pt-BR"
+                );
+
+
+        const registrosHoje =
+            historico.filter(
+                item =>
+                    item.data === hoje
+            );
+
+
+        tabela.innerHTML = "";
+
+
+        if (
+            registrosHoje.length === 0
+        ) {
+
+            tabela.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        style="
+                            text-align:center;
+                            color:#7a8797;
+                            padding:25px;
+                        "
+                    >
+                        Nenhuma etiqueta gerada hoje.
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+        }
+
+
+        registrosHoje.forEach(
+            item => {
+
+                tabela.innerHTML += `
+
+                    <tr>
+
+                        <td>
+                            ${escaparHTML(item.cliente)}
+                        </td>
+
+                        <td>
+                            ${escaparHTML(item.nf)}
+                        </td>
+
+                        <td>
+                            ${escaparHTML(item.pedido)}
+                        </td>
+
+                        <td>
+                            ${item.volumes}
+                        </td>
+
+                        <td>
+                            ${item.data}
+                            ${item.hora}
+                        </td>
+
+                        <td>
+
+                            <span class="status-pronto">
+                                ✓ Pronto para impressão
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+
+    // ===============================================
+    // SEGURANÇA TEXTO
+    // ===============================================
+
+    function escaparHTML(texto) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.textContent =
+            texto;
+
+
+        return div.innerHTML;
+
+    }
+
+
+
+    // ===============================================
+    // INICIALIZAÇÃO
+    // ===============================================
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            carregarHistorico();
+
+            document
+                .getElementById(
+                    "cliente"
+                )
+                .focus();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
