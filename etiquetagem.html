@@ -11,6 +11,9 @@
 
     <title>Etiquetagem | SMI WMS</title>
 
+    <!-- MESMO ESTILO DAS DEMAIS TELAS DO WMS -->
+    <link rel="stylesheet" href="style.css">
+
     <!-- CÓDIGO DE BARRAS -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 
@@ -37,61 +40,25 @@
 
         /* =========================
            MENU LATERAL
+           O visual principal vem do style.css,
+           igual às demais telas do WMS.
         ========================= */
 
-        .sidebar {
-            width: 235px;
-            min-height: 100vh;
-            background: #101d2f;
-            color: white;
-            padding: 25px 12px;
-            position: fixed;
-            left: 0;
-            top: 0;
+        .sidebar .logo-wms-etiquetagem {
+            width: 150px;
+            max-width: calc(100% - 20px);
+            height: auto;
+            display: block;
+            margin: 18px auto 12px;
+            object-fit: contain;
         }
 
-        .logo {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 35px;
-            padding-left: 15px;
-        }
-
-        .menu {
-            list-style: none;
-        }
-
-        .menu li {
-            margin-bottom: 7px;
-        }
-
-        .menu a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #d7e0eb;
-            text-decoration: none;
-            padding: 13px 15px;
-            border-radius: 8px;
-            transition: 0.2s;
-            font-size: 15px;
-        }
-
-        .menu a:hover {
-            background: #1d3049;
-            color: white;
-        }
-
-        .menu a.ativo {
-            background: #087bea;
-            color: white;
-            font-weight: 700;
-        }
-
-        .icone {
-            font-size: 19px;
-            width: 24px;
+        .sidebar h2 {
             text-align: center;
+        }
+
+        .sidebar li {
+            cursor: pointer;
         }
 
         /* =========================
@@ -99,8 +66,8 @@
         ========================= */
 
         .conteudo {
-            margin-left: 235px;
-            width: calc(100% - 235px);
+            margin-left: 185px;
+            width: calc(100% - 185px);
             padding: 30px;
         }
 
@@ -351,22 +318,9 @@
 
         @media(max-width: 700px) {
 
-            .sidebar {
-                width: 75px;
-            }
-
-            .logo {
-                font-size: 15px;
-                padding-left: 5px;
-            }
-
-            .menu a span.texto {
-                display: none;
-            }
-
             .conteudo {
-                margin-left: 75px;
-                width: calc(100% - 75px);
+                margin-left: 0;
+                width: 100%;
                 padding: 15px;
             }
 
@@ -415,84 +369,78 @@
 
 <div class="layout">
 
-    <!-- MENU -->
-    <aside class="sidebar">
+    <!-- MENU PADRÃO DO SMI WMS -->
+    <div class="sidebar">
 
-        <div class="logo">
-            SMI WMS
-        </div>
+        <img
+            src="img/logo.png"
+            alt="SMI do Brasil"
+            class="logo-wms-etiquetagem"
+        >
 
-        <ul class="menu">
+        <h2>SMI WMS</h2>
 
-            <li>
-                <a href="index.html">
-                    <span class="icone">📊</span>
-                    <span class="texto">Dashboard</span>
-                </a>
+        <ul>
+
+            <li onclick="location.href='dashboard.html'">
+                📊 Dashboard
             </li>
 
-            <li>
-                <a href="produtos.html">
-                    <span class="icone">📦</span>
-                    <span class="texto">Produtos</span>
-                </a>
+            <li onclick="location.href='produtos.html'">
+                📦 Produtos
             </li>
 
-            <li>
-                <a href="posicoes.html">
-                    <span class="icone">🏭</span>
-                    <span class="texto">Posições</span>
-                </a>
+            <li onclick="location.href='entradas.html'">
+                📥 Entradas
             </li>
 
-            <li>
-                <a href="entradas.html">
-                    <span class="icone">📥</span>
-                    <span class="texto">Entradas</span>
-                </a>
+            <li onclick="location.href='saidas.html'">
+                📥 Saídas
             </li>
 
-            <li>
-                <a href="saidas.html">
-                    <span class="icone">📤</span>
-                    <span class="texto">Saídas</span>
-                </a>
+            <li onclick="location.href='separacao.html'">
+                🛒 Separação
             </li>
 
-            <li>
-                <a href="transferencias.html">
-                    <span class="icone">🔄</span>
-                    <span class="texto">Transferências</span>
-                </a>
+            <li onclick="location.href='transferencias.html'">
+                🔄 Transferências
             </li>
 
-            <li>
-                <a href="requisicao.html">
-                    <span class="icone">🧾</span>
-                    <span class="texto">Requisição</span>
-                </a>
+            <li onclick="location.href='transferencia-mobile.html'">
+                📱 Transf. Mobile
             </li>
 
-            <li>
-                <a href="relatorios.html">
-                    <span class="icone">📈</span>
-                    <span class="texto">Relatórios</span>
-                </a>
+            <li onclick="location.href='posicoes.html'">
+                📍 Posições
             </li>
 
-            <li>
-                <a
-                    href="etiquetagem.html"
-                    class="ativo"
-                >
-                    <span class="icone">🏷️</span>
-                    <span class="texto">Etiquetagem</span>
-                </a>
+            <li onclick="location.href='inventario.html'">
+                📋 Inventário
+            </li>
+
+            <li onclick="location.href='inventario-mobile.html'">
+                📱 Inv. Mobile
+            </li>
+
+            <li onclick="location.href='relatorios.html'">
+                📈 Relatórios
+            </li>
+
+            <li class="active" onclick="location.href='etiquetagem.html'">
+                🏷️ Etiquetagem
+            </li>
+
+            <li onclick="location.href='requisicao.html'">
+                📝 Requisição
+            </li>
+
+            <li onclick="location.href='configuracoes.html'">
+                ⚙️ Configurações
             </li>
 
         </ul>
 
-    </aside>
+    </div>
 
     <!-- CONTEÚDO -->
     <main class="conteudo">
