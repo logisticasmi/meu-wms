@@ -11,83 +11,551 @@
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="stylesheet" href="style.css">
 
+<script src="https://unpkg.com/lucide@latest"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<style>
+/* =====================================================
+   NOVO MENU LATERAL - SMI WMS
+   TESTE APLICADO SOMENTE NO DASHBOARD
+===================================================== */
+
+.sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 230px !important;
+    height: 100vh !important;
+    padding: 18px 14px 16px !important;
+    background: linear-gradient(180deg, #062c5b 0%, #04264e 48%, #031f41 100%) !important;
+    color: #fff !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    z-index: 1000 !important;
+    box-shadow: 7px 0 20px rgba(0, 26, 62, .12) !important;
+    scrollbar-width: thin;
+    scrollbar-color: #147ee8 transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #147ee8;
+    border-radius: 12px;
+}
+
+/* neutraliza regras antigas da lista */
+.sidebar ul,
+.sidebar li {
+    all: unset;
+}
+
+/* TOPO */
+.sidebar-topo {
+    text-align: center;
+    padding: 2px 8px 13px;
+}
+
+.sidebar-logo {
+    display: block;
+    width: 155px;
+    max-width: 100%;
+    height: auto;
+    margin: 2px auto 13px;
+    object-fit: contain;
+}
+
+.sidebar-topo h2 {
+    margin: 0 !important;
+    color: #fff !important;
+    font-size: 28px !important;
+    line-height: 1.1;
+    font-weight: 800 !important;
+    letter-spacing: .2px;
+    text-align: center !important;
+}
+
+.sidebar-topo p {
+    margin: 9px 0 0;
+    color: #7eaee0;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2.8px;
+    text-align: center;
+}
+
+/* NAVEGAÇÃO */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.menu-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 17px 7px 8px;
+}
+
+.menu-titulo span {
+    color: #8fb9e5;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    white-space: nowrap;
+}
+
+.menu-titulo::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: rgba(123, 180, 235, .28);
+}
+
+/* ITEM */
+.menu-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 39px minmax(0, 1fr) 16px;
+    align-items: center;
+    gap: 9px;
+    min-height: 47px;
+    padding: 4px 9px;
+    margin: 1px 0;
+    border-radius: 11px;
+    color: #fff !important;
+    text-decoration: none !important;
+    transition: .18s ease;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, .065);
+    transform: translateX(2px);
+}
+
+.menu-icon {
+    width: 37px;
+    height: 37px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, .07);
+}
+
+.menu-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2.15;
+}
+
+.menu-texto {
+    color: #f7f9fd;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.menu-seta {
+    width: 16px;
+    height: 16px;
+    color: #83b6e8;
+    transition: .18s ease;
+}
+
+.menu-item:hover .menu-seta {
+    color: #fff;
+    transform: translateX(2px);
+}
+
+/* CORES DOS ÍCONES */
+.icone-dashboard { color: #fff; }
+.icone-produtos { color: #c8def5; }
+.icone-entradas { color: #22ddd8; }
+.icone-saidas { color: #39a9ff; }
+.icone-separacao { color: #bfdcff; }
+.icone-transferencia { color: #16c4ff; }
+.icone-mobile { color: #2198ff; }
+.icone-posicoes { color: #ff5265; }
+.icone-inventario { color: #52edad; }
+.icone-invmobile { color: #00d8ff; }
+.icone-relatorios { color: #8a6cff; }
+.icone-etiqueta { color: #ffc62a; }
+.icone-requisicao { color: #ff9d26; }
+.icone-config { color: #c8e2fc; }
+
+/* ATIVO */
+.menu-item.active {
+    background: linear-gradient(90deg, #0879ef 0%, #095bc7 100%);
+    box-shadow: 0 7px 16px rgba(0, 103, 232, .24);
+}
+
+.menu-item.active::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    width: 5px;
+    height: 37px;
+    border-radius: 0 5px 5px 0;
+    background: #18ddff;
+    box-shadow: 0 0 10px rgba(24, 221, 255, .72);
+}
+
+.menu-item.active .menu-icon {
+    background: rgba(255, 255, 255, .14);
+    color: #fff;
+}
+
+.menu-item.active .menu-seta {
+    color: #fff;
+}
+
+/* RODAPÉ */
+.sidebar-rodape {
+    margin: 22px 7px 3px;
+    text-align: center;
+    color: #7ca9d7;
+}
+
+.sidebar-rodape::before {
+    content: "";
+    display: block;
+    height: 1px;
+    background: rgba(123, 180, 235, .28);
+    margin-bottom: 17px;
+}
+
+.sidebar-rodape span {
+    display: block;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    margin-bottom: 8px;
+}
+
+.sidebar-rodape small {
+    display: block;
+    color: #90b9e3;
+    font-size: 10px;
+}
+
+/* CONTEÚDO DO DASHBOARD ACOMPANHA A NOVA LARGURA */
+.conteudo.dashboard-novo {
+    margin-left: 230px !important;
+    width: calc(100% - 230px) !important;
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+    .sidebar {
+        display: none !important;
+    }
+
+    .conteudo.dashboard-novo {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+}
+</style>
 
 </head>
 
 <body>
 
 <!-- =====================================================
-     MENU LATERAL
+     MENU LATERAL - NOVO VISUAL
 ===================================================== -->
 
 <div class="sidebar">
 
-    <div class="logo">
-        <img src="img/logo.png" alt="Logo SMI WMS">
+    <div class="sidebar-topo">
+
+        <img
+            src="img/logo.png"
+            alt="SMI do Brasil"
+            class="sidebar-logo"
+        >
+
+        <h2>SMI WMS</h2>
+
+        <p>GESTÃO QUE MOVIMENTA</p>
+
     </div>
 
-    <h2>SMI WMS</h2>
+    <nav class="sidebar-nav">
 
-    <ul>
+        <!-- PRINCIPAL -->
 
-        <li class="ativo" onclick="location.href='dashboard.html'">
-             📊 Dashboard
-        </li>
+        <div class="menu-titulo">
+            <span>PRINCIPAL</span>
+        </div>
 
-        <li onclick="location.href='produtos.html'">
-            📦 Produtos
-        </li>
+        <a
+            href="dashboard.html"
+            class="menu-item"
+            data-page="dashboard.html"
+        >
+            <span class="menu-icon icone-dashboard">
+                <i data-lucide="house"></i>
+            </span>
 
-        <li onclick="location.href='entradas.html'">
-            📥 Entradas
-        </li>
+            <span class="menu-texto">
+                Dashboard
+            </span>
 
-        <li onclick="location.href='saidas.html'">
-            📤 Saídas
-        </li>
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+        </a>
 
-        <li onclick="location.href='separacao.html'">
-            🛒 Separação
-        </li>
+        <a
+            href="produtos.html"
+            class="menu-item"
+            data-page="produtos.html"
+        >
+            <span class="menu-icon icone-produtos">
+                <i data-lucide="package"></i>
+            </span>
 
-        <li onclick="location.href='transferencias.html'">
-            🔄 Transferências
-        </li>
+            <span class="menu-texto">
+                Produtos
+            </span>
 
-        <li onclick="location.href='transferencia-mobile.html'">
-    📱 Transf. Mobile
-       </li>
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+        </a>
 
-        <li onclick="location.href='posicoes.html'">
-            📍 Posições
-        </li>
 
-        <li onclick="location.href='inventario.html'">
-            📋 Inventário
-        </li>
+        <!-- OPERAÇÕES -->
 
-        <li onclick="location.href='inventario-mobile.html'">
-            📱 Inv. Mobile
-        </li>
+        <div class="menu-titulo">
+            <span>OPERAÇÕES</span>
+        </div>
 
-        <li onclick="location.href='relatorios.html'">
-             📈  Relatórios
-        </li>
-        
-        <li onclick="location.href='etiquetagem.html'">
-           🏷️ Etiquetagem
-       </li>
+        <a
+            href="entradas.html"
+            class="menu-item"
+            data-page="entradas.html"
+        >
+            <span class="menu-icon icone-entradas">
+                <i data-lucide="download"></i>
+            </span>
 
-        <li onclick="location.href='requisicao.html'">
-            📝 Requisição
-        </li>
+            <span class="menu-texto">
+                Entradas
+            </span>
 
-        <li onclick="location.href='configuracoes.html'">
-            ⚙ Configurações
-        </li>
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
 
-    </ul>
+        <a
+            href="saidas.html"
+            class="menu-item"
+            data-page="saidas.html"
+        >
+            <span class="menu-icon icone-saidas">
+                <i data-lucide="upload"></i>
+            </span>
+
+            <span class="menu-texto">
+                Saídas
+            </span>
+
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
+
+        <a
+            href="separacao.html"
+            class="menu-item"
+            data-page="separacao.html"
+        >
+            <span class="menu-icon icone-separacao">
+                <i data-lucide="shopping-cart"></i>
+            </span>
+
+            <span class="menu-texto">
+                Separação
+            </span>
+
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
+
+        <a
+            href="transferencias.html"
+            class="menu-item"
+            data-page="transferencias.html"
+        >
+            <span class="menu-icon icone-transferencia">
+                <i data-lucide="arrow-left-right"></i>
+            </span>
+
+            <span class="menu-texto">
+                Transferências
+            </span>
+
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
+
+        <a
+            href="transferencia-mobile.html"
+            class="menu-item"
+            data-page="transferencia-mobile.html"
+        >
+            <span class="menu-icon icone-mobile">
+                <i data-lucide="smartphone"></i>
+            </span>
+
+            <span class="menu-texto">
+                Transf. Mobile
+            </span>
+
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
+
+        <a
+            href="posicoes.html"
+            class="menu-item"
+            data-page="posicoes.html"
+        >
+            <span class="menu-icon icone-posicoes">
+                <i data-lucide="map-pin"></i>
+            </span>
+
+            <span class="menu-texto">
+                Posições
+            </span>
+
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
+
+        <a
+            href="inventario.html"
+            class="menu-item"
+            data-page="inventario.html"
+        >
+            <span class="menu-icon icone-inventario">
+                <i data-lucide="clipboard-list"></i>
+            </span>
+
+            <span class="menu-texto">
+                Inventário
+            </span>
+
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
+
+        <a
+            href="inventario-mobile.html"
+            class="menu-item"
+            data-page="inventario-mobile.html"
+        >
+            <span class="menu-icon icone-invmobile">
+                <i data-lucide="scan-line"></i>
+            </span>
+
+            <span class="menu-texto">
+                Inv. Mobile
+            </span>
+
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
+
+
+        <!-- SISTEMA -->
+
+        <div class="menu-titulo">
+            <span>SISTEMA</span>
+        </div>
+
+        <a
+            href="relatorios.html"
+            class="menu-item"
+            data-page="relatorios.html"
+        >
+            <span class="menu-icon icone-relatorios">
+                <i data-lucide="chart-no-axes-column"></i>
+            </span>
+
+            <span class="menu-texto">
+                Relatórios
+            </span>
+
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
+
+        <a
+            href="etiquetagem.html"
+            class="menu-item"
+            data-page="etiquetagem.html"
+        >
+            <span class="menu-icon icone-etiqueta">
+                <i data-lucide="tag"></i>
+            </span>
+
+            <span class="menu-texto">
+                Etiquetagem
+            </span>
+
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
+
+        <a
+            href="requisicao.html"
+            class="menu-item"
+            data-page="requisicao.html"
+        >
+            <span class="menu-icon icone-requisicao">
+                <i data-lucide="file-text"></i>
+            </span>
+
+            <span class="menu-texto">
+                Requisição
+            </span>
+
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
+
+        <a
+            href="configuracoes.html"
+            class="menu-item"
+            data-page="configuracoes.html"
+        >
+            <span class="menu-icon icone-config">
+                <i data-lucide="settings"></i>
+            </span>
+
+            <span class="menu-texto">
+                Configurações
+            </span>
+
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
+
+    </nav>
+
+    <div class="sidebar-rodape">
+
+        <span>
+            LOGÍSTICA MAIS INTELIGENTE
+        </span>
+
+        <small>
+            v1.0.0
+        </small>
+
+    </div>
 
 </div>
 
@@ -816,6 +1284,38 @@
     </footer>
 
 </div>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* GERA OS ÍCONES DO NOVO MENU */
+    if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+    }
+
+    /* MARCA AUTOMATICAMENTE A PÁGINA ATIVA */
+    let paginaAtual = window.location.pathname.split("/").pop();
+
+    if (!paginaAtual) {
+        paginaAtual = "dashboard.html";
+    }
+
+    document
+        .querySelectorAll(".menu-item")
+        .forEach(function (item) {
+
+            const pagina = item.getAttribute("data-page");
+
+            if (pagina === paginaAtual) {
+                item.classList.add("active");
+            }
+
+        });
+
+});
+</script>
 
 
 <!-- =====================================================
