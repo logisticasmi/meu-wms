@@ -7,17 +7,17 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        content="width=device-width, initial-scale=1.0"
     >
 
-    <meta
-        name="theme-color"
-        content="#0a3f7a"
+    <title>SMI WMS - Transferências</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
     >
 
-    <title>
-        SMI WMS - Transferência Mobile
-    </title>
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <link
         rel="icon"
@@ -28,1700 +28,649 @@
 
     <style>
 
-        * {
-            box-sizing: border-box;
+        /* =====================================================
+           TRANSFERÊNCIAS - VISUAL EXCLUSIVO
+        ===================================================== */
+
+        .pagina-transferencias {
+            background: #f4f7fb;
         }
 
 
-        :root {
-
-            --azul-900: #062b59;
-            --azul-800: #0a3f7a;
-            --azul-700: #0d4e92;
-            --azul-100: #eaf3ff;
-
-            --texto: #18324f;
-            --texto-claro: #6b7f95;
-
-            --borda: #dce5ef;
-            --fundo: #f2f6fb;
-
-            --verde: #1b9b48;
-            --verde-fundo: #eef9f1;
-
-            --amarelo-fundo: #fff8df;
-            --amarelo-borda: #f4dda0;
-
-            --vermelho: #c62828;
-            --vermelho-fundo: #fff0f0;
+        .pagina-transferencias .conteudo {
+            padding: 24px 28px 35px !important;
         }
-
-
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-
-
-        body {
-
-            margin: 0;
-
-            min-height: 100vh;
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            color:
-                var(--texto);
-
-            background:
-                linear-gradient(
-                    180deg,
-                    #eef4fb 0%,
-                    #f8fafc 55%,
-                    #eef3f8 100%
-                );
-        }
-
-
-
-        button,
-        input,
-        select {
-            font: inherit;
-        }
-
-
-
-        button {
-            -webkit-tap-highlight-color:
-                transparent;
-        }
-
-
-
-        .pagina {
-
-            width: 100%;
-
-            max-width: 860px;
-
-            margin:
-                0 auto;
-
-            padding:
-                16px 14px 96px;
-        }
-
 
 
         /* =====================================================
-           CABEÇALHO
+           TOPO
         ===================================================== */
 
-        .topo {
-
-            position: relative;
-
-            overflow: hidden;
-
-            display: grid;
-
-            grid-template-columns:
-                minmax(0, 1fr)
-                auto;
-
-            align-items: center;
-
-            gap: 14px;
-
-            padding: 20px;
-
-            margin-bottom: 16px;
-
-            border-radius: 22px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #062b59 0%,
-                    #0b4f94 100%
-                );
-
-            box-shadow:
-                0 12px 30px
-                rgba(
-                    10,
-                    45,
-                    95,
-                    0.18
-                );
+        .pagina-transferencias .topbar {
+            margin-bottom: 18px;
         }
 
 
+        .pagina-transferencias .topbar h1 {
+            margin-bottom: 4px;
 
-        .topo::after {
+            color: #062b60;
 
-            content: "";
-
-            position: absolute;
-
-            right: -70px;
-            top: -80px;
-
-            width: 210px;
-            height: 210px;
-
-            border-radius: 50%;
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.04
-                );
+            font-size: 32px;
         }
 
 
+        .pagina-transferencias .topbar small {
+            color: #52657c;
 
-        .topo-conteudo {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 14px;
-
-            min-width: 0;
+            font-size: 13px;
         }
 
 
+        /* =====================================================
+           PAINÉIS
+        ===================================================== */
 
-        .topo-logo {
+        .pagina-transferencias .painel-transferencia {
+            margin-top: 18px;
 
-            width: 95px;
-
-            flex:
-                0 0 auto;
-        }
-
-
-
-        .topo-logo img {
-
-            width: 100%;
-
-            display: block;
-        }
-
-
-
-        .topo-texto {
-            min-width: 0;
-        }
-
-
-
-        .identificacao {
-
-            display:
-                inline-block;
-
-            margin-bottom:
-                4px;
-
-            color:
-                #9cc9ff;
-
-            font-size:
-                11px;
-
-            font-weight:
-                700;
-
-            letter-spacing:
-                1px;
-
-            text-transform:
-                uppercase;
-        }
-
-
-
-        .topo h1 {
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 29px;
-
-            line-height:
-                1.05;
-        }
-
-
-
-        .topo p {
-
-            margin:
-                7px 0 0;
-
-            max-width:
-                430px;
-
-            color:
-                #dcecff;
-
-            font-size:
-                13px;
-
-            line-height:
-                1.45;
-        }
-
-
-
-        .btn-bipar-topo {
-
-            position: relative;
-
-            z-index: 2;
-
-            width: 74px;
-
-            min-height:
-                74px;
-
-            padding: 8px;
-
-            display: flex;
-
-            flex-direction:
-                column;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            gap: 4px;
+            padding: 22px 24px;
 
             border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.24
-                );
+                1px solid #e1e8f0;
 
-            border-radius:
-                16px;
+            border-radius: 14px;
 
-            color:
-                #ffffff;
+            background: #ffffff;
 
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.07
-                );
-
-            cursor: pointer;
+            box-shadow:
+                0 5px 18px
+                rgba(0, 30, 69, 0.06);
         }
 
 
+        /* =====================================================
+           CABEÇALHO DO FORMULÁRIO
+        ===================================================== */
 
-        .btn-bipar-topo .icone {
+        .cabecalho-transferencia {
+            display: flex;
 
-            font-size: 26px;
+            align-items: center;
 
-            line-height: 1;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 18px;
         }
 
 
+        .titulo-transferencia {
+            display: flex;
 
-        .btn-bipar-topo span:last-child {
+            align-items: center;
 
-            font-size: 11px;
+            gap: 12px;
+        }
+
+
+        .icone-transferencia {
+            color: #0565d8;
+
+            font-size: 30px;
+
+            font-weight: bold;
+        }
+
+
+        .titulo-transferencia h2 {
+            margin: 0;
+
+            color: #082f67;
+
+            font-size: 21px;
+        }
+
+
+        .acoes-leitor {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .leitor-ativo {
+            padding: 9px 14px;
+
+            border-radius: 8px;
+
+            background: #eef9f2;
+
+            color: #198844;
+
+            font-size: 12px;
 
             font-weight: 700;
         }
 
 
+        .btn-bipar-tudo {
+            height: 38px;
 
-        /* =====================================================
-           CARDS
-        ===================================================== */
+            padding: 0 15px;
 
-        .card {
+            border:
+                1px solid #4387e9;
+
+            border-radius: 8px;
 
             background: #ffffff;
 
-            border:
-                1px solid
-                var(--borda);
+            color: #1262d1;
 
-            border-radius:
-                18px;
+            font-weight: 700;
 
-            box-shadow:
-                0 9px 28px
-                rgba(
-                    15,
-                    42,
-                    80,
-                    0.08
-                );
+            cursor: pointer;
         }
-
-
-
-        .painel-operacao {
-            padding: 20px;
-        }
-
-
-
-        .titulo-operacao {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content:
-                space-between;
-
-            gap: 12px;
-
-            margin-bottom:
-                20px;
-
-            padding-bottom:
-                14px;
-
-            border-bottom:
-                1px solid
-                #e8edf3;
-        }
-
-
-
-        .titulo-operacao-esquerda {
-
-            display: flex;
-
-            align-items:
-                center;
-
-            gap: 10px;
-
-            min-width: 0;
-        }
-
-
-
-        .titulo-operacao-icone {
-
-            width: 42px;
-
-            height: 42px;
-
-            flex:
-                0 0 auto;
-
-            display: flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            border-radius:
-                12px;
-
-            background:
-                var(--azul-100);
-
-            font-size: 20px;
-        }
-
-
-
-        .titulo-operacao h2 {
-
-            margin: 0;
-
-            color:
-                #0a2d5f;
-
-            font-size:
-                19px;
-        }
-
-
-
-        .titulo-operacao small {
-
-            display: block;
-
-            margin-top: 2px;
-
-            color:
-                var(--texto-claro);
-
-            font-size:
-                12px;
-        }
-
-
-
-        .status-leitor {
-
-            flex:
-                0 0 auto;
-
-            padding:
-                8px 10px;
-
-            border:
-                1px solid
-                #b9d7fb;
-
-            border-radius:
-                9px;
-
-            background:
-                #eef6ff;
-
-            color:
-                #1769c2;
-
-            font-size:
-                11px;
-
-            font-weight:
-                700;
-        }
-
 
 
         /* =====================================================
            FORMULÁRIO
         ===================================================== */
 
-        .campo {
+        .grid-transferencia {
+            display: grid;
 
-            margin-bottom:
-                15px;
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 14px 22px;
         }
 
 
+        .campo-transferencia {
+            display: flex;
 
-        .campo label {
+            flex-direction: column;
 
-            display: block;
-
-            margin-bottom:
-                7px;
-
-            color:
-                #203b5d;
-
-            font-size:
-                13px;
-
-            font-weight:
-                700;
+            gap: 6px;
         }
 
 
+        .campo-transferencia label {
+            color: #17375d;
 
-        .campo input,
-        .campo select {
+            font-size: 13px;
 
+            font-weight: 700;
+        }
+
+
+        .campo-com-icone {
+            position: relative;
+        }
+
+
+        .campo-com-icone input,
+        .campo-com-icone select {
             width: 100%;
 
-            height: 50px;
+            height: 46px;
 
             padding:
-                0 14px;
+                0 45px 0 14px;
 
             border:
-                1px solid
-                #ccd8e5;
+                1px solid #d2dce8;
 
-            border-radius:
-                10px;
+            border-radius: 7px;
 
             outline: none;
 
-            background:
-                #ffffff;
+            background: #ffffff;
 
-            color:
-                #172033;
+            color: #102d54;
 
-            font-size:
-                16px;
-
-            transition:
-                0.2s;
+            font-size: 14px;
         }
 
 
-
-        .campo input:focus,
-        .campo select:focus {
-
-            border-color:
-                #1769c2;
+        .campo-com-icone input:focus,
+        .campo-com-icone select:focus {
+            border-color: #1769c2;
 
             box-shadow:
                 0 0 0 3px
-                rgba(
-                    23,
-                    105,
-                    194,
-                    0.10
-                );
+                rgba(23, 105, 194, 0.08);
         }
 
 
-
-        .campo input[readonly],
-        .campo select:disabled {
-
-            background:
-                #f4f7fb;
-
-            color:
-                #243b5a;
-
-            font-weight:
-                600;
-        }
-
-
-
-        .busca {
-
-            display: grid;
-
-            grid-template-columns:
-                minmax(0, 1fr)
-                122px;
-
-            gap: 10px;
-        }
-
-
-
-        .campo-codigo-wrapper {
-
-            position:
-                relative;
-        }
-
-
-
-        .campo-codigo-wrapper input {
-            padding-right:
-                44px;
-        }
-
-
-
-        .codigo-icone {
-
-            position:
-                absolute;
-
-            right: 14px;
+        .icone-campo {
+            position: absolute;
 
             top: 50%;
+            right: 14px;
 
-            transform:
-                translateY(-50%);
+            transform: translateY(-50%);
 
-            color:
-                #0d4e92;
+            color: #0765d7;
 
-            font-size:
-                18px;
+            font-size: 17px;
 
-            pointer-events:
-                none;
+            pointer-events: none;
         }
 
 
+        .quantidade-wrapper {
+            display: grid;
 
-        .linha-dupla {
+            grid-template-columns:
+                minmax(0, 1fr) 82px;
+        }
+
+
+        .quantidade-wrapper input {
+            border-radius:
+                7px 0 0 7px;
+        }
+
+
+        .btn-max-transferencia {
+            border:
+                1px solid #d2dce8;
+
+            border-left: 0;
+
+            border-radius:
+                0 7px 7px 0;
+
+            background: #ffffff;
+
+            color: #143e78;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           SALDOS
+        ===================================================== */
+
+        .saldo-transferencia {
+            grid-column:
+                1 / -1;
 
             display: grid;
 
             grid-template-columns:
                 1fr 1fr;
 
-            gap: 12px;
-        }
+            margin-top: 2px;
 
-
-
-        .estoque-destaque {
-
-            color:
-                #16843f !important;
-
-            background:
-                #f1fbf4 !important;
-
-            border-color:
-                #c9ead3 !important;
-        }
-
-
-
-        .quantidade-linha {
-
-            display: grid;
-
-            grid-template-columns:
-                minmax(0, 1fr)
-                82px;
-
-            gap: 10px;
-        }
-
-
-
-        .btn-buscar,
-        .btn-max,
-        .btn-confirmar,
-        .acao-rapida,
-        .btn-bipar-topo {
-
-            border: none;
-        }
-
-
-
-        .btn-buscar {
-
-            min-height:
-                50px;
-
-            padding:
-                0 18px;
-
-            border-radius:
-                10px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #0a2d5f,
-                    #0d4e92
-                );
-
-            color:
-                #ffffff;
-
-            font-weight:
-                700;
-
-            cursor:
-                pointer;
-
-            box-shadow:
-                0 5px 12px
-                rgba(
-                    10,
-                    45,
-                    95,
-                    0.16
-                );
-        }
-
-
-
-        .btn-max {
-
-            min-height:
-                50px;
+            overflow: hidden;
 
             border:
-                1px solid
-                #c8d7e8;
+                1px solid #cfe3d6;
 
-            border-radius:
-                10px;
+            border-radius: 8px;
 
-            background:
-                #f5f8fc;
-
-            color:
-                #1769c2;
-
-            font-weight:
-                700;
-
-            cursor:
-                pointer;
+            background: #f7fbff;
         }
 
 
+        .saldo-transferencia-item {
+            min-height: 67px;
 
-        /* =====================================================
-           DESTINO
-        ===================================================== */
-
-        .campo-destino {
-
-            padding:
-                14px;
-
-            margin-bottom:
-                15px;
-
-            border:
-                1px solid
-                #f0d89a;
-
-            border-radius:
-                13px;
-
-            background:
-                #fffaf0;
-        }
-
-
-
-        .campo-destino label {
-
-            display: block;
-
-            margin-bottom:
-                7px;
-
-            color:
-                #614b17;
-
-            font-size:
-                13px;
-
-            font-weight:
-                700;
-        }
-
-
-
-        .campo-destino input {
-
-            width: 100%;
-
-            height: 52px;
-
-            padding:
-                0 14px;
-
-            border:
-                1px solid
-                #dfc371;
-
-            border-radius:
-                10px;
-
-            outline: none;
-
-            background:
-                #ffffff;
-
-            font-size:
-                17px;
-
-            font-weight:
-                700;
-
-            text-transform:
-                uppercase;
-        }
-
-
-
-        .campo-destino small {
-
-            display: block;
-
-            margin-top: 7px;
-
-            color:
-                #7b6735;
-
-            font-size:
-                11px;
-        }
-
-
-
-        /* =====================================================
-           SALDO
-        ===================================================== */
-
-        .saldo-preview {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
-            margin:
-                4px 0 14px;
-
-            border:
-                1px solid
-                #cfe0f1;
-
-            border-radius:
-                12px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #f6fbff,
-                    #fbfdff
-                );
-
-            overflow:
-                hidden;
-        }
-
-
-
-        .saldo-preview-item {
-
-            padding:
-                14px 12px;
-
-            text-align:
-                center;
-        }
-
-
-
-        .saldo-preview-item +
-        .saldo-preview-item {
-
-            border-left:
-                1px solid
-                #d8e3ee;
-        }
-
-
-
-        .saldo-preview-item small {
-
-            display: block;
-
-            margin-bottom:
-                4px;
-
-            color:
-                #5e7186;
-
-            font-size:
-                11px;
-        }
-
-
-
-        .saldo-preview-item strong {
-
-            display: block;
-
-            color:
-                #0a2d5f;
-
-            font-size:
-                22px;
-        }
-
-
-
-        .saldo-preview-item.disponivel strong {
-
-            color:
-                var(--verde);
-        }
-
-
-
-        .btn-confirmar {
-
-            width: 100%;
-
-            min-height:
-                56px;
-
-            padding:
-                0 18px;
-
-            border-radius:
-                11px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #08366c,
-                    #0c4f95
-                );
-
-            color:
-                #ffffff;
-
-            font-size:
-                16px;
-
-            font-weight:
-                700;
-
-            cursor:
-                pointer;
-
-            box-shadow:
-                0 6px 14px
-                rgba(
-                    10,
-                    45,
-                    95,
-                    0.18
-                );
-        }
-
-
-
-        .btn-confirmar:disabled {
-
-            background:
-                #a7b3c2;
-
-            cursor:
-                not-allowed;
-
-            box-shadow:
-                none;
-        }
-
-
-
-        .dica {
+            padding: 10px 15px;
 
             display: flex;
 
-            gap: 10px;
+            align-items: center;
 
-            align-items:
-                flex-start;
+            justify-content: center;
 
-            margin-top:
-                14px;
+            gap: 15px;
 
-            padding:
-                12px 13px;
+            text-align: center;
+        }
 
-            border-radius:
-                10px;
 
+        .saldo-transferencia-item:first-child {
             background:
-                #edf6ff;
-
-            color:
-                #27496c;
-
-            font-size:
-                12px;
-
-            line-height:
-                1.4;
+                linear-gradient(
+                    90deg,
+                    #f0faf3,
+                    #f8fdf9
+                );
         }
 
 
-
-        .dica strong {
-            color:
-                #0d4e92;
+        .saldo-transferencia-item + .saldo-transferencia-item {
+            border-left:
+                1px solid #dbe4ef;
         }
 
 
-
-        .mensagem {
-
-            display: none;
-
-            margin-top:
-                14px;
-
-            padding:
-                12px 14px;
-
-            border-radius:
-                10px;
-
-            font-size:
-                13px;
-
-            font-weight:
-                700;
-        }
-
-
-
-        .mensagem.sucesso {
-
+        .saldo-transferencia-item small {
             display: block;
 
-            background:
-                #e9f9ef;
+            margin-bottom: 4px;
 
-            border:
-                1px solid
-                #b7ebc8;
+            color: #38526f;
 
-            color:
-                #126b34;
+            font-size: 11px;
         }
 
 
-
-        .mensagem.erro {
-
+        .saldo-transferencia-item strong {
             display: block;
 
-            background:
-                var(--vermelho-fundo);
+            color: #14913f;
 
-            border:
-                1px solid
-                #f4c2c2;
-
-            color:
-                #a11d1d;
+            font-size: 22px;
         }
 
+
+        .saldo-transferencia-item.saldo-depois strong {
+            color: #0862dc;
+        }
+
+
+        .saldo-status {
+            width: 28px;
+            height: 28px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                2px solid #1a9a49;
+
+            border-radius: 50%;
+
+            color: #1a9a49;
+
+            font-weight: bold;
+        }
+
+
+        .saldo-depois .saldo-status {
+            border-color: #0862dc;
+
+            color: #0862dc;
+        }
 
 
         /* =====================================================
            RESUMO
         ===================================================== */
 
-        .secao-abaixo {
-
-            margin-top:
-                16px;
-        }
-
-
-
-        .card-resumo,
-        .card-ultimas,
-        .card-acoes {
-
-            padding: 18px;
-        }
-
-
-
-        .cabecalho-card {
-
-            display: flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                space-between;
-
-            gap: 10px;
-
-            padding-bottom:
-                12px;
-
-            margin-bottom:
-                4px;
-
-            border-bottom:
-                1px solid
-                #e7edf4;
-        }
-
-
-
-        .cabecalho-card h3 {
-
-            margin: 0;
-
-            display: flex;
-
-            align-items:
-                center;
-
-            gap: 8px;
-
-            color:
-                #0a2d5f;
-
-            font-size:
-                16px;
-        }
-
-
-
-        .resumo-linha {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr
-                minmax(0, 1.4fr);
-
-            gap: 12px;
-
-            padding:
-                10px 0;
-
-            border-bottom:
-                1px solid
-                #edf1f5;
-
-            font-size:
-                12px;
-        }
-
-
-
-        .resumo-linha:last-child {
-            border-bottom: 0;
-        }
-
-
-
-        .resumo-linha span:first-child {
-            color:
-                #66798f;
-        }
-
-
-
-        .resumo-linha strong {
-
-            text-align:
-                right;
-
-            color:
-                #17345c;
-
-            overflow-wrap:
-                anywhere;
-        }
-
-
-
-        .resumo-linha .verde {
-            color:
-                var(--verde);
-        }
-
-
-
-        /* =====================================================
-           ÚLTIMAS TRANSFERÊNCIAS
-        ===================================================== */
-
-        .grade-secundaria {
-
-            display: grid;
-
-            grid-template-columns:
-                minmax(0, 1.35fr)
-                minmax(220px, .65fr);
-
-            gap: 16px;
-
-            margin-top:
-                16px;
-        }
-
-
-
-        .link-simples {
-
-            color:
-                #1769c2;
-
-            font-size:
-                11px;
-
-            font-weight:
-                700;
-
-            text-decoration:
-                none;
-
-            cursor:
-                pointer;
-        }
-
-
-
-        .lista-ultimas {
-
-            display: flex;
-
-            flex-direction:
-                column;
-        }
-
-
-
-        .ultima-item {
-
-            display: grid;
-
-            grid-template-columns:
-                28px
-                48px
-                minmax(0, 1fr)
-                auto;
-
-            gap: 8px;
-
-            align-items:
-                center;
-
-            padding:
-                10px 0;
-
-            border-bottom:
-                1px solid
-                #edf1f5;
-        }
-
-
-
-        .ultima-item:last-child {
-            border-bottom: 0;
-        }
-
-
-
-        .ultima-check {
-
-            width: 23px;
-            height: 23px;
-
-            display: flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            border-radius:
-                50%;
-
-            background:
-                #edf9f0;
-
-            color:
-                var(--verde);
-
-            font-size:
-                12px;
-
-            font-weight:
-                700;
-        }
-
-
-
-        .ultima-hora {
-
-            color:
-                #214164;
-
-            font-size:
-                11px;
-
-            font-weight:
-                700;
-        }
-
-
-
-        .ultima-produto strong {
-
-            display: block;
-
-            color:
-                #17345c;
-
-            font-size:
-                11px;
-        }
-
-
-
-        .ultima-produto small {
-
-            display: block;
-
-            margin-top:
-                2px;
-
-            color:
-                #7b8b9f;
-
-            font-size:
-                10px;
-        }
-
-
-
-        .ultima-qtd {
-
-            color:
-                var(--verde);
-
-            font-size:
-                11px;
-
-            font-weight:
-                700;
-
-            white-space:
-                nowrap;
-        }
-
-
-
-        .acoes-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr;
-
-            gap: 8px;
-
-            margin-top:
-                10px;
-        }
-
-
-
-        .acao-rapida {
-
-            min-height:
-                45px;
-
-            padding:
-                0 12px;
+        .resumo-transferencia {
+            grid-column:
+                1 / -1;
+
+            padding: 11px 14px;
 
             border:
-                1px solid
-                #d5e0eb;
+                1px solid #cddff3;
 
-            border-radius:
-                10px;
-
-            background:
-                #ffffff;
-
-            color:
-                #144277;
-
-            font-size:
-                12px;
-
-            font-weight:
-                700;
-
-            cursor:
-                pointer;
-
-            text-align:
-                left;
-        }
-
-
-
-        /* =====================================================
-           COMO TRANSFERIR
-        ===================================================== */
-
-        .como-transferir {
-
-            margin-top:
-                16px;
-
-            padding:
-                16px 18px;
-
-            border:
-                1px solid
-                var(--amarelo-borda);
-
-            border-radius:
-                16px;
-
-            background:
-                var(--amarelo-fundo);
-        }
-
-
-
-        .como-transferir h3 {
-
-            margin:
-                0 0 12px;
-
-            color:
-                #18324f;
-
-            font-size:
-                14px;
-        }
-
-
-
-        .passos {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(
-                    4,
-                    1fr
-                );
-
-            gap: 8px;
-        }
-
-
-
-        .passo {
-
-            display: flex;
-
-            align-items:
-                flex-start;
-
-            gap: 8px;
-
-            min-width: 0;
-        }
-
-
-
-        .passo-icone {
-
-            width: 34px;
-            height: 34px;
-
-            flex:
-                0 0 auto;
-
-            display: flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            border-radius:
-                10px;
-
-            background:
-                #fff3bf;
-
-            font-size:
-                17px;
-        }
-
-
-
-        .passo strong {
-
-            display: block;
-
-            color:
-                #273e59;
-
-            font-size:
-                10px;
-
-            line-height:
-                1.3;
-        }
-
-
-
-        .passo span {
-
-            display: block;
-
-            margin-top:
-                2px;
-
-            color:
-                #6b7280;
-
-            font-size:
-                9px;
-
-            line-height:
-                1.25;
-        }
-
-
-
-        /* =====================================================
-           NAVEGAÇÃO MOBILE
-        ===================================================== */
-
-        .nav-mobile {
-
-            position: fixed;
-
-            left: 50%;
-
-            bottom: 10px;
-
-            z-index: 1000;
-
-            width:
-                calc(
-                    100% - 20px
-                );
-
-            max-width:
-                820px;
-
-            transform:
-                translateX(-50%);
-
-            display: none;
-
-            grid-template-columns:
-                repeat(
-                    5,
-                    1fr
-                );
-
-            gap: 4px;
-
-            padding: 7px;
-
-            border:
-                1px solid
-                #dbe4ee;
-
-            border-radius:
-                18px;
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.97
-                );
-
-            box-shadow:
-                0 8px 24px
-                rgba(
-                    21,
-                    47,
-                    75,
-                    0.16
-                );
-
-            backdrop-filter:
-                blur(8px);
-        }
-
-
-
-        .nav-mobile a {
-
-            min-height:
-                56px;
-
-            padding:
-                6px 3px;
-
-            display: flex;
-
-            flex-direction:
-                column;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            gap: 3px;
-
-            border-radius:
-                12px;
-
-            color:
-                #60738a;
-
-            font-size:
-                9px;
-
-            font-weight:
-                700;
-
-            text-decoration:
-                none;
-        }
-
-
-
-        .nav-mobile a .nav-icone {
-            font-size: 17px;
-        }
-
-
-
-        .nav-mobile a.ativo {
+            border-radius: 8px;
 
             background:
                 linear-gradient(
-                    135deg,
-                    #07366e,
-                    #0a4b91
+                    90deg,
+                    #eef6ff,
+                    #f7fbff
                 );
 
-            color:
-                #ffffff;
+            color: #173b6d;
+
+            font-size: 12px;
         }
 
+
+        .resumo-transferencia strong {
+            color: #063e84;
+        }
+
+
+        .resumo-transferencia-titulo {
+            display: block;
+
+            margin-bottom: 5px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           BOTÕES
+        ===================================================== */
+
+        .acoes-transferencia {
+            grid-column:
+                1 / -1;
+
+            display: grid;
+
+            grid-template-columns:
+                .8fr .8fr 1.2fr;
+
+            gap: 12px;
+        }
+
+
+        .btn-secundario-transferencia {
+            min-height: 46px;
+
+            border:
+                1px solid #d1dce8;
+
+            border-radius: 7px;
+
+            background: #ffffff;
+
+            color: #1260cd;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .btn-transferir-principal {
+            min-height: 46px;
+
+            border: 0;
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #063b73,
+                    #0754a5
+                );
+
+            color: #ffffff;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 5px 13px
+                rgba(6, 59, 115, 0.15);
+        }
+
+
+        /* =====================================================
+           HISTÓRICO
+        ===================================================== */
+
+        .cabecalho-historico-transferencia {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .cabecalho-historico-transferencia h2 {
+            margin: 0;
+
+            color: #082f67;
+
+            font-size: 20px;
+        }
+
+
+        .filtros-transferencia {
+            display: grid;
+
+            grid-template-columns:
+                minmax(280px, 1fr)
+                auto
+                minmax(260px, auto)
+                auto;
+
+            gap: 12px;
+
+            align-items: center;
+
+            margin-bottom: 12px;
+        }
+
+
+        .pesquisa-transferencia {
+            position: relative;
+        }
+
+
+        .pesquisa-transferencia input {
+            width: 100%;
+
+            height: 39px;
+
+            padding:
+                0 13px 0 38px;
+
+            border:
+                1px solid #d2dce8;
+
+            border-radius: 7px;
+
+            outline: none;
+
+            font-size: 12px;
+        }
+
+
+        .pesquisa-transferencia span {
+            position: absolute;
+
+            left: 13px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color: #64788f;
+        }
+
+
+        .btn-filtro-transferencia,
+        .btn-exportar-transferencia {
+            height: 39px;
+
+            padding: 0 16px;
+
+            border:
+                1px solid #d1dce8;
+
+            border-radius: 7px;
+
+            background: #ffffff;
+
+            color: #145fc8;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .periodo-transferencia {
+            height: 39px;
+
+            padding: 0 13px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            border:
+                1px solid #d1dce8;
+
+            border-radius: 7px;
+
+            background: #ffffff;
+
+            color: #24446a;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           TABELA
+        ===================================================== */
+
+        .tabela-transferencia-container {
+            overflow-x: auto;
+        }
+
+
+        .pagina-transferencias .tabela {
+            margin-top: 0;
+
+            box-shadow: none;
+
+            border-radius: 8px;
+        }
+
+
+        .pagina-transferencias .tabela th {
+            padding: 11px 9px;
+
+            font-size: 11px;
+        }
+
+
+        .pagina-transferencias .tabela td {
+            padding: 11px 9px;
+
+            font-size: 11px;
+        }
 
 
         /* =====================================================
@@ -1729,302 +678,453 @@
         ===================================================== */
 
         @media (
+            max-width: 900px
+        ) {
+
+            .grid-transferencia {
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .saldo-transferencia,
+            .resumo-transferencia,
+            .acoes-transferencia {
+                grid-column: auto;
+            }
+
+
+            .filtros-transferencia {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+        }
+
+
+        @media (
             max-width: 700px
         ) {
 
-            .pagina {
-
+            .pagina-transferencias .conteudo {
                 padding:
-                    0 10px 92px;
+                    14px 10px 30px !important;
             }
 
 
-            .topo {
-
-                margin:
-                    0 -10px 14px;
-
-                padding:
-                    18px 14px 18px 18px;
-
-                border-radius:
-                    0 0 22px 22px;
+            .pagina-transferencias .topbar {
+                align-items: flex-start;
             }
 
 
-            .topo-conteudo {
-                gap: 10px;
+            .pagina-transferencias .topbar h1 {
+                font-size: 26px;
             }
 
 
-            .topo-logo {
-                width: 72px;
+            .painel-transferencia {
+                padding: 17px 14px;
             }
 
 
-            .topo h1 {
-                font-size: 25px;
+            .cabecalho-transferencia {
+                align-items: flex-start;
             }
 
 
-            .topo p {
-
-                max-width:
-                    250px;
-
-                font-size:
-                    12px;
+            .titulo-transferencia h2 {
+                font-size: 18px;
             }
 
 
-            .btn-bipar-topo {
+            .acoes-leitor {
+                flex-direction: column;
 
-                width: 65px;
-
-                min-height:
-                    68px;
+                align-items: stretch;
             }
 
 
-            .painel-operacao,
-            .card-resumo,
-            .card-ultimas,
-            .card-acoes {
-
-                padding: 16px;
+            .leitor-ativo {
+                display: none;
             }
 
 
-            .titulo-operacao {
-                align-items:
-                    flex-start;
+            .btn-bipar-tudo {
+                padding: 0 10px;
+
+                font-size: 11px;
             }
 
 
-            .titulo-operacao h2 {
-                font-size: 17px;
-            }
-
-
-            .status-leitor {
-
-                font-size:
-                    10px;
-
-                padding:
-                    7px 8px;
-            }
-
-
-            .busca {
-
-                grid-template-columns:
-                    minmax(0, 1fr)
-                    105px;
-            }
-
-
-            .campo input,
-            .campo select {
-
-                height: 52px;
-
-                font-size:
-                    16px;
-            }
-
-
-            .linha-dupla {
-
+            .saldo-transferencia {
                 grid-template-columns:
                     1fr 1fr;
             }
 
 
-            .saldo-preview-item {
-                padding:
-                    13px 8px;
+            .saldo-transferencia-item {
+                min-height: 75px;
+
+                padding: 9px 7px;
             }
 
 
-            .saldo-preview-item strong {
-                font-size:
-                    21px;
+            .saldo-transferencia-item strong {
+                font-size: 18px;
             }
 
 
-            .grade-secundaria {
-
+            .acoes-transferencia {
                 grid-template-columns:
-                    minmax(0, 1.3fr)
-                    minmax(145px, .7fr);
-
-                gap: 10px;
+                    1fr 1fr;
             }
 
 
-            .passos {
+            .btn-transferir-principal {
+                grid-column:
+                    1 / -1;
 
+                min-height: 53px;
+
+                font-size: 15px;
+            }
+
+
+            .filtros-transferencia {
                 grid-template-columns:
-                    repeat(
-                        4,
-                        minmax(
-                            0,
-                            1fr
-                        )
-                    );
-
-                gap: 5px;
+                    1fr;
             }
 
 
-            .passo {
-
-                display: block;
-
-                text-align:
-                    center;
-            }
-
-
-            .passo-icone {
-
-                margin:
-                    0 auto 5px;
-            }
-
-
-            .passo strong {
-                font-size: 9px;
-            }
-
-
-            .passo span {
+            .periodo-transferencia {
                 display: none;
             }
 
-
-            .nav-mobile {
-                display: grid;
-            }
-
         }
-
 
 
         @media (
             max-width: 480px
         ) {
 
-            .topo-logo {
-                width: 60px;
+            .saldo-transferencia-item small {
+                font-size: 10px;
             }
 
 
-            .topo h1 {
-                font-size: 23px;
-            }
-
-
-            .topo p {
-                font-size: 11px;
-            }
-
-
-            .status-leitor {
+            .saldo-status {
                 display: none;
             }
 
 
-            .busca {
-
-                grid-template-columns:
-                    minmax(0, 1fr)
-                    92px;
-            }
-
-
-            .btn-buscar {
-
-                padding:
-                    0 10px;
-
-                font-size:
-                    13px;
-            }
-
-
-            .linha-dupla {
-
+            .acoes-transferencia {
                 grid-template-columns:
                     1fr 1fr;
-
-                gap: 8px;
-            }
-
-
-            .grade-secundaria {
-                grid-template-columns:
-                    1fr;
-            }
-
-
-            .card-acoes
-            .acoes-grid {
-
-                grid-template-columns:
-                    repeat(
-                        2,
-                        1fr
-                    );
-            }
-
-
-            .acao-rapida {
-
-                min-height:
-                    58px;
-
-                padding: 6px;
-
-                text-align:
-                    center;
-
-                font-size:
-                    10px;
             }
 
         }
 
     
-
         /* =====================================================
-           INTEGRAÇÃO COM O MENU PADRÃO DO SMI WMS
+           AJUSTE MOBILE 16/09/2026
+           Mantém a lógica original e corrige o layout no celular.
         ===================================================== */
-
-        .transferencia-mobile-conteudo-shell {
-            min-height: 100vh;
-            padding: 0 !important;
-            background: transparent !important;
+        html,
+        body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
-        .transferencia-mobile-conteudo-shell .pagina {
-            margin-left: auto;
-            margin-right: auto;
+        .nav-mobile-wms {
+            display: none;
         }
 
         @media (max-width: 700px) {
-
-            .sidebar.sidebar-wms-novo {
+            .pagina-transferencias .sidebar.sidebar-wms-novo {
                 display: none !important;
             }
 
-            body:has(.sidebar-wms-novo)
-            .transferencia-mobile-conteudo-shell {
+            body.pagina-transferencias > .conteudo,
+            .pagina-transferencias .conteudo {
                 margin-left: 0 !important;
-                padding: 0 !important;
+                margin-right: 0 !important;
+                width: 100% !important;
+                max-width: none !important;
+                padding: 0 12px calc(108px + env(safe-area-inset-bottom)) !important;
+                transform: none !important;
             }
 
+            .pagina-transferencias .topbar {
+                width: auto !important;
+                margin: 0 -12px 16px !important;
+                padding: calc(22px + env(safe-area-inset-top)) 18px 26px !important;
+                border-radius: 0 0 26px 26px !important;
+                background:
+                    radial-gradient(circle at 88% 5%, rgba(255,255,255,.09) 0 95px, transparent 96px),
+                    linear-gradient(135deg, #062b59 0%, #0b57a4 100%) !important;
+                color: #fff !important;
+                box-shadow: 0 12px 26px rgba(6,59,115,.16) !important;
+            }
+
+            .pagina-transferencias .topbar h1 {
+                margin: 0 0 5px !important;
+                color: #fff !important;
+                font-size: clamp(30px, 9vw, 40px) !important;
+                line-height: 1.05 !important;
+            }
+
+            .pagina-transferencias .topbar small {
+                display: block;
+                max-width: 320px;
+                color: #dcecff !important;
+                font-size: 13px !important;
+                line-height: 1.35 !important;
+            }
+
+            .pagina-transferencias .topbar .usuario {
+                display: none !important;
+            }
+
+            .pagina-transferencias .painel-transferencia {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-top: 14px !important;
+                padding: 18px 15px !important;
+                border-radius: 20px !important;
+                box-shadow: 0 10px 28px rgba(15,42,80,.08) !important;
+            }
+
+            .pagina-transferencias .cabecalho-transferencia {
+                align-items: center !important;
+                gap: 10px !important;
+                margin-bottom: 18px !important;
+            }
+
+            .pagina-transferencias .titulo-transferencia {
+                min-width: 0 !important;
+            }
+
+            .pagina-transferencias .titulo-transferencia h2 {
+                font-size: 21px !important;
+                line-height: 1.15 !important;
+            }
+
+            .pagina-transferencias .icone-transferencia {
+                font-size: 28px !important;
+                flex: 0 0 auto !important;
+            }
+
+            .pagina-transferencias .acoes-leitor {
+                flex: 0 0 auto !important;
+            }
+
+            .pagina-transferencias .btn-bipar-tudo {
+                height: 44px !important;
+                padding: 0 11px !important;
+                border-radius: 10px !important;
+                font-size: 11px !important;
+                white-space: nowrap;
+            }
+
+            .pagina-transferencias .grid-transferencia {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 14px !important;
+            }
+
+            .pagina-transferencias .campo-transferencia,
+            .pagina-transferencias .campo-com-icone,
+            .pagina-transferencias .quantidade-wrapper {
+                min-width: 0 !important;
+                width: 100% !important;
+            }
+
+            .pagina-transferencias .campo-com-icone input,
+            .pagina-transferencias .campo-com-icone select,
+            .pagina-transferencias .quantidade-wrapper input {
+                width: 100% !important;
+                min-width: 0 !important;
+                height: 54px !important;
+                border-radius: 12px !important;
+                font-size: 16px !important;
+            }
+
+            .pagina-transferencias .quantidade-wrapper {
+                grid-template-columns: minmax(0, 1fr) 76px !important;
+            }
+
+            .pagina-transferencias .quantidade-wrapper input {
+                border-radius: 12px 0 0 12px !important;
+            }
+
+            .pagina-transferencias .btn-max-transferencia {
+                min-width: 0 !important;
+                border-radius: 0 12px 12px 0 !important;
+            }
+
+            .pagina-transferencias .saldo-transferencia {
+                grid-column: auto !important;
+                grid-template-columns: 1fr 1fr !important;
+                width: 100% !important;
+                border-radius: 14px !important;
+            }
+
+            .pagina-transferencias .saldo-transferencia-item {
+                min-width: 0 !important;
+                min-height: 82px !important;
+                padding: 10px 8px !important;
+                gap: 6px !important;
+            }
+
+            .pagina-transferencias .saldo-transferencia-item small {
+                font-size: 10px !important;
+                line-height: 1.2 !important;
+            }
+
+            .pagina-transferencias .saldo-transferencia-item strong {
+                font-size: 17px !important;
+                overflow-wrap: anywhere;
+            }
+
+            .pagina-transferencias .resumo-transferencia {
+                grid-column: auto !important;
+                width: 100% !important;
+                padding: 13px !important;
+                border-radius: 12px !important;
+                line-height: 1.55 !important;
+            }
+
+            .pagina-transferencias .acoes-transferencia {
+                grid-column: auto !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 9px !important;
+            }
+
+            .pagina-transferencias .btn-secundario-transferencia,
+            .pagina-transferencias .btn-transferir-principal {
+                min-width: 0 !important;
+                min-height: 52px !important;
+                border-radius: 12px !important;
+            }
+
+            .pagina-transferencias .btn-transferir-principal {
+                grid-column: 1 / -1 !important;
+                min-height: 58px !important;
+                font-size: 16px !important;
+            }
+
+            .pagina-transferencias #historicoTransferencia {
+                margin-top: 14px !important;
+            }
+
+            .pagina-transferencias .cabecalho-historico-transferencia h2 {
+                font-size: 18px !important;
+            }
+
+            .pagina-transferencias .filtros-transferencia {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 8px !important;
+            }
+
+            .pagina-transferencias .pesquisa-transferencia {
+                grid-column: 1 / -1 !important;
+                min-width: 0 !important;
+            }
+
+            .pagina-transferencias .pesquisa-transferencia input {
+                width: 100% !important;
+                min-width: 0 !important;
+                height: 44px !important;
+                border-radius: 10px !important;
+            }
+
+            .pagina-transferencias .btn-filtro-transferencia,
+            .pagina-transferencias .btn-exportar-transferencia {
+                width: 100% !important;
+                min-width: 0 !important;
+                height: 44px !important;
+                padding: 0 8px !important;
+                border-radius: 10px !important;
+            }
+
+            .pagina-transferencias .periodo-transferencia {
+                display: none !important;
+            }
+
+            .pagina-transferencias .tabela-transferencia-container {
+                width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 10px;
+            }
+
+            .pagina-transferencias .tabela-transferencia-container .tabela {
+                min-width: 720px !important;
+            }
+
+            .nav-mobile-wms {
+                position: fixed;
+                left: 10px;
+                right: 10px;
+                bottom: calc(10px + env(safe-area-inset-bottom));
+                z-index: 1100;
+                display: grid;
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+                gap: 4px;
+                padding: 7px;
+                border: 1px solid #dbe4ee;
+                border-radius: 18px;
+                background: rgba(255,255,255,.97);
+                box-shadow: 0 8px 24px rgba(21,47,75,.16);
+                backdrop-filter: blur(10px);
+            }
+
+            .nav-mobile-wms a {
+                min-width: 0;
+                min-height: 57px;
+                padding: 6px 2px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                border-radius: 12px;
+                color: #60738a;
+                font-size: 9px;
+                font-weight: 700;
+                text-decoration: none;
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .nav-mobile-wms .nav-icone {
+                font-size: 18px;
+                line-height: 1;
+            }
+
+            .nav-mobile-wms a.ativo {
+                background: linear-gradient(135deg, #07366e, #0a4b91);
+                color: #fff;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .pagina-transferencias .cabecalho-transferencia {
+                align-items: flex-start !important;
+            }
+
+            .pagina-transferencias .btn-bipar-tudo {
+                max-width: 86px;
+                white-space: normal;
+                line-height: 1.1;
+            }
+
+            .pagina-transferencias .saldo-transferencia-item strong {
+                font-size: 15px !important;
+            }
         }
 
     </style>
@@ -2032,747 +1132,712 @@
 </head>
 
 
+<body class="pagina-transferencias">
 
-<body>
+    <!-- =====================================================
+         MENU LATERAL - NOVO PADRÃO SMI WMS
+    ===================================================== -->
 
-    <div class="conteudo transferencia-mobile-conteudo-shell">
+    <aside class="sidebar sidebar-wms-novo">
 
-    <main class="pagina">
+        <div class="sidebar-topo">
 
-
-        <!-- =====================================================
-             CABEÇALHO
-        ===================================================== -->
-
-        <section class="topo">
-
-            <div class="topo-conteudo">
-
-                <div class="topo-logo">
-
-                    <img
-                        src="img/logo.png"
-                        alt="SMI do Brasil"
-                    >
-
-                </div>
-
-
-                <div class="topo-texto">
-
-                    <span class="identificacao">
-                        SMI WMS
-                    </span>
-
-                    <h1>
-                        Transferência Mobile
-                    </h1>
-
-                    <p>
-                        Localize o produto e transfira o estoque entre posições.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="btn-bipar-topo"
-                onclick="focarCodigoTransferenciaMobile()"
+            <img
+                src="img/logo.png"
+                alt="SMI do Brasil"
+                class="sidebar-logo"
             >
 
-                <span class="icone">
-                    ▥
+            <h2>SMI WMS</h2>
+
+            <p>GESTÃO QUE MOVIMENTA</p>
+
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Menu principal">
+
+            <div class="menu-titulo">
+                <span>PRINCIPAL</span>
+            </div>
+
+            <a href="dashboard.html" class="menu-item" data-page="dashboard.html">
+                <span class="menu-icon icone-dashboard">
+                    <i data-lucide="house"></i>
                 </span>
+                <span class="menu-texto">Dashboard</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
-                <span>
-                    Bipar
+            <a href="produtos.html" class="menu-item" data-page="produtos.html">
+                <span class="menu-icon icone-produtos">
+                    <i data-lucide="package"></i>
                 </span>
+                <span class="menu-texto">Produtos</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
-            </button>
-
-        </section>
-
-
-
-        <!-- =====================================================
-             OPERAÇÃO
-        ===================================================== -->
-
-        <section class="card painel-operacao">
-
-
-            <div class="titulo-operacao">
-
-                <div class="titulo-operacao-esquerda">
-
-                    <div class="titulo-operacao-icone">
-                        ⇄
-                    </div>
-
-                    <div>
-
-                        <h2>
-                            Transferir Produto
-                        </h2>
-
-                        <small>
-                            Movimentação entre posições
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-                <div class="status-leitor">
-                    ▥ Leitor ativo
-                </div>
-
+            <div class="menu-titulo">
+                <span>OPERAÇÕES</span>
             </div>
 
+            <a href="entradas.html" class="menu-item" data-page="entradas.html">
+                <span class="menu-icon icone-entradas">
+                    <i data-lucide="download"></i>
+                </span>
+                <span class="menu-texto">Entradas</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
+            <a href="saidas.html" class="menu-item" data-page="saidas.html">
+                <span class="menu-icon icone-saidas">
+                    <i data-lucide="upload"></i>
+                </span>
+                <span class="menu-texto">Saídas</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
-            <!-- CÓDIGO -->
+            <a href="separacao.html" class="menu-item" data-page="separacao.html">
+                <span class="menu-icon icone-separacao">
+                    <i data-lucide="shopping-cart"></i>
+                </span>
+                <span class="menu-texto">Separação</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
-            <div class="campo">
+            <a href="transferencias.html" class="menu-item" data-page="transferencias.html">
+                <span class="menu-icon icone-transferencia">
+                    <i data-lucide="arrow-left-right"></i>
+                </span>
+                <span class="menu-texto">Transferências</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
-                <label for="codigoProdutoTransferenciaMobile">
-                    Código do Produto
-                </label>
+            <a href="transferencia-mobile.html" class="menu-item" data-page="transferencia-mobile.html">
+                <span class="menu-icon icone-mobile">
+                    <i data-lucide="smartphone"></i>
+                </span>
+                <span class="menu-texto">Transf. Mobile</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
+            <a href="posicoes.html" class="menu-item" data-page="posicoes.html">
+                <span class="menu-icon icone-posicoes">
+                    <i data-lucide="map-pin"></i>
+                </span>
+                <span class="menu-texto">Posições</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
-                <div class="busca">
+            <a href="inventario.html" class="menu-item" data-page="inventario.html">
+                <span class="menu-icon icone-inventario">
+                    <i data-lucide="clipboard-list"></i>
+                </span>
+                <span class="menu-texto">Inventário</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
-                    <div class="campo-codigo-wrapper">
+            <a href="inventario-mobile.html" class="menu-item" data-page="inventario-mobile.html">
+                <span class="menu-icon icone-invmobile">
+                    <i data-lucide="scan-line"></i>
+                </span>
+                <span class="menu-texto">Inv. Mobile</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
-                        <input
-                            type="text"
-                            id="codigoProdutoTransferenciaMobile"
-                            placeholder="Digite o código ou bipar"
-                            autocomplete="off"
-                            autocapitalize="characters"
-                        >
-
-                        <span class="codigo-icone">
-                            ▥
-                        </span>
-
-                    </div>
-
-
-                    <button
-                        type="button"
-                        class="btn-buscar"
-                        onclick="buscarProdutoTransferenciaMobile()"
-                    >
-                        Buscar
-                    </button>
-
-                </div>
-
+            <div class="menu-titulo">
+                <span>SISTEMA</span>
             </div>
 
+            <a href="relatorios.html" class="menu-item" data-page="relatorios.html">
+                <span class="menu-icon icone-relatorios">
+                    <i data-lucide="chart-no-axes-column"></i>
+                </span>
+                <span class="menu-texto">Relatórios</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
+            <a href="etiquetagem.html" class="menu-item" data-page="etiquetagem.html">
+                <span class="menu-icon icone-etiqueta">
+                    <i data-lucide="tag"></i>
+                </span>
+                <span class="menu-texto">Etiquetagem</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
-            <!-- DESCRIÇÃO -->
+            <a href="requisicao.html" class="menu-item" data-page="requisicao.html">
+                <span class="menu-icon icone-requisicao">
+                    <i data-lucide="file-text"></i>
+                </span>
+                <span class="menu-texto">Requisição</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
-            <div class="campo">
+            <a href="configuracoes.html" class="menu-item" data-page="configuracoes.html">
+                <span class="menu-icon icone-config">
+                    <i data-lucide="settings"></i>
+                </span>
+                <span class="menu-texto">Configurações</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
 
-                <label for="descricaoProdutoTransferenciaMobile">
-                    Descrição do Produto
-                </label>
+        </nav>
 
-                <input
-                    type="text"
-                    id="descricaoProdutoTransferenciaMobile"
-                    readonly
-                >
+        <div class="sidebar-rodape">
+            <span>LOGÍSTICA MAIS INTELIGENTE</span>
+            <small>v1.0.0</small>
+        </div>
 
-            </div>
-
-
-
-            <!-- ORIGEM + ESTOQUE -->
-
-            <div class="linha-dupla">
-
-                <div class="campo">
-
-                    <label for="origemTransferenciaMobile">
-                        Posição de Origem
-                    </label>
-
-                    <select
-                        id="origemTransferenciaMobile"
-                        disabled
-                        onchange="alterarOrigemTransferenciaMobile()"
-                    >
-
-                        <option value="">
-                            -
-                        </option>
-
-                    </select>
-
-                </div>
+    </aside>
 
 
 
-                <div class="campo">
-
-                    <label for="estoqueTransferenciaMobile">
-                        Estoque Atual
-                    </label>
-
-                    <input
-                        type="text"
-                        id="estoqueTransferenciaMobile"
-                        class="estoque-destaque"
-                        readonly
-                    >
-
-                </div>
-
-            </div>
 
 
 
-            <!-- QUANTIDADE -->
+    <!-- =====================================================
+         CONTEÚDO
+    ===================================================== -->
 
-            <div class="campo">
-
-                <label for="quantidadeTransferenciaMobile">
-                    Quantidade a Transferir
-                </label>
+    <div class="conteudo">
 
 
-                <div class="quantidade-linha">
+        <!-- =================================================
+             TOPO
+        ================================================== -->
 
-                    <input
-                        type="number"
-                        id="quantidadeTransferenciaMobile"
-                        min="0.001"
-                        step="0.001"
-                        inputmode="decimal"
-                        placeholder="Informe a quantidade"
-                    >
+        <div class="topbar">
 
+            <div>
 
-                    <button
-                        type="button"
-                        class="btn-max"
-                        onclick="usarQuantidadeMaximaTransferenciaMobile()"
-                    >
-                        Máx.
-                    </button>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- DESTINO -->
-
-            <div class="campo-destino">
-
-                <label for="destinoTransferenciaMobile">
-                    📍 Nova Posição (Destino)
-                </label>
-
-                <input
-                    type="text"
-                    id="destinoTransferenciaMobile"
-                    placeholder="Digite ou bipar a posição"
-                    autocomplete="off"
-                    autocapitalize="characters"
-                >
+                <h1>
+                    Transferência
+                </h1>
 
                 <small>
-                    Informe a posição para onde o material será transferido.
+                    Movimentação entre posições
                 </small>
 
             </div>
 
 
+            <div class="usuario">
 
-            <!-- SALDO -->
+                <span id="relogio"></span>
 
-            <div class="saldo-preview">
+                <span id="nomeUsuario"></span>
 
-                <div class="saldo-preview-item disponivel">
-
-                    <small>
-                        Disponível na origem
-                    </small>
-
-                    <strong id="saldoDisponivelTransferenciaMobile">
-                        0
-                    </strong>
-
-                    <small>
-                        unidades
-                    </small>
-
-                </div>
-
-
-                <div class="saldo-preview-item">
-
-                    <small>
-                        Após transferência
-                    </small>
-
-                    <strong id="saldoDepoisTransferenciaMobile">
-                        0
-                    </strong>
-
-                    <small>
-                        unidades
-                    </small>
-
-                </div>
-
-            </div>
-
-
-
-            <button
-                type="button"
-                id="btnConfirmarTransferenciaMobile"
-                class="btn-confirmar"
-                onclick="confirmarTransferenciaMobile()"
-                disabled
-            >
-                ⇄ Transferir Produto
-            </button>
-
-
-
-            <div class="dica">
-
-                <span>
-                    ⓘ
-                </span>
-
-                <div>
-
-                    <strong>
-                        Dica:
-                    </strong>
-
-                    Bipar o código do produto carrega automaticamente a posição e o estoque disponível.
-
-                </div>
-
-            </div>
-
-
-
-            <div
-                id="mensagemTransferenciaMobile"
-                class="mensagem"
-            ></div>
-
-        </section>
-
-
-
-        <!-- =====================================================
-             RESUMO
-        ===================================================== -->
-
-        <section
-            class="card card-resumo secao-abaixo"
-        >
-
-            <div class="cabecalho-card">
-
-                <h3>
-                    📋 Resumo da Transferência
-                </h3>
-
-            </div>
-
-
-            <div class="resumo-linha">
-
-                <span>
-                    Produto
-                </span>
-
-                <strong id="resumoProdutoTransferenciaMobile">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="resumo-linha">
-
-                <span>
-                    Origem
-                </span>
-
-                <strong id="resumoOrigemTransferenciaMobile">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="resumo-linha">
-
-                <span>
-                    Estoque Atual
-                </span>
-
-                <strong
-                    id="resumoEstoqueTransferenciaMobile"
-                    class="verde"
+                <button
+                    type="button"
+                    onclick="sairSistema()"
                 >
-                    0 unidades
-                </strong>
+                    Sair
+                </button>
 
             </div>
-
-
-            <div class="resumo-linha">
-
-                <span>
-                    Quantidade
-                </span>
-
-                <strong id="resumoQuantidadeTransferenciaMobile">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="resumo-linha">
-
-                <span>
-                    Destino
-                </span>
-
-                <strong id="resumoDestinoTransferenciaMobile">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="resumo-linha">
-
-                <span>
-                    Saldo na Origem
-                </span>
-
-                <strong id="resumoSaldoTransferenciaMobile">
-                    -
-                </strong>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =====================================================
-             ÚLTIMAS + AÇÕES
-        ===================================================== -->
-
-        <div class="grade-secundaria">
-
-
-            <section
-                class="card card-ultimas"
-                id="ultimasTransferenciasMobileCard"
-            >
-
-                <div class="cabecalho-card">
-
-                    <h3>
-                        ◷ Últimas Transferências
-                    </h3>
-
-                    <span
-                        class="link-simples"
-                        onclick="rolarUltimasTransferenciasMobile()"
-                    >
-                        Ver todas
-                    </span>
-
-                </div>
-
-
-                <div
-                    id="listaUltimasTransferenciasMobile"
-                    class="lista-ultimas"
-                >
-
-                    <div class="ultima-item">
-
-                        <div class="ultima-check">
-                            ✓
-                        </div>
-
-                        <div class="ultima-hora">
-                            --:--
-                        </div>
-
-                        <div class="ultima-produto">
-
-                            <strong>
-                                Nenhuma transferência recente
-                            </strong>
-
-                            <small>
-                                -
-                            </small>
-
-                        </div>
-
-                        <div class="ultima-qtd">
-                            -
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <section class="card card-acoes">
-
-                <div class="cabecalho-card">
-
-                    <h3>
-                        ⚡ Ações Rápidas
-                    </h3>
-
-                </div>
-
-
-                <div class="acoes-grid">
-
-                    <button
-                        type="button"
-                        class="acao-rapida"
-                        onclick="limparTelaTransferenciaMobile()"
-                    >
-                        🧹 Limpar
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="acao-rapida"
-                        onclick="location.href='transferencias.html'"
-                    >
-                        📋 Histórico
-                    </button>
-
-                </div>
-
-            </section>
 
         </div>
 
 
 
-        <!-- =====================================================
-             COMO TRANSFERIR
-        ===================================================== -->
+        <!-- =================================================
+             TRANSFERIR PRODUTO
+        ================================================== -->
 
-        <section class="como-transferir">
-
-            <h3>
-                Como transferir?
-            </h3>
+        <section class="painel-transferencia">
 
 
-            <div class="passos">
+            <div class="cabecalho-transferencia">
 
 
-                <div class="passo">
+                <div class="titulo-transferencia">
 
-                    <div class="passo-icone">
-                        ▥
-                    </div>
+                    <span class="icone-transferencia">
+                        ⇄
+                    </span>
 
-                    <div>
-
-                        <strong>
-                            1. Digite ou bipar
-                        </strong>
-
-                        <span>
-                            o código do produto
-                        </span>
-
-                    </div>
+                    <h2>
+                        Transferir Produto
+                    </h2>
 
                 </div>
 
 
+                <div class="acoes-leitor">
 
-                <div class="passo">
+                    <span class="leitor-ativo">
+                        ● Leitor ativo
+                    </span>
 
-                    <div class="passo-icone">
-                        📍
-                    </div>
 
-                    <div>
-
-                        <strong>
-                            2. Confira a origem
-                        </strong>
-
-                        <span>
-                            e o estoque disponível
-                        </span>
-
-                    </div>
+                    <button
+                        type="button"
+                        class="btn-bipar-tudo"
+                        onclick="focarCodigoTransferencia()"
+                    >
+                        ▥ Bipar tudo
+                    </button>
 
                 </div>
 
-
-
-                <div class="passo">
-
-                    <div class="passo-icone">
-                        📦
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            3. Informe quantidade
-                        </strong>
-
-                        <span>
-                            e posição de destino
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="passo">
-
-                    <div class="passo-icone">
-                        ✓
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            4. Confirme
-                        </strong>
-
-                        <span>
-                            a transferência
-                        </span>
-
-                    </div>
-
-                </div>
 
             </div>
+
+
+
+            <div class="grid-transferencia">
+
+
+                <!-- =============================================
+                     CÓDIGO
+                ============================================== -->
+
+                <div class="campo-transferencia">
+
+                    <label for="codigoTransferencia">
+                        Código do Produto
+                    </label>
+
+
+                    <div class="campo-com-icone">
+
+                        <input
+                            type="text"
+                            id="codigoTransferencia"
+                            placeholder="Código do Produto"
+                            autocomplete="off"
+                        >
+
+                        <span class="icone-campo">
+                            ▥
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     QUANTIDADE
+                ============================================== -->
+
+                <div class="campo-transferencia">
+
+                    <label for="quantidadeTransferencia">
+                        Quantidade
+                    </label>
+
+
+                    <div class="quantidade-wrapper">
+
+                        <input
+                            type="number"
+                            id="quantidadeTransferencia"
+                            placeholder="Quantidade"
+                            min="0.001"
+                            step="0.001"
+                        >
+
+
+                        <button
+                            type="button"
+                            class="btn-max-transferencia"
+                            id="btnMaxTransferencia"
+                        >
+                            Máx.
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     ORIGEM
+                ============================================== -->
+
+                <div class="campo-transferencia">
+
+                    <label for="origemTransferencia">
+                        Endereço Atual (Origem)
+                    </label>
+
+
+                    <div class="campo-com-icone">
+
+                        <input
+                            type="text"
+                            id="origemTransferencia"
+                            placeholder="Endereço Atual"
+                            autocomplete="off"
+                        >
+
+                        <span class="icone-campo">
+                            ▥
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     DESTINO
+                ============================================== -->
+
+                <div class="campo-transferencia">
+
+                    <label for="destinoTransferencia">
+                        Novo Endereço (Destino)
+                    </label>
+
+
+                    <div class="campo-com-icone">
+
+                        <input
+                            type="text"
+                            id="destinoTransferencia"
+                            placeholder="Novo Endereço"
+                            autocomplete="off"
+                        >
+
+                        <span class="icone-campo">
+                            ▥
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     SALDOS
+                ============================================== -->
+
+                <div class="saldo-transferencia">
+
+
+                    <div class="saldo-transferencia-item">
+
+                        <div>
+
+                            <small>
+                                Estoque disponível na origem
+                            </small>
+
+                            <strong id="estoqueOrigemTransferencia">
+                                0 unidades
+                            </strong>
+
+                        </div>
+
+
+                        <span class="saldo-status">
+                            ✓
+                        </span>
+
+                    </div>
+
+
+
+                    <div
+                        class="
+                            saldo-transferencia-item
+                            saldo-depois
+                        "
+                    >
+
+                        <div>
+
+                            <small>
+                                Após transferência
+                            </small>
+
+                            <strong id="estoqueDepoisTransferencia">
+                                0 unidades
+                            </strong>
+
+                        </div>
+
+
+                        <span class="saldo-status">
+                            ⓘ
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =============================================
+                     RESUMO
+                ============================================== -->
+
+                <div class="resumo-transferencia">
+
+                    <span class="resumo-transferencia-titulo">
+                        Resumo da transferência
+                    </span>
+
+
+                    <span>
+                        Produto:
+                        <strong id="resumoCodigoTransferencia">
+                            -
+                        </strong>
+
+                        &nbsp; • &nbsp;
+
+                        Quantidade:
+                        <strong id="resumoQuantidadeTransferencia">
+                            -
+                        </strong>
+
+                        &nbsp; • &nbsp;
+
+                        Origem:
+                        <strong id="resumoOrigemTransferencia">
+                            -
+                        </strong>
+
+                        &nbsp; • &nbsp;
+
+                        Destino:
+                        <strong id="resumoDestinoTransferencia">
+                            -
+                        </strong>
+                    </span>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     AÇÕES
+                ============================================== -->
+
+                <div class="acoes-transferencia">
+
+
+                    <button
+                        type="button"
+                        class="btn-secundario-transferencia"
+                        onclick="limparCamposTransferenciaVisual()"
+                    >
+                        🗑 Limpar campos
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="btn-secundario-transferencia"
+                        onclick="rolarHistoricoTransferencia()"
+                    >
+                        ◷ Ver histórico
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="btnRegistrarTransferencia"
+                        class="btn-transferir-principal"
+                    >
+                        ⇄ Transferir Produto
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
 
         </section>
 
 
-    </main>
 
+        <!-- =================================================
+             HISTÓRICO
+        ================================================== -->
 
-
-    <!-- =====================================================
-         NAVEGAÇÃO MOBILE
-    ===================================================== -->
-
-    <nav class="nav-mobile">
-
-
-        <a href="dashboard.html">
-
-            <span class="nav-icone">
-                ⌂
-            </span>
-
-            Dashboard
-
-        </a>
-
-
-
-        <a href="produtos.html">
-
-            <span class="nav-icone">
-                📦
-            </span>
-
-            Produtos
-
-        </a>
-
-
-
-        <a href="separacao.html">
-
-            <span class="nav-icone">
-                🛒
-            </span>
-
-            Separação
-
-        </a>
-
-
-
-        <a
-            href="transferencia-mobile.html"
-            class="ativo"
+        <section
+            class="painel-transferencia"
+            id="historicoTransferencia"
         >
 
-            <span class="nav-icone">
-                ⇄
-            </span>
 
-            Transf. Mobile
+            <div class="cabecalho-historico-transferencia">
 
-        </a>
+                <span class="icone-transferencia">
+                    ⇄
+                </span>
 
+                <h2>
+                    Histórico de Transferências
+                </h2>
 
-
-        <a href="transferencias.html">
-
-            <span class="nav-icone">
-                •••
-            </span>
-
-            Mais
-
-        </a>
+            </div>
 
 
-    </nav>
 
+            <!-- FILTROS -->
+
+            <div class="filtros-transferencia">
+
+
+                <div class="pesquisa-transferencia">
+
+                    <span>
+                        🔍
+                    </span>
+
+                    <input
+                        type="text"
+                        id="pesquisaTransferencia"
+                        placeholder="Buscar por código, descrição ou operador..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+
+                <button
+                    type="button"
+                    class="btn-filtro-transferencia"
+                >
+                    ▽ Filtros
+                </button>
+
+
+
+                <div class="periodo-transferencia">
+
+                    📅
+
+                    <span id="periodoTransferencia">
+                        Período atual
+                    </span>
+
+                </div>
+
+
+
+                <button
+                    type="button"
+                    class="btn-exportar-transferencia"
+                    id="btnExportarTransferencias"
+                >
+                    ↓ Exportar
+                </button>
+
+
+            </div>
+
+
+
+            <!-- TABELA -->
+
+            <div class="tabela-transferencia-container">
+
+                <table class="tabela">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Data/Hora
+                            </th>
+
+                            <th>
+                                Código
+                            </th>
+
+                            <th>
+                                Descrição
+                            </th>
+
+                            <th>
+                                Qtd.
+                            </th>
+
+                            <th>
+                                Origem
+                            </th>
+
+                            <th>
+                                Destino
+                            </th>
+
+                            <th>
+                                Operador
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="listaTransferencias">
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                style="text-align:center;"
+                            >
+                                Nenhuma transferência registrada.
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </section>
 
 
     </div>
 
+
+
+    <!-- NAVEGAÇÃO MOBILE AJUSTADA -->
+    <nav class="nav-mobile-wms" aria-label="Navegação mobile">
+        <a href="dashboard.html">
+            <span class="nav-icone">⌂</span>
+            Dashboard
+        </a>
+        <a href="produtos.html">
+            <span class="nav-icone">📦</span>
+            Produtos
+        </a>
+        <a href="separacao.html">
+            <span class="nav-icone">🛒</span>
+            Separação
+        </a>
+        <a href="transferencias.html" class="ativo">
+            <span class="nav-icone">⇄</span>
+            Transferência
+        </a>
+        <a href="inventario-mobile.html">
+            <span class="nav-icone">•••</span>
+            Mais
+        </a>
+    </nav>
+
+
     <!-- =====================================================
-         SCRIPTS
+         JAVASCRIPT ORIGINAL
     ===================================================== -->
 
     <script
@@ -2781,726 +1846,480 @@
 
     <script src="supabase.js"></script>
 
+    <script src="app.js"></script>
+
     <script src="sync-supabase.js"></script>
 
 
 
+    <!-- =====================================================
+         FUNCIONALIDADES VISUAIS DA NOVA TELA
+    ===================================================== -->
+
     <script>
 
-        let produtosTransferenciaMobile =
-            [];
-
-        let produtoOrigemTransferenciaMobile =
-            null;
-
+        let estoqueAtualOrigemVisual =
+            0;
 
 
         // =====================================================
-        // NÚMEROS
+        // QR CODE - 8 PRIMEIROS CARACTERES
         // =====================================================
 
-        function converterNumeroTransferenciaMobile(
-            valor
-        ) {
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
 
-            if (
-                valor === undefined ||
-                valor === null ||
-                String(valor).trim() === ""
-            ) {
-
-                return 0;
-
-            }
-
-
-            const numero =
-                Number(
-                    String(valor)
-                        .replace(",", ".")
-                );
-
-
-            return Number.isFinite(numero)
-                ? numero
-                : 0;
-
-        }
-
-
-
-        function formatarQuantidadeTransferenciaMobile(
-            valor
-        ) {
-
-            return converterNumeroTransferenciaMobile(
-                valor
-            )
-            .toLocaleString(
-                "pt-BR",
-                {
-                    maximumFractionDigits:
-                        3
-                }
-            );
-
-        }
-
-
-
-        // =====================================================
-        // POSIÇÃO / QR
-        // =====================================================
-
-        function normalizarPosicaoTransferenciaMobile(
-            valor
-        ) {
-
-            return String(
-                valor || ""
-            )
-            .trim()
-            .toUpperCase()
-            .substring(
-                0,
-                8
-            );
-
-        }
-
-
-
-        function normalizarCodigoTransferenciaMobile(
-            valor
-        ) {
-
-            return String(
-                valor || ""
-            )
-            .trim()
-            .toUpperCase()
-            .substring(
-                0,
-                8
-            );
-
-        }
-
-
-
-        // =====================================================
-        // MENSAGENS
-        // =====================================================
-
-        function mostrarMensagemTransferenciaMobile(
-            texto,
-            tipo
-        ) {
-
-            const mensagem =
-                document.getElementById(
-                    "mensagemTransferenciaMobile"
-                );
-
-
-            mensagem.textContent =
-                texto;
-
-
-            mensagem.className =
-                "mensagem " +
-                tipo;
-
-        }
-
-
-
-        function limparMensagemTransferenciaMobile() {
-
-            const mensagem =
-                document.getElementById(
-                    "mensagemTransferenciaMobile"
-                );
-
-
-            mensagem.textContent =
-                "";
-
-
-            mensagem.className =
-                "mensagem";
-
-        }
-
-
-
-        // =====================================================
-        // OPERADOR
-        // =====================================================
-
-        function obterOperadorTransferenciaMobile() {
-
-            let operador =
-                "DAVI.SMI";
-
-
-            try {
-
-                const usuarioLogado =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "usuarioLogado"
-                        ) ||
-                        "{}"
+                const campoCodigo =
+                    document.getElementById(
+                        "codigoTransferencia"
                     );
 
 
-                operador =
-                    usuarioLogado.nome ||
-                    usuarioLogado.usuario ||
-                    usuarioLogado.login ||
-                    localStorage.getItem(
-                        "usuario"
-                    ) ||
-                    "DAVI.SMI";
-
-
-            } catch (erro) {
-
-                operador =
-                    localStorage.getItem(
-                        "usuario"
-                    ) ||
-                    "DAVI.SMI";
-
-            }
-
-
-            return operador;
-
-        }
-
-
-
-        // =====================================================
-        // DATA
-        // =====================================================
-
-        function obterDataHoraTransferenciaMobile() {
-
-            return new Date()
-                .toLocaleString(
-                    "pt-BR",
-                    {
-                        day:
-                            "2-digit",
-
-                        month:
-                            "2-digit",
-
-                        year:
-                            "numeric",
-
-                        hour:
-                            "2-digit",
-
-                        minute:
-                            "2-digit"
-                    }
-                );
-
-        }
-
-
-
-        // =====================================================
-        // STORAGE
-        // =====================================================
-
-        function carregarListaTransferenciaMobile(
-            chave
-        ) {
-
-            try {
-
-                const dados =
-                    JSON.parse(
-                        localStorage.getItem(
-                            chave
-                        )
+                const campoQuantidade =
+                    document.getElementById(
+                        "quantidadeTransferencia"
                     );
 
 
-                return Array.isArray(
-                    dados
-                )
-                    ? dados
-                    : [];
-
-
-            } catch (erro) {
-
-                return [];
-
-            }
-
-        }
-
-
-
-        function registrarHistoricoTransferenciaMobile(
-            produto,
-            quantidade,
-            origem,
-            destino
-        ) {
-
-            const movimentacao = {
-
-                tipo:
-                    "TRANSFERENCIA",
-
-                codigo:
-                    produto.codigo ||
-                    "",
-
-                descricao:
-                    produto.descricao ||
-                    "Sem descrição",
-
-                quantidade:
-                    quantidade,
-
-                origem:
-                    origem,
-
-                endereco:
-                    origem,
-
-                destino:
-                    destino,
-
-                data:
-                    obterDataHoraTransferenciaMobile(),
-
-                operador:
-                    obterOperadorTransferenciaMobile()
-
-            };
-
-
-
-            const transferencias =
-                carregarListaTransferenciaMobile(
-                    "transferencias"
-                );
-
-
-            transferencias.unshift(
-                movimentacao
-            );
-
-
-            localStorage.setItem(
-                "transferencias",
-                JSON.stringify(
-                    transferencias
-                )
-            );
-
-
-
-            const movimentacoes =
-                carregarListaTransferenciaMobile(
-                    "movimentacoes"
-                );
-
-
-            movimentacoes.unshift(
-                movimentacao
-            );
-
-
-            localStorage.setItem(
-                "movimentacoes",
-                JSON.stringify(
-                    movimentacoes
-                )
-            );
-
-
-            atualizarUltimasTransferenciasMobile();
-
-        }
-
-
-
-        // =====================================================
-        // PREENCHER PRODUTO
-        // =====================================================
-
-        function preencherProdutoTransferenciaMobile() {
-
-            const descricao =
-                document.getElementById(
-                    "descricaoProdutoTransferenciaMobile"
-                );
-
-
-            const estoque =
-                document.getElementById(
-                    "estoqueTransferenciaMobile"
-                );
-
-
-            if (
-                !produtoOrigemTransferenciaMobile
-            ) {
-
-                descricao.value =
-                    "";
-
-                estoque.value =
-                    "";
-
-                atualizarPreviewTransferenciaMobile();
-
-                atualizarResumoTransferenciaMobile();
-
-                atualizarBotaoTransferenciaMobile();
-
-                return;
-
-            }
-
-
-            descricao.value =
-                produtoOrigemTransferenciaMobile
-                    .descricao ||
-                "";
-
-
-            estoque.value =
-                formatarQuantidadeTransferenciaMobile(
-                    produtoOrigemTransferenciaMobile
-                        .quantidade
-                );
-
-
-            atualizarPreviewTransferenciaMobile();
-
-            atualizarResumoTransferenciaMobile();
-
-            atualizarBotaoTransferenciaMobile();
-
-        }
-
-
-
-        // =====================================================
-        // ALTERAR ORIGEM
-        // =====================================================
-
-        function alterarOrigemTransferenciaMobile() {
-
-            const select =
-                document.getElementById(
-                    "origemTransferenciaMobile"
-                );
-
-
-            const id =
-                Number(
-                    select.value
-                );
-
-
-            produtoOrigemTransferenciaMobile =
-                produtosTransferenciaMobile
-                    .find(
-                        function (
-                            produto
-                        ) {
-
-                            return (
-                                Number(
-                                    produto.id
-                                ) ===
-                                id
-                            );
+                const campoOrigem =
+                    document.getElementById(
+                        "origemTransferencia"
+                    );
+
+
+                const campoDestino =
+                    document.getElementById(
+                        "destinoTransferencia"
+                    );
+
+
+                if (campoCodigo) {
+
+                    campoCodigo.addEventListener(
+                        "input",
+                        function () {
+
+                            /*
+                                MESMA REGRA DO INVENTÁRIO
+                                E DA SEPARAÇÃO:
+                                SOMENTE OS 8 PRIMEIROS
+                                CARACTERES DO QR CODE.
+                            */
+
+                            campoCodigo.value =
+                                String(
+                                    campoCodigo.value ||
+                                    ""
+                                )
+                                .substring(
+                                    0,
+                                    8
+                                )
+                                .toUpperCase();
+
+
+                            atualizarResumoTransferenciaVisual();
 
                         }
-                    ) ||
-                null;
+                    );
 
 
-            preencherProdutoTransferenciaMobile();
+                    campoCodigo.addEventListener(
+                        "change",
+                        atualizarEstoqueOrigemTransferencia
+                    );
+
+
+                    campoCodigo.addEventListener(
+                        "blur",
+                        atualizarEstoqueOrigemTransferencia
+                    );
+
+                }
+
+
+                if (campoOrigem) {
+
+                    campoOrigem.addEventListener(
+                        "input",
+                        function () {
+
+                            campoOrigem.value =
+                                normalizarPosicaoTransferencia(
+                                    campoOrigem.value
+                                );
+
+
+                            atualizarResumoTransferenciaVisual();
+
+                        }
+                    );
+
+
+                    campoOrigem.addEventListener(
+                        "change",
+                        atualizarEstoqueOrigemTransferencia
+                    );
+
+
+                    campoOrigem.addEventListener(
+                        "blur",
+                        atualizarEstoqueOrigemTransferencia
+                    );
+
+                }
+
+
+                if (campoDestino) {
+
+                    campoDestino.addEventListener(
+                        "input",
+                        function () {
+
+                            campoDestino.value =
+                                normalizarPosicaoTransferencia(
+                                    campoDestino.value
+                                );
+
+
+                            atualizarResumoTransferenciaVisual();
+
+                        }
+                    );
+
+                }
+
+
+                if (campoQuantidade) {
+
+                    campoQuantidade.addEventListener(
+                        "input",
+                        function () {
+
+                            atualizarSaldoDepoisTransferencia();
+
+                            atualizarResumoTransferenciaVisual();
+
+                        }
+                    );
+
+                }
+
+
+                const botaoMax =
+                    document.getElementById(
+                        "btnMaxTransferencia"
+                    );
+
+
+                if (botaoMax) {
+
+                    botaoMax.addEventListener(
+                        "click",
+                        function () {
+
+                            if (
+                                !campoQuantidade ||
+                                estoqueAtualOrigemVisual <= 0
+                            ) {
+                                return;
+                            }
+
+
+                            campoQuantidade.value =
+                                estoqueAtualOrigemVisual;
+
+
+                            atualizarSaldoDepoisTransferencia();
+
+                            atualizarResumoTransferenciaVisual();
+
+                        }
+                    );
+
+                }
+
+
+                const pesquisa =
+                    document.getElementById(
+                        "pesquisaTransferencia"
+                    );
+
+
+                if (pesquisa) {
+
+                    pesquisa.addEventListener(
+                        "input",
+                        filtrarHistoricoTransferencias
+                    );
+
+                }
+
+
+                const exportar =
+                    document.getElementById(
+                        "btnExportarTransferencias"
+                    );
+
+
+                if (exportar) {
+
+                    exportar.addEventListener(
+                        "click",
+                        exportarTransferenciasCSV
+                    );
+
+                }
+
+
+                atualizarPeriodoTransferencia();
+
+                observarHistoricoTransferencias();
+
+            }
+        );
+
+
+
+        // =====================================================
+        // NORMALIZAR POSIÇÃO
+        // =====================================================
+
+        function normalizarPosicaoTransferencia(
+            valor
+        ) {
+
+            /*
+                Também aceita leitura de QR
+                com informação adicional.
+            */
+
+            return String(
+                valor || ""
+            )
+            .trim()
+            .toUpperCase()
+            .substring(
+                0,
+                8
+            );
 
         }
 
 
 
         // =====================================================
-        // BUSCAR PRODUTO
+        // ESTOQUE DA ORIGEM
         // =====================================================
 
-        async function buscarProdutoTransferenciaMobile() {
-
-            limparMensagemTransferenciaMobile();
-
+        async function atualizarEstoqueOrigemTransferencia() {
 
             const campoCodigo =
                 document.getElementById(
-                    "codigoProdutoTransferenciaMobile"
+                    "codigoTransferencia"
                 );
+
+
+            const campoOrigem =
+                document.getElementById(
+                    "origemTransferencia"
+                );
+
+
+            if (
+                !campoCodigo ||
+                !campoOrigem ||
+                !window.supabaseClient
+            ) {
+                return;
+            }
 
 
             const codigo =
-                normalizarCodigoTransferenciaMobile(
-                    campoCodigo.value
+                String(
+                    campoCodigo.value ||
+                    ""
+                )
+                .trim()
+                .toUpperCase()
+                .substring(
+                    0,
+                    8
                 );
 
 
-            campoCodigo.value =
-                codigo;
-
-
-            if (!codigo) {
-
-                mostrarMensagemTransferenciaMobile(
-                    "Digite o código do produto.",
-                    "erro"
-                );
-
-                campoCodigo.focus();
-
-                return;
-
-            }
+            const origem =
+                String(
+                    campoOrigem.value ||
+                    ""
+                )
+                .trim()
+                .toUpperCase();
 
 
             if (
-                !window.supabaseClient
+                !codigo ||
+                !origem
             ) {
 
-                mostrarMensagemTransferenciaMobile(
-                    "A conexão com o banco online não foi carregada.",
-                    "erro"
-                );
+                estoqueAtualOrigemVisual =
+                    0;
+
+
+                atualizarExibicaoEstoqueTransferencia();
 
                 return;
 
             }
 
 
-            const {
-                data,
-                error
-            } =
-                await window.supabaseClient
-                    .from(
-                        "produtos"
-                    )
-                    .select(
-                        "*"
-                    )
-                    .eq(
-                        "codigo",
-                        codigo
-                    )
-                    .gt(
-                        "quantidade",
-                        0
-                    )
-                    .order(
-                        "endereco",
-                        {
-                            ascending:
-                                true
-                        }
-                    );
+            try {
 
-
-            if (error) {
-
-                console.error(
-                    "Erro ao buscar produto:",
+                const {
+                    data,
                     error
-                );
-
-
-                mostrarMensagemTransferenciaMobile(
-                    "Não foi possível consultar o produto.",
-                    "erro"
-                );
-
-                return;
-
-            }
-
-
-            if (
-                !Array.isArray(data) ||
-                data.length === 0
-            ) {
-
-                produtosTransferenciaMobile =
-                    [];
-
-                produtoOrigemTransferenciaMobile =
-                    null;
-
-
-                const select =
-                    document.getElementById(
-                        "origemTransferenciaMobile"
-                    );
-
-
-                select.innerHTML =
-                    '<option value="">-</option>';
-
-
-                select.disabled =
-                    true;
-
-
-                preencherProdutoTransferenciaMobile();
-
-
-                mostrarMensagemTransferenciaMobile(
-                    "Produto não encontrado ou sem estoque.",
-                    "erro"
-                );
-
-
-                return;
-
-            }
-
-
-            produtosTransferenciaMobile =
-                data;
-
-
-            const select =
-                document.getElementById(
-                    "origemTransferenciaMobile"
-                );
-
-
-            select.innerHTML =
-                "";
-
-
-            data.forEach(
-                function (
-                    produto
-                ) {
-
-                    const opcao =
-                        document.createElement(
-                            "option"
+                } =
+                    await window.supabaseClient
+                        .from(
+                            "produtos"
+                        )
+                        .select(
+                            "quantidade"
+                        )
+                        .eq(
+                            "codigo",
+                            codigo
+                        )
+                        .eq(
+                            "endereco",
+                            origem
                         );
 
 
-                    opcao.value =
-                        produto.id;
+                if (error) {
 
-
-                    opcao.textContent =
-                        (
-                            produto.endereco ||
-                            "Sem posição"
-                        ) +
-                        " — " +
-                        formatarQuantidadeTransferenciaMobile(
-                            produto.quantidade
-                        ) +
-                        " un.";
-
-
-                    select.appendChild(
-                        opcao
+                    console.error(
+                        "Erro ao consultar estoque da origem:",
+                        error
                     );
 
+                    return;
+
                 }
-            );
 
 
-            select.disabled =
-                data.length <=
-                1;
+                estoqueAtualOrigemVisual =
+                    Array.isArray(data)
+
+                        ? data.reduce(
+                            function (
+                                total,
+                                produto
+                            ) {
+
+                                return (
+                                    total +
+                                    Number(
+                                        produto.quantidade ||
+                                        0
+                                    )
+                                );
+
+                            },
+                            0
+                        )
+
+                        : 0;
 
 
-            produtoOrigemTransferenciaMobile =
-                data[0];
+                atualizarExibicaoEstoqueTransferencia();
 
 
-            preencherProdutoTransferenciaMobile();
+            } catch (erro) {
 
+                console.error(
+                    "Erro ao consultar origem:",
+                    erro
+                );
 
-            document.getElementById(
-                "quantidadeTransferenciaMobile"
-            )
-            .focus();
+            }
 
         }
 
 
 
         // =====================================================
-        // PREVIEW
+        // MOSTRAR ESTOQUE
         // =====================================================
 
-        function atualizarPreviewTransferenciaMobile() {
+        function atualizarExibicaoEstoqueTransferencia() {
 
-            const estoqueAtual =
-                produtoOrigemTransferenciaMobile
-                    ? converterNumeroTransferenciaMobile(
-                        produtoOrigemTransferenciaMobile
-                            .quantidade
-                    )
-                    : 0;
-
-
-            const quantidade =
-                converterNumeroTransferenciaMobile(
-                    document.getElementById(
-                        "quantidadeTransferenciaMobile"
-                    ).value
+            const elemento =
+                document.getElementById(
+                    "estoqueOrigemTransferencia"
                 );
 
 
-            const saldo =
+            if (elemento) {
+
+                elemento.textContent =
+                    estoqueAtualOrigemVisual
+                        .toLocaleString(
+                            "pt-BR"
+                        ) +
+                    " unidades";
+
+            }
+
+
+            atualizarSaldoDepoisTransferencia();
+
+        }
+
+
+
+        // =====================================================
+        // SALDO DEPOIS
+        // =====================================================
+
+        function atualizarSaldoDepoisTransferencia() {
+
+            const quantidade =
+                Number(
+                    document
+                        .getElementById(
+                            "quantidadeTransferencia"
+                        )
+                        ?.value ||
+                    0
+                );
+
+
+            const saldoDepois =
                 Math.max(
                     0,
-                    estoqueAtual -
+                    estoqueAtualOrigemVisual -
                     quantidade
                 );
 
 
-            document.getElementById(
-                "saldoDisponivelTransferenciaMobile"
-            )
-            .textContent =
-                formatarQuantidadeTransferenciaMobile(
-                    estoqueAtual
+            const elemento =
+                document.getElementById(
+                    "estoqueDepoisTransferencia"
                 );
 
 
-            document.getElementById(
-                "saldoDepoisTransferenciaMobile"
-            )
-            .textContent =
-                formatarQuantidadeTransferenciaMobile(
-                    saldo
-                );
+            if (elemento) {
 
+                elemento.textContent =
+                    saldoDepois
+                        .toLocaleString(
+                            "pt-BR"
+                        ) +
+                    " unidades";
 
-            atualizarResumoTransferenciaMobile();
-
-            atualizarBotaoTransferenciaMobile();
+            }
 
         }
 
@@ -3510,797 +2329,159 @@
         // RESUMO
         // =====================================================
 
-        function atualizarResumoTransferenciaMobile() {
+        function atualizarResumoTransferenciaVisual() {
 
-            const quantidade =
-                converterNumeroTransferenciaMobile(
+            const codigo =
+                String(
                     document.getElementById(
-                        "quantidadeTransferenciaMobile"
-                    ).value
-                );
-
-
-            const destino =
-                normalizarPosicaoTransferenciaMobile(
-                    document.getElementById(
-                        "destinoTransferenciaMobile"
-                    ).value
-                );
-
-
-            const estoque =
-                produtoOrigemTransferenciaMobile
-                    ? converterNumeroTransferenciaMobile(
-                        produtoOrigemTransferenciaMobile
-                            .quantidade
-                    )
-                    : 0;
-
-
-            const saldo =
-                Math.max(
-                    0,
-                    estoque -
-                    quantidade
-                );
-
-
-            document.getElementById(
-                "resumoProdutoTransferenciaMobile"
-            )
-            .textContent =
-                produtoOrigemTransferenciaMobile
-                    ? (
-                        produtoOrigemTransferenciaMobile
-                            .descricao ||
-                        produtoOrigemTransferenciaMobile
-                            .codigo ||
-                        "-"
-                    )
-                    : "-";
-
-
-            document.getElementById(
-                "resumoOrigemTransferenciaMobile"
-            )
-            .textContent =
-                produtoOrigemTransferenciaMobile
-                    ? (
-                        produtoOrigemTransferenciaMobile
-                            .endereco ||
-                        "-"
-                    )
-                    : "-";
-
-
-            document.getElementById(
-                "resumoEstoqueTransferenciaMobile"
-            )
-            .textContent =
-                formatarQuantidadeTransferenciaMobile(
-                    estoque
-                ) +
-                " unidades";
-
-
-            document.getElementById(
-                "resumoQuantidadeTransferenciaMobile"
-            )
-            .textContent =
-                quantidade > 0
-                    ? (
-                        formatarQuantidadeTransferenciaMobile(
-                            quantidade
-                        ) +
-                        " unidades"
-                    )
-                    : "-";
-
-
-            document.getElementById(
-                "resumoDestinoTransferenciaMobile"
-            )
-            .textContent =
-                destino ||
-                "-";
-
-
-            document.getElementById(
-                "resumoSaldoTransferenciaMobile"
-            )
-            .textContent =
-                quantidade > 0
-                    ? (
-                        formatarQuantidadeTransferenciaMobile(
-                            saldo
-                        ) +
-                        " unidades"
-                    )
-                    : "-";
-
-        }
-
-
-
-        // =====================================================
-        // BOTÃO
-        // =====================================================
-
-        function atualizarBotaoTransferenciaMobile() {
-
-            const botao =
-                document.getElementById(
-                    "btnConfirmarTransferenciaMobile"
-                );
+                        "codigoTransferencia"
+                    )?.value || ""
+                )
+                .trim()
+                .toUpperCase()
+                .substring(0, 8);
 
 
             const quantidade =
-                converterNumeroTransferenciaMobile(
+                Number(
                     document.getElementById(
-                        "quantidadeTransferenciaMobile"
-                    ).value
-                );
-
-
-            const destino =
-                normalizarPosicaoTransferenciaMobile(
-                    document.getElementById(
-                        "destinoTransferenciaMobile"
-                    ).value
-                );
-
-
-            botao.disabled =
-                !produtoOrigemTransferenciaMobile ||
-                quantidade <= 0 ||
-                !destino;
-
-        }
-
-
-
-        // =====================================================
-        // MÁXIMO
-        // =====================================================
-
-        function usarQuantidadeMaximaTransferenciaMobile() {
-
-            if (
-                !produtoOrigemTransferenciaMobile
-            ) {
-
-                mostrarMensagemTransferenciaMobile(
-                    "Busque um produto primeiro.",
-                    "erro"
-                );
-
-                return;
-
-            }
-
-
-            const campo =
-                document.getElementById(
-                    "quantidadeTransferenciaMobile"
-                );
-
-
-            campo.value =
-                converterNumeroTransferenciaMobile(
-                    produtoOrigemTransferenciaMobile
-                        .quantidade
-                );
-
-
-            atualizarPreviewTransferenciaMobile();
-
-
-            document.getElementById(
-                "destinoTransferenciaMobile"
-            )
-            .focus();
-
-        }
-
-
-
-        // =====================================================
-        // CONFIRMAR TRANSFERÊNCIA
-        // =====================================================
-
-        async function confirmarTransferenciaMobile() {
-
-            limparMensagemTransferenciaMobile();
-
-
-            if (
-                !produtoOrigemTransferenciaMobile
-            ) {
-
-                mostrarMensagemTransferenciaMobile(
-                    "Busque o produto antes de transferir.",
-                    "erro"
-                );
-
-                return;
-
-            }
-
-
-
-            const quantidade =
-                converterNumeroTransferenciaMobile(
-                    document.getElementById(
-                        "quantidadeTransferenciaMobile"
-                    ).value
-                );
-
-
-            const quantidadeOrigem =
-                converterNumeroTransferenciaMobile(
-                    produtoOrigemTransferenciaMobile
-                        .quantidade
+                        "quantidadeTransferencia"
+                    )?.value || 0
                 );
 
 
             const origem =
-                normalizarPosicaoTransferenciaMobile(
-                    produtoOrigemTransferenciaMobile
-                        .endereco
-                );
-
-
-            const campoDestino =
-                document.getElementById(
-                    "destinoTransferenciaMobile"
+                normalizarPosicaoTransferencia(
+                    document.getElementById(
+                        "origemTransferencia"
+                    )?.value || ""
                 );
 
 
             const destino =
-                normalizarPosicaoTransferenciaMobile(
-                    campoDestino.value
+                normalizarPosicaoTransferencia(
+                    document.getElementById(
+                        "destinoTransferencia"
+                    )?.value || ""
                 );
 
 
-            campoDestino.value =
-                destino;
-
-
-
-            if (
-                quantidade <= 0
-            ) {
-
-                mostrarMensagemTransferenciaMobile(
-                    "Informe uma quantidade válida.",
-                    "erro"
-                );
-
-                return;
-
-            }
-
-
-
-            if (
-                quantidade >
-                quantidadeOrigem
-            ) {
-
-                mostrarMensagemTransferenciaMobile(
-                    "Quantidade maior que o estoque disponível na origem.",
-                    "erro"
-                );
-
-                return;
-
-            }
-
-
-
-            if (!destino) {
-
-                mostrarMensagemTransferenciaMobile(
-                    "Informe a posição de destino.",
-                    "erro"
-                );
-
-                campoDestino.focus();
-
-                return;
-
-            }
-
-
-
-            if (
-                origem ===
-                destino
-            ) {
-
-                mostrarMensagemTransferenciaMobile(
-                    "A posição de destino não pode ser igual à origem.",
-                    "erro"
-                );
-
-                campoDestino.focus();
-
-                return;
-
-            }
-
-
-
-            const confirmou =
-                confirm(
-                    "Confirmar transferência?\n\n" +
-                    "Produto: " +
-                    (
-                        produtoOrigemTransferenciaMobile
-                            .descricao ||
-                        produtoOrigemTransferenciaMobile
-                            .codigo
-                    ) +
-                    "\nOrigem: " +
-                    origem +
-                    "\nDestino: " +
-                    destino +
-                    "\nQuantidade: " +
-                    formatarQuantidadeTransferenciaMobile(
-                        quantidade
-                    )
-                );
-
-
-            if (!confirmou) {
-                return;
-            }
-
-
-
-            const botao =
+            const resumoCodigo =
                 document.getElementById(
-                    "btnConfirmarTransferenciaMobile"
+                    "resumoCodigoTransferencia"
+                );
+
+            const resumoQuantidade =
+                document.getElementById(
+                    "resumoQuantidadeTransferencia"
+                );
+
+            const resumoOrigem =
+                document.getElementById(
+                    "resumoOrigemTransferencia"
+                );
+
+            const resumoDestino =
+                document.getElementById(
+                    "resumoDestinoTransferencia"
                 );
 
 
-            botao.disabled =
-                true;
+            if (resumoCodigo) {
+                resumoCodigo.textContent =
+                    codigo || "-";
+            }
 
 
-            botao.textContent =
-                "Transferindo...";
+            if (resumoQuantidade) {
+                resumoQuantidade.textContent =
+                    quantidade > 0
+                        ? quantidade.toLocaleString("pt-BR") + " unid."
+                        : "-";
+            }
 
 
-
-            try {
-
-                const codigo =
-                    produtoOrigemTransferenciaMobile
-                        .codigo;
+            if (resumoOrigem) {
+                resumoOrigem.textContent =
+                    origem || "-";
+            }
 
 
-                const novaQuantidadeOrigem =
-                    quantidadeOrigem -
-                    quantidade;
+            if (resumoDestino) {
+                resumoDestino.textContent =
+                    destino || "-";
+            }
 
-
-                const valorTotalOrigem =
-                    converterNumeroTransferenciaMobile(
-                        produtoOrigemTransferenciaMobile
-                            .valor_total
-                    );
-
-
-                const valorUnitario =
-                    quantidadeOrigem > 0
-                        ? (
-                            valorTotalOrigem /
-                            quantidadeOrigem
-                        )
-                        : 0;
-
-
-                const valorMovido =
-                    quantidade *
-                    valorUnitario;
-
-
-                const novoValorOrigem =
-                    Math.max(
-                        0,
-                        valorTotalOrigem -
-                        valorMovido
-                    );
+        }
 
 
 
-                // =================================================
-                // 1 - ATUALIZAR ORIGEM
-                // =================================================
+        // =====================================================
+        // LIMPAR CAMPOS / VISUAL
+        // =====================================================
 
-                const {
-                    data: origemAtualizada,
-                    error: erroOrigem
-                } =
-                    await window.supabaseClient
-                        .from(
-                            "produtos"
-                        )
-                        .update(
-                            {
-                                quantidade:
-                                    novaQuantidadeOrigem,
+        function limparCamposTransferenciaVisual() {
 
-                                valor_total:
-                                    novoValorOrigem
-                            }
-                        )
-                        .eq(
-                            "id",
-                            produtoOrigemTransferenciaMobile
-                                .id
-                        )
-                        .eq(
-                            "quantidade",
-                            quantidadeOrigem
-                        )
-                        .select(
-                            "*"
-                        )
-                        .maybeSingle();
+            const ids = [
+                "codigoTransferencia",
+                "quantidadeTransferencia",
+                "origemTransferencia",
+                "destinoTransferencia"
+            ];
 
 
+            ids.forEach(
+                function (id) {
 
-                if (erroOrigem) {
+                    const campo =
+                        document.getElementById(id);
 
-                    throw erroOrigem;
-
-                }
-
-
-
-                if (
-                    !origemAtualizada
-                ) {
-
-                    throw new Error(
-                        "O saldo da origem foi alterado por outro usuário."
-                    );
-
-                }
-
-
-
-                // =================================================
-                // 2 - VERIFICAR SE JÁ EXISTE PRODUTO NO DESTINO
-                // =================================================
-
-                const {
-                    data: produtosDestino,
-                    error: erroBuscaDestino
-                } =
-                    await window.supabaseClient
-                        .from(
-                            "produtos"
-                        )
-                        .select(
-                            "*"
-                        )
-                        .eq(
-                            "codigo",
-                            codigo
-                        )
-                        .eq(
-                            "endereco",
-                            destino
-                        )
-                        .limit(
-                            1
-                        );
-
-
-
-                if (
-                    erroBuscaDestino
-                ) {
-
-                    throw erroBuscaDestino;
-
-                }
-
-
-
-                const produtoDestino =
-                    Array.isArray(
-                        produtosDestino
-                    ) &&
-                    produtosDestino.length > 0
-                        ? produtosDestino[0]
-                        : null;
-
-
-
-                // =================================================
-                // 3A - DESTINO JÁ EXISTE
-                // =================================================
-
-                if (
-                    produtoDestino
-                ) {
-
-                    const quantidadeDestino =
-                        converterNumeroTransferenciaMobile(
-                            produtoDestino.quantidade
-                        );
-
-
-                    const valorDestino =
-                        converterNumeroTransferenciaMobile(
-                            produtoDestino.valor_total
-                        );
-
-
-                    const {
-                        error:
-                            erroAtualizarDestino
-                    } =
-                        await window.supabaseClient
-                            .from(
-                                "produtos"
-                            )
-                            .update(
-                                {
-                                    quantidade:
-                                        quantidadeDestino +
-                                        quantidade,
-
-                                    valor_total:
-                                        valorDestino +
-                                        valorMovido
-                                }
-                            )
-                            .eq(
-                                "id",
-                                produtoDestino.id
-                            );
-
-
-                    if (
-                        erroAtualizarDestino
-                    ) {
-
-                        throw erroAtualizarDestino;
-
+                    if (campo) {
+                        campo.value = "";
                     }
 
                 }
+            );
 
 
+            estoqueAtualOrigemVisual = 0;
 
-                // =================================================
-                // 3B - DESTINO AINDA NÃO EXISTE
-                // =================================================
+            atualizarExibicaoEstoqueTransferencia();
 
-                else {
-
-                    const novoProduto =
-                        {
-                            ...produtoOrigemTransferenciaMobile
-                        };
+            atualizarResumoTransferenciaVisual();
 
 
-                    delete novoProduto.id;
-
-
-                    /*
-                        REMOVE CAMPOS QUE NORMALMENTE
-                        SÃO GERADOS PELO BANCO.
-                    */
-
-                    delete novoProduto.created_at;
-
-                    delete novoProduto.updated_at;
-
-                    delete novoProduto.criado_em;
-
-                    delete novoProduto.atualizado_em;
-
-
-
-                    novoProduto.endereco =
-                        destino;
-
-
-                    novoProduto.quantidade =
-                        quantidade;
-
-
-                    novoProduto.valor_total =
-                        valorMovido;
-
-
-
-                    const {
-                        error:
-                            erroCriarDestino
-                    } =
-                        await window.supabaseClient
-                            .from(
-                                "produtos"
-                            )
-                            .insert(
-                                novoProduto
-                            );
-
-
-                    if (
-                        erroCriarDestino
-                    ) {
-
-                        throw erroCriarDestino;
-
-                    }
-
-                }
-
-
-
-                // =================================================
-                // HISTÓRICO
-                // =================================================
-
-                registrarHistoricoTransferenciaMobile(
-                    produtoOrigemTransferenciaMobile,
-                    quantidade,
-                    origem,
-                    destino
+            const campoCodigo =
+                document.getElementById(
+                    "codigoTransferencia"
                 );
 
-
-
-                mostrarMensagemTransferenciaMobile(
-                    "Transferência realizada com sucesso.",
-                    "sucesso"
-                );
-
-
-
-                limparCamposDepoisTransferenciaMobile();
-
-
-
-            } catch (erro) {
-
-                console.error(
-                    "Erro na transferência:",
-                    erro
-                );
-
-
-                /*
-                    TENTATIVA DE RECARREGAR O PRODUTO
-                    PARA MOSTRAR O SALDO REAL.
-                */
-
-                mostrarMensagemTransferenciaMobile(
-                    "Não foi possível concluir a transferência. Consulte o produto novamente antes de tentar outra vez.",
-                    "erro"
-                );
-
-
-                botao.disabled =
-                    false;
-
+            if (campoCodigo) {
+                campoCodigo.focus();
             }
 
-
-
-            botao.textContent =
-                "⇄ Transferir Produto";
-
         }
 
 
 
         // =====================================================
-        // LIMPEZA
+        // FOCO PARA LEITOR
         // =====================================================
 
-        function limparCamposDepoisTransferenciaMobile() {
-
-            document.getElementById(
-                "codigoProdutoTransferenciaMobile"
-            ).value =
-                "";
-
-
-            document.getElementById(
-                "descricaoProdutoTransferenciaMobile"
-            ).value =
-                "";
-
-
-            document.getElementById(
-                "estoqueTransferenciaMobile"
-            ).value =
-                "";
-
-
-            document.getElementById(
-                "quantidadeTransferenciaMobile"
-            ).value =
-                "";
-
-
-            document.getElementById(
-                "destinoTransferenciaMobile"
-            ).value =
-                "";
-
-
-            const select =
-                document.getElementById(
-                    "origemTransferenciaMobile"
-                );
-
-
-            select.innerHTML =
-                '<option value="">-</option>';
-
-
-            select.disabled =
-                true;
-
-
-            produtosTransferenciaMobile =
-                [];
-
-
-            produtoOrigemTransferenciaMobile =
-                null;
-
-
-            atualizarPreviewTransferenciaMobile();
-
-            atualizarResumoTransferenciaMobile();
-
-            atualizarBotaoTransferenciaMobile();
-
-
-            document.getElementById(
-                "codigoProdutoTransferenciaMobile"
-            )
-            .focus();
-
-        }
-
-
-
-        function limparTelaTransferenciaMobile() {
-
-            limparMensagemTransferenciaMobile();
-
-            limparCamposDepoisTransferenciaMobile();
-
-        }
-
-
-
-        // =====================================================
-        // FOCO
-        // =====================================================
-
-        function focarCodigoTransferenciaMobile() {
+        function focarCodigoTransferencia() {
 
             const campo =
                 document.getElementById(
-                    "codigoProdutoTransferenciaMobile"
+                    "codigoTransferencia"
                 );
 
 
-            campo.focus();
+            if (!campo) {
+                return;
+            }
 
+
+            campo.focus();
             campo.select();
 
         }
@@ -4308,346 +2489,1207 @@
 
 
         // =====================================================
-        // ÚLTIMAS TRANSFERÊNCIAS
+        // ROLAR PARA HISTÓRICO
         // =====================================================
 
-        function atualizarUltimasTransferenciasMobile() {
+        function rolarHistoricoTransferencia() {
 
-            const lista =
+            const historico =
                 document.getElementById(
-                    "listaUltimasTransferenciasMobile"
+                    "historicoTransferencia"
                 );
 
 
-            const transferencias =
-                carregarListaTransferenciaMobile(
-                    "transferencias"
+            if (historico) {
+                historico.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+
+        }
+
+
+
+        // =====================================================
+        // REORDENAR TABELA PARA O NOVO VISUAL
+        // DATA/HORA | CÓDIGO | DESCRIÇÃO | QTD | ORIGEM | DESTINO | OPERADOR
+        // =====================================================
+
+        function reordenarTabelaTransferenciasVisual() {
+
+            const tabela =
+                document.getElementById(
+                    "listaTransferencias"
+                );
+
+
+            if (!tabela) {
+                return;
+            }
+
+
+            tabela.querySelectorAll("tr").forEach(
+                function (linha) {
+
+                    const celulas =
+                        linha.querySelectorAll("td");
+
+
+                    if (
+                        celulas.length !== 7 ||
+                        linha.dataset.visualOrder === "1"
+                    ) {
+                        return;
+                    }
+
+
+                    /*
+                        O app.js gera:
+                        Código | Descrição | Quantidade | Origem |
+                        Destino | Data | Operador
+
+                        O novo visual mostra:
+                        Data | Código | Descrição | Quantidade |
+                        Origem | Destino | Operador
+                    */
+
+                    linha.insertBefore(
+                        celulas[5],
+                        celulas[0]
+                    );
+
+
+                    linha.dataset.visualOrder = "1";
+
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // PESQUISA NO HISTÓRICO
+        // =====================================================
+
+        function filtrarHistoricoTransferencias() {
+
+            reordenarTabelaTransferenciasVisual();
+
+
+            const pesquisa =
+                String(
+                    document.getElementById(
+                        "pesquisaTransferencia"
+                    )?.value || ""
                 )
-                .slice(
-                    0,
-                    3
+                .trim()
+                .toUpperCase();
+
+
+            const linhas =
+                document.querySelectorAll(
+                    "#listaTransferencias tr"
                 );
+
+
+            linhas.forEach(
+                function (linha) {
+
+                    const celulas =
+                        linha.querySelectorAll("td");
+
+
+                    if (celulas.length !== 7) {
+                        return;
+                    }
+
+
+                    const texto =
+                        linha.textContent
+                            .toUpperCase();
+
+
+                    linha.style.display =
+                        !pesquisa || texto.includes(pesquisa)
+                            ? ""
+                            : "none";
+
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // PERÍODO VISUAL
+        // =====================================================
+
+        function atualizarPeriodoTransferencia() {
+
+            const elemento =
+                document.getElementById(
+                    "periodoTransferencia"
+                );
+
+
+            if (!elemento) {
+                return;
+            }
+
+
+            const hoje = new Date();
+
+            const inicio = new Date(hoje);
+            inicio.setDate(
+                hoje.getDate() - 30
+            );
+
+
+            const formatar =
+                function (data) {
+                    return data.toLocaleDateString(
+                        "pt-BR",
+                        {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric"
+                        }
+                    );
+                };
+
+
+            elemento.textContent =
+                formatar(inicio) +
+                " até " +
+                formatar(hoje);
+
+        }
+
+
+
+        // =====================================================
+        // EXPORTAR HISTÓRICO PARA CSV / EXCEL
+        // =====================================================
+
+        function exportarTransferenciasCSV() {
+
+            reordenarTabelaTransferenciasVisual();
+
+
+            const linhasTabela =
+                Array.from(
+                    document.querySelectorAll(
+                        "#listaTransferencias tr"
+                    )
+                )
+                .filter(
+                    function (linha) {
+                        return linha.style.display !== "none";
+                    }
+                );
+
+
+            const dados = [
+                [
+                    "Data/Hora",
+                    "Código",
+                    "Descrição",
+                    "Quantidade",
+                    "Origem",
+                    "Destino",
+                    "Operador"
+                ]
+            ];
+
+
+            linhasTabela.forEach(
+                function (linha) {
+
+                    const celulas =
+                        Array.from(
+                            linha.querySelectorAll("td")
+                        );
+
+
+                    if (celulas.length !== 7) {
+                        return;
+                    }
+
+
+                    dados.push(
+                        celulas.map(
+                            function (celula) {
+                                return celula.textContent.trim();
+                            }
+                        )
+                    );
+
+                }
+            );
+
+
+            if (dados.length === 1) {
+                alert(
+                    "Não existem transferências para exportar."
+                );
+                return;
+            }
+
+
+            const csv =
+                dados
+                    .map(
+                        function (linha) {
+
+                            return linha
+                                .map(
+                                    function (valor) {
+                                        return (
+                                            '"' +
+                                            String(valor)
+                                                .replace(/"/g, '""') +
+                                            '"'
+                                        );
+                                    }
+                                )
+                                .join(";");
+
+                        }
+                    )
+                    .join("\n");
+
+
+            const blob =
+                new Blob(
+                    ["\uFEFF" + csv],
+                    {
+                        type: "text/csv;charset=utf-8;"
+                    }
+                );
+
+
+            const link =
+                document.createElement("a");
+
+            link.href =
+                URL.createObjectURL(blob);
+
+            link.download =
+                "historico_transferencias.csv";
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);
+
+            URL.revokeObjectURL(link.href);
+
+        }
+
+
+
+        // =====================================================
+        // OBSERVAR ATUALIZAÇÕES DO HISTÓRICO
+        // =====================================================
+
+        function observarHistoricoTransferencias() {
+
+            const tabela =
+                document.getElementById(
+                    "listaTransferencias"
+                );
+
+
+            if (!tabela) {
+                return;
+            }
+
+
+            reordenarTabelaTransferenciasVisual();
+
+
+            const observador =
+                new MutationObserver(
+                    function () {
+
+                        reordenarTabelaTransferenciasVisual();
+
+                        filtrarHistoricoTransferencias();
+
+                    }
+                );
+
+
+            observador.observe(
+                tabela,
+                {
+                    childList: true
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // ATUALIZAR VISUAL APÓS TRANSFERÊNCIA
+        // =====================================================
+
+        const botaoTransferenciaVisual =
+            document.getElementById(
+                "btnRegistrarTransferencia"
+            );
+
+
+        if (botaoTransferenciaVisual) {
+
+            botaoTransferenciaVisual.addEventListener(
+                "click",
+                function () {
+
+                    /*
+                        O app.js executa a transferência.
+                        Depois damos um pequeno tempo para atualizar
+                        os cards visuais e o histórico.
+                    */
+
+                    setTimeout(
+                        function () {
+
+                            const codigo =
+                                document.getElementById(
+                                    "codigoTransferencia"
+                                );
+
+
+                            if (
+                                codigo &&
+                                !String(codigo.value || "").trim()
+                            ) {
+
+                                estoqueAtualOrigemVisual = 0;
+
+                                atualizarExibicaoEstoqueTransferencia();
+
+                                atualizarResumoTransferenciaVisual();
+
+                            } else {
+
+                                atualizarEstoqueOrigemTransferencia();
+
+                            }
+
+
+                            reordenarTabelaTransferenciasVisual();
+
+                        },
+                        500
+                    );
+
+                }
+            );
+
+        }
+
+
+        // =====================================================
+        // DISPONIBILIZAÇÃO GLOBAL
+        // =====================================================
+
+        window.limparCamposTransferenciaVisual =
+            limparCamposTransferenciaVisual;
+
+        window.rolarHistoricoTransferencia =
+            rolarHistoricoTransferencia;
+
+        window.focarCodigoTransferencia =
+            focarCodigoTransferencia;
+
+
+    </script>
+    <script>
+
+// =====================================================
+// TRANSFERÊNCIA - BUSCA AUTOMÁTICA DE POSIÇÃO + ESTOQUE
+// =====================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const campoCodigo =
+            document.getElementById(
+                "codigoTransferencia"
+            );
+
+        let campoOrigem =
+            document.getElementById(
+                "origemTransferencia"
+            );
+
+
+        // =====================================================
+        // TRANSFORMAR ORIGEM EM LISTA DE POSIÇÕES
+        // =====================================================
+
+        if (
+            campoOrigem &&
+            campoOrigem.tagName !== "SELECT"
+        ) {
+
+            const selectOrigem =
+                document.createElement(
+                    "select"
+                );
+
+
+            selectOrigem.id =
+                "origemTransferencia";
+
+
+            selectOrigem.innerHTML = `
+                <option value="">
+                    Selecione a posição de origem
+                </option>
+            `;
+
+
+            campoOrigem.replaceWith(
+                selectOrigem
+            );
+
+
+            campoOrigem =
+                selectOrigem;
+
+        }
+
+
+
+        // =====================================================
+        // CONTROLE DA BUSCA
+        // =====================================================
+
+        let timerBuscaTransferencia =
+            null;
+
+        let ultimaBuscaTransferencia =
+            0;
+
+
+
+        // =====================================================
+        // LIMPAR POSIÇÕES
+        // =====================================================
+
+        function limparPosicoesTransferenciaAutomatico() {
+
+            const origem =
+                document.getElementById(
+                    "origemTransferencia"
+                );
+
+
+            if (origem) {
+
+                origem.innerHTML = `
+                    <option value="">
+                        Selecione a posição de origem
+                    </option>
+                `;
+
+            }
+
+
+            estoqueAtualOrigemVisual =
+                0;
 
 
             if (
-                transferencias.length ===
-                0
+                typeof atualizarExibicaoEstoqueTransferencia ===
+                "function"
             ) {
 
-                lista.innerHTML = `
-                    <div class="ultima-item">
+                atualizarExibicaoEstoqueTransferencia();
 
-                        <div class="ultima-check">
-                            ✓
-                        </div>
+            }
 
-                        <div class="ultima-hora">
-                            --:--
-                        </div>
 
-                        <div class="ultima-produto">
+            if (
+                typeof atualizarResumoTransferenciaVisual ===
+                "function"
+            ) {
 
-                            <strong>
-                                Nenhuma transferência recente
-                            </strong>
+                atualizarResumoTransferenciaVisual();
 
-                            <small>
-                                -
-                            </small>
+            }
 
-                        </div>
+        }
 
-                        <div class="ultima-qtd">
-                            -
-                        </div>
 
-                    </div>
-                `;
 
+        // =====================================================
+        // MOSTRAR ESTOQUE DA POSIÇÃO SELECIONADA
+        // =====================================================
+
+        function atualizarEstoquePosicaoSelecionada() {
+
+            const origem =
+                document.getElementById(
+                    "origemTransferencia"
+                );
+
+
+            if (!origem) {
+
+                estoqueAtualOrigemVisual =
+                    0;
 
                 return;
 
             }
 
 
+            const opcao =
+                origem.options[
+                    origem.selectedIndex
+                ];
 
-            lista.innerHTML =
-                "";
+
+            estoqueAtualOrigemVisual =
+                Number(
+                    opcao?.dataset?.quantidade ||
+                    0
+                );
+
+
+            if (
+                typeof atualizarExibicaoEstoqueTransferencia ===
+                "function"
+            ) {
+
+                atualizarExibicaoEstoqueTransferencia();
+
+            }
+
+
+            if (
+                typeof atualizarResumoTransferenciaVisual ===
+                "function"
+            ) {
+
+                atualizarResumoTransferenciaVisual();
+
+            }
+
+        }
 
 
 
-            transferencias.forEach(
-                function (
-                    transferencia
+        // =====================================================
+        // BUSCAR PRODUTO E TODAS AS POSIÇÕES NO SUPABASE
+        // =====================================================
+
+        async function buscarPosicoesProdutoTransferencia() {
+
+            const codigoInput =
+                document.getElementById(
+                    "codigoTransferencia"
+                );
+
+
+            const origem =
+                document.getElementById(
+                    "origemTransferencia"
+                );
+
+
+            if (
+                !codigoInput ||
+                !origem ||
+                !window.supabaseClient
+            ) {
+
+                return;
+
+            }
+
+
+            const codigo =
+                String(
+                    codigoInput.value || ""
+                )
+                .trim()
+                .toUpperCase()
+                .substring(
+                    0,
+                    8
+                );
+
+
+            if (!codigo) {
+
+                limparPosicoesTransferenciaAutomatico();
+
+                return;
+
+            }
+
+
+            const idBusca =
+                ++ultimaBuscaTransferencia;
+
+
+            try {
+
+                origem.innerHTML = `
+                    <option value="">
+                        Buscando posições...
+                    </option>
+                `;
+
+
+                estoqueAtualOrigemVisual =
+                    0;
+
+
+                if (
+                    typeof atualizarExibicaoEstoqueTransferencia ===
+                    "function"
                 ) {
 
-                    const item =
-                        document.createElement(
-                            "div"
+                    atualizarExibicaoEstoqueTransferencia();
+
+                }
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await window.supabaseClient
+                        .from(
+                            "produtos"
+                        )
+                        .select(
+                            "codigo,endereco,quantidade"
+                        )
+                        .eq(
+                            "codigo",
+                            codigo
                         );
 
 
-                    item.className =
-                        "ultima-item";
+                // IGNORA BUSCA ANTIGA CASO O USUÁRIO
+                // DIGITE OUTRO CÓDIGO RAPIDAMENTE
+
+                if (
+                    idBusca !==
+                    ultimaBuscaTransferencia
+                ) {
+
+                    return;
+
+                }
 
 
-                    const data =
-                        String(
-                            transferencia.data ||
-                            ""
-                        );
+                if (error) {
+
+                    console.error(
+                        "Erro ao buscar posições do produto:",
+                        error
+                    );
 
 
-                    const horaEncontrada =
-                        data.match(
-                            /(\d{2}:\d{2})/
-                        );
-
-
-                    const hora =
-                        horaEncontrada
-                            ? horaEncontrada[1]
-                            : "--:--";
-
-
-                    item.innerHTML = `
-                        <div class="ultima-check">
-                            ✓
-                        </div>
-
-                        <div class="ultima-hora">
-                            ${hora}
-                        </div>
-
-                        <div class="ultima-produto">
-
-                            <strong>
-                                ${
-                                    transferencia.codigo ||
-                                    "Produto"
-                                }
-                            </strong>
-
-                            <small>
-                                ${
-                                    transferencia.origem ||
-                                    "-"
-                                }
-                                →
-                                ${
-                                    transferencia.destino ||
-                                    "-"
-                                }
-                            </small>
-
-                        </div>
-
-                        <div class="ultima-qtd">
-                            ${
-                                formatarQuantidadeTransferenciaMobile(
-                                    transferencia.quantidade
-                                )
-                            } un.
-                        </div>
+                    origem.innerHTML = `
+                        <option value="">
+                            Erro ao consultar produto
+                        </option>
                     `;
 
 
-                    lista.appendChild(
-                        item
-                    );
-
-                }
-            );
-
-        }
-
-
-
-        function rolarUltimasTransferenciasMobile() {
-
-            document.getElementById(
-                "ultimasTransferenciasMobileCard"
-            )
-            .scrollIntoView(
-                {
-                    behavior:
-                        "smooth",
-
-                    block:
-                        "start"
-                }
-            );
-
-        }
-
-
-
-        // =====================================================
-        // EVENTOS
-        // =====================================================
-
-        document.getElementById(
-            "codigoProdutoTransferenciaMobile"
-        )
-        .addEventListener(
-            "keydown",
-            function (
-                evento
-            ) {
-
-                if (
-                    evento.key ===
-                    "Enter"
-                ) {
-
-                    evento.preventDefault();
-
-                    buscarProdutoTransferenciaMobile();
-
-                }
-
-            }
-        );
-
-
-
-        document.getElementById(
-            "codigoProdutoTransferenciaMobile"
-        )
-        .addEventListener(
-            "input",
-            function () {
-
-                this.value =
-                    normalizarCodigoTransferenciaMobile(
-                        this.value
-                    );
-
-            }
-        );
-
-
-
-        document.getElementById(
-            "quantidadeTransferenciaMobile"
-        )
-        .addEventListener(
-            "input",
-            atualizarPreviewTransferenciaMobile
-        );
-
-
-
-        document.getElementById(
-            "destinoTransferenciaMobile"
-        )
-        .addEventListener(
-            "input",
-            function () {
-
-                this.value =
-                    normalizarPosicaoTransferenciaMobile(
-                        this.value
-                    );
-
-
-                atualizarResumoTransferenciaMobile();
-
-                atualizarBotaoTransferenciaMobile();
-
-            }
-        );
-
-
-
-        document.getElementById(
-            "destinoTransferenciaMobile"
-        )
-        .addEventListener(
-            "keydown",
-            function (
-                evento
-            ) {
-
-                if (
-                    evento.key ===
-                    "Enter"
-                ) {
-
-                    evento.preventDefault();
+                    estoqueAtualOrigemVisual =
+                        0;
 
 
                     if (
-                        !document.getElementById(
-                            "btnConfirmarTransferenciaMobile"
-                        ).disabled
+                        typeof atualizarExibicaoEstoqueTransferencia ===
+                        "function"
                     ) {
 
-                        confirmarTransferenciaMobile();
+                        atualizarExibicaoEstoqueTransferencia();
 
                     }
 
+
+                    return;
+
                 }
 
-            }
-        );
+
+
+                const produtos =
+                    Array.isArray(data)
+                        ? data
+                        : [];
 
 
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            function () {
+                // =====================================================
+                // AGRUPAR ESTOQUE POR POSIÇÃO
+                // =====================================================
 
-                atualizarUltimasTransferenciasMobile();
-
-                atualizarPreviewTransferenciaMobile();
-
-                atualizarResumoTransferenciaMobile();
-
-                atualizarBotaoTransferenciaMobile();
-
-                focarCodigoTransferenciaMobile();
-
-            }
-        );
+                const estoquePorPosicao =
+                    {};
 
 
-    </script>
+                produtos.forEach(
+                    function (produto) {
+
+                        const endereco =
+                            String(
+                                produto.endereco ||
+                                ""
+                            )
+                            .trim()
+                            .toUpperCase();
+
+
+                        const quantidade =
+                            Number(
+                                produto.quantidade ||
+                                0
+                            );
+
+
+                        if (!endereco) {
+
+                            return;
+
+                        }
+
+
+                        if (
+                            !Object.prototype
+                                .hasOwnProperty
+                                .call(
+                                    estoquePorPosicao,
+                                    endereco
+                                )
+                        ) {
+
+                            estoquePorPosicao[
+                                endereco
+                            ] =
+                                0;
+
+                        }
+
+
+                        estoquePorPosicao[
+                            endereco
+                        ] +=
+                            quantidade;
+
+                    }
+                );
 
 
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+                // =====================================================
+                // SOMENTE POSIÇÕES COM ESTOQUE
+                // =====================================================
 
-            if (typeof lucide !== "undefined") {
-                lucide.createIcons();
-            }
+                const posicoes =
+                    Object.entries(
+                        estoquePorPosicao
+                    )
+                    .filter(
+                        function (item) {
 
-            let paginaAtual =
-                window.location.pathname
-                    .split("/")
-                    .pop();
+                            return (
+                                Number(
+                                    item[1]
+                                ) >
+                                0
+                            );
 
-            if (!paginaAtual) {
-                paginaAtual = "dashboard.html";
-            }
-
-            document
-                .querySelectorAll(".sidebar-wms-novo .menu-item")
-                .forEach(function (item) {
-
-                    const pagina =
-                        item.getAttribute("data-page");
-
-                    item.classList.toggle(
-                        "active",
-                        pagina === paginaAtual
+                        }
                     );
 
-                });
+
+
+                origem.innerHTML =
+                    "";
+
+
+
+                // =====================================================
+                // PRODUTO NÃO ENCONTRADO OU SEM ESTOQUE
+                // =====================================================
+
+                if (
+                    posicoes.length ===
+                    0
+                ) {
+
+                    const opcao =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    opcao.value =
+                        "";
+
+
+                    opcao.textContent =
+                        "Produto sem posição ou sem estoque";
+
+
+                    origem.appendChild(
+                        opcao
+                    );
+
+
+                    estoqueAtualOrigemVisual =
+                        0;
+
+
+                    if (
+                        typeof atualizarExibicaoEstoqueTransferencia ===
+                        "function"
+                    ) {
+
+                        atualizarExibicaoEstoqueTransferencia();
+
+                    }
+
+
+                    if (
+                        typeof atualizarResumoTransferenciaVisual ===
+                        "function"
+                    ) {
+
+                        atualizarResumoTransferenciaVisual();
+
+                    }
+
+
+                    return;
+
+                }
+
+
+
+                // =====================================================
+                // CRIAR LISTA DE POSIÇÕES
+                //
+                // EXEMPLO:
+                //
+                // 9F — 26 un.
+                // 10A — 8 un.
+                // =====================================================
+
+                posicoes.forEach(
+                    function (
+                        [
+                            endereco,
+                            quantidade
+                        ]
+                    ) {
+
+                        const opcao =
+                            document.createElement(
+                                "option"
+                            );
+
+
+                        opcao.value =
+                            endereco;
+
+
+                        opcao.dataset.quantidade =
+                            quantidade;
+
+
+                        opcao.textContent =
+                            endereco +
+                            " — " +
+                            Number(
+                                quantidade
+                            )
+                            .toLocaleString(
+                                "pt-BR"
+                            ) +
+                            " un.";
+
+
+                        origem.appendChild(
+                            opcao
+                        );
+
+                    }
+                );
+
+
+
+                // =====================================================
+                // PRIMEIRA POSIÇÃO JÁ FICA SELECIONADA
+                // =====================================================
+
+                origem.selectedIndex =
+                    0;
+
+
+                atualizarEstoquePosicaoSelecionada();
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao carregar posições da transferência:",
+                    erro
+                );
+
+            }
+
+        }
+
+
+
+        // =====================================================
+        // AO DIGITAR OU BIPAR O CÓDIGO
+        // =====================================================
+
+        if (campoCodigo) {
+
+            campoCodigo.addEventListener(
+                "input",
+                function () {
+
+                    campoCodigo.value =
+                        String(
+                            campoCodigo.value ||
+                            ""
+                        )
+                        .trim()
+                        .toUpperCase()
+                        .substring(
+                            0,
+                            8
+                        );
+
+
+                    clearTimeout(
+                        timerBuscaTransferencia
+                    );
+
+
+                    if (
+                        !campoCodigo.value
+                    ) {
+
+                        limparPosicoesTransferenciaAutomatico();
+
+                        return;
+
+                    }
+
+
+                    timerBuscaTransferencia =
+                        setTimeout(
+                            function () {
+
+                                buscarPosicoesProdutoTransferencia();
+
+                            },
+                            250
+                        );
+
+                }
+            );
+
+
+
+            // LEITOR DE CÓDIGO NORMALMENTE
+            // DISPARA CHANGE OU BLUR
+
+            campoCodigo.addEventListener(
+                "change",
+                buscarPosicoesProdutoTransferencia
+            );
+
+
+            campoCodigo.addEventListener(
+                "blur",
+                buscarPosicoesProdutoTransferencia
+            );
+
+        }
+
+
+
+        // =====================================================
+        // AO ESCOLHER OUTRA POSIÇÃO
+        // =====================================================
+
+        if (campoOrigem) {
+
+            campoOrigem.addEventListener(
+                "change",
+                function () {
+
+                    atualizarEstoquePosicaoSelecionada();
+
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // BOTÃO MÁXIMO
+        // CONTINUA USANDO O ESTOQUE DA POSIÇÃO
+        // =====================================================
+
+        const botaoMax =
+            document.getElementById(
+                "btnMaxTransferencia"
+            );
+
+
+        if (botaoMax) {
+
+            botaoMax.addEventListener(
+                "click",
+                function () {
+
+                    setTimeout(
+                        function () {
+
+                            if (
+                                typeof atualizarResumoTransferenciaVisual ===
+                                "function"
+                            ) {
+
+                                atualizarResumoTransferenciaVisual();
+
+                            }
+
+                        },
+                        50
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // APÓS TRANSFERIR, ATUALIZAR POSIÇÕES
+        // CASO O CÓDIGO CONTINUE PREENCHIDO
+        // =====================================================
+
+        const botaoTransferir =
+            document.getElementById(
+                "btnRegistrarTransferencia"
+            );
+
+
+        if (botaoTransferir) {
+
+            botaoTransferir.addEventListener(
+                "click",
+                function () {
+
+                    setTimeout(
+                        function () {
+
+                            const codigoAtual =
+                                String(
+                                    document
+                                        .getElementById(
+                                            "codigoTransferencia"
+                                        )
+                                        ?.value ||
+                                    ""
+                                )
+                                .trim();
+
+
+                            if (
+                                codigoAtual
+                            ) {
+
+                                buscarPosicoesProdutoTransferencia();
+
+                            }
+
+                        },
+                        800
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        // =====================================================
+        // DISPONIBILIZAÇÃO GLOBAL
+        // =====================================================
+
+        window.buscarPosicoesProdutoTransferencia =
+            buscarPosicoesProdutoTransferencia;
+
+    }
+);
+
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+    }
+
+    let paginaAtual =
+        window.location.pathname
+            .split("/")
+            .pop();
+
+    if (!paginaAtual) {
+        paginaAtual = "dashboard.html";
+    }
+
+    document
+        .querySelectorAll(".sidebar-wms-novo .menu-item")
+        .forEach(function (item) {
+
+            const pagina =
+                item.getAttribute("data-page");
+
+            item.classList.toggle(
+                "active",
+                pagina === paginaAtual
+            );
 
         });
-    </script>
+
+});
+</script>
+
 
 </body>
 

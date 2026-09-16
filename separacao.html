@@ -941,6 +941,241 @@
             }
         }
 
+    
+        /* =====================================================
+           AJUSTE MOBILE 16/09/2026
+           Corrige deslocamento causado pelo .conteudo global
+           e evita estouro horizontal em celulares.
+        ===================================================== */
+        html,
+        body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .separacao-conteudo-shell,
+        .separacao-conteudo-shell * {
+            min-width: 0;
+        }
+
+        @media (max-width: 700px) {
+            body > .conteudo.separacao-conteudo-shell,
+            .conteudo.separacao-conteudo-shell,
+            .separacao-conteudo-shell {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                width: 100% !important;
+                max-width: none !important;
+                padding: 0 !important;
+                transform: none !important;
+            }
+
+            .separacao-conteudo-shell .pagina {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 12px calc(104px + env(safe-area-inset-bottom)) !important;
+            }
+
+            .separacao-conteudo-shell .topo {
+                width: auto !important;
+                margin: 0 -12px 16px !important;
+                padding: calc(18px + env(safe-area-inset-top)) 16px 22px !important;
+                border-radius: 0 0 26px 26px !important;
+                grid-template-columns: minmax(0, 1fr) auto !important;
+                gap: 12px !important;
+            }
+
+            .separacao-conteudo-shell .topo-conteudo {
+                min-width: 0 !important;
+                align-items: center !important;
+            }
+
+            .separacao-conteudo-shell .topo-logo {
+                width: 82px !important;
+            }
+
+            .separacao-conteudo-shell .topo-texto {
+                min-width: 0 !important;
+            }
+
+            .separacao-conteudo-shell .topo h1 {
+                font-size: clamp(25px, 8vw, 34px) !important;
+                line-height: 1.05 !important;
+                overflow-wrap: anywhere;
+            }
+
+            .separacao-conteudo-shell .topo p {
+                max-width: 100% !important;
+                font-size: 12px !important;
+                line-height: 1.4 !important;
+            }
+
+            .separacao-conteudo-shell .btn-bipar-topo {
+                width: 66px !important;
+                min-width: 66px !important;
+                min-height: 66px !important;
+                border: 1px solid rgba(255,255,255,.18) !important;
+            }
+
+            .separacao-conteudo-shell .card,
+            .separacao-conteudo-shell .painel-operacao,
+            .separacao-conteudo-shell .card-resumo,
+            .separacao-conteudo-shell .card-ultimas,
+            .separacao-conteudo-shell .card-acoes,
+            .separacao-conteudo-shell .como-separar {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            .separacao-conteudo-shell .painel-operacao {
+                padding: 18px 16px !important;
+                border-radius: 20px !important;
+            }
+
+            .separacao-conteudo-shell .titulo-operacao {
+                align-items: center !important;
+                gap: 8px !important;
+                margin-bottom: 18px !important;
+            }
+
+            .separacao-conteudo-shell .titulo-operacao-esquerda {
+                min-width: 0 !important;
+            }
+
+            .separacao-conteudo-shell .titulo-operacao h2 {
+                font-size: 20px !important;
+                line-height: 1.15 !important;
+            }
+
+            .separacao-conteudo-shell .titulo-operacao small {
+                font-size: 11px !important;
+            }
+
+            .separacao-conteudo-shell .campo,
+            .separacao-conteudo-shell .campo-codigo-wrapper,
+            .separacao-conteudo-shell .busca,
+            .separacao-conteudo-shell .linha-dupla,
+            .separacao-conteudo-shell .quantidade-linha {
+                min-width: 0 !important;
+            }
+
+            .separacao-conteudo-shell .campo input,
+            .separacao-conteudo-shell .campo select {
+                width: 100% !important;
+                min-width: 0 !important;
+                height: 54px !important;
+                font-size: 16px !important;
+            }
+
+            .separacao-conteudo-shell .busca {
+                grid-template-columns: minmax(0, 1fr) 108px !important;
+                gap: 8px !important;
+            }
+
+            .separacao-conteudo-shell .btn-buscar {
+                width: 100% !important;
+                min-width: 0 !important;
+                min-height: 54px !important;
+                padding: 0 12px !important;
+            }
+
+            .separacao-conteudo-shell .linha-dupla {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+                gap: 10px !important;
+            }
+
+            .separacao-conteudo-shell .quantidade-linha {
+                grid-template-columns: minmax(0, 1fr) 74px !important;
+                gap: 8px !important;
+            }
+
+            .separacao-conteudo-shell .saldo-preview {
+                width: 100% !important;
+                grid-template-columns: 1fr 1fr !important;
+            }
+
+            .separacao-conteudo-shell .saldo-preview-item {
+                min-width: 0 !important;
+                padding: 13px 8px !important;
+            }
+
+            .separacao-conteudo-shell .saldo-preview-item small {
+                line-height: 1.2 !important;
+            }
+
+            .separacao-conteudo-shell .btn-confirmar {
+                min-height: 58px !important;
+                border-radius: 14px !important;
+                font-size: 16px !important;
+            }
+
+            .separacao-conteudo-shell .grade-secundaria {
+                grid-template-columns: 1fr !important;
+                gap: 12px !important;
+            }
+
+            .separacao-conteudo-shell .card-acoes .acoes-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            }
+
+            .separacao-conteudo-shell .acao-rapida {
+                text-align: center !important;
+                min-height: 52px !important;
+                padding: 6px !important;
+            }
+
+            .separacao-conteudo-shell .passos {
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            }
+
+            .separacao-conteudo-shell + .nav-mobile,
+            .nav-mobile {
+                left: 10px !important;
+                right: 10px !important;
+                bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+                width: auto !important;
+                max-width: none !important;
+                transform: none !important;
+                padding: 7px !important;
+            }
+
+            .nav-mobile a {
+                min-width: 0 !important;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .separacao-conteudo-shell .topo-logo {
+                width: 70px !important;
+            }
+
+            .separacao-conteudo-shell .topo h1 {
+                font-size: 26px !important;
+            }
+
+            .separacao-conteudo-shell .btn-bipar-topo {
+                width: 60px !important;
+                min-width: 60px !important;
+            }
+
+            .separacao-conteudo-shell .busca {
+                grid-template-columns: minmax(0, 1fr) 94px !important;
+            }
+
+            .separacao-conteudo-shell .btn-buscar {
+                font-size: 13px !important;
+            }
+
+            .separacao-conteudo-shell .linha-dupla {
+                gap: 8px !important;
+            }
+        }
+
     </style>
 </head>
 
@@ -1279,7 +1514,7 @@
 
         <a href="transferencias.html">
             <span class="nav-icone">⇄</span>
-            Transferências
+            Transferência
         </a>
 
         <a href="dashboard.html">

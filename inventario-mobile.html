@@ -247,6 +247,298 @@
 
         }
 
+    
+        /* =====================================================
+           AJUSTE MOBILE 16/09/2026
+           Padronização visual + proteção contra overflow.
+        ===================================================== */
+        html,
+        body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .nav-mobile-wms {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .topo-mobile {
+                width: 100% !important;
+                min-height: 72px !important;
+                padding:
+                    calc(10px + env(safe-area-inset-top))
+                    12px
+                    10px !important;
+                border-radius: 0 0 22px 22px;
+                background:
+                    radial-gradient(circle at 90% 0, rgba(255,255,255,.08) 0 85px, transparent 86px),
+                    linear-gradient(135deg, #062b59, #0b57a4) !important;
+            }
+
+            .botao-menu {
+                width: 44px !important;
+                height: 44px !important;
+                flex-basis: 44px !important;
+                border-radius: 12px !important;
+            }
+
+            .marca-mobile {
+                min-width: 0 !important;
+            }
+
+            .marca-mobile img {
+                width: 38px !important;
+                height: 38px !important;
+            }
+
+            .marca-mobile strong {
+                font-size: 18px !important;
+            }
+
+            .usuario-mobile {
+                max-width: 76px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .pagina-mobile {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding:
+                    16px
+                    12px
+                    calc(108px + env(safe-area-inset-bottom)) !important;
+            }
+
+            .titulo-area {
+                width: 100% !important;
+                min-width: 0 !important;
+                margin: 2px 0 15px !important;
+                padding: 4px 2px !important;
+            }
+
+            .titulo-area > div:first-child {
+                min-width: 0 !important;
+            }
+
+            .titulo-area h1 {
+                font-size: 30px !important;
+                line-height: 1.05 !important;
+            }
+
+            .titulo-area p {
+                font-size: 12px !important;
+                line-height: 1.35 !important;
+            }
+
+            .selo-mobile {
+                flex: 0 0 auto;
+                white-space: nowrap;
+            }
+
+            .barra-busca {
+                width: 100% !important;
+                min-width: 0 !important;
+                min-height: 54px !important;
+                border-radius: 14px !important;
+                padding: 0 10px 0 12px !important;
+            }
+
+            .barra-busca input {
+                min-width: 0 !important;
+                font-size: 16px !important;
+            }
+
+            .barra-busca button {
+                flex: 0 0 42px !important;
+                height: 42px !important;
+            }
+
+            .acoes-topo {
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                gap: 7px !important;
+                width: 100% !important;
+            }
+
+            .acao {
+                min-width: 0 !important;
+                min-height: 46px !important;
+                padding: 7px 4px !important;
+                font-size: 11px !important;
+                overflow: hidden;
+            }
+
+            .acao.exportar {
+                grid-column: 1 / span 2 !important;
+            }
+
+            .indicadores {
+                width: 100% !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 9px !important;
+            }
+
+            .card-indicador {
+                min-width: 0 !important;
+                padding: 12px !important;
+                border-radius: 16px !important;
+            }
+
+            .card-indicador.destaque {
+                grid-column: 1 / -1 !important;
+            }
+
+            .cobertura-flex {
+                width: 100% !important;
+                gap: 10px !important;
+            }
+
+            .anel-cobertura {
+                width: 92px !important;
+                height: 92px !important;
+                flex-basis: 92px !important;
+            }
+
+            .legenda-cobertura {
+                min-width: 0 !important;
+                flex: 1 !important;
+            }
+
+            .valor-indicador {
+                font-size: 18px !important;
+                overflow-wrap: anywhere;
+            }
+
+            .secao-itens,
+            .lista-cards,
+            .card-produto,
+            .grade-produto {
+                width: 100% !important;
+                min-width: 0 !important;
+            }
+
+            .secao-titulo {
+                border-radius: 13px !important;
+            }
+
+            .card-produto {
+                padding: 14px 12px !important;
+                border-radius: 16px !important;
+            }
+
+            .grade-produto {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 10px !important;
+            }
+
+            .campo-info,
+            .campo-info strong,
+            .input-contagem {
+                min-width: 0 !important;
+                max-width: 100% !important;
+            }
+
+            .input-contagem {
+                min-height: 44px !important;
+                font-size: 16px !important;
+            }
+
+            .acoes-card {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 8px !important;
+            }
+
+            .botao-card {
+                min-height: 44px !important;
+                border-radius: 10px !important;
+            }
+
+            .paginacao-mobile {
+                flex-wrap: wrap;
+            }
+
+            .toast-mobile {
+                bottom: calc(90px + env(safe-area-inset-bottom)) !important;
+            }
+
+            .nav-mobile-wms {
+                position: fixed;
+                left: 10px;
+                right: 10px;
+                bottom: calc(10px + env(safe-area-inset-bottom));
+                z-index: 1150;
+                display: grid;
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+                gap: 4px;
+                padding: 7px;
+                border: 1px solid #dbe4ee;
+                border-radius: 18px;
+                background: rgba(255,255,255,.97);
+                box-shadow: 0 8px 24px rgba(21,47,75,.16);
+                backdrop-filter: blur(10px);
+            }
+
+            .nav-mobile-wms a {
+                min-width: 0;
+                min-height: 57px;
+                padding: 6px 2px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                border-radius: 12px;
+                color: #60738a;
+                font-size: 9px;
+                font-weight: 700;
+                text-decoration: none;
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .nav-mobile-wms .nav-icone {
+                font-size: 18px;
+                line-height: 1;
+            }
+
+            .nav-mobile-wms a.ativo {
+                background: linear-gradient(135deg, #07366e, #0a4b91);
+                color: #fff;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .titulo-area h1 {
+                font-size: 27px !important;
+            }
+
+            .indicadores {
+                grid-template-columns: 1fr !important;
+            }
+
+            .card-indicador.destaque {
+                grid-column: auto !important;
+            }
+
+            .acoes-topo {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+
+            .acao.exportar {
+                grid-column: 1 / -1 !important;
+            }
+        }
+
     </style>
 </head>
 
@@ -381,6 +673,32 @@
             <div class="paginacao-mobile" id="paginacaoInventarioMobile"></div>
         </section>
     </main>
+
+
+    <!-- NAVEGAÇÃO MOBILE AJUSTADA -->
+    <nav class="nav-mobile-wms" aria-label="Navegação mobile">
+        <a href="dashboard.html">
+            <span class="nav-icone">⌂</span>
+            Dashboard
+        </a>
+        <a href="produtos.html">
+            <span class="nav-icone">📦</span>
+            Produtos
+        </a>
+        <a href="separacao.html">
+            <span class="nav-icone">🛒</span>
+            Separação
+        </a>
+        <a href="transferencias.html">
+            <span class="nav-icone">⇄</span>
+            Transferência
+        </a>
+        <a href="inventario-mobile.html" class="ativo">
+            <span class="nav-icone">📋</span>
+            Inventário
+        </a>
+    </nav>
+
 
     <div class="toast-mobile" id="toastInventarioMobile"></div>
 
