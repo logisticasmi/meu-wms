@@ -895,7 +895,7 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
 
 .dashboard-grid-quatro {
     display: grid;
-    grid-template-columns: repeat(, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 14px;
     margin-bottom: 20px;
 }
@@ -1143,7 +1143,7 @@ body:has(.dashboard-novo) .sidebar li {
 }
 
 .dashboard-novo .dashboard-grid-quatro {
-    grid-template-columns: repeat(, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
     margin-bottom: 12px;
 }
@@ -2649,4 +2649,130 @@ body:has(.sidebar-wms-novo) .conteudo {
         margin-left: 0 !important;
     }
 
+}
+
+/* =========================================================
+   BRASIL / ITÁLIA - TOPO DO WMS
+   Versão segura: bandeiras feitas somente com CSS
+========================================================= */
+
+.paises-smi {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    flex: 0 0 auto;
+
+    margin-right: 2px;
+    padding-right: 14px;
+    border-right: 1px solid #dbe3ee;
+}
+
+.pais-smi {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.flag-smi {
+    position: relative;
+    display: inline-block;
+    width: 24px;
+    height: 16px;
+    min-width: 24px;
+    overflow: hidden;
+
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .18);
+}
+
+/* Bandeira do Brasil */
+.flag-br {
+    background: #009b3a;
+}
+
+.flag-br::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 3px;
+
+    width: 10px;
+    height: 10px;
+
+    background: #ffdf00;
+    transform: rotate(45deg);
+}
+
+.flag-br::after {
+    content: "";
+    position: absolute;
+    left: 9px;
+    top: 5px;
+
+    width: 6px;
+    height: 6px;
+
+    background: #002776;
+    border-radius: 50%;
+}
+
+/* Bandeira da Itália */
+.flag-it {
+    background:
+        linear-gradient(
+            90deg,
+            #009246 0 33.333%,
+            #ffffff 33.333% 66.666%,
+            #ce2b37 66.666% 100%
+        );
+}
+
+.separador-pais {
+    display: inline-block;
+    width: 1px;
+    height: 18px;
+    flex: 0 0 1px;
+    background: #dbe3ee;
+}
+
+/* Garante que o bloco superior continue em uma única linha no desktop */
+.dashboard-novo .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dashboard-novo .usuario {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+    .dashboard-novo .usuario {
+        flex-wrap: wrap;
+        white-space: normal;
+    }
+
+    .paises-smi {
+        padding-right: 9px;
+        gap: 6px;
+    }
+
+    .flag-smi {
+        width: 21px;
+        height: 14px;
+        min-width: 21px;
+    }
 }
