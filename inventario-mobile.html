@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>SMI WMS - Inventário Mobile</title>
     <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
         :root {
@@ -198,6 +200,53 @@
             .card-indicador.destaque { grid-column:span 2; }
             .lista-cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
         }
+    
+
+        /* =====================================================
+           INTEGRAÇÃO COM O MENU PADRÃO DO SMI WMS
+        ===================================================== */
+
+        .inventario-mobile-conteudo-shell {
+            min-height: 100vh;
+            padding: 0 !important;
+            background: transparent !important;
+        }
+
+        .inventario-mobile-conteudo-shell .pagina-mobile {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* No desktop usamos apenas o novo menu lateral padrão. */
+        @media (min-width: 701px) {
+
+            .inventario-mobile-conteudo-shell .overlay-mobile,
+            .inventario-mobile-conteudo-shell .menu-lateral-mobile {
+                display: none !important;
+            }
+
+            .inventario-mobile-conteudo-shell .botao-menu {
+                display: none !important;
+            }
+
+        }
+
+        /* No celular mantemos integralmente a navegação mobile original. */
+        @media (max-width: 700px) {
+
+            .sidebar.sidebar-wms-novo {
+                display: none !important;
+            }
+
+            body:has(.sidebar-wms-novo)
+            .inventario-mobile-conteudo-shell {
+                margin-left: 0 !important;
+                width: 100% !important;
+                padding: 0 !important;
+            }
+
+        }
+
     </style>
 </head>
 
@@ -992,5 +1041,39 @@
             timerAtualizacaoMobile = setInterval(atualizarInventarioMobileAutomatico, 5000);
         });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            if (typeof lucide !== "undefined") {
+                lucide.createIcons();
+            }
+
+            let paginaAtual =
+                window.location.pathname
+                    .split("/")
+                    .pop();
+
+            if (!paginaAtual) {
+                paginaAtual = "dashboard.html";
+            }
+
+            document
+                .querySelectorAll(".sidebar-wms-novo .menu-item")
+                .forEach(function (item) {
+
+                    const pagina =
+                        item.getAttribute("data-page");
+
+                    item.classList.toggle(
+                        "active",
+                        pagina === paginaAtual
+                    );
+
+                });
+
+        });
+    </script>
+
 </body>
 </html>

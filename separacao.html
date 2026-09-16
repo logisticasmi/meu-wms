@@ -6,6 +6,9 @@
     <meta name="theme-color" content="#0a3f7a">
     <title>SMI WMS - Separação</title>
     <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
 
     <style>
         * {
@@ -912,10 +915,38 @@
                 box-shadow: none;
             }
         }
+    
+        /* =====================================================
+           INTEGRAÇÃO COM O MENU LATERAL PADRÃO DO SMI WMS
+        ===================================================== */
+
+        .separacao-conteudo-shell {
+            min-height: 100vh;
+        }
+
+        .separacao-conteudo-shell .pagina {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 700px) {
+            .sidebar.sidebar-wms-novo {
+                display: none !important;
+            }
+
+            body:has(.sidebar-wms-novo) .separacao-conteudo-shell {
+                margin-left: 0 !important;
+                padding: 0 !important;
+                min-height: 100vh;
+            }
+        }
+
     </style>
 </head>
 
 <body>
+    <div class="conteudo separacao-conteudo-shell">
+
     <main class="pagina">
 
         <!-- =====================================================
@@ -1256,6 +1287,8 @@
             Mais
         </a>
     </nav>
+
+    </div>
 
     <!-- =====================================================
          SCRIPTS
@@ -2275,5 +2308,39 @@ campoCodigo.value =
             }
         );
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            if (typeof lucide !== "undefined") {
+                lucide.createIcons();
+            }
+
+            let paginaAtual =
+                window.location.pathname
+                    .split("/")
+                    .pop();
+
+            if (!paginaAtual) {
+                paginaAtual = "dashboard.html";
+            }
+
+            document
+                .querySelectorAll(".sidebar-wms-novo .menu-item")
+                .forEach(function (item) {
+
+                    const pagina =
+                        item.getAttribute("data-page");
+
+                    item.classList.toggle(
+                        "active",
+                        pagina === paginaAtual
+                    );
+
+                });
+
+        });
+    </script>
+
 </body>
 </html>
