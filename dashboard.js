@@ -1,3 +1,4 @@
+// dashboard.js ORIGINAL - PARTE 1 DE 3
 // =====================================================
 // SMI WMS - DASHBOARD.JS
 // =====================================================
@@ -1650,7 +1651,9 @@ async function atualizarInventarioDashboardSupabase() {
 
         // =====================================================
         // CALCULAR DIVERGÊNCIAS IGUAL À TELA DE INVENTÁRIO
-        // =====================================================
+        
+        // dashboard.js ORIGINAL - PARTE 2 DE 3
+// =====================================================
 
         const listaDivergencias =
             [];
@@ -3208,6 +3211,7 @@ function carregarTopProdutos(
 }
 
 
+// dashboard.js ORIGINAL - PARTE 3 DE 3
 // =====================================================
 // TOP 5 POSIÇÕES
 // =====================================================

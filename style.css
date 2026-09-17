@@ -1,3 +1,4 @@
+/* style.css - PARTE 1 DE 2 */
 /* =====================================================
    SMI WMS - STYLE.CSS LIMPO E ORGANIZADO
    Substitua TODO o conteúdo do style.css por este arquivo
@@ -2254,6 +2255,8 @@ body:has(.dashboard-novo) .sidebar li a {
     }
 
 }
+
+/* style.css - PARTE 2 DE 2 */
 /* =====================================================
    ENTRADAS - CORES DO RESUMO DO DIA
 ===================================================== */
@@ -2854,3 +2857,471 @@ body:has(.sidebar-wms-novo) .conteudo {
 
     background: #d7dce3;
 }
+
+/* =====================================================
+   DASHBOARD - AJUSTE VISUAL DO TOPO (SEM ALTERAR VELOCÍMETRO)
+   Mantém o velocímetro original do WMS.
+===================================================== */
+
+.dashboard-novo .topbar {
+    margin-bottom: 12px;
+}
+
+.dashboard-novo .titulo-pagina h1 {
+    font-size: 31px;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+}
+
+.dashboard-novo .titulo-pagina small {
+    font-size: 13px;
+    color: #405f82;
+}
+
+.dashboard-novo .dashboard-cards-principais {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.dashboard-novo .card-dashboard-novo {
+    min-height: 150px;
+    padding: 15px 12px;
+    gap: 10px;
+    border: 1px solid #e6ebf2;
+    border-radius: 11px;
+    box-shadow: 0 4px 14px rgba(0, 30, 69, 0.055);
+}
+
+.dashboard-novo .card-dashboard-novo:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 7px 18px rgba(0, 30, 69, 0.085);
+}
+
+.dashboard-novo .card-dashboard-novo:not(.card-velocimetro) .icone-card-novo {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    font-size: 21px;
+}
+
+.dashboard-novo .card-dashboard-novo:not(.card-velocimetro) .card-titulo-novo {
+    margin-bottom: 3px;
+    font-size: 10px;
+    line-height: 1.15;
+}
+
+.dashboard-novo .card-dashboard-novo:not(.card-velocimetro) .card-info-novo > strong {
+    font-size: 27px;
+    line-height: 1.02;
+}
+
+.dashboard-novo .card-dashboard-novo:not(.card-velocimetro) .card-info-novo small {
+    margin-top: 4px;
+    font-size: 9px;
+}
+
+/* Na referência não há links na base dos cards */
+.dashboard-novo .dashboard-cards-principais .link-card {
+    display: none;
+}
+
+.dashboard-novo .mini-grafico-novo {
+    right: 9px;
+    bottom: 9px;
+    width: 78px;
+    height: 38px;
+}
+
+.dashboard-novo .mini-grafico-novo canvas {
+    width: 78px !important;
+    height: 38px !important;
+}
+
+.dashboard-novo .novo-progresso {
+    max-width: 155px;
+    height: 6px;
+    margin-top: 10px;
+}
+
+/* Mantém integralmente o bloco original do velocímetro.
+   Nenhuma regra .card-velocimetro, .velocimetro-container,
+   #velocimetroOcupacao ou .velocimetro-info é sobrescrita aqui. */
+
+.dashboard-novo .dashboard-faixa-alertas {
+    min-height: 74px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 30, 69, 0.045);
+}
+
+.dashboard-novo .alerta-icone-grande {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.dashboard-novo .bolinha {
+    flex: 0 0 auto;
+}
+
+@media (max-width: 1250px) {
+    .dashboard-novo .dashboard-cards-principais {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* =====================================================
+   SMI WMS - AJUSTE VISUAL DOS 5 CARDS
+   NÃO ALTERA O CARD "OCUPAÇÃO DO ESTOQUE"
+   Cole este bloco no FINAL do style.css
+===================================================== */
+
+/* =====================================================
+   1. BASE DOS 5 CARDS
+===================================================== */
+
+.dashboard-novo .dashboard-kpis-premium > .kpi-produtos,
+.dashboard-novo .dashboard-kpis-premium > .kpi-quantidade,
+.dashboard-novo .dashboard-kpis-premium > .kpi-posicoes,
+.dashboard-novo .dashboard-kpis-premium > .kpi-minimo,
+.dashboard-novo .dashboard-kpis-premium > .kpi-sem-estoque {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    min-width: 0;
+    height: 126px;
+    min-height: 126px;
+
+    padding: 14px 12px;
+
+    overflow: hidden;
+
+    background: #ffffff;
+    border: 1px solid #e3eaf2;
+    border-radius: 11px;
+
+    box-shadow: 0 4px 15px rgba(20, 47, 84, 0.055);
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease;
+}
+
+
+/* Hover apenas nos 5 cards */
+
+.dashboard-novo .dashboard-kpis-premium > .kpi-produtos:hover,
+.dashboard-novo .dashboard-kpis-premium > .kpi-quantidade:hover,
+.dashboard-novo .dashboard-kpis-premium > .kpi-posicoes:hover,
+.dashboard-novo .dashboard-kpis-premium > .kpi-minimo:hover,
+.dashboard-novo .dashboard-kpis-premium > .kpi-sem-estoque:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 7px 19px rgba(20, 47, 84, 0.09);
+}
+
+
+/* =====================================================
+   2. ÍCONES CIRCULARES
+===================================================== */
+
+.dashboard-novo .kpi-produtos .icone-card-novo,
+.dashboard-novo .kpi-quantidade .icone-card-novo,
+.dashboard-novo .kpi-posicoes .icone-card-novo,
+.dashboard-novo .kpi-minimo .icone-card-novo,
+.dashboard-novo .kpi-sem-estoque .icone-card-novo {
+    width: 43px;
+    height: 43px;
+    min-width: 43px;
+    min-height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #ffffff;
+
+    box-shadow: none;
+}
+
+
+.dashboard-novo .kpi-produtos .icone-card-novo svg,
+.dashboard-novo .kpi-quantidade .icone-card-novo svg,
+.dashboard-novo .kpi-posicoes .icone-card-novo svg,
+.dashboard-novo .kpi-minimo .icone-card-novo svg,
+.dashboard-novo .kpi-sem-estoque .icone-card-novo svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2.5;
+}
+
+
+/* Cores dos ícones */
+
+.dashboard-novo .kpi-produtos .icone-card-novo {
+    background: #2176f3 !important;
+}
+
+.dashboard-novo .kpi-quantidade .icone-card-novo {
+    background: #18b665 !important;
+}
+
+.dashboard-novo .kpi-posicoes .icone-card-novo {
+    background: #8751e8 !important;
+}
+
+.dashboard-novo .kpi-minimo .icone-card-novo {
+    background: #ff9800 !important;
+}
+
+.dashboard-novo .kpi-sem-estoque .icone-card-novo {
+    background: #f1263b !important;
+}
+
+
+/* =====================================================
+   3. CONTEÚDO / TIPOGRAFIA
+===================================================== */
+
+.dashboard-novo .kpi-produtos .card-info-novo,
+.dashboard-novo .kpi-quantidade .card-info-novo,
+.dashboard-novo .kpi-posicoes .card-info-novo,
+.dashboard-novo .kpi-minimo .card-info-novo,
+.dashboard-novo .kpi-sem-estoque .card-info-novo {
+    min-width: 0;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    padding-top: 1px;
+}
+
+
+.dashboard-novo .kpi-produtos .card-titulo-novo,
+.dashboard-novo .kpi-quantidade .card-titulo-novo,
+.dashboard-novo .kpi-posicoes .card-titulo-novo,
+.dashboard-novo .kpi-minimo .card-titulo-novo,
+.dashboard-novo .kpi-sem-estoque .card-titulo-novo {
+    margin: 0 0 3px;
+
+    color: #092d63;
+
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+.dashboard-novo .kpi-produtos .card-info-novo > strong,
+.dashboard-novo .kpi-quantidade .card-info-novo > strong,
+.dashboard-novo .kpi-posicoes .card-info-novo > strong,
+.dashboard-novo .kpi-minimo .card-info-novo > strong,
+.dashboard-novo .kpi-sem-estoque .card-info-novo > strong {
+    margin: 0;
+
+    color: #061e46;
+
+    font-size: 25px;
+    line-height: 1;
+    font-weight: 900;
+
+    letter-spacing: -0.4px;
+}
+
+
+.dashboard-novo .kpi-produtos .card-info-novo small,
+.dashboard-novo .kpi-quantidade .card-info-novo small,
+.dashboard-novo .kpi-posicoes .card-info-novo small,
+.dashboard-novo .kpi-minimo .card-info-novo small,
+.dashboard-novo .kpi-sem-estoque .card-info-novo small {
+    margin-top: 3px;
+
+    color: #718096;
+
+    font-size: 9px;
+    line-height: 1.15;
+}
+
+
+/* =====================================================
+   4. TENDÊNCIAS
+===================================================== */
+
+.dashboard-novo .kpi-produtos .kpi-tendencia,
+.dashboard-novo .kpi-quantidade .kpi-tendencia,
+.dashboard-novo .kpi-minimo .kpi-tendencia,
+.dashboard-novo .kpi-sem-estoque .kpi-tendencia {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 10px;
+    line-height: 1;
+    font-weight: 800;
+}
+
+
+.dashboard-novo .kpi-produtos .kpi-tendencia.positiva,
+.dashboard-novo .kpi-quantidade .kpi-tendencia.positiva,
+.dashboard-novo .kpi-sem-estoque .kpi-tendencia.positiva {
+    color: #15a856;
+}
+
+
+.dashboard-novo .kpi-produtos .kpi-tendencia.negativa,
+.dashboard-novo .kpi-quantidade .kpi-tendencia.negativa,
+.dashboard-novo .kpi-sem-estoque .kpi-tendencia.negativa {
+    color: #ef3340;
+}
+
+
+.dashboard-novo .kpi-minimo .kpi-tendencia {
+    color: #ef3340;
+}
+
+
+/* =====================================================
+   5. MINI GRÁFICOS - PRODUTOS / QUANTIDADE
+===================================================== */
+
+.dashboard-novo .kpi-produtos .mini-grafico-novo,
+.dashboard-novo .kpi-quantidade .mini-grafico-novo {
+    position: absolute;
+
+    right: 10px;
+    bottom: 8px;
+
+    width: 76px;
+    height: 30px;
+
+    pointer-events: none;
+}
+
+
+.dashboard-novo .kpi-produtos .mini-grafico-novo canvas,
+.dashboard-novo .kpi-quantidade .mini-grafico-novo canvas {
+    display: block;
+
+    width: 76px !important;
+    height: 30px !important;
+}
+
+
+/* =====================================================
+   6. POSIÇÕES UTILIZADAS
+===================================================== */
+
+.dashboard-novo .kpi-posicoes .kpi-progresso-linha {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 10px;
+}
+
+
+.dashboard-novo .kpi-posicoes .novo-progresso {
+    flex: 1;
+
+    max-width: none;
+
+    height: 6px;
+
+    margin: 0;
+
+    overflow: hidden;
+
+    background: #e6ebf2;
+    border-radius: 999px;
+}
+
+
+.dashboard-novo .kpi-posicoes .progresso-roxo {
+    height: 100%;
+
+    background: #8751e8 !important;
+
+    border-radius: 999px;
+}
+
+
+.dashboard-novo .kpi-posicoes #percentualPosicoesCard {
+    flex: 0 0 auto;
+
+    color: #082d62;
+
+    font-size: 8px;
+    line-height: 1;
+    font-weight: 800;
+}
+
+
+/* =====================================================
+   7. BARRINHAS - ABAIXO DO MÍNIMO / SEM ESTOQUE
+===================================================== */
+
+.dashboard-novo .kpi-minimo .spark-bars,
+.dashboard-novo .kpi-sem-estoque .spark-bars {
+    position: absolute;
+
+    right: 10px;
+    bottom: 10px;
+
+    width: 70px;
+    height: 28px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+    gap: 4px;
+
+    pointer-events: none;
+}
+
+
+.dashboard-novo .kpi-minimo .spark-bars span,
+.dashboard-novo .kpi-sem-estoque .spark-bars span {
+    width: 5px;
+    min-height: 3px;
+
+    border-radius: 2px 2px 0 0;
+}
+
+
+/* Laranja suave */
+
+.dashboard-novo .kpi-minimo .spark-bars span {
+    background: #ffc078;
+}
+
+
+/* Vermelho / rosa suave */
+
+.dashboard-novo .kpi-sem-estoque .spark-bars span {
+    background: #ffb7c0;
+}
+
+
+/* =====================================================
+   IMPORTANTE
+   Nenhuma regra deste bloco usa:
+   .kpi-ocupacao
+   .card-velocimetro
+   #velocimetroOcupacao
+   #cardNiveis
+   #posicoesLivresVelocimetro
+
+   Portanto o card OCUPAÇÃO DO ESTOQUE permanece como está.
+===================================================== */
