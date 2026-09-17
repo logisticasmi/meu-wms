@@ -394,13 +394,58 @@
     font-size: 8px;
     font-weight: 800;
 }
+
+        /* =====================================================
+           TOPO PADRÃO DASHBOARD
+           BR/IT + DATA/HORA + USUÁRIO + SAIR
+        ===================================================== */
+
+        .pagina-inventario .topbar .usuario {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 14px;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+
+        .pagina-inventario #language-placeholder {
+            display: flex;
+            align-items: center;
+            flex: 0 0 auto;
+        }
+
+        .pagina-inventario #language-placeholder #wms-language-switcher {
+            position: static !important;
+            top: auto !important;
+            right: auto !important;
+            left: auto !important;
+            bottom: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            z-index: auto !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .pagina-inventario #relogio,
+        .pagina-inventario #nomeUsuario {
+            flex: 0 0 auto;
+        }
+
+        @media (max-width: 950px) {
+            .pagina-inventario .topbar .usuario {
+                flex-wrap: wrap;
+            }
+        }
+
     </style>
 
     <link rel="icon" type="image/png" href="img/favicon.png">
 
 </head>
 
-<body>
+<body class="pagina-inventario">
 
     <!-- =====================================================
          MENU LATERAL - NOVO PADRÃO SMI WMS
@@ -538,6 +583,8 @@
             </div>
 
             <div class="usuario">
+
+                <div id="language-placeholder"></div>
 
                 <span id="relogio"></span>
 
@@ -2334,7 +2381,17 @@ document.addEventListener("DOMContentLoaded", function () {
         lucide.createIcons();
     }
 
-    let paginaAtual =
+    const languagePlaceholder =
+        document.getElementById("language-placeholder");
+
+    const languageSwitcher =
+        document.getElementById("wms-language-switcher");
+
+    if (languagePlaceholder && languageSwitcher) {
+        languagePlaceholder.appendChild(languageSwitcher);
+    }
+
+let paginaAtual =
         window.location.pathname
             .split("/")
             .pop();

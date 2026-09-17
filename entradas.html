@@ -891,6 +891,45 @@
 
         }
 
+
+        /* =====================================================
+           TOPO - IDIOMA + RELÓGIO + USUÁRIO
+           Mantém o mesmo padrão visual do Dashboard
+        ===================================================== */
+
+        .pagina-entradas .topbar .usuario {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 14px;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+
+        .pagina-entradas #language-placeholder {
+            display: flex;
+            align-items: center;
+            flex: 0 0 auto;
+        }
+
+        .pagina-entradas #language-placeholder #wms-language-switcher {
+            position: static !important;
+            top: auto !important;
+            right: auto !important;
+            left: auto !important;
+            bottom: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            z-index: auto !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .pagina-entradas #relogio,
+        .pagina-entradas #nomeUsuario {
+            flex: 0 0 auto;
+        }
+
     </style>
 
 </head>
@@ -1039,6 +1078,8 @@
 
 
         <div class="usuario">
+
+            <div id="language-placeholder"></div>
 
             <span id="relogio"></span>
 
@@ -1680,6 +1721,13 @@
 document.addEventListener("DOMContentLoaded", function () {
     if (typeof lucide !== "undefined") {
         lucide.createIcons();
+    }
+
+    const languagePlaceholder = document.getElementById("language-placeholder");
+    const languageSwitcher = document.getElementById("wms-language-switcher");
+
+    if (languagePlaceholder && languageSwitcher) {
+        languagePlaceholder.appendChild(languageSwitcher);
     }
 
     let paginaAtual = window.location.pathname.split("/").pop();

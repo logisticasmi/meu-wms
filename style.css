@@ -2776,3 +2776,81 @@ body:has(.sidebar-wms-novo) .conteudo {
         min-width: 21px;
     }
 }
+
+/* =====================================================
+   SELETOR GLOBAL DE IDIOMA
+===================================================== */
+
+#wms-language-switcher {
+    position: fixed;
+
+    top: 22px;
+    right: 28px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    z-index: 99999;
+
+    font-family: Arial, sans-serif;
+
+    background: transparent;
+
+    border: none;
+    box-shadow: none;
+}
+
+#wms-language-switcher .wms-lang-item {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 4px 5px;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    border-radius: 0 !important;
+
+    box-shadow: none !important;
+
+    color: #1f2937;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#wms-language-switcher .wms-lang-item:hover {
+    opacity: 0.7;
+}
+
+#wms-language-switcher .wms-lang-item.active {
+    color: #0057b8;
+    background: transparent !important;
+}
+
+#wms-language-switcher .wms-flag {
+    width: 27px;
+    height: 19px;
+
+    display: block;
+
+    border-radius: 2px;
+
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+}
+
+#wms-language-switcher .wms-lang-separator {
+    width: 1px;
+    height: 23px;
+
+    background: #d7dce3;
+}

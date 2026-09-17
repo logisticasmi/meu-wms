@@ -269,12 +269,57 @@
 
         }
 
+
+        /* =====================================================
+           TOPO PADRÃO DASHBOARD
+           BR/IT + DATA/HORA + USUÁRIO + SAIR
+        ===================================================== */
+
+        .pagina-requisicao .topbar .usuario {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 14px;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+
+        .pagina-requisicao #language-placeholder {
+            display: flex;
+            align-items: center;
+            flex: 0 0 auto;
+        }
+
+        .pagina-requisicao #language-placeholder #wms-language-switcher {
+            position: static !important;
+            top: auto !important;
+            right: auto !important;
+            left: auto !important;
+            bottom: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            z-index: auto !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .pagina-requisicao #relogio,
+        .pagina-requisicao #nomeUsuario {
+            flex: 0 0 auto;
+        }
+
+        @media (max-width: 950px) {
+            .pagina-requisicao .topbar .usuario {
+                flex-wrap: wrap;
+            }
+        }
+
     </style>
 
 </head>
 
 
-<body>
+<body class="pagina-requisicao">
 
     <!-- =====================================================
          MENU LATERAL - NOVO PADRÃO SMI WMS
@@ -427,11 +472,16 @@
 
         <div class="usuario">
 
+            <div id="language-placeholder"></div>
+
             <span id="relogio"></span>
 
             <span id="nomeUsuario"></span>
 
-            <button onclick="sairSistema()">
+            <button
+                type="button"
+                onclick="sairSistema()"
+            >
                 Sair
             </button>
 
@@ -974,6 +1024,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (typeof lucide !== "undefined") {
         lucide.createIcons();
+    }
+
+    const languagePlaceholder =
+        document.getElementById("language-placeholder");
+
+    const languageSwitcher =
+        document.getElementById("wms-language-switcher");
+
+    if (languagePlaceholder && languageSwitcher) {
+        languagePlaceholder.appendChild(languageSwitcher);
     }
 
     let paginaAtual =

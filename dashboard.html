@@ -14,6 +14,38 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
+<style>
+    /* Evita duplicidade do seletor de idioma no Dashboard */
+    .dashboard-novo .topbar .usuario {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 14px;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+
+    .dashboard-novo #language-placeholder {
+        display: flex;
+        align-items: center;
+        flex: 0 0 auto;
+    }
+
+    .dashboard-novo #language-placeholder #wms-language-switcher {
+        position: static !important;
+        top: auto !important;
+        right: auto !important;
+        left: auto !important;
+        bottom: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        z-index: auto !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+</style>
+
 </head>
 
 <body>
@@ -195,21 +227,7 @@
        <div class="usuario">
 
             <!-- BRASIL / ITÁLIA -->
-            <div class="paises-smi">
-
-                <span class="pais-smi">
-                    <span class="flag-smi flag-br"></span>
-                    <span>BR</span>
-                </span>
-
-                <span class="separador-pais"></span>
-
-                <span class="pais-smi">
-                    <span class="flag-smi flag-it"></span>
-                    <span>IT</span>
-                </span>
-
-            </div>
+            <div id="language-placeholder"></div>
 
             <span id="relogio"></span>
 
@@ -935,6 +953,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (typeof lucide !== "undefined") {
         lucide.createIcons();
+    }
+
+    const languagePlaceholder =
+        document.getElementById("language-placeholder");
+
+    const languageSwitcher =
+        document.getElementById("wms-language-switcher");
+
+    if (languagePlaceholder && languageSwitcher) {
+        languagePlaceholder.appendChild(languageSwitcher);
     }
 
     let paginaAtual =

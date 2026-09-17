@@ -12622,3 +12622,47 @@ window.verificarLogin = verificarLogin;
 
 window.atualizarResumoMovimentacoes =
     atualizarResumoMovimentacoes;
+
+ // =====================================================
+// SELETOR GLOBAL DE IDIOMA - SMI WMS
+// =====================================================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Remove versões duplicadas
+    document.querySelectorAll("#wms-language-switcher").forEach(el => el.remove());
+
+    const seletor = document.createElement("div");
+    seletor.id = "wms-language-switcher";
+
+    seletor.innerHTML = `
+        <div class="wms-lang-item active" data-lang="pt">
+
+            <svg class="wms-flag" viewBox="0 0 28 20">
+                <rect width="28" height="20" fill="#009739"/>
+                <polygon points="14,2 25,10 14,18 3,10" fill="#FFDF00"/>
+                <circle cx="14" cy="10" r="4.2" fill="#002776"/>
+            </svg>
+
+            <span>BR</span>
+
+        </div>
+
+        <div class="wms-lang-separator"></div>
+
+        <div class="wms-lang-item" data-lang="it">
+
+            <svg class="wms-flag" viewBox="0 0 30 20">
+                <rect width="10" height="20" x="0" fill="#009246"/>
+                <rect width="10" height="20" x="10" fill="#FFFFFF"/>
+                <rect width="10" height="20" x="20" fill="#CE2B37"/>
+            </svg>
+
+            <span>IT</span>
+
+        </div>
+    `;
+
+    document.body.appendChild(seletor);
+
+});

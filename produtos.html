@@ -104,6 +104,50 @@ body.pagina-produtos{background:#f4f7fb}
 .prod-itens-pagina{display:flex;align-items:center;gap:8px;color:#587089;font-size:11px}.prod-itens-pagina select{height:34px;border:1px solid #d2dce8;border-radius:6px;background:#fff;padding:0 8px}
 @media(max-width:1250px){.prod-kpis{grid-template-columns:1fr 1fr}.importarExcel{grid-template-columns:1fr 1fr!important}.importarExcel > div:last-child{grid-column:1/-1;justify-content:flex-start!important;flex-wrap:wrap!important}.prod-ferramentas{grid-template-columns:1fr 1fr}}
 @media(max-width:760px){.pagina-produtos .conteudo{padding:14px 10px 28px!important}.prod-kpis{grid-template-columns:1fr}.importarExcel{grid-template-columns:1fr!important}.importarExcel > div:last-child{grid-column:auto;justify-content:flex-start!important;flex-wrap:wrap!important}.prod-ferramentas{grid-template-columns:1fr}.prod-rodape{flex-direction:column;align-items:stretch}.prod-itens-pagina{justify-content:center}}
+
+/* =====================================================
+   TOPO PADRÃO DASHBOARD
+   BR/IT + DATA/HORA + USUÁRIO + SAIR
+===================================================== */
+.pagina-produtos .topbar .usuario{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:14px;
+    flex-wrap:nowrap;
+    white-space:nowrap;
+}
+
+.pagina-produtos #language-placeholder{
+    display:flex;
+    align-items:center;
+    flex:0 0 auto;
+}
+
+.pagina-produtos #language-placeholder #wms-language-switcher{
+    position:static!important;
+    top:auto!important;
+    right:auto!important;
+    left:auto!important;
+    bottom:auto!important;
+    margin:0!important;
+    padding:0!important;
+    z-index:auto!important;
+    background:transparent!important;
+    box-shadow:none!important;
+}
+
+.pagina-produtos #relogio,
+.pagina-produtos #nomeUsuario{
+    flex:0 0 auto;
+}
+
+@media(max-width:950px){
+    .pagina-produtos .topbar .usuario{
+        flex-wrap:wrap;
+    }
+}
+
 </style>
 
 </head>
@@ -277,6 +321,9 @@ body.pagina-produtos{background:#f4f7fb}
             </div>
 
             <div class="usuario">
+
+                <div id="language-placeholder"></div>
+
                 <span
                     id="relogio"
                     aria-label="Horário atual"
@@ -290,6 +337,7 @@ body.pagina-produtos{background:#f4f7fb}
                 >
                     Sair
                 </button>
+
             </div>
 
         </header>
@@ -1010,6 +1058,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (typeof lucide !== "undefined") {
         lucide.createIcons();
+    }
+
+    const languagePlaceholder =
+        document.getElementById("language-placeholder");
+
+    const languageSwitcher =
+        document.getElementById("wms-language-switcher");
+
+    if (languagePlaceholder && languageSwitcher) {
+        languagePlaceholder.appendChild(languageSwitcher);
     }
 
     let paginaAtual =
