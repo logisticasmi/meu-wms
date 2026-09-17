@@ -15,10 +15,233 @@
 
 <link rel="icon" type="image/png" href="img/favicon.png">
 
+<style>
+
+/* =====================================================
+   IDIOMA DO SISTEMA
+===================================================== */
+
+.card-idioma {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 26px;
+    box-shadow: 0 5px 18px rgba(0, 30, 69, 0.08);
+}
+
+.card-idioma h2 {
+    margin: 0 0 10px 0;
+    color: #062d63;
+}
+
+.idioma-descricao {
+    margin: 0 0 10px;
+    color: #334e68;
+    font-size: 15px;
+}
+
+.idioma-atual {
+    margin: 0 0 14px;
+    color: #17375d;
+    font-size: 15px;
+}
+
+.idioma-atual strong {
+    color: #062d63;
+}
+
+.idioma-opcoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.idioma-opcao {
+    min-height: 74px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: 0.2s ease;
+    box-sizing: border-box;
+}
+
+.idioma-opcao:hover {
+    border-color: #1683f3;
+    background: #f8fbff;
+}
+
+.idioma-opcao.selecionado {
+    border-color: #1683f3;
+    background: #f0f7ff;
+    box-shadow: 0 0 0 1px rgba(22, 131, 243, 0.08);
+}
+
+.idioma-opcao input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.idioma-radio {
+    width: 19px;
+    height: 19px;
+    min-width: 19px;
+    border: 2px solid #94a3b8;
+    border-radius: 50%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.idioma-opcao.selecionado .idioma-radio {
+    border-color: #1683f3;
+}
+
+.idioma-opcao.selecionado .idioma-radio::after {
+    content: "";
+    width: 9px;
+    height: 9px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #1683f3;
+}
+
+.idioma-bandeira {
+    width: 44px;
+    height: 29px;
+    min-width: 44px;
+    overflow: hidden;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.10);
+    position: relative;
+}
+
+.bandeira-br {
+    background: #009b3a;
+}
+
+.bandeira-br::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    width: 28px;
+    height: 21px;
+    background: #ffdf00;
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+.bandeira-br::after {
+    content: "";
+    position: absolute;
+    left: 17px;
+    top: 8px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #002776;
+}
+
+.bandeira-it {
+    background: linear-gradient(
+        to right,
+        #009246 0 33.333%,
+        #ffffff 33.333% 66.666%,
+        #ce2b37 66.666% 100%
+    );
+}
+
+.idioma-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.idioma-info strong {
+    color: #082f67;
+    font-size: 16px;
+}
+
+.idioma-info small {
+    margin-top: 3px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.idioma-rodape {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.idioma-aviso {
+    color: #1769c2;
+    font-size: 13px;
+}
+
+.btn-salvar-idioma {
+    min-width: 180px;
+    padding: 12px 22px;
+    border: none;
+    border-radius: 8px;
+    background: #063f7d;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-salvar-idioma:hover {
+    background: #052f5f;
+}
+
+.mensagem-idioma {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #eaf8ee;
+    border: 1px solid #bfe6ca;
+    color: #17763a;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.mensagem-idioma.mostrar {
+    display: block;
+}
+
+@media (max-width: 800px) {
+    .idioma-opcoes {
+        grid-template-columns: 1fr;
+    }
+
+    .idioma-rodape {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-salvar-idioma {
+        width: 100%;
+    }
+}
+
+</style>
+
 </head>
 
 
-<body onload="verificarLogin()">
+<body>
 
 
 <!-- =====================================================
@@ -180,7 +403,6 @@
 
 <!-- CONTEÚDO -->
 
-
 <div class="conteudo">
 
 
@@ -190,9 +412,7 @@
 ⚙️ Configurações do Sistema
 </h1>
 
-
 <div id="nomeUsuario"></div>
-
 
 </header>
 
@@ -206,34 +426,27 @@
 🏢 Dados da Empresa
 </h2>
 
-
 <p>
 <strong>Empresa:</strong>
 SMI DO BRASIL
 </p>
-
 
 <p>
 <strong>Sistema:</strong>
 SMI WMS
 </p>
 
-
 <p>
 <strong>Depósito:</strong>
 1 Unidade
 </p>
-
 
 <p>
 <strong>Capacidade:</strong>
 60 posições / 360 níveis
 </p>
 
-
 </div>
-
-
 
 
 
@@ -245,17 +458,114 @@ SMI WMS
 👤 Usuário Atual
 </h2>
 
-
 <p>
 Usuário conectado:
-<span id="usuarioConfig">
-</span>
+<span id="usuarioConfig"></span>
 </p>
-
 
 </div>
 
 
+
+<!-- =====================================================
+     IDIOMA DO SISTEMA
+===================================================== -->
+
+<div class="card card-idioma">
+
+<h2>
+🌐 Idioma do Sistema
+</h2>
+
+<p class="idioma-descricao">
+Defina o idioma padrão do WMS.
+A seleção também será refletida no seletor BR | IT do sistema.
+</p>
+
+<p class="idioma-atual">
+Idioma atual:
+<strong id="idiomaAtualTexto">
+Português (Brasil)
+</strong>
+</p>
+
+<div class="idioma-opcoes">
+
+    <!-- PORTUGUÊS -->
+    <label
+        class="idioma-opcao selecionado"
+        id="opcaoIdiomaBR"
+    >
+
+        <input
+            type="radio"
+            name="idiomaWms"
+            value="pt-BR"
+            checked
+        >
+
+        <span class="idioma-radio"></span>
+
+        <span class="idioma-bandeira bandeira-br"></span>
+
+        <span class="idioma-info">
+            <strong>Português (Brasil)</strong>
+            <small>Idioma padrão do sistema</small>
+        </span>
+
+    </label>
+
+
+    <!-- ITALIANO -->
+    <label
+        class="idioma-opcao"
+        id="opcaoIdiomaIT"
+    >
+
+        <input
+            type="radio"
+            name="idiomaWms"
+            value="it-IT"
+        >
+
+        <span class="idioma-radio"></span>
+
+        <span class="idioma-bandeira bandeira-it"></span>
+
+        <span class="idioma-info">
+            <strong>Italiano</strong>
+            <small>Traduzione del sistema</small>
+        </span>
+
+    </label>
+
+</div>
+
+
+<div class="idioma-rodape">
+
+    <span class="idioma-aviso">
+        ⓘ A troca de idioma será aplicada em todo o WMS.
+    </span>
+
+    <button
+        type="button"
+        class="btn-salvar-idioma"
+        onclick="salvarIdiomaWMS()"
+    >
+        Salvar idioma
+    </button>
+
+</div>
+
+<div
+    id="mensagemIdioma"
+    class="mensagem-idioma"
+>
+    Idioma salvo com sucesso.
+</div>
+
+</div>
 
 
 
@@ -263,30 +573,22 @@ Usuário conectado:
 
 <div class="card">
 
-
 <h2>
 💾 Backup dos Dados
 </h2>
-
 
 <p>
 Faça uma cópia do estoque salvo no sistema.
 </p>
 
-
 <button
     class="btn"
     onclick="exportarEstoque()"
 >
-
 Exportar Backup
-
 </button>
 
-
 </div>
-
-
 
 
 
@@ -294,29 +596,22 @@ Exportar Backup
 
 <div class="card">
 
-
 <h2>
 ⚠️ Administração
 </h2>
-
 
 <p>
 Remover todos os dados gravados no navegador.
 </p>
 
-
 <button
     class="btn btn-vermelho"
     onclick="limparSistema()"
 >
-
 Limpar Dados
-
 </button>
 
-
 </div>
-
 
 
 </div>
@@ -328,35 +623,56 @@ Limpar Dados
 
 <script>
 
+/* =====================================================
+   CARREGAMENTO DA TELA
+===================================================== */
 
-window.onload = function () {
+window.addEventListener(
+    "load",
+    function () {
 
-    verificarLogin();
+        if (
+            typeof verificarLogin ===
+            "function"
+        ) {
+            verificarLogin();
+        }
 
+        const usuario =
+            localStorage.getItem(
+                "usuario"
+            );
 
-    let usuario =
-        localStorage.getItem("usuario");
+        if (usuario) {
 
+            const campoUsuario =
+                document.getElementById(
+                    "usuarioConfig"
+                );
 
-    if (usuario) {
+            if (campoUsuario) {
+                campoUsuario.textContent =
+                    usuario;
+            }
 
-        document.getElementById(
-            "usuarioConfig"
-        ).innerHTML =
-            usuario;
+        }
+
+        carregarIdiomaWMS();
 
     }
+);
 
-};
 
-
+/* =====================================================
+   BACKUP
+===================================================== */
 
 function exportarEstoque() {
 
-
-    let dados =
-        localStorage.getItem("estoque");
-
+    const dados =
+        localStorage.getItem(
+            "estoque"
+        );
 
     if (!dados) {
 
@@ -365,11 +681,9 @@ function exportarEstoque() {
         );
 
         return;
-
     }
 
-
-    let arquivo =
+    const arquivo =
         new Blob(
             [dados],
             {
@@ -377,29 +691,32 @@ function exportarEstoque() {
             }
         );
 
-
-    let link =
-        document.createElement("a");
-
+    const link =
+        document.createElement(
+            "a"
+        );
 
     link.href =
         URL.createObjectURL(
             arquivo
         );
 
-
     link.download =
         "backup_estoque_smi.json";
 
-
     link.click();
 
+    URL.revokeObjectURL(
+        link.href
+    );
 }
 
 
+/* =====================================================
+   LIMPEZA
+===================================================== */
 
 function limparSistema() {
-
 
     if (
         confirm(
@@ -407,63 +724,360 @@ function limparSistema() {
         )
     ) {
 
-
         localStorage.removeItem(
             "estoque"
         );
-
 
         localStorage.removeItem(
             "movimentacoes"
         );
 
-
         alert(
             "Dados removidos com sucesso."
         );
 
-
         location.reload();
-
     }
-
 }
 
 
-</script>
+/* =====================================================
+   IDIOMA - CARREGAR
+===================================================== */
 
+function carregarIdiomaWMS() {
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+    const idiomaSalvo =
+        localStorage.getItem(
+            "wms_idioma"
+        ) ||
+        localStorage.getItem(
+            "idiomaWMS"
+        ) ||
+        "pt-BR";
 
-    if (typeof lucide !== "undefined") {
-        lucide.createIcons();
+    const radio =
+        document.querySelector(
+            'input[name="idiomaWms"][value="' +
+            idiomaSalvo +
+            '"]'
+        );
+
+    if (radio) {
+        radio.checked = true;
     }
 
-    let paginaAtual =
-        window.location.pathname
-            .split("/")
-            .pop();
+    atualizarSelecaoIdioma();
+    atualizarTextoIdioma(
+        idiomaSalvo
+    );
 
-    if (!paginaAtual) {
-        paginaAtual = "dashboard.html";
+    document.documentElement.lang =
+        idiomaSalvo;
+}
+
+
+/* =====================================================
+   IDIOMA - VISUAL
+===================================================== */
+
+function atualizarSelecaoIdioma() {
+
+    const idiomaSelecionado =
+        document.querySelector(
+            'input[name="idiomaWms"]:checked'
+        )?.value || "pt-BR";
+
+    const opcaoBR =
+        document.getElementById(
+            "opcaoIdiomaBR"
+        );
+
+    const opcaoIT =
+        document.getElementById(
+            "opcaoIdiomaIT"
+        );
+
+    if (opcaoBR) {
+        opcaoBR.classList.toggle(
+            "selecionado",
+            idiomaSelecionado ===
+            "pt-BR"
+        );
     }
 
-    document
-        .querySelectorAll(".sidebar-wms-novo .menu-item")
-        .forEach(function (item) {
+    if (opcaoIT) {
+        opcaoIT.classList.toggle(
+            "selecionado",
+            idiomaSelecionado ===
+            "it-IT"
+        );
+    }
+}
 
-            const pagina =
-                item.getAttribute("data-page");
+
+/* =====================================================
+   IDIOMA - TEXTO ATUAL
+===================================================== */
+
+function atualizarTextoIdioma(
+    idioma
+) {
+
+    const elemento =
+        document.getElementById(
+            "idiomaAtualTexto"
+        );
+
+    if (!elemento) {
+        return;
+    }
+
+    elemento.textContent =
+        idioma === "it-IT"
+            ? "Italiano"
+            : "Português (Brasil)";
+}
+
+
+/* =====================================================
+   IDIOMA - SALVAR
+===================================================== */
+
+function salvarIdiomaWMS() {
+
+    const idiomaSelecionado =
+        document.querySelector(
+            'input[name="idiomaWms"]:checked'
+        )?.value;
+
+    if (!idiomaSelecionado) {
+
+        alert(
+            "Selecione um idioma."
+        );
+
+        return;
+    }
+
+    /*
+       Salva nas duas chaves para manter
+       compatibilidade com o seletor BR | IT
+       que já existe no WMS.
+    */
+
+    localStorage.setItem(
+        "wms_idioma",
+        idiomaSelecionado
+    );
+
+    localStorage.setItem(
+        "idiomaWMS",
+        idiomaSelecionado
+    );
+
+    document.documentElement.lang =
+        idiomaSelecionado;
+
+    atualizarTextoIdioma(
+        idiomaSelecionado
+    );
+
+    atualizarSelecaoIdioma();
+
+    sincronizarSeletorIdiomaTopo(
+        idiomaSelecionado
+    );
+
+    window.dispatchEvent(
+        new CustomEvent(
+            "wmsIdiomaAlterado",
+            {
+                detail: {
+                    idioma:
+                        idiomaSelecionado
+                }
+            }
+        )
+    );
+
+    const mensagem =
+        document.getElementById(
+            "mensagemIdioma"
+        );
+
+    if (mensagem) {
+
+        mensagem.textContent =
+            idiomaSelecionado ===
+            "it-IT"
+                ? "Lingua salvata con successo."
+                : "Idioma salvo com sucesso.";
+
+        mensagem.classList.add(
+            "mostrar"
+        );
+
+        setTimeout(
+            function () {
+                mensagem.classList.remove(
+                    "mostrar"
+                );
+            },
+            2500
+        );
+    }
+
+    /*
+       Recarrega para que o app.js e as outras
+       rotinas do WMS leiam o idioma salvo.
+    */
+
+    setTimeout(
+        function () {
+            location.reload();
+        },
+        700
+    );
+}
+
+
+/* =====================================================
+   SINCRONIZAR COM SELETOR BR | IT DO TOPO
+===================================================== */
+
+function sincronizarSeletorIdiomaTopo(
+    idioma
+) {
+
+    const candidatos =
+        document.querySelectorAll(
+            "#wms-language-switcher " +
+            "[data-lang], " +
+            "#wms-language-switcher " +
+            "[data-language], " +
+            "#wms-language-switcher " +
+            "[data-idioma]"
+        );
+
+    candidatos.forEach(
+        function (item) {
+
+            const valor =
+                item.dataset.lang ||
+                item.dataset.language ||
+                item.dataset.idioma ||
+                "";
+
+            const ativo =
+                (
+                    idioma === "pt-BR" &&
+                    (
+                        valor === "pt-BR" ||
+                        valor === "pt" ||
+                        valor === "BR"
+                    )
+                ) ||
+                (
+                    idioma === "it-IT" &&
+                    (
+                        valor === "it-IT" ||
+                        valor === "it" ||
+                        valor === "IT"
+                    )
+                );
 
             item.classList.toggle(
                 "active",
-                pagina === paginaAtual
+                ativo
             );
 
-        });
+            item.classList.toggle(
+                "ativo",
+                ativo
+            );
+        }
+    );
+}
 
-});
+
+/* =====================================================
+   EVENTOS DOS RADIOS
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        document
+            .querySelectorAll(
+                'input[name="idiomaWms"]'
+            )
+            .forEach(
+                function (radio) {
+
+                    radio.addEventListener(
+                        "change",
+                        atualizarSelecaoIdioma
+                    );
+
+                }
+            );
+
+        if (
+            typeof lucide !==
+            "undefined"
+        ) {
+            lucide.createIcons();
+        }
+
+        let paginaAtual =
+            window.location.pathname
+                .split("/")
+                .pop();
+
+        if (!paginaAtual) {
+            paginaAtual =
+                "dashboard.html";
+        }
+
+        document
+            .querySelectorAll(
+                ".sidebar-wms-novo .menu-item"
+            )
+            .forEach(
+                function (item) {
+
+                    const pagina =
+                        item.getAttribute(
+                            "data-page"
+                        );
+
+                    item.classList.toggle(
+                        "active",
+                        pagina === paginaAtual
+                    );
+
+                }
+            );
+
+    }
+);
+
+
+/* =====================================================
+   DISPONIBILIZAÇÃO GLOBAL
+===================================================== */
+
+window.salvarIdiomaWMS =
+    salvarIdiomaWMS;
+
+window.exportarEstoque =
+    exportarEstoque;
+
+window.limparSistema =
+    limparSistema;
+
 </script>
 
 

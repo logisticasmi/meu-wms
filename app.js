@@ -1,3 +1,7 @@
+// APP.JS - PARTE 1 DE 6
+// Linhas 1 até 2292
+// Cole esta parte na sequência, sem apagar conteúdo das partes anteriores.
+
 // =====================================================
 // SMI WMS - APP.JS
 // NOVA VERSÃO ORGANIZADA
@@ -2291,6 +2295,11 @@ function obterValorColuna(
             colunas.find(
                 function (coluna) {
 
+                    // APP.JS - PARTE 2 DE 6
+// Linhas 2293 até 4584
+// Cole esta parte na sequência, sem apagar conteúdo das partes anteriores.
+
+
                     return (
                         normalizarNomeColuna(
                             coluna
@@ -4581,6 +4590,10 @@ function obterEntradasFiltradas() {
         const hoje =
             new Date();
 
+
+            // APP.JS - PARTE 3 DE 6
+// Linhas 4585 até 6876
+// Cole esta parte na sequência, sem apagar conteúdo das partes anteriores.
 
         hoje.setHours(
             0,
@@ -6874,6 +6887,11 @@ async function registrarSaida() {
                     total +
                     converterNumero(
                         produto.quantidade
+
+                        // APP.JS - PARTE 4 DE 6
+// Linhas 6877 até 9168
+// Cole esta parte na sequência, sem apagar conteúdo das partes anteriores.
+
                     )
                 );
 
@@ -9167,6 +9185,11 @@ function gerarListaPosicoes() {
             numero === 2
         ) {
 
+            // APP.JS - PARTE 5 DE 6
+// Linhas 9169 até 11460
+// Cole esta parte na sequência, sem apagar conteúdo das partes anteriores.
+
+
             letrasDaPosicao =
                 letrasPosicoes1e2;
 
@@ -11459,6 +11482,11 @@ function exportarRelatorioExcel() {
 // EXPORTAÇÃO ALTERNATIVA EM CSV
 // =====================================================
 
+// APP.JS - PARTE 6 DE 6
+// Linhas 11461 até 13751
+// Cole esta parte na sequência, sem apagar conteúdo das partes anteriores.
+
+
 function exportarRelatorioCSV(
     dadosRecebidos
 ) {
@@ -12623,46 +12651,1128 @@ window.verificarLogin = verificarLogin;
 window.atualizarResumoMovimentacoes =
     atualizarResumoMovimentacoes;
 
- // =====================================================
-// SELETOR GLOBAL DE IDIOMA - SMI WMS
+// =====================================================
+// SMI WMS - IDIOMA GLOBAL PT-BR / IT-IT
+// =====================================================
+//
+// Este bloco centraliza o idioma do sistema.
+// Compatível com as chaves já usadas em configuracoes.html:
+//   - wms_idioma
+//   - idiomaWMS
+//
+// O seletor BR | IT passa a:
+//   1) ler o idioma salvo;
+//   2) destacar a bandeira correta;
+//   3) salvar a troca;
+//   4) traduzir a interface;
+//   5) manter a tela Configurações sincronizada.
+//
 // =====================================================
 
-document.addEventListener("DOMContentLoaded", function () {
+const WMS_IDIOMA_PADRAO = "pt-BR";
 
-    // Remove versões duplicadas
-    document.querySelectorAll("#wms-language-switcher").forEach(el => el.remove());
+function normalizarIdiomaGlobalWMS(idioma) {
 
-    const seletor = document.createElement("div");
-    seletor.id = "wms-language-switcher";
+    const valor =
+        String(idioma || "")
+            .trim()
+            .toLowerCase();
+
+    if (
+        valor === "it" ||
+        valor === "it-it" ||
+        valor === "italiano" ||
+        valor === "italian"
+    ) {
+        return "it-IT";
+    }
+
+    return "pt-BR";
+}
+
+
+function obterIdiomaGlobalWMS() {
+
+    return normalizarIdiomaGlobalWMS(
+        localStorage.getItem("wms_idioma") ||
+        localStorage.getItem("idiomaWMS") ||
+        WMS_IDIOMA_PADRAO
+    );
+}
+
+
+function salvarIdiomaGlobalWMS(idioma) {
+
+    const idiomaNormalizado =
+        normalizarIdiomaGlobalWMS(idioma);
+
+    localStorage.setItem(
+        "wms_idioma",
+        idiomaNormalizado
+    );
+
+    localStorage.setItem(
+        "idiomaWMS",
+        idiomaNormalizado
+    );
+
+    document.documentElement.lang =
+        idiomaNormalizado;
+
+    aplicarIdiomaWMS(
+        idiomaNormalizado
+    );
+
+    sincronizarSeletorIdiomaGlobalWMS(
+        idiomaNormalizado
+    );
+
+    sincronizarConfiguracaoIdiomaWMS(
+        idiomaNormalizado
+    );
+
+    window.dispatchEvent(
+        new CustomEvent(
+            "wmsIdiomaAlterado",
+            {
+                detail: {
+                    idioma: idiomaNormalizado
+                }
+            }
+        )
+    );
+}
+
+
+// =====================================================
+// DICIONÁRIO PRINCIPAL
+// =====================================================
+//
+// IMPORTANTE:
+// A chave é o texto original em Português.
+// O valor é a tradução para Italiano.
+//
+// O tradutor trabalha com textos completos para evitar
+// alterar descrições de produtos, códigos e dados do estoque.
+// =====================================================
+
+const WMS_TRADUCOES_PT_IT = {
+
+    // -------------------------------------------------
+    // MENU LATERAL / IDENTIDADE
+    // -------------------------------------------------
+    "PRINCIPAL": "PRINCIPALE",
+    "OPERAÇÕES": "OPERAZIONI",
+    "SISTEMA": "SISTEMA",
+    "LOGÍSTICA MAIS INTELIGENTE": "LOGISTICA PIÙ INTELLIGENTE",
+    "GESTÃO QUE MOVIMENTA": "LA GESTIONE CHE MUOVE",
+
+    "Dashboard": "Dashboard",
+    "Produtos": "Prodotti",
+    "Entradas": "Entrate",
+    "Saídas": "Uscite",
+    "Separação": "Preparazione",
+    "Transferências": "Trasferimenti",
+    "Transf. Mobile": "Trasf. Mobile",
+    "Posições": "Posizioni",
+    "Inventário": "Inventario",
+    "Inv. Mobile": "Inv. Mobile",
+    "Relatórios": "Report",
+    "Etiquetagem": "Etichettatura",
+    "Requisição": "Richiesta",
+    "Configurações": "Impostazioni",
+
+    // -------------------------------------------------
+    // CONFIGURAÇÕES
+    // -------------------------------------------------
+    "⚙️ Configurações do Sistema": "⚙️ Impostazioni di Sistema",
+    "Configurações do Sistema": "Impostazioni di Sistema",
+
+    "🏢 Dados da Empresa": "🏢 Dati dell'Azienda",
+    "Dados da Empresa": "Dati dell'Azienda",
+
+    "Empresa:": "Azienda:",
+    "Sistema:": "Sistema:",
+    "Depósito:": "Magazzino:",
+    "Capacidade:": "Capacità:",
+    "1 Unidade": "1 Unità",
+    "60 posições / 360 níveis": "60 posizioni / 360 livelli",
+
+    "👤 Usuário Atual": "👤 Utente Attuale",
+    "Usuário Atual": "Utente Attuale",
+    "Usuário conectado:": "Utente connesso:",
+
+    "🌐 Idioma do Sistema": "🌐 Lingua del Sistema",
+    "Idioma do Sistema": "Lingua del Sistema",
+    "Defina o idioma padrão do WMS.": "Imposta la lingua predefinita del WMS.",
+    "A seleção também será refletida no seletor BR | IT do sistema.": "La selezione verrà riflessa anche nel selettore BR | IT del sistema.",
+    "Idioma atual:": "Lingua attuale:",
+    "Português (Brasil)": "Portoghese (Brasile)",
+    "Idioma padrão do sistema": "Lingua predefinita del sistema",
+    "Traduzione del sistema": "Traduzione del sistema",
+    "ⓘ A troca de idioma será aplicada em todo o WMS.": "ⓘ Il cambio di lingua verrà applicato a tutto il WMS.",
+    "A troca de idioma será aplicada em todo o WMS.": "Il cambio di lingua verrà applicato a tutto il WMS.",
+    "Salvar idioma": "Salva lingua",
+    "Idioma salvo com sucesso.": "Lingua salvata con successo.",
+    "Selecione um idioma.": "Seleziona una lingua.",
+
+    "💾 Backup dos Dados": "💾 Backup dei Dati",
+    "Backup dos Dados": "Backup dei Dati",
+    "Faça uma cópia do estoque salvo no sistema.": "Crea una copia dell'inventario salvato nel sistema.",
+    "Exportar Backup": "Esporta Backup",
+
+    "⚠️ Administração": "⚠️ Amministrazione",
+    "Administração": "Amministrazione",
+    "Remover todos os dados gravados no navegador.": "Rimuovi tutti i dati salvati nel browser.",
+    "Limpar Dados": "Cancella Dati",
+
+    // -------------------------------------------------
+    // PRODUTOS
+    // -------------------------------------------------
+    "Produtos Cadastrados": "Prodotti Registrati",
+    "Cadastro de Produtos": "Registrazione Prodotti",
+    "Cadastrar Produto": "Registra Prodotto",
+    "Novo Produto": "Nuovo Prodotto",
+    "Salvar Produto": "Salva Prodotto",
+    "Editar produto": "Modifica prodotto",
+    "Excluir produto": "Elimina prodotto",
+    "Código": "Codice",
+    "Código:": "Codice:",
+    "Descrição": "Descrizione",
+    "Descrição:": "Descrizione:",
+    "Descrição Detalhada": "Descrizione Dettagliata",
+    "Quantidade": "Quantità",
+    "Quantidade:": "Quantità:",
+    "Cliente": "Cliente",
+    "Posição": "Posizione",
+    "Posição:": "Posizione:",
+    "Endereço": "Posizione",
+    "Endereço:": "Posizione:",
+    "Valor Unitário": "Valore Unitario",
+    "Valor Total": "Valore Totale",
+    "Mínimo": "Minimo",
+    "Máximo": "Massimo",
+    "Status": "Stato",
+    "Ações": "Azioni",
+    "Sem descrição": "Senza descrizione",
+    "Nenhum produto cadastrado.": "Nessun prodotto registrato.",
+    "Produto não encontrado.": "Prodotto non trovato.",
+    "Produto salvo com sucesso.": "Prodotto salvato con successo.",
+    "Produto atualizado com sucesso.": "Prodotto aggiornato con successo.",
+    "Produto excluído com sucesso.": "Prodotto eliminato con successo.",
+    "Pesquisar": "Cerca",
+    "Buscar": "Cerca",
+    "Importar": "Importa",
+    "Exportar": "Esporta",
+    "Importar Produtos": "Importa Prodotti",
+    "Exportar Estoque": "Esporta Inventario",
+
+    // -------------------------------------------------
+    // ENTRADAS
+    // -------------------------------------------------
+    "Entrada": "Entrata",
+    "Entrada de Estoque": "Entrata di Magazzino",
+    "Registrar Entrada": "Registra Entrata",
+    "Histórico de Entradas": "Storico Entrate",
+    "Resumo do Dia": "Riepilogo del Giorno",
+    "Estoque Atual": "Giacenza Attuale",
+    "Novo Saldo": "Nuovo Saldo",
+    "Recebimento": "Ricevimento",
+    "Posição sugerida": "Posizione suggerita",
+    "POSIÇÃO SUGERIDA": "POSIZIONE SUGGERITA",
+
+    // -------------------------------------------------
+    // SAÍDAS
+    // -------------------------------------------------
+    "Saída": "Uscita",
+    "Saída de Estoque": "Uscita di Magazzino",
+    "Registrar Saída": "Registra Uscita",
+    "Histórico de Saídas": "Storico Uscite",
+    "Requisitante": "Richiedente",
+    "Destino": "Destinazione",
+    "Venda": "Vendita",
+    "Garantia": "Garanzia",
+
+    // -------------------------------------------------
+    // TRANSFERÊNCIAS
+    // -------------------------------------------------
+    "Transferência": "Trasferimento",
+    "Transferência de Estoque": "Trasferimento di Magazzino",
+    "Registrar Transferência": "Registra Trasferimento",
+    "Histórico de Transferências": "Storico Trasferimenti",
+    "Origem": "Origine",
+    "Destino": "Destinazione",
+    "Nenhuma transferência registrada.": "Nessun trasferimento registrato.",
+
+    // -------------------------------------------------
+    // INVENTÁRIO
+    // -------------------------------------------------
+    "Inventário de Estoque": "Inventario di Magazzino",
+    "Contagem": "Conteggio",
+    "Contagem Física": "Conteggio Fisico",
+    "Quantidade Sistema": "Quantità a Sistema",
+    "Quantidade Contada": "Quantità Conteggiata",
+    "Divergência": "Differenza",
+    "Divergências": "Differenze",
+    "Pendente": "In sospeso",
+    "Aprovado": "Approvato",
+    "Divergente": "Non conforme",
+    "Limpar Contagens": "Cancella Conteggi",
+    "Aprovar": "Approva",
+
+    // -------------------------------------------------
+    // RELATÓRIOS
+    // -------------------------------------------------
+    "Relatório": "Report",
+    "Relatório de Movimentações": "Report Movimentazioni",
+    "Movimentações": "Movimentazioni",
+    "Tipo": "Tipo",
+    "Data": "Data",
+    "Operador": "Operatore",
+    "Período": "Periodo",
+    "De": "Da",
+    "Até": "A",
+    "Imprimir": "Stampa",
+    "Exportar Excel": "Esporta Excel",
+    "Nenhuma movimentação registrada.": "Nessuna movimentazione registrata.",
+
+    // -------------------------------------------------
+    // ETIQUETAGEM / REQUISIÇÃO
+    // -------------------------------------------------
+    "Etiquetagem de Pedidos": "Etichettatura Ordini",
+    "Imprimir Etiqueta": "Stampa Etichetta",
+    "Requisição de Material": "Richiesta Materiale",
+    "Código do Material": "Codice Materiale",
+    "Quantidade Solicitada": "Quantità Richiesta",
+    "Unidade": "Unità",
+    "Quantidade Utilizada": "Quantità Utilizzata",
+    "Autorizado por": "Autorizzato da",
+    "Imprimir Requisição": "Stampa Richiesta",
+
+    // -------------------------------------------------
+    // DASHBOARD / INDICADORES
+    // -------------------------------------------------
+    "Quantidade Total": "Quantità Totale",
+    "Valor do Estoque": "Valore dell'Inventario",
+    "Abaixo do Mínimo": "Sotto il Minimo",
+    "Sem Estoque": "Esaurito",
+    "Posições Disponíveis": "Posizioni Disponibili",
+    "Ocupação Estoque": "Occupazione Magazzino",
+    "Cobertura Inventário": "Copertura Inventario",
+    "Últimos 7 dias": "Ultimi 7 giorni",
+    "Últimos 14 dias": "Ultimi 14 giorni",
+    "Estoque Crítico": "Scorte Critiche",
+
+    // -------------------------------------------------
+    // GERAIS
+    // -------------------------------------------------
+    "Salvar": "Salva",
+    "Cancelar": "Annulla",
+    "Fechar": "Chiudi",
+    "Confirmar": "Conferma",
+    "Continuar": "Continua",
+    "Voltar": "Indietro",
+    "Próximo": "Avanti",
+    "Anterior": "Indietro",
+    "Todos": "Tutti",
+    "Hoje": "Oggi",
+    "Usuário": "Utente",
+    "Senha": "Password",
+    "Entrar": "Accedi",
+    "Sair": "Esci",
+    "Sim": "Sì",
+    "Não": "No",
+    "Normal": "Normale",
+    "Disponível": "Disponibile",
+    "Ocupado": "Occupato"
+};
+
+
+const WMS_TRADUCOES_IT_PT =
+    Object.fromEntries(
+        Object.entries(
+            WMS_TRADUCOES_PT_IT
+        ).map(
+            function (item) {
+                return [
+                    item[1],
+                    item[0]
+                ];
+            }
+        )
+    );
+
+
+// =====================================================
+// TRADUZIR TEXTO EXATO
+// =====================================================
+
+function traduzirTextoExatoWMS(
+    texto,
+    idioma
+) {
+
+    const valor =
+        String(texto ?? "");
+
+    const inicio =
+        valor.match(/^\s*/)?.[0] || "";
+
+    const fim =
+        valor.match(/\s*$/)?.[0] || "";
+
+    const limpo =
+        valor.trim();
+
+    if (!limpo) {
+        return valor;
+    }
+
+    const dicionario =
+        idioma === "it-IT"
+            ? WMS_TRADUCOES_PT_IT
+            : WMS_TRADUCOES_IT_PT;
+
+    if (
+        Object.prototype.hasOwnProperty.call(
+            dicionario,
+            limpo
+        )
+    ) {
+        return (
+            inicio +
+            dicionario[limpo] +
+            fim
+        );
+    }
+
+    return valor;
+}
+
+
+// =====================================================
+// TRADUZIR MENSAGENS / ALERTAS
+// =====================================================
+//
+// Para mensagens montadas pelo JavaScript, além da frase
+// completa, também substitui trechos conhecidos.
+// =====================================================
+
+function traduzirMensagemWMS(
+    texto,
+    idioma
+) {
+
+    let resultado =
+        String(texto ?? "");
+
+    const dicionario =
+        idioma === "it-IT"
+            ? WMS_TRADUCOES_PT_IT
+            : WMS_TRADUCOES_IT_PT;
+
+    const chaves =
+        Object.keys(dicionario)
+            .sort(
+                function (a, b) {
+                    return b.length - a.length;
+                }
+            );
+
+    chaves.forEach(
+        function (chave) {
+
+            if (
+                chave.length < 3 ||
+                !resultado.includes(chave)
+            ) {
+                return;
+            }
+
+            resultado =
+                resultado.split(chave)
+                    .join(
+                        dicionario[chave]
+                    );
+        }
+    );
+
+    return resultado;
+}
+
+
+// =====================================================
+// TRADUZIR ELEMENTOS DA PÁGINA
+// =====================================================
+
+function traduzirElementoWMS(
+    elemento,
+    idioma
+) {
+
+    if (!elemento) {
+        return;
+    }
+
+    const tag =
+        String(
+            elemento.tagName || ""
+        ).toUpperCase();
+
+    if (
+        tag === "SCRIPT" ||
+        tag === "STYLE" ||
+        tag === "NOSCRIPT" ||
+        tag === "CODE" ||
+        tag === "PRE"
+    ) {
+        return;
+    }
+
+    // Textos visíveis
+    const walker =
+        document.createTreeWalker(
+            elemento,
+            NodeFilter.SHOW_TEXT,
+            {
+                acceptNode: function (no) {
+
+                    const pai =
+                        no.parentElement;
+
+                    if (!pai) {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+
+                    const tagPai =
+                        String(
+                            pai.tagName || ""
+                        ).toUpperCase();
+
+                    if (
+                        tagPai === "SCRIPT" ||
+                        tagPai === "STYLE" ||
+                        tagPai === "NOSCRIPT" ||
+                        tagPai === "CODE" ||
+                        tagPai === "PRE"
+                    ) {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            }
+        );
+
+    const nosTexto = [];
+
+    let noAtual;
+
+    while (
+        (
+            noAtual =
+                walker.nextNode()
+        )
+    ) {
+        nosTexto.push(noAtual);
+    }
+
+    nosTexto.forEach(
+        function (no) {
+
+            const traduzido =
+                traduzirTextoExatoWMS(
+                    no.nodeValue,
+                    idioma
+                );
+
+            if (
+                traduzido !==
+                no.nodeValue
+            ) {
+                no.nodeValue =
+                    traduzido;
+            }
+        }
+    );
+
+    // Atributos de interface
+    const elementos =
+        elemento.querySelectorAll
+            ? elemento.querySelectorAll("*")
+            : [];
+
+    elementos.forEach(
+        function (item) {
+
+            [
+                "placeholder",
+                "title",
+                "aria-label"
+            ].forEach(
+                function (atributo) {
+
+                    if (
+                        !item.hasAttribute(
+                            atributo
+                        )
+                    ) {
+                        return;
+                    }
+
+                    const original =
+                        item.getAttribute(
+                            atributo
+                        );
+
+                    const traduzido =
+                        traduzirTextoExatoWMS(
+                            original,
+                            idioma
+                        );
+
+                    if (
+                        traduzido !==
+                        original
+                    ) {
+                        item.setAttribute(
+                            atributo,
+                            traduzido
+                        );
+                    }
+                }
+            );
+
+            if (
+                item.tagName === "INPUT" &&
+                (
+                    item.type === "button" ||
+                    item.type === "submit" ||
+                    item.type === "reset"
+                )
+            ) {
+
+                item.value =
+                    traduzirTextoExatoWMS(
+                        item.value,
+                        idioma
+                    );
+            }
+        }
+    );
+}
+
+
+// =====================================================
+// APLICAR IDIOMA
+// =====================================================
+
+function aplicarIdiomaWMS(
+    idiomaRecebido
+) {
+
+    const idioma =
+        normalizarIdiomaGlobalWMS(
+            idiomaRecebido ||
+            obterIdiomaGlobalWMS()
+        );
+
+    document.documentElement.lang =
+        idioma;
+
+    if (document.body) {
+
+        traduzirElementoWMS(
+            document.body,
+            idioma
+        );
+    }
+
+    if (document.title) {
+
+        const titulos = {
+            "SMI WMS - Configurações":
+                "SMI WMS - Impostazioni",
+            "SMI WMS - Produtos":
+                "SMI WMS - Prodotti",
+            "SMI WMS - Entradas":
+                "SMI WMS - Entrate",
+            "SMI WMS - Saídas":
+                "SMI WMS - Uscite",
+            "SMI WMS - Transferências":
+                "SMI WMS - Trasferimenti",
+            "SMI WMS - Posições":
+                "SMI WMS - Posizioni",
+            "SMI WMS - Inventário":
+                "SMI WMS - Inventario",
+            "SMI WMS - Relatórios":
+                "SMI WMS - Report",
+            "SMI WMS - Etiquetagem":
+                "SMI WMS - Etichettatura",
+            "SMI WMS - Requisição":
+                "SMI WMS - Richiesta"
+        };
+
+        const titulosReversos =
+            Object.fromEntries(
+                Object.entries(titulos)
+                    .map(
+                        function (item) {
+                            return [
+                                item[1],
+                                item[0]
+                            ];
+                        }
+                    )
+            );
+
+        if (
+            idioma === "it-IT" &&
+            titulos[document.title]
+        ) {
+            document.title =
+                titulos[document.title];
+        }
+
+        if (
+            idioma === "pt-BR" &&
+            titulosReversos[
+                document.title
+            ]
+        ) {
+            document.title =
+                titulosReversos[
+                    document.title
+                ];
+        }
+    }
+
+    sincronizarSeletorIdiomaGlobalWMS(
+        idioma
+    );
+
+    sincronizarConfiguracaoIdiomaWMS(
+        idioma
+    );
+}
+
+
+// =====================================================
+// SINCRONIZAR TELA CONFIGURAÇÕES
+// =====================================================
+
+function sincronizarConfiguracaoIdiomaWMS(
+    idioma
+) {
+
+    const radio =
+        document.querySelector(
+            'input[name="idiomaWms"][value="' +
+            idioma +
+            '"]'
+        );
+
+    if (radio) {
+        radio.checked = true;
+    }
+
+    const opcaoBR =
+        document.getElementById(
+            "opcaoIdiomaBR"
+        );
+
+    const opcaoIT =
+        document.getElementById(
+            "opcaoIdiomaIT"
+        );
+
+    if (opcaoBR) {
+
+        opcaoBR.classList.toggle(
+            "selecionado",
+            idioma === "pt-BR"
+        );
+    }
+
+    if (opcaoIT) {
+
+        opcaoIT.classList.toggle(
+            "selecionado",
+            idioma === "it-IT"
+        );
+    }
+
+    const textoAtual =
+        document.getElementById(
+            "idiomaAtualTexto"
+        );
+
+    if (textoAtual) {
+
+        textoAtual.textContent =
+            idioma === "it-IT"
+                ? "Italiano"
+                : "Português (Brasil)";
+    }
+}
+
+
+// =====================================================
+// SINCRONIZAR SELETOR BR | IT
+// =====================================================
+
+function sincronizarSeletorIdiomaGlobalWMS(
+    idiomaRecebido
+) {
+
+    const idioma =
+        normalizarIdiomaGlobalWMS(
+            idiomaRecebido
+        );
+
+    document
+        .querySelectorAll(
+            "#wms-language-switcher .wms-lang-item"
+        )
+        .forEach(
+            function (item) {
+
+                const valor =
+                    String(
+                        item.dataset.lang || ""
+                    ).toLowerCase();
+
+                const ativo =
+                    (
+                        idioma === "pt-BR" &&
+                        valor === "pt"
+                    ) ||
+                    (
+                        idioma === "it-IT" &&
+                        valor === "it"
+                    );
+
+                item.classList.toggle(
+                    "active",
+                    ativo
+                );
+
+                item.classList.toggle(
+                    "ativo",
+                    ativo
+                );
+            }
+        );
+}
+
+
+// =====================================================
+// CRIAR SELETOR GLOBAL BR | IT
+// =====================================================
+
+function criarSeletorIdiomaWMS() {
+
+    document
+        .querySelectorAll(
+            "#wms-language-switcher"
+        )
+        .forEach(
+            function (el) {
+                el.remove();
+            }
+        );
+
+    const seletor =
+        document.createElement(
+            "div"
+        );
+
+    seletor.id =
+        "wms-language-switcher";
 
     seletor.innerHTML = `
-        <div class="wms-lang-item active" data-lang="pt">
-
-            <svg class="wms-flag" viewBox="0 0 28 20">
+        <button
+            type="button"
+            class="wms-lang-item"
+            data-lang="pt"
+            aria-label="Português (Brasil)"
+            title="Português (Brasil)"
+        >
+            <svg class="wms-flag" viewBox="0 0 28 20" aria-hidden="true">
                 <rect width="28" height="20" fill="#009739"/>
                 <polygon points="14,2 25,10 14,18 3,10" fill="#FFDF00"/>
                 <circle cx="14" cy="10" r="4.2" fill="#002776"/>
             </svg>
 
             <span>BR</span>
-
-        </div>
+        </button>
 
         <div class="wms-lang-separator"></div>
 
-        <div class="wms-lang-item" data-lang="it">
-
-            <svg class="wms-flag" viewBox="0 0 30 20">
+        <button
+            type="button"
+            class="wms-lang-item"
+            data-lang="it"
+            aria-label="Italiano"
+            title="Italiano"
+        >
+            <svg class="wms-flag" viewBox="0 0 30 20" aria-hidden="true">
                 <rect width="10" height="20" x="0" fill="#009246"/>
                 <rect width="10" height="20" x="10" fill="#FFFFFF"/>
                 <rect width="10" height="20" x="20" fill="#CE2B37"/>
             </svg>
 
             <span>IT</span>
-
-        </div>
+        </button>
     `;
 
-    document.body.appendChild(seletor);
+    document.body.appendChild(
+        seletor
+    );
 
-});
+    seletor
+        .querySelectorAll(
+            ".wms-lang-item"
+        )
+        .forEach(
+            function (item) {
+
+                item.addEventListener(
+                    "click",
+                    function () {
+
+                        const idioma =
+                            item.dataset.lang === "it"
+                                ? "it-IT"
+                                : "pt-BR";
+
+                        salvarIdiomaGlobalWMS(
+                            idioma
+                        );
+                    }
+                );
+            }
+        );
+
+    sincronizarSeletorIdiomaGlobalWMS(
+        obterIdiomaGlobalWMS()
+    );
+}
+
+
+// =====================================================
+// ALERT / CONFIRM / PROMPT NO IDIOMA ESCOLHIDO
+// =====================================================
+//
+// Não altera regras do WMS. Apenas traduz a mensagem
+// apresentada ao usuário quando houver tradução cadastrada.
+// =====================================================
+
+(function prepararMensagensIdiomaWMS() {
+
+    if (
+        window.__wmsMensagensIdiomaPreparadas
+    ) {
+        return;
+    }
+
+    window.__wmsMensagensIdiomaPreparadas =
+        true;
+
+    const alertaOriginal =
+        window.alert.bind(window);
+
+    const confirmOriginal =
+        window.confirm.bind(window);
+
+    const promptOriginal =
+        window.prompt.bind(window);
+
+    window.alert =
+        function (mensagem) {
+
+            return alertaOriginal(
+                traduzirMensagemWMS(
+                    mensagem,
+                    obterIdiomaGlobalWMS()
+                )
+            );
+        };
+
+    window.confirm =
+        function (mensagem) {
+
+            return confirmOriginal(
+                traduzirMensagemWMS(
+                    mensagem,
+                    obterIdiomaGlobalWMS()
+                )
+            );
+        };
+
+    window.prompt =
+        function (
+            mensagem,
+            valorPadrao
+        ) {
+
+            return promptOriginal(
+                traduzirMensagemWMS(
+                    mensagem,
+                    obterIdiomaGlobalWMS()
+                ),
+                valorPadrao
+            );
+        };
+
+})();
+
+
+// =====================================================
+// OBSERVAR CONTEÚDO CRIADO DINAMICAMENTE
+// =====================================================
+
+let observadorIdiomaWMS = null;
+
+function iniciarObservadorIdiomaWMS() {
+
+    if (
+        observadorIdiomaWMS ||
+        !document.body
+    ) {
+        return;
+    }
+
+    observadorIdiomaWMS =
+        new MutationObserver(
+            function (mutacoes) {
+
+                const idioma =
+                    obterIdiomaGlobalWMS();
+
+                mutacoes.forEach(
+                    function (mutacao) {
+
+                        mutacao.addedNodes
+                            .forEach(
+                                function (no) {
+
+                                    if (
+                                        no.nodeType ===
+                                        Node.TEXT_NODE
+                                    ) {
+
+                                        const traduzido =
+                                            traduzirTextoExatoWMS(
+                                                no.nodeValue,
+                                                idioma
+                                            );
+
+                                        if (
+                                            traduzido !==
+                                            no.nodeValue
+                                        ) {
+                                            no.nodeValue =
+                                                traduzido;
+                                        }
+
+                                        return;
+                                    }
+
+                                    if (
+                                        no.nodeType ===
+                                        Node.ELEMENT_NODE
+                                    ) {
+
+                                        traduzirElementoWMS(
+                                            no,
+                                            idioma
+                                        );
+                                    }
+                                }
+                            );
+                    }
+                );
+            }
+        );
+
+    observadorIdiomaWMS.observe(
+        document.body,
+        {
+            childList: true,
+            subtree: true
+        }
+    );
+}
+
+
+// =====================================================
+// INICIALIZAÇÃO
+// =====================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        criarSeletorIdiomaWMS();
+
+        aplicarIdiomaWMS(
+            obterIdiomaGlobalWMS()
+        );
+
+        iniciarObservadorIdiomaWMS();
+
+        // Segunda passada após as rotinas das páginas
+        // criarem cards, tabelas e componentes.
+        setTimeout(
+            function () {
+
+                aplicarIdiomaWMS(
+                    obterIdiomaGlobalWMS()
+                );
+            },
+            300
+        );
+    }
+);
+
+
+// =====================================================
+// EVENTO DISPARADO PELA TELA CONFIGURAÇÕES
+// =====================================================
+
+window.addEventListener(
+    "wmsIdiomaAlterado",
+    function (evento) {
+
+        const idioma =
+            evento &&
+            evento.detail
+                ? evento.detail.idioma
+                : obterIdiomaGlobalWMS();
+
+        aplicarIdiomaWMS(
+            idioma
+        );
+    }
+);
+
+
+// =====================================================
+// DISPONIBILIZAÇÃO GLOBAL
+// =====================================================
+
+window.obterIdiomaGlobalWMS =
+    obterIdiomaGlobalWMS;
+
+window.salvarIdiomaGlobalWMS =
+    salvarIdiomaGlobalWMS;
+
+window.aplicarIdiomaWMS =
+    aplicarIdiomaWMS;
+
+window.sincronizarSeletorIdiomaGlobalWMS =
+    sincronizarSeletorIdiomaGlobalWMS;
+
+window.sincronizarConfiguracaoIdiomaWMS =
+    sincronizarConfiguracaoIdiomaWMS;
