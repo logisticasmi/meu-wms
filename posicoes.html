@@ -393,26 +393,194 @@
             </div>
 
         </header>
+        <div class="painel painel-mapa-posicoes">
 
-        <div class="painel">
+            <div class="mapa-controles">
 
-            <h2>Mapa do Estoque</h2>
+                <div class="mapa-busca">
+                    <i data-lucide="search"></i>
 
-            <div class="barraPesquisa">
+                    <input
+                        type="text"
+                        id="pesquisaPosicao"
+                        placeholder="Pesquisar posição, SKU ou produto..."
+                        autocomplete="off"
+                    >
+                </div>
 
-                <input
-                    type="text"
-                    id="pesquisaPosicao"
-                    placeholder="Pesquisar posição (Ex.: 15C)"
-                    autocomplete="off"
+                <div class="mapa-filtro">
+                    <label for="filtroCorredorMapa">Corredor</label>
+                    <select id="filtroCorredorMapa">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+
+                <div class="mapa-filtro">
+                    <label for="filtroNivelMapa">Nível</label>
+                    <select id="filtroNivelMapa">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+
+                <div class="mapa-filtro">
+                    <label for="filtroStatusMapa">Status</label>
+                    <select id="filtroStatusMapa">
+                        <option value="">Todos</option>
+                        <option value="livre">Disponível (vazia)</option>
+                        <option value="parcial">Baixa ocupação (1 - 50)</option>
+                        <option value="ocupada">Alta ocupação (&gt; 50)</option>
+                    </select>
+                </div>
+
+                <button
+                    type="button"
+                    id="btnRecarregarMapa"
+                    class="btn-recarregar-mapa"
+                    title="Atualizar mapa"
+                    aria-label="Atualizar mapa"
                 >
+                    <i data-lucide="refresh-cw"></i>
+                </button>
+
+                <button
+                    type="button"
+                    id="btnAtualizarMapa"
+                    class="btn-atualizar-mapa"
+                >
+                    Atualizar Mapa
+                </button>
 
             </div>
 
-            <div
-                id="mapaEstoque"
-                class="mapa-estoque"
-            ></div>
+            <div class="mapa-cards-resumo">
+
+                <div class="mapa-card mapa-card-verde">
+                    <div class="mapa-card-icone">
+                        <i data-lucide="package-check"></i>
+                    </div>
+
+                    <div class="mapa-card-texto">
+                        <span>Posições Ocupadas</span>
+                        <strong id="mapaPosicoesOcupadas">0</strong>
+                        <small id="mapaPosicoesOcupadasInfo">de 0 posições</small>
+                    </div>
+                </div>
+
+                <div class="mapa-card mapa-card-cinza">
+                    <div class="mapa-card-icone">
+                        <i data-lucide="package-open"></i>
+                    </div>
+
+                    <div class="mapa-card-texto">
+                        <span>Posições Livres</span>
+                        <strong id="mapaPosicoesLivres">0</strong>
+                        <small id="mapaPosicoesLivresInfo">de 0 posições</small>
+                    </div>
+                </div>
+
+                <div class="mapa-card mapa-card-azul">
+                    <div class="mapa-card-icone">
+                        <i data-lucide="warehouse"></i>
+                    </div>
+
+                    <div class="mapa-card-texto">
+                        <span>Capacidade Total</span>
+                        <strong id="mapaCapacidadeTotal">0</strong>
+                        <small>posições cadastradas</small>
+                    </div>
+                </div>
+
+                <div class="mapa-card mapa-card-roxo">
+                    <div class="mapa-card-icone">
+                        <i data-lucide="boxes"></i>
+                    </div>
+
+                    <div class="mapa-card-texto">
+                        <span>Itens Armazenados</span>
+                        <strong id="mapaItensArmazenados">0</strong>
+                        <small>unidades</small>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mapa-barra-legenda">
+
+                <div class="mapa-legenda">
+                    <strong>Legenda:</strong>
+
+                    <span>
+                        <i class="legenda-cor legenda-livre"></i>
+                        Disponível (vazia)
+                    </span>
+
+                    <span>
+                        <i class="legenda-cor legenda-parcial"></i>
+                        Baixa ocupação (1 - 50)
+                    </span>
+
+                    <span>
+                        <i class="legenda-cor legenda-ocupada"></i>
+                        Alta ocupação (&gt; 50)
+                    </span>
+                </div>
+
+                <div class="mapa-visualizacao">
+                    <span id="mapaResumoExibicao">
+                        Exibindo 0 posições
+                    </span>
+
+                    <button
+                        type="button"
+                        id="btnVistaCorredor"
+                        class="btn-vista-mapa ativo"
+                    >
+                        <i data-lucide="layout-grid"></i>
+                        Vista por Corredor
+                    </button>
+
+                    <button
+                        type="button"
+                        id="btnVistaCompacta"
+                        class="btn-vista-mapa"
+                    >
+                        <i data-lucide="list"></i>
+                        Vista Compacta
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="mapa-area-scroll">
+                <div
+                    id="mapaEstoque"
+                    class="mapa-estoque mapa-estoque-novo"
+                ></div>
+            </div>
+
+            <div class="mapa-rodape">
+
+                <div
+                    id="paginacaoCorredoresMapa"
+                    class="mapa-paginacao-corredores"
+                ></div>
+
+                <div class="mapa-ir-corredor">
+                    <label for="irParaCorredorMapa">
+                        Ir para o corredor:
+                    </label>
+
+                    <select id="irParaCorredorMapa"></select>
+
+                    <button
+                        type="button"
+                        id="btnIrCorredorMapa"
+                    >
+                        Ir
+                    </button>
+                </div>
+
+            </div>
 
         </div>
 
@@ -494,506 +662,6 @@
     </div>
 
     <script src="app.js"></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            prepararConsultaPosicoes();
-
-            const campoPesquisa =
-                document.getElementById("pesquisaPosicao");
-
-            if (campoPesquisa) {
-                campoPesquisa.addEventListener(
-                    "keyup",
-                    pesquisarPosicao
-                );
-            }
-
-            const modal =
-                document.getElementById("modalPosicao");
-
-            if (modal) {
-                modal.addEventListener(
-                    "click",
-                    function (evento) {
-                        if (evento.target === modal) {
-                            fecharModalPosicao();
-                        }
-                    }
-                );
-            }
-
-            document.addEventListener(
-                "keydown",
-                function (evento) {
-                    if (evento.key === "Escape") {
-                        fecharModalPosicao();
-                    }
-                }
-            );
-        });
-
-
-        /* =====================================================
-           ABRIR POSIÇÃO
-        ===================================================== */
-
-        function abrirModalPosicao(posicao) {
-            const endereco = normalizarEnderecoPosicao(
-                posicao
-            );
-
-            if (!endereco) {
-                return;
-            }
-
-            const estoque = obterEstoquePosicoes();
-
-            const produtosDaPosicao = estoque.filter(
-                function (produto) {
-                    return normalizarEnderecoPosicao(
-                        produto.endereco
-                    ) === endereco;
-                }
-            );
-
-            const titulo =
-                document.getElementById("tituloPosicao");
-
-            const tabela =
-                document.getElementById(
-                    "listaProdutosPosicao"
-                );
-
-            const totalSku =
-                document.getElementById("totalSku");
-
-            const quantidadeTotal =
-                document.getElementById(
-                    "quantidadeTotalPosicao"
-                );
-
-            const modal =
-                document.getElementById("modalPosicao");
-
-            titulo.textContent =
-                "📍 Posição " + endereco;
-
-            tabela.innerHTML = "";
-
-            if (produtosDaPosicao.length === 0) {
-                tabela.innerHTML = `
-                    <tr>
-                        <td
-                            colspan="3"
-                            class="posicao-sem-produtos"
-                        >
-                            Nenhum produto armazenado nesta posição.
-                        </td>
-                    </tr>
-                `;
-
-                totalSku.textContent = "0";
-                quantidadeTotal.textContent = "0";
-            } else {
-                produtosDaPosicao.forEach(
-                    function (produto) {
-                        const linha =
-                            document.createElement("tr");
-
-                        linha.appendChild(
-                            criarCelulaPosicao(
-                                produto.codigo || "-"
-                            )
-                        );
-
-                        linha.appendChild(
-                            criarCelulaPosicao(
-                                produto.descricao ||
-                                "Sem descrição"
-                            )
-                        );
-
-                        linha.appendChild(
-                            criarCelulaPosicao(
-                                formatarQuantidadePosicao(
-                                    produto.quantidade
-                                )
-                            )
-                        );
-
-                        tabela.appendChild(linha);
-                    }
-                );
-
-                const codigosUnicos = new Set();
-
-                produtosDaPosicao.forEach(
-                    function (produto) {
-                        if (produto.codigo) {
-                            codigosUnicos.add(
-                                String(produto.codigo)
-                                    .trim()
-                                    .toUpperCase()
-                            );
-                        }
-                    }
-                );
-
-                const somaQuantidade =
-                    produtosDaPosicao.reduce(
-                        function (total, produto) {
-                            return total +
-                                converterNumeroPosicao(
-                                    produto.quantidade
-                                );
-                        },
-                        0
-                    );
-
-                totalSku.textContent =
-                    codigosUnicos.size.toLocaleString(
-                        "pt-BR"
-                    );
-
-                quantidadeTotal.textContent =
-                    formatarQuantidadePosicao(
-                        somaQuantidade
-                    );
-            }
-
-            modal.classList.add("aberto");
-
-            document.body.style.overflow = "hidden";
-        }
-
-
-        /* =====================================================
-           FECHAR MODAL
-        ===================================================== */
-
-        function fecharModalPosicao() {
-            const modal =
-                document.getElementById("modalPosicao");
-
-            if (modal) {
-                modal.classList.remove("aberto");
-            }
-
-            document.body.style.overflow = "";
-        }
-
-
-        /* =====================================================
-           ATIVAR CLIQUE NOS CARTÕES
-        ===================================================== */
-
-        function prepararConsultaPosicoes() {
-            const mapa =
-                document.getElementById("mapaEstoque");
-
-            if (!mapa) {
-                return;
-            }
-
-            /*
-             * O mapa normalmente é criado pelo app.js.
-             * A delegação permite clicar inclusive em cartões
-             * criados depois do carregamento da página.
-             */
-            mapa.addEventListener(
-                "click",
-                function (evento) {
-                    const cartao =
-                        localizarCartaoPosicao(
-                            evento.target,
-                            mapa
-                        );
-
-                    if (!cartao) {
-                        return;
-                    }
-
-                    const posicao =
-                        extrairPosicaoDoCartao(cartao);
-
-                    if (posicao) {
-                        abrirModalPosicao(posicao);
-                    }
-                }
-            );
-        }
-
-
-        function localizarCartaoPosicao(
-            elemento,
-            mapa
-        ) {
-            if (!elemento || elemento === mapa) {
-                return null;
-            }
-
-            const seletor = [
-                "[data-posicao]",
-                "[data-endereco]",
-                ".posicao",
-                ".card-posicao",
-                ".box-posicao",
-                ".posicao-card",
-                ".endereco-card"
-            ].join(",");
-
-            const encontrado =
-                elemento.closest(seletor);
-
-            if (
-                encontrado &&
-                mapa.contains(encontrado)
-            ) {
-                return encontrado;
-            }
-
-            /*
-             * Caso os cartões não tenham classes específicas,
-             * utiliza o filho direto do agrupamento do mapa.
-             */
-            let atual = elemento;
-
-            while (
-                atual &&
-                atual.parentElement !== mapa
-            ) {
-                atual = atual.parentElement;
-            }
-
-            return atual && atual !== mapa
-                ? atual
-                : null;
-        }
-
-
-        function extrairPosicaoDoCartao(cartao) {
-            if (!cartao) {
-                return "";
-            }
-
-            const posicaoDataset =
-                cartao.dataset.posicao ||
-                cartao.dataset.endereco ||
-                "";
-
-            if (posicaoDataset) {
-                return normalizarEnderecoPosicao(
-                    posicaoDataset
-                );
-            }
-
-            const identificadores = [
-                cartao.id,
-                cartao.getAttribute("title"),
-                cartao.getAttribute("aria-label"),
-                cartao.textContent
-            ];
-
-            for (const valor of identificadores) {
-                const posicao =
-                    localizarCodigoPosicao(valor);
-
-                if (posicao) {
-                    return posicao;
-                }
-            }
-
-            return "";
-        }
-
-
-        function localizarCodigoPosicao(texto) {
-            const valor = String(texto || "")
-                .trim()
-                .toUpperCase();
-
-            /*
-             * Exemplos reconhecidos:
-             * 1A, 2H, 15C, 30C, 100A
-             */
-            const resultado = valor.match(
-                /\b\d{1,3}[A-Z]\b/
-            );
-
-            return resultado
-                ? resultado[0]
-                : "";
-        }
-
-
-        /* =====================================================
-           PESQUISA DE POSIÇÃO
-        ===================================================== */
-
-        function pesquisarPosicao() {
-            const campo =
-                document.getElementById(
-                    "pesquisaPosicao"
-                );
-
-            const pesquisa =
-                normalizarEnderecoPosicao(
-                    campo ? campo.value : ""
-                );
-
-            const mapa =
-                document.getElementById("mapaEstoque");
-
-            if (!mapa) {
-                return;
-            }
-
-            const elementos =
-                mapa.querySelectorAll(
-                    "[data-posicao], " +
-                    "[data-endereco], " +
-                    ".posicao, " +
-                    ".card-posicao, " +
-                    ".box-posicao, " +
-                    ".posicao-card, " +
-                    ".endereco-card"
-                );
-
-            elementos.forEach(
-                function (elemento) {
-                    const posicao =
-                        extrairPosicaoDoCartao(
-                            elemento
-                        );
-
-                    const corresponde =
-                        pesquisa === "" ||
-                        posicao.includes(pesquisa);
-
-                    elemento.style.display =
-                        corresponde
-                            ? ""
-                            : "none";
-                }
-            );
-        }
-
-
-        /* =====================================================
-           DADOS E FORMATAÇÃO
-        ===================================================== */
-
-        function obterEstoquePosicoes() {
-            try {
-                const dados = JSON.parse(
-                    localStorage.getItem("estoque")
-                );
-
-                return Array.isArray(dados)
-                    ? dados
-                    : [];
-            } catch (erro) {
-                console.error(
-                    "Erro ao carregar estoque:",
-                    erro
-                );
-
-                return [];
-            }
-        }
-
-
-        function normalizarEnderecoPosicao(
-            endereco
-        ) {
-            return String(endereco || "")
-                .trim()
-                .toUpperCase()
-                .replace(/\s+/g, "");
-        }
-
-
-        function converterNumeroPosicao(valor) {
-            if (
-                valor === undefined ||
-                valor === null ||
-                valor === ""
-            ) {
-                return 0;
-            }
-
-            if (typeof valor === "number") {
-                return Number.isFinite(valor)
-                    ? valor
-                    : 0;
-            }
-
-            let texto = String(valor)
-                .trim()
-                .replace(/\s/g, "");
-
-            if (
-                texto.includes(".") &&
-                texto.includes(",")
-            ) {
-                texto = texto
-                    .replace(/\./g, "")
-                    .replace(",", ".");
-            } else if (texto.includes(",")) {
-                texto = texto.replace(",", ".");
-            }
-
-            texto = texto.replace(
-                /[^0-9.-]/g,
-                ""
-            );
-
-            const numero = Number(texto);
-
-            return Number.isFinite(numero)
-                ? numero
-                : 0;
-        }
-
-
-        function formatarQuantidadePosicao(valor) {
-            return converterNumeroPosicao(
-                valor
-            ).toLocaleString(
-                "pt-BR",
-                {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 3
-                }
-            );
-        }
-
-
-        function criarCelulaPosicao(valor) {
-            const celula =
-                document.createElement("td");
-
-            celula.textContent =
-                valor === undefined ||
-                valor === null ||
-                valor === ""
-                    ? "-"
-                    : valor;
-
-            return celula;
-        }
-
-
-        window.abrirModalPosicao =
-            abrirModalPosicao;
-
-        window.fecharModalPosicao =
-            fecharModalPosicao;
-
-        window.pesquisarPosicao =
-            pesquisarPosicao;
-    </script>
 
 
 <script>

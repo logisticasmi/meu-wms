@@ -750,6 +750,8 @@ function criarProdutoImportado(linha) {
                 .replace(/\s+/g, "")
     };
 }
+
+
 // =====================================================
 // PROCESSAR PRODUTOS IMPORTADOS
 // =====================================================
@@ -871,8 +873,6 @@ async function processarProdutosImportados(linhas) {
         }
     }
 }
-
-
 // =====================================================
 // ATUALIZAR PRODUTO
 // =====================================================
@@ -1017,234 +1017,24 @@ function formatarValorProduto(valor) {
 
 async function carregarTabelaProdutosSupabase() {
 
-    const tabela =
-        document.getElementById(
-            "listaProdutos"
-        );
-
-    if (!tabela) {
-        return;
-    }
-
-    tabela.innerHTML =
-        "<tr>" +
-        "<td colspan='12' class='produtos-vazio'>" +
-        "Carregando produtos..." +
-        "</td>" +
-        "</tr>";
-
-    const produtos =
-        await buscarProdutosSupabase();
-
-    tabela.innerHTML = "";
+    // A tela Produtos possui o renderizador oficial dentro de produtos.html.
+    // Ele inclui a coluna CONTAGEM e mantém exatamente a mesma ordem
+    // definida no cabeçalho: Status > Contagem > NCM > IPI > Posição.
+    //
+    // Antes, este arquivo montava uma segunda tabela antiga com 12 colunas
+    // (sem Contagem e com Valor Unitário/Valor Total). Após importar uma
+    // nova base, essa tabela antiga sobrescrevia a tela e deslocava os dados.
 
     if (
-        produtos.length === 0
+        typeof window.carregarTodosOsProdutosNaTela === "function"
     ) {
-
-        tabela.innerHTML =
-            "<tr>" +
-            "<td colspan='12' class='produtos-vazio'>" +
-            "Nenhum produto cadastrado." +
-            "</td>" +
-            "</tr>";
-
+        await window.carregarTodosOsProdutosNaTela();
         return;
     }
 
-    produtos.sort(
-        function (a, b) {
-
-            return String(
-                a.endereco || ""
-            ).localeCompare(
-                String(
-                    b.endereco || ""
-                ),
-                "pt-BR",
-                {
-                    numeric: true
-                }
-            );
-        }
-    );
-
-    produtos.forEach(
-        function (produto) {
-
-            const linha =
-                document.createElement(
-                    "tr"
-                );
-
-            linha.dataset.id =
-                produto.id || "";
-
-            linha.dataset.codigo =
-                produto.codigo || "";
-
-            const quantidade =
-                converterNumeroProduto(
-                    produto.quantidade
-                );
-
-            const minimo =
-                converterNumeroProduto(
-                    produto.minimo ??
-                    produto.estoque_minimo ??
-                    0
-                );
-
-            const maximo =
-                converterNumeroProduto(
-                    produto.maximo ??
-                    produto.estoque_maximo ??
-                    0
-                );
-
-            const abaixoDoMinimo =
-                minimo > 0 &&
-                quantidade < minimo;
-
-            const statusEstoque =
-                abaixoDoMinimo
-                    ? "Abaixo do mínimo"
-                    : "Normal";
-
-            const descricaoDetalhada =
-                produto.descricao_detalhada ??
-                produto.descricaoDetalhada ??
-                "";
-
-            const ncm =
-                produto.ncm ??
-                produto.NCM ??
-                "";
-
-            const ipi =
-                produto.ipi ??
-                produto.IPI ??
-                "";
-
-            const valorTotal =
-                converterNumeroProduto(
-                    produto.valor_total ??
-                    produto.valorTotal ??
-                    0
-                );
-
-            let valorUnitario =
-                converterNumeroProduto(
-                    produto.valor_unitario ??
-                    produto.valorUnitario ??
-                    0
-                );
-
-            if (
-                valorUnitario === 0 &&
-                quantidade > 0 &&
-                valorTotal > 0
-            ) {
-                valorUnitario =
-                    valorTotal /
-                    quantidade;
-            }
-
-            linha.appendChild(
-                criarCelulaProduto(
-                    produto.codigo
-                )
-            );
-
-            linha.appendChild(
-                criarCelulaProduto(
-                    produto.descricao
-                )
-            );
-
-            linha.appendChild(
-                criarCelulaProduto(
-                    descricaoDetalhada
-                )
-            );
-
-            linha.appendChild(
-                criarCelulaProduto(
-                    formatarQuantidadeProduto(
-                        quantidade
-                    )
-                )
-            );
-
-            linha.appendChild(
-                criarCelulaProduto(
-                    formatarQuantidadeProduto(
-                        minimo
-                    )
-                )
-            );
-
-            linha.appendChild(
-                criarCelulaProduto(
-                    formatarQuantidadeProduto(
-                        maximo
-                    )
-                )
-            );
-
-           const celulaStatus =
-    criarCelulaProduto(
-        statusEstoque
-    );
-
-celulaStatus.innerHTML =
-    abaixoDoMinimo
-        ? '<span class="status-estoque status-baixo">Abaixo do mínimo</span>'
-        : '<span class="status-estoque status-normal">Normal</span>';
-
-linha.appendChild(
-    celulaStatus
-);
-
-            linha.appendChild(
-                criarCelulaProduto(
-                    ncm
-                )
-            );
-
-            linha.appendChild(
-                criarCelulaProduto(
-                    ipi
-                )
-            );
-
-            linha.appendChild(
-                criarCelulaProduto(
-                    formatarValorProduto(
-                        valorUnitario
-                    )
-                )
-            );
-
-            linha.appendChild(
-                criarCelulaProduto(
-                    formatarValorProduto(
-                        valorTotal
-                    )
-                )
-            );
-
-            linha.appendChild(
-                criarCelulaProduto(
-                    produto.endereco
-                )
-            );
-
-            tabela.appendChild(
-                linha
-            );
-        }
-    );
+    // Segurança: se este arquivo for carregado fora de produtos.html,
+    // apenas busca os produtos sem tentar montar uma tabela incompatível.
+    await buscarProdutosSupabase();
 }
 
 
@@ -1397,6 +1187,8 @@ async function editarProdutoSupabase(
 
     await carregarTabelaProdutosSupabase();
 }
+
+
 // =====================================================
 // CONFIRMAR EXCLUSÃO DE PRODUTO
 // =====================================================
@@ -1896,6 +1688,8 @@ async function limparTodosProdutosSupabase() {
         );
     }
 }
+
+
 // =====================================================
 // DISPONIBILIZA AS FUNÇÕES PARA O PRODUTOS.HTML
 // =====================================================
