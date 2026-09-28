@@ -1,7 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -11,60 +13,53 @@
 
     <title>Etiquetagem | SMI WMS</title>
 
-    <!-- MESMO ESTILO DAS DEMAIS TELAS DO WMS -->
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- CÓDIGO DE BARRAS -->
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <!-- QR CODE REAL -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+    ></script>
 
-    <!-- QR CODE -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link
+        rel="icon"
+        type="image/png"
+        href="img/favicon.png"
+    >
+
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
         }
+
 
         body {
             background: #f3f6fa;
             color: #14213d;
         }
 
+
         .layout {
             display: flex;
             min-height: 100vh;
         }
 
-        /* =========================
-           MENU LATERAL
-           O visual principal vem do style.css,
-           igual às demais telas do WMS.
-        ========================= */
 
-        .sidebar .logo-wms-etiquetagem {
-            width: 150px;
-            max-width: calc(100% - 20px);
-            height: auto;
-            display: block;
-            margin: 18px auto 12px;
-            object-fit: contain;
-        }
-
-        .sidebar h2 {
-            text-align: center;
-        }
-
-        .sidebar li {
-            cursor: pointer;
-        }
-
-        /* =========================
+        /* =====================================================
            CONTEÚDO
-        ========================= */
+        ===================================================== */
 
         .conteudo {
             margin-left: 185px;
@@ -72,45 +67,61 @@
             padding: 30px;
         }
 
+
         .titulo-pagina {
             margin-bottom: 25px;
         }
 
+
         .titulo-pagina h1 {
             font-size: 30px;
             margin-bottom: 7px;
+            color: #082f67;
         }
+
 
         .titulo-pagina p {
             color: #637083;
             font-size: 15px;
         }
 
+
         .grid-principal {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns:
+                minmax(350px, .8fr)
+                minmax(700px, 1.5fr);
+
             gap: 20px;
         }
+
 
         .card {
             background: white;
             border-radius: 13px;
             padding: 24px;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
+
+            box-shadow:
+                0 3px 15px
+                rgba(0, 0, 0, 0.06);
         }
+
 
         .card h2 {
             font-size: 19px;
             margin-bottom: 22px;
+            color: #082f67;
         }
 
-        /* =========================
+
+        /* =====================================================
            FORMULÁRIO
-        ========================= */
+        ===================================================== */
 
         .campo {
             margin-bottom: 17px;
         }
+
 
         .campo label {
             display: block;
@@ -119,23 +130,34 @@
             margin-bottom: 7px;
         }
 
+
         .campo input {
             width: 100%;
             padding: 12px 13px;
-            border: 1px solid #cad3df;
+
+            border:
+                1px solid #cad3df;
+
             border-radius: 7px;
+
             font-size: 15px;
             outline: none;
         }
 
+
         .campo input:focus {
             border-color: #087bea;
-            box-shadow: 0 0 0 3px rgba(8, 123, 234, 0.10);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(8, 123, 234, 0.10);
         }
+
 
         .campo-pequeno {
             max-width: 180px;
         }
+
 
         .botoes {
             display: flex;
@@ -144,6 +166,7 @@
             flex-wrap: wrap;
         }
 
+
         button {
             border: none;
             padding: 12px 18px;
@@ -151,22 +174,26 @@
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.2s;
+            transition: .2s;
         }
+
 
         button:hover {
             transform: translateY(-1px);
         }
 
+
         .btn-gerar {
             background: #087bea;
-            color: white;
+            color: #fff;
         }
+
 
         .btn-limpar {
             background: #e4e9ef;
             color: #14213d;
         }
+
 
         .btn-imprimir {
             background: #18a957;
@@ -174,590 +201,916 @@
         }
 
 
-        /* =========================
-           PRÉ-VISUALIZAÇÃO - NOVO LAYOUT
-           BRASIL + ITÁLIA
-        ========================= */
+        /* =====================================================
+           PREVIEW
+        ===================================================== */
 
         .preview-area {
             background: #edf1f5;
+
             padding: 20px;
+
             border-radius: 10px;
-            min-height: 430px;
+
+            min-height: 500px;
+
             overflow: auto;
         }
 
+
         .mensagem-vazia {
-            height: 350px;
+            min-height: 420px;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             text-align: center;
+
             color: #7a8797;
         }
 
+
+        /* =====================================================
+           ETIQUETA
+        ===================================================== */
+
         .etiqueta {
-            width: 760px;
-            max-width: none;
-            min-height: 430px;
-            background: #ffffff;
-            border: 1.5px solid #929aa5;
-            border-radius: 18px;
-            padding: 22px 24px 18px;
-            margin: 0 auto 20px;
-            color: #08182d;
-            box-shadow: 0 5px 16px rgba(15, 35, 60, 0.08);
+
+            width: 900px;
+
+            min-height: 525px;
+
+            background: #fff;
+
+            border:
+                2px solid #103a67;
+
+            border-radius: 20px;
+
+            margin:
+                0 auto 20px;
+
             overflow: hidden;
+
+            color: #07182f;
+
+            box-shadow:
+                0 6px 18px
+                rgba(0, 30, 70, .12);
         }
+
+
+        /* =====================================================
+           CABEÇALHO
+        ===================================================== */
 
         .cabecalho-etiqueta {
+
             display: grid;
-            grid-template-columns: minmax(0, 1.35fr) auto minmax(0, 1fr);
-            align-items: center;
-            gap: 16px;
-            border-bottom: 1px solid #d5dce5;
-            padding-bottom: 16px;
-            margin-bottom: 14px;
+
+            grid-template-columns:
+                minmax(0, 1.45fr)
+                auto
+                310px;
+
+            align-items: stretch;
         }
+
 
         .marca-etiqueta {
+
             display: flex;
+
             align-items: center;
-            gap: 12px;
-            min-width: 0;
+
+            padding:
+                18px 12px 18px 25px;
         }
 
-        .marca-cubo {
-            width: 56px;
-            height: 56px;
-            flex: 0 0 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .logo-etiqueta-img {
+
+            width: 330px;
+
+            max-height: 95px;
+
+            object-fit: contain;
+
+            object-position: left center;
         }
 
-        .marca-cubo svg {
-            width: 56px;
-            height: 56px;
-            display: block;
-        }
-
-        .marca-textos {
-            min-width: 0;
-        }
-
-        .logo-etiqueta {
-            display: flex;
-            align-items: flex-start;
-            gap: 5px;
-            white-space: nowrap;
-            line-height: 1;
-        }
-
-        .logo-etiqueta .smi {
-            color: #087bea;
-            font-size: 36px;
-            font-weight: 900;
-            letter-spacing: -1px;
-        }
-
-        .logo-etiqueta .wms {
-            color: #07182f;
-            font-size: 36px;
-            font-weight: 900;
-            letter-spacing: -1px;
-        }
-
-        .logo-etiqueta .reg {
-            color: #07182f;
-            font-size: 11px;
-            font-weight: 700;
-            margin-top: 1px;
-        }
-
-        .submarca-etiqueta {
-            margin-top: 5px;
-            color: #6e7784;
-            font-size: 7.5px;
-            letter-spacing: 2.2px;
-            white-space: nowrap;
-        }
 
         .paises-etiqueta {
+
             display: flex;
+
             align-items: center;
-            gap: 9px;
-            padding: 0 14px;
-            border-left: 1px solid #d3d9e1;
-            border-right: 1px solid #d3d9e1;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 0 16px;
         }
+
 
         .flag-country {
+
             position: relative;
-            width: 39px;
-            height: 39px;
-            flex: 0 0 39px;
-            display: inline-block;
+
+            width: 46px;
+
+            height: 46px;
+
+            flex: 0 0 46px;
+
             border-radius: 50%;
+
             overflow: hidden;
-            border: 1px solid #aeb7c2;
-            box-shadow: 0 1px 2px rgba(0,0,0,.08);
+
+            border:
+                1px solid #aeb7c2;
         }
+
 
         .flag-italia {
-            background: linear-gradient(
-                90deg,
-                #009246 0 33.33%,
-                #ffffff 33.33% 66.66%,
-                #ce2b37 66.66% 100%
-            );
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #009246 0 33.33%,
+                    #fff 33.33% 66.66%,
+                    #ce2b37 66.66% 100%
+                );
         }
 
+
         .flag-brasil {
+
             background: #169b62;
         }
 
+
         .flag-brasil::before {
+
             content: "";
+
             position: absolute;
-            width: 21px;
-            height: 21px;
+
+            width: 26px;
+            height: 26px;
+
             background: #ffdf00;
-            left: 9px;
-            top: 9px;
-            transform: rotate(45deg);
+
+            left: 10px;
+            top: 10px;
+
+            transform:
+                rotate(45deg);
+
             z-index: 1;
         }
 
-        .flag-brasil::after {
-            content: "";
-            position: absolute;
-            width: 16px;
-            height: 4px;
-            border-top: 1.6px solid #ffffff;
-            border-radius: 50%;
-            left: 11px;
-            top: 18px;
-            transform: rotate(-12deg);
-            z-index: 3;
-        }
 
         .flag-brasil span {
+
             position: absolute;
-            width: 11px;
-            height: 11px;
+
+            width: 14px;
+            height: 14px;
+
             background: #002776;
+
             border-radius: 50%;
-            left: 14px;
-            top: 14px;
+
+            left: 16px;
+            top: 16px;
+
             z-index: 2;
-            box-shadow: 0 0 0 1px rgba(0,0,0,0.03);
         }
+
 
         .status-bloco {
-            text-align: right;
-            min-width: 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #082e5b,
+                    #004e91
+                );
+
+            color: white;
+
+            padding:
+                16px 22px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
         }
+
 
         .status-etiqueta {
-            font-size: 23px;
-            font-weight: 900;
-            letter-spacing: -0.2px;
-            white-space: nowrap;
-            color: #07182f;
-        }
 
-        .status-subtitulo {
-            margin-top: 5px;
-            color: #717986;
-            font-size: 8px;
-            letter-spacing: 3.2px;
-            white-space: nowrap;
-        }
-
-        .faixa-paises {
             display: flex;
-            justify-content: flex-end;
-            height: 5px;
-            margin-top: 12px;
-            border-radius: 20px;
-            overflow: hidden;
-            margin-left: auto;
-            width: 205px;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            font-size: 31px;
+
+            font-weight: 900;
+
+            line-height: 1.05;
         }
+
+
+        .status-check {
+
+            width: 50px;
+
+            height: 50px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            color: #08335f;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 30px;
+
+            flex: 0 0 50px;
+        }
+
+                .faixa-paises {
+
+            display: flex;
+
+            height: 7px;
+
+            margin-top: 18px;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+
+        .faixa-paises span {
+            flex: 1;
+        }
+
 
         .faixa-paises .verde {
-            flex: 1;
-            background: #139a52;
+            background: #12a158;
         }
+
 
         .faixa-paises .neutra {
-            flex: 1;
-            background: #e1e4e8;
+            background: #efefef;
         }
+
 
         .faixa-paises .vermelha {
-            flex: 1;
-            background: #ce2b37;
+            background: #d92b3e;
         }
 
+
+        /* =====================================================
+           CORPO
+        ===================================================== */
+
         .corpo-etiqueta {
+
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 165px;
-            gap: 22px;
-            align-items: start;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                245px;
+
+            gap: 20px;
+
+            padding:
+                14px 28px 12px;
         }
+
 
         .dados-etiqueta {
             min-width: 0;
         }
 
+
         .linha-dado-etiqueta {
+
             display: grid;
-            grid-template-columns: 48px 100px minmax(0, 1fr);
+
+            grid-template-columns:
+                52px
+                150px
+                minmax(0, 1fr);
+
+            min-height: 66px;
+
             align-items: center;
-            min-height: 62px;
-            border-bottom: 1px solid #d9dfe7;
+
+            border-bottom:
+                1px solid #dbe3eb;
         }
 
-        .linha-dado-etiqueta:last-child {
-            border-bottom: none;
-        }
 
         .icone-dado-etiqueta {
-            width: 36px;
-            height: 36px;
-            border-radius: 9px;
-            background: #eef2f6;
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 10px;
+
+            background: #eef3f7;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
-            color: #0e223d;
+
+            color: #082f67;
         }
 
+
         .icone-dado-etiqueta svg {
-            width: 21px;
-            height: 21px;
+
+            width: 25px;
+
+            height: 25px;
+
             stroke: currentColor;
         }
 
+
         .rotulo-dado-etiqueta {
-            font-size: 18px;
-            font-weight: 800;
-            color: #0b1c33;
+
+            font-size: 19px;
+
+            font-weight: 900;
+
+            color: #082f67;
         }
 
+
         .valor-dado-etiqueta {
-            font-size: 19px;
+
+            font-size: 21px;
+
             color: #05080c;
+
             overflow-wrap: anywhere;
         }
 
-        .volume-destaque .valor-dado-etiqueta {
-            font-weight: 700;
+
+        /* =====================================================
+           TRANSPORTE
+        ===================================================== */
+
+        .linha-transporte {
+
+            grid-template-columns:
+                52px
+                minmax(0, 1fr);
         }
+
+
+        .opcoes-transporte {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-start;
+
+            gap: 30px;
+
+            flex-wrap: nowrap;
+
+            width: 100%;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            color: #082f67;
+        }
+
+
+        .opcao-transporte {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            white-space: nowrap;
+        }
+
+
+        .quadrado-transporte {
+
+            display: inline-block;
+
+            width: 26px;
+
+            height: 26px;
+
+            flex: 0 0 26px;
+
+            background: #fff;
+
+            border:
+                3px solid #082f67;
+
+            border-radius: 4px;
+        }
+
+
+        /* =====================================================
+           QR CODE
+        ===================================================== */
 
         .qr-coluna-etiqueta {
+
+            border-left:
+                1px solid #d9e1e8;
+
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
-            justify-content: flex-start;
-            padding-top: 4px;
+
+            justify-content: center;
+
+            padding-left: 20px;
         }
 
+
         .qrcode {
-            width: 138px;
-            height: 138px;
-            padding: 7px;
+
+            width: 205px;
+
+            height: 205px;
+
+            padding: 10px;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
-            background: #f1f3f6;
-            border: 1px solid #d5dce4;
+
+            background: white;
+
+            border:
+                1px solid #cdd8e3;
+
             border-radius: 10px;
         }
 
+
         .qrcode img,
         .qrcode canvas {
-            width: 122px !important;
-            height: 122px !important;
-            max-width: 100%;
+
+            width: 185px !important;
+
+            height: 185px !important;
+
+            image-rendering: pixelated;
         }
+
+
+        .qr-titulo {
+
+            margin-top: 10px;
+
+            font-size: 17px;
+
+            font-weight: 900;
+
+            letter-spacing: 3px;
+
+            color: #082f67;
+
+            text-align: center;
+        }
+
 
         .qr-legenda {
-            margin-top: 8px;
-            color: #737c89;
-            font-size: 8px;
-            letter-spacing: 2.5px;
+
+            margin-top: 4px;
+
+            font-size: 9px;
+
+            letter-spacing: 2px;
+
+            color: #596a7c;
+
+            text-align: center;
+
+            line-height: 1.4;
         }
+
+
+        /* =====================================================
+           RODAPÉ
+        ===================================================== */
 
         .rodape-etiqueta {
-            display: flex;
-            justify-content: center;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #072c55,
+                    #005594,
+                    #072c55
+                );
+
+            color: white;
+
+            min-height: 92px;
+
+            display: grid;
+
+            grid-template-columns:
+                1.1fr
+                1.5fr
+                1fr;
+
             align-items: center;
+
             gap: 0;
-            margin-top: 18px;
         }
 
-        .codigo-barras {
-            margin-top: 0;
-            text-align: center;
-            width: 100%;
-        }
 
-        .codigo-barras svg {
-            display: block;
-            width: 100%;
-            max-width: 420px;
-            height: 78px;
-            margin: 0 auto;
-        }
+        .contato-item {
 
-        .numero-codigo-etiqueta {
-            margin-top: 2px;
-            color: #03070c;
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            min-height: 58px;
+
+            padding:
+                10px 18px;
+
+            font-weight: 700;
+
             font-size: 17px;
-            letter-spacing: 1px;
         }
 
-        @media(max-width: 820px) {
-            .etiqueta {
-                width: 700px;
-            }
 
-            .logo-etiqueta .smi,
-            .logo-etiqueta .wms {
-                font-size: 32px;
-            }
+        .contato-item:not(:last-child) {
 
-            .status-etiqueta {
-                font-size: 20px;
-            }
+            border-right:
+                1px solid
+                rgba(255,255,255,.55);
         }
 
-        /* =========================
+
+        .contato-titulo {
+
+            font-size: 21px;
+
+            font-weight: 900;
+        }
+
+
+        .contato-icone {
+
+            font-size: 34px;
+        }
+
+
+        .site-contato {
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
            HISTÓRICO
-        ========================= */
+        ===================================================== */
 
         .historico {
             margin-top: 22px;
         }
 
+
         .tabela-container {
             overflow-x: auto;
         }
 
+
         table {
+
             width: 100%;
-            border-collapse: collapse;
+
+            border-collapse:
+                collapse;
+
             font-size: 14px;
         }
 
+
         th,
         td {
+
             padding: 12px;
-            border-bottom: 1px solid #e2e7ed;
+
+            border-bottom:
+                1px solid #e2e7ed;
+
             text-align: left;
         }
+
 
         th {
             background: #eef3f8;
         }
 
+
         .status-pronto {
+
             display: inline-block;
+
             background: #dff7e8;
+
             color: #118143;
+
             padding: 6px 10px;
+
             border-radius: 30px;
+
             font-size: 12px;
+
             font-weight: 700;
         }
 
-        /* =========================
-           RESPONSIVO
-        ========================= */
 
-        @media(max-width: 1000px) {
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .pagina-etiquetagem
+        .topbar-etiquetagem {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 24px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .pagina-etiquetagem
+        .topbar-etiquetagem
+        .titulo-pagina {
+
+            margin-bottom: 0;
+        }
+
+
+        .pagina-etiquetagem
+        .topbar-etiquetagem
+        .usuario {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            gap: 14px;
+
+            white-space: nowrap;
+        }
+
+
+        .pagina-etiquetagem
+        #language-placeholder {
+
+            display: flex;
+
+            align-items: center;
+        }
+
+
+        .pagina-etiquetagem
+        #language-placeholder
+        #wms-language-switcher {
+
+            position: static !important;
+
+            margin: 0 !important;
+
+            padding: 0 !important;
+
+            background:
+                transparent !important;
+
+            box-shadow:
+                none !important;
+        }
+
+
+        .btn-sair-topo {
+
+            background: #d71920;
+
+            color: white;
+
+            border-radius: 9px;
+
+            padding:
+                10px 16px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media(
+            max-width: 1250px
+        ) {
 
             .grid-principal {
-                grid-template-columns: 1fr;
+
+                grid-template-columns:
+                    1fr;
+
             }
 
         }
 
-        @media(max-width: 700px) {
+
+        @media(
+            max-width: 700px
+        ) {
 
             .conteudo {
+
                 margin-left: 0;
+
                 width: 100%;
+
                 padding: 15px;
+
             }
 
         }
 
 
-        /* =========================
+        /* =====================================================
            IMPRESSÃO
-        ========================= */
+        ===================================================== */
 
         @media print {
 
             @page {
-                margin: 8mm;
+
+                margin: 4mm;
+
             }
+
 
             body {
-                background: #ffffff !important;
+
+                background:
+                    #fff !important;
+
             }
 
+
             body * {
-                visibility: hidden;
+
+                visibility:
+                    hidden;
+
             }
+
 
             #areaImpressao,
             #areaImpressao * {
-                visibility: visible;
+
+                visibility:
+                    visible;
+
             }
+
 
             #areaImpressao {
-                position: absolute;
+
+                position:
+                    absolute;
+
                 left: 0;
+
                 top: 0;
+
                 width: 100%;
-                background: #ffffff;
+
+                background:
+                    #fff;
+
                 padding: 0;
-                overflow: visible;
+
+                overflow:
+                    visible;
+
             }
+
 
             .etiqueta {
+
                 width: 100%;
-                max-width: 190mm;
+
+                max-width:
+                    190mm;
+
                 min-height: 0;
-                margin: 0 auto;
-                page-break-after: always;
-                break-after: page;
-                box-shadow: none;
-                border: 1.5px solid #6f7884;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+
+                margin:
+                    0 auto;
+
+                page-break-after:
+                    always;
+
+                break-after:
+                    page;
+
+                box-shadow:
+                    none;
+
+                -webkit-print-color-adjust:
+                    exact;
+
+                print-color-adjust:
+                    exact;
+
             }
+
 
             .etiqueta:last-child {
-                page-break-after: auto;
-                break-after: auto;
-            }
-        }
 
+                page-break-after:
+                    auto;
 
-        /* =========================
-           TOPO PADRÃO DASHBOARD
-           BR/IT + DATA/HORA + USUÁRIO + SAIR
-        ========================= */
+                break-after:
+                    auto;
 
-        .pagina-etiquetagem .topbar-etiquetagem {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 24px;
-            margin-bottom: 25px;
-        }
-
-        .pagina-etiquetagem .topbar-etiquetagem .titulo-pagina {
-            margin-bottom: 0;
-            min-width: 0;
-        }
-
-        .pagina-etiquetagem .topbar-etiquetagem .usuario {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 14px;
-            flex-wrap: nowrap;
-            white-space: nowrap;
-            padding-top: 2px;
-        }
-
-        .pagina-etiquetagem #language-placeholder {
-            display: flex;
-            align-items: center;
-            flex: 0 0 auto;
-        }
-
-        .pagina-etiquetagem #language-placeholder #wms-language-switcher {
-            position: static !important;
-            top: auto !important;
-            right: auto !important;
-            left: auto !important;
-            bottom: auto !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            z-index: auto !important;
-            background: transparent !important;
-            box-shadow: none !important;
-        }
-
-        .pagina-etiquetagem #relogio,
-        .pagina-etiquetagem #nomeUsuario {
-            flex: 0 0 auto;
-            font-size: 14px;
-            color: #14213d;
-        }
-
-        .pagina-etiquetagem .header-user {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .pagina-etiquetagem .header-user-icon {
-            color: #4b2e83;
-            font-size: 15px;
-            line-height: 1;
-        }
-
-        .pagina-etiquetagem .btn-sair-topo {
-            border: none;
-            padding: 10px 16px;
-            border-radius: 9px;
-            background: #d71920;
-            color: #ffffff;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .pagina-etiquetagem .btn-sair-topo:hover {
-            transform: none;
-            filter: brightness(0.96);
-        }
-
-        @media(max-width: 950px) {
-            .pagina-etiquetagem .topbar-etiquetagem {
-                flex-direction: column;
             }
 
-            .pagina-etiquetagem .topbar-etiquetagem .usuario {
-                width: 100%;
-                justify-content: flex-start;
-                flex-wrap: wrap;
-            }
         }
 
     </style>
 
 </head>
 
+
 <body class="pagina-etiquetagem">
+
 
 <div class="layout">
 
+
     <!-- =====================================================
-         MENU LATERAL - NOVO PADRÃO SMI WMS
+         MENU LATERAL
     ===================================================== -->
 
     <aside class="sidebar sidebar-wms-novo">
+
 
         <div class="sidebar-topo">
 
@@ -768,141 +1121,508 @@
             >
 
             <h2>SMI WMS</h2>
-            <p>GESTÃO QUE MOVIMENTA</p>
+
+            <p>
+                GESTÃO QUE MOVIMENTA
+            </p>
 
         </div>
 
-        <nav class="sidebar-nav" aria-label="Menu principal">
+
+        <nav
+            class="sidebar-nav"
+            aria-label="Menu principal"
+        >
+
 
             <div class="menu-titulo">
-                <span>PRINCIPAL</span>
+
+                <span>
+                    PRINCIPAL
+                </span>
+
             </div>
 
-            <a href="dashboard.html" class="menu-item" data-page="dashboard.html">
-                <span class="menu-icon icone-dashboard"><i data-lucide="house"></i></span>
-                <span class="menu-texto">Dashboard</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="dashboard.html"
+                class="menu-item"
+                data-page="dashboard.html"
+            >
+
+                <span
+                    class="menu-icon icone-dashboard"
+                >
+
+                    <i
+                        data-lucide="house"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Dashboard
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="produtos.html" class="menu-item" data-page="produtos.html">
-                <span class="menu-icon icone-produtos"><i data-lucide="package"></i></span>
-                <span class="menu-texto">Produtos</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="produtos.html"
+                class="menu-item"
+                data-page="produtos.html"
+            >
+
+                <span
+                    class="menu-icon icone-produtos"
+                >
+
+                    <i
+                        data-lucide="package"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Produtos
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
+
 
             <div class="menu-titulo">
-                <span>OPERAÇÕES</span>
+
+                <span>
+                    OPERAÇÕES
+                </span>
+
             </div>
 
-            <a href="entradas.html" class="menu-item" data-page="entradas.html">
-                <span class="menu-icon icone-entradas"><i data-lucide="download"></i></span>
-                <span class="menu-texto">Entradas</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="entradas.html"
+                class="menu-item"
+                data-page="entradas.html"
+            >
+
+                <span
+                    class="menu-icon icone-entradas"
+                >
+
+                    <i
+                        data-lucide="download"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Entradas
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="saidas.html" class="menu-item" data-page="saidas.html">
-                <span class="menu-icon icone-saidas"><i data-lucide="upload"></i></span>
-                <span class="menu-texto">Saídas</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="saidas.html"
+                class="menu-item"
+                data-page="saidas.html"
+            >
+
+                <span
+                    class="menu-icon icone-saidas"
+                >
+
+                    <i
+                        data-lucide="upload"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Saídas
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="separacao.html" class="menu-item" data-page="separacao.html">
-                <span class="menu-icon icone-separacao"><i data-lucide="shopping-cart"></i></span>
-                <span class="menu-texto">Separação</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="separacao.html"
+                class="menu-item"
+                data-page="separacao.html"
+            >
+
+                <span
+                    class="menu-icon icone-separacao"
+                >
+
+                    <i
+                        data-lucide="shopping-cart"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Separação
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="transferencias.html" class="menu-item" data-page="transferencias.html">
-                <span class="menu-icon icone-transferencia"><i data-lucide="arrow-left-right"></i></span>
-                <span class="menu-texto">Transferências</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="transferencias.html"
+                class="menu-item"
+                data-page="transferencias.html"
+            >
+
+                <span
+                    class="menu-icon icone-transferencia"
+                >
+
+                    <i
+                        data-lucide="arrow-left-right"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Transferências
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="transferencia-mobile.html" class="menu-item" data-page="transferencia-mobile.html">
-                <span class="menu-icon icone-mobile"><i data-lucide="smartphone"></i></span>
-                <span class="menu-texto">Transf. Mobile</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+                        <a
+                href="transferencia-mobile.html"
+                class="menu-item"
+                data-page="transferencia-mobile.html"
+            >
+
+                <span
+                    class="menu-icon icone-mobile"
+                >
+
+                    <i
+                        data-lucide="smartphone"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Transf. Mobile
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="posicoes.html" class="menu-item" data-page="posicoes.html">
-                <span class="menu-icon icone-posicoes"><i data-lucide="map-pin"></i></span>
-                <span class="menu-texto">Posições</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="posicoes.html"
+                class="menu-item"
+                data-page="posicoes.html"
+            >
+
+                <span
+                    class="menu-icon icone-posicoes"
+                >
+
+                    <i
+                        data-lucide="map-pin"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Posições
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="inventario.html" class="menu-item" data-page="inventario.html">
-                <span class="menu-icon icone-inventario"><i data-lucide="clipboard-list"></i></span>
-                <span class="menu-texto">Inventário</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="inventario.html"
+                class="menu-item"
+                data-page="inventario.html"
+            >
+
+                <span
+                    class="menu-icon icone-inventario"
+                >
+
+                    <i
+                        data-lucide="clipboard-list"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Inventário
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="inventario-mobile.html" class="menu-item" data-page="inventario-mobile.html">
-                <span class="menu-icon icone-invmobile"><i data-lucide="scan-line"></i></span>
-                <span class="menu-texto">Inv. Mobile</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="inventario-mobile.html"
+                class="menu-item"
+                data-page="inventario-mobile.html"
+            >
+
+                <span
+                    class="menu-icon icone-invmobile"
+                >
+
+                    <i
+                        data-lucide="scan-line"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Inv. Mobile
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
+
 
             <div class="menu-titulo">
-                <span>SISTEMA</span>
+
+                <span>
+                    SISTEMA
+                </span>
+
             </div>
 
-            <a href="relatorios.html" class="menu-item" data-page="relatorios.html">
-                <span class="menu-icon icone-relatorios"><i data-lucide="chart-no-axes-column"></i></span>
-                <span class="menu-texto">Relatórios</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="relatorios.html"
+                class="menu-item"
+                data-page="relatorios.html"
+            >
+
+                <span
+                    class="menu-icon icone-relatorios"
+                >
+
+                    <i
+                        data-lucide="chart-no-axes-column"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Relatórios
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="etiquetagem.html" class="menu-item" data-page="etiquetagem.html">
-                <span class="menu-icon icone-etiqueta"><i data-lucide="tag"></i></span>
-                <span class="menu-texto">Etiquetagem</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="etiquetagem.html"
+                class="menu-item"
+                data-page="etiquetagem.html"
+            >
+
+                <span
+                    class="menu-icon icone-etiqueta"
+                >
+
+                    <i
+                        data-lucide="tag"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Etiquetagem
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="requisicao.html" class="menu-item" data-page="requisicao.html">
-                <span class="menu-icon icone-requisicao"><i data-lucide="file-text"></i></span>
-                <span class="menu-texto">Requisição</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="requisicao.html"
+                class="menu-item"
+                data-page="requisicao.html"
+            >
+
+                <span
+                    class="menu-icon icone-requisicao"
+                >
+
+                    <i
+                        data-lucide="file-text"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Requisição
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="configuracoes.html" class="menu-item" data-page="configuracoes.html">
-                <span class="menu-icon icone-config"><i data-lucide="settings"></i></span>
-                <span class="menu-texto">Configurações</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            <a
+                href="configuracoes.html"
+                class="menu-item"
+                data-page="configuracoes.html"
+            >
+
+                <span
+                    class="menu-icon icone-config"
+                >
+
+                    <i
+                        data-lucide="settings"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Configurações
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
+
 
         </nav>
 
+
         <div class="sidebar-rodape">
-            <span>LOGÍSTICA MAIS INTELIGENTE</span>
-            <small>v1.0.0</small>
+
+            <span>
+                LOGÍSTICA MAIS INTELIGENTE
+            </span>
+
+            <small>
+                v1.0.0
+            </small>
+
         </div>
+
 
     </aside>
 
 
-<!-- CONTEÚDO -->
+
+    <!-- =====================================================
+         CONTEÚDO
+    ===================================================== -->
+
     <main class="conteudo">
+
 
         <div class="topbar topbar-etiquetagem">
 
+
             <div class="titulo-pagina">
-                <h1>🏷️ Etiquetagem de Pedidos</h1>
+
+                <h1>
+                    🏷️ Etiquetagem de Pedidos
+                </h1>
 
                 <p>
-                    Preencha os dados do cliente para gerar e imprimir
-                    as etiquetas do pedido separado.
+                    Preencha os dados do cliente para gerar
+                    e imprimir as etiquetas do pedido finalizado.
                 </p>
+
             </div>
 
+
             <div class="usuario">
-                <div id="language-placeholder"></div>
 
-                <span id="relogio"></span>
+                <div
+                    id="language-placeholder"
+                ></div>
 
-                <span class="header-user">
-                    <span class="header-user-icon">♟</span>
-                    <span id="nomeUsuario"></span>
+                <span
+                    id="relogio"
+                ></span>
+
+                <span
+                    class="header-user"
+                >
+
+                    <span
+                        class="header-user-icon"
+                    >
+                        ♟
+                    </span>
+
+                    <span
+                        id="nomeUsuario"
+                    ></span>
+
                 </span>
+
 
                 <button
                     type="button"
@@ -911,16 +1631,26 @@
                 >
                     Sair
                 </button>
+
             </div>
+
 
         </div>
 
+
+
         <div class="grid-principal">
 
+
             <!-- FORMULÁRIO -->
+
             <section class="card">
 
-                <h2>Dados do Pedido</h2>
+
+                <h2>
+                    Dados do Pedido
+                </h2>
+
 
                 <div class="campo">
 
@@ -931,11 +1661,13 @@
                     <input
                         type="text"
                         id="cliente"
-                        placeholder="Ex.: Supermercado Exemplo Ltda"
+                        placeholder="Ex.: Brasil Norte"
                         autocomplete="off"
                     >
 
                 </div>
+
+
 
                 <div class="campo">
 
@@ -946,11 +1678,13 @@
                     <input
                         type="text"
                         id="nf"
-                        placeholder="Ex.: 45879"
+                        placeholder="Ex.: 39522"
                         autocomplete="off"
                     >
 
                 </div>
+
+
 
                 <div class="campo">
 
@@ -961,13 +1695,17 @@
                     <input
                         type="text"
                         id="pedido"
-                        placeholder="Ex.: 1700130710"
+                        placeholder="Ex.: 1756641211"
                         autocomplete="off"
                     >
 
                 </div>
 
-                <div class="campo campo-pequeno">
+
+
+                <div
+                    class="campo campo-pequeno"
+                >
 
                     <label for="volumes">
                         Quantidade de Volumes
@@ -983,7 +1721,10 @@
 
                 </div>
 
+
+
                 <div class="botoes">
+
 
                     <button
                         class="btn-gerar"
@@ -992,12 +1733,14 @@
                         🏷️ Gerar Etiqueta
                     </button>
 
+
                     <button
                         class="btn-limpar"
                         onclick="limparCampos()"
                     >
                         🔄 Limpar
                     </button>
+
 
                     <button
                         class="btn-imprimir"
@@ -1006,390 +1749,895 @@
                         🖨️ Imprimir Etiqueta
                     </button>
 
+
                 </div>
+
 
             </section>
 
+
+
             <!-- PREVIEW -->
+
             <section class="card">
 
-                <h2>Pré-visualização da Etiqueta</h2>
+
+                <h2>
+                    Pré-visualização da Etiqueta
+                </h2>
+
 
                 <div
                     class="preview-area"
                     id="areaImpressao"
                 >
 
+
                     <div
                         id="mensagemVazia"
                         class="mensagem-vazia"
                     >
-                        Preencha os dados do pedido e clique em
-                        <strong>&nbsp;Gerar Etiqueta</strong>.
+
+                        Preencha os dados do pedido
+                        e clique em
+
+                        <strong>
+                            &nbsp;Gerar Etiqueta
+                        </strong>.
+
                     </div>
 
-                    <div id="listaEtiquetas"></div>
+
+                    <div
+                        id="listaEtiquetas"
+                    ></div>
+
 
                 </div>
 
+
             </section>
+
 
         </div>
 
+
+
         <!-- HISTÓRICO -->
+
         <section class="card historico">
 
-            <h2>📋 Etiquetas Geradas Hoje</h2>
+
+            <h2>
+                📋 Etiquetas Geradas Hoje
+            </h2>
+
 
             <div class="tabela-container">
 
+
                 <table>
+
 
                     <thead>
 
                         <tr>
-                            <th>Cliente</th>
-                            <th>NF</th>
-                            <th>Pedido</th>
-                            <th>Volumes</th>
-                            <th>Data/Hora</th>
-                            <th>Status</th>
+
+                            <th>
+                                Cliente
+                            </th>
+
+                            <th>
+                                NF
+                            </th>
+
+                            <th>
+                                Pedido
+                            </th>
+
+                            <th>
+                                Volumes
+                            </th>
+
+                            <th>
+                                Data/Hora
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
                         </tr>
 
                     </thead>
 
-                    <tbody id="historicoEtiquetas">
-                    </tbody>
+
+                    <tbody
+                        id="historicoEtiquetas"
+                    ></tbody>
+
 
                 </table>
 
+
             </div>
+
 
         </section>
 
+
     </main>
+
 
 </div>
 
 
+
 <script src="app.js?v=20260917-1004"></script>
+
+
 
 <script>
 
-    let etiquetasAtuais = [];
+
+let etiquetasAtuais = [];
 
 
-    // ===============================================
-    // GERAR ETIQUETAS
-    // ===============================================
+// =====================================================
+// GERAR ETIQUETAS
+// =====================================================
 
-    function gerarEtiquetas() {
+function gerarEtiquetas() {
 
-        const cliente =
-            document.getElementById("cliente").value.trim();
 
-        const nf =
-            document.getElementById("nf").value.trim();
+    const cliente =
+        document
+            .getElementById(
+                "cliente"
+            )
+            .value
+            .trim();
 
-        const pedido =
-            document.getElementById("pedido").value.trim();
 
-        const volumes =
-            parseInt(
-                document.getElementById("volumes").value
+    const nf =
+        document
+            .getElementById(
+                "nf"
+            )
+            .value
+            .trim();
+
+
+    const pedido =
+        document
+            .getElementById(
+                "pedido"
+            )
+            .value
+            .trim();
+
+
+    const volumes =
+        parseInt(
+            document
+                .getElementById(
+                    "volumes"
+                )
+                .value
+        );
+
+
+    if (!cliente) {
+
+        alert(
+            "Informe o nome do cliente."
+        );
+
+        document
+            .getElementById(
+                "cliente"
+            )
+            .focus();
+
+        return;
+
+    }
+
+
+    if (!nf) {
+
+        alert(
+            "Informe o número da Nota Fiscal."
+        );
+
+        document
+            .getElementById(
+                "nf"
+            )
+            .focus();
+
+        return;
+
+    }
+
+
+    if (!pedido) {
+
+        alert(
+            "Informe o número do pedido."
+        );
+
+        document
+            .getElementById(
+                "pedido"
+            )
+            .focus();
+
+        return;
+
+    }
+
+
+    if (
+        !volumes ||
+        volumes < 1
+    ) {
+
+        alert(
+            "Informe a quantidade de volumes."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        typeof QRCode ===
+        "undefined"
+    ) {
+
+        alert(
+            "A biblioteca do QR Code não foi carregada."
+        );
+
+        return;
+
+    }
+
+
+    const lista =
+        document.getElementById(
+            "listaEtiquetas"
+        );
+
+
+    const mensagem =
+        document.getElementById(
+            "mensagemVazia"
+        );
+
+
+    mensagem.style.display =
+        "none";
+
+
+    lista.innerHTML =
+        "";
+
+
+    etiquetasAtuais =
+        [];
+
+
+    for (
+        let volume = 1;
+        volume <= volumes;
+        volume++
+    ) {
+
+
+        const id =
+            Date.now()
+            +
+            "-"
+            +
+            volume;
+
+
+        /* =====================================================
+           CONTEÚDO REAL DO QR CODE
+        ===================================================== */
+
+        const dadosQR =
+    "C:" + cliente +
+    "|NF:" + nf +
+    "|P:" + pedido +
+    "|T:VER ETIQUETA" +
+    "|V:" + volume + "/" + volumes;
+                const etiqueta =
+            document.createElement(
+                "div"
             );
 
 
-        if (!cliente) {
-
-            alert("Informe o nome do cliente.");
-
-            document
-                .getElementById("cliente")
-                .focus();
-
-            return;
-        }
+        etiqueta.className =
+            "etiqueta";
 
 
-        if (!nf) {
-
-            alert("Informe o número da Nota Fiscal.");
-
-            document
-                .getElementById("nf")
-                .focus();
-
-            return;
-        }
+        etiqueta.innerHTML = `
 
 
-        if (!pedido) {
+            <!-- =====================================================
+                 CABEÇALHO
+            ====================================================== -->
 
-            alert("Informe o número do pedido.");
-
-            document
-                .getElementById("pedido")
-                .focus();
-
-            return;
-        }
+            <div
+                class="cabecalho-etiqueta"
+            >
 
 
-        if (
-            !volumes ||
-            volumes < 1
-        ) {
+                <div
+                    class="marca-etiqueta"
+                >
 
-            alert("Informe a quantidade de volumes.");
+                    <img
+                        src="img/logo.png"
+                        alt="SMI do Brasil"
+                        class="logo-etiqueta-img"
+                    >
 
-            return;
-        }
-
-
-        const lista =
-            document.getElementById("listaEtiquetas");
+                </div>
 
 
-        const mensagem =
-            document.getElementById("mensagemVazia");
+
+                <div
+                    class="paises-etiqueta"
+                    aria-label="Brasil e Itália"
+                >
+
+                    <span
+                        class="flag-country flag-brasil"
+                    >
+                        <span></span>
+                    </span>
 
 
-        mensagem.style.display = "none";
+                    <span
+                        class="flag-country flag-italia"
+                    ></span>
 
-        lista.innerHTML = "";
-
-        etiquetasAtuais = [];
-
-
-        for (
-            let volume = 1;
-            volume <= volumes;
-            volume++
-        ) {
-
-            const id =
-                Date.now() +
-                "-" +
-                volume;
+                </div>
 
 
-            const dadosCodigo =
-                pedido +
-                "|" +
-                nf +
-                "|" +
-                volume +
-                "/" +
-                volumes;
 
+                <div
+                    class="status-bloco"
+                >
 
-            const etiqueta =
-                document.createElement("div");
+                    <div
+                        class="status-etiqueta"
+                    >
 
-
-            etiqueta.className = "etiqueta";
-
-
-            etiqueta.innerHTML = `
-
-                <div class="cabecalho-etiqueta">
-
-                    <div class="marca-etiqueta">
-
-                        <div class="marca-cubo" aria-hidden="true">
-                            <svg viewBox="0 0 64 64" fill="none">
-                                <path d="M32 4L56 17L32 30L8 17L32 4Z" fill="#1286E8"/>
-                                <path d="M8 22L29 34V59L8 47V22Z" fill="#0B63B6"/>
-                                <path d="M56 22L35 34V59L56 47V22Z" fill="#0A2548"/>
-                            </svg>
-                        </div>
-
-                        <div class="marca-textos">
-                            <div class="logo-etiqueta">
-                                <span class="smi">SMI</span>
-                                <span class="wms">WMS</span>
-                                <span class="reg">®</span>
-                            </div>
-
-                            <div class="submarca-etiqueta">
-                                WAREHOUSE MANAGEMENT SYSTEM
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="paises-etiqueta" aria-label="Brasil e Itália">
-                        <span class="flag-country flag-brasil">
-                            <span></span>
+                        <span>
+                            PEDIDO<br>
+                            FINALIZADO
                         </span>
 
-                        <span class="flag-country flag-italia"></span>
+
+                        <span
+                            class="status-check"
+                        >
+                            ✓
+                        </span>
+
                     </div>
 
-                    <div class="status-bloco">
-                        <div class="status-etiqueta">
-                            PEDIDO SEPARADO
-                        </div>
 
-                        <div class="status-subtitulo">
-                            PICKING COMPLETE
-                        </div>
+                    <div
+                        class="faixa-paises"
+                    >
 
-                        <div class="faixa-paises">
-                            <span class="verde"></span>
-                            <span class="neutra"></span>
-                            <span class="vermelha"></span>
-                        </div>
+                        <span
+                            class="verde"
+                        ></span>
+
+                        <span
+                            class="neutra"
+                        ></span>
+
+                        <span
+                            class="vermelha"
+                        ></span>
+
                     </div>
+
 
                 </div>
 
-                <div class="corpo-etiqueta">
 
-                    <div class="dados-etiqueta">
+            </div>
 
-                        <div class="linha-dado-etiqueta">
-                            <div class="icone-dado-etiqueta" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                    <path d="M4.5 21c.7-5 3.2-7.5 7.5-7.5S18.8 16 19.5 21"></path>
-                                </svg>
-                            </div>
 
-                            <div class="rotulo-dado-etiqueta">Cliente:</div>
 
-                            <div class="valor-dado-etiqueta">
-                                ${escaparHTML(cliente)}
-                            </div>
-                        </div>
+            <!-- =====================================================
+                 CORPO DA ETIQUETA
+            ====================================================== -->
 
-                        <div class="linha-dado-etiqueta">
-                            <div class="icone-dado-etiqueta" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
-                                    <path d="M6 3h9l3 3v15H6z"></path>
-                                    <path d="M15 3v4h4"></path>
-                                    <path d="M9 11h6M9 15h6"></path>
-                                </svg>
-                            </div>
+            <div
+                class="corpo-etiqueta"
+            >
 
-                            <div class="rotulo-dado-etiqueta">NF:</div>
 
-                            <div class="valor-dado-etiqueta">
-                                ${escaparHTML(nf)}
-                            </div>
-                        </div>
+                <div
+                    class="dados-etiqueta"
+                >
 
-                        <div class="linha-dado-etiqueta">
-                            <div class="icone-dado-etiqueta" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
-                                    <circle cx="9" cy="19" r="1.6"></circle>
-                                    <circle cx="17" cy="19" r="1.6"></circle>
-                                    <path d="M3 4h2l2 10h10l2-7H6"></path>
-                                </svg>
-                            </div>
 
-                            <div class="rotulo-dado-etiqueta">Pedido:</div>
 
-                            <div class="valor-dado-etiqueta">
-                                ${escaparHTML(pedido)}
-                            </div>
-                        </div>
+                    <!-- CLIENTE -->
 
-                        <div class="linha-dado-etiqueta volume-destaque">
-                            <div class="icone-dado-etiqueta" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
-                                    <path d="M3.5 7L12 2.5 20.5 7 12 11.5 3.5 7Z"></path>
-                                    <path d="M3.5 7v10L12 21.5l8.5-4.5V7"></path>
-                                    <path d="M12 11.5v10"></path>
-                                </svg>
-                            </div>
-
-                            <div class="rotulo-dado-etiqueta">Volume:</div>
-
-                            <div class="valor-dado-etiqueta">
-                                ${volume}/${volumes}
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="qr-coluna-etiqueta">
+                    <div
+                        class="linha-dado-etiqueta"
+                    >
 
                         <div
-                            class="qrcode"
-                            id="qr-${id}"
-                        ></div>
+                            class="icone-dado-etiqueta"
+                        >
 
-                        <div class="qr-legenda">
-                            ESCANEIE AQUI
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                            >
+
+                                <circle
+                                    cx="12"
+                                    cy="7"
+                                    r="4"
+                                ></circle>
+
+                                <path
+                                    d="M4.5 21c.7-5 3.2-7.5 7.5-7.5S18.8 16 19.5 21"
+                                ></path>
+
+                            </svg>
+
                         </div>
+
+
+                        <div
+                            class="rotulo-dado-etiqueta"
+                        >
+                            CLIENTE:
+                        </div>
+
+
+                        <div
+                            class="valor-dado-etiqueta"
+                        >
+                            ${escaparHTML(cliente)}
+                        </div>
+
 
                     </div>
 
-                </div>
 
-                <div class="rodape-etiqueta">
 
-                    <div class="codigo-barras">
+                    <!-- NF -->
 
-                        <svg
-                            id="barcode-${id}"
-                        ></svg>
+                    <div
+                        class="linha-dado-etiqueta"
+                    >
 
-                        <div class="numero-codigo-etiqueta">
+                        <div
+                            class="icone-dado-etiqueta"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                            >
+
+                                <path
+                                    d="M6 3h9l3 3v15H6z"
+                                ></path>
+
+                                <path
+                                    d="M15 3v4h4"
+                                ></path>
+
+                                <path
+                                    d="M9 11h6M9 15h6"
+                                ></path>
+
+                            </svg>
+
+                        </div>
+
+
+                        <div
+                            class="rotulo-dado-etiqueta"
+                        >
+                            NF:
+                        </div>
+
+
+                        <div
+                            class="valor-dado-etiqueta"
+                        >
+                            ${escaparHTML(nf)}
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- PEDIDO -->
+
+                    <div
+                        class="linha-dado-etiqueta"
+                    >
+
+                        <div
+                            class="icone-dado-etiqueta"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                            >
+
+                                <circle
+                                    cx="9"
+                                    cy="19"
+                                    r="1.6"
+                                ></circle>
+
+                                <circle
+                                    cx="17"
+                                    cy="19"
+                                    r="1.6"
+                                ></circle>
+
+                                <path
+                                    d="M3 4h2l2 10h10l2-7H6"
+                                ></path>
+
+                            </svg>
+
+                        </div>
+
+
+                        <div
+                            class="rotulo-dado-etiqueta"
+                        >
+                            PEDIDO:
+                        </div>
+
+
+                        <div
+                            class="valor-dado-etiqueta"
+                        >
                             ${escaparHTML(pedido)}
                         </div>
 
+
                     </div>
+
+
+
+                    <!-- =====================================================
+                         TRANSPORTE
+                         SEM O TEXTO "TRANSPORTE:"
+                    ====================================================== -->
+
+                    <div
+                        class="
+                            linha-dado-etiqueta
+                            linha-transporte
+                        "
+                    >
+
+
+                        <div
+                            class="icone-dado-etiqueta"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                            >
+
+                                <path
+                                    d="M3 6h11v10H3z"
+                                ></path>
+
+                                <path
+                                    d="M14 10h4l3 3v3h-7z"
+                                ></path>
+
+                                <circle
+                                    cx="7"
+                                    cy="18"
+                                    r="2"
+                                ></circle>
+
+                                <circle
+                                    cx="18"
+                                    cy="18"
+                                    r="2"
+                                ></circle>
+
+                            </svg>
+
+                        </div>
+
+
+
+                        <div
+                            class="opcoes-transporte"
+                        >
+
+
+                            <span
+                                class="opcao-transporte"
+                            >
+
+                                <span
+                                    class="quadrado-transporte"
+                                ></span>
+
+                                TRANSPORTADORA
+
+                            </span>
+
+
+
+                            <span
+                                class="opcao-transporte"
+                            >
+
+                                <span
+                                    class="quadrado-transporte"
+                                ></span>
+
+                                SEDEX
+
+                            </span>
+
+
+
+                            <span
+                                class="opcao-transporte"
+                            >
+
+                                <span
+                                    class="quadrado-transporte"
+                                ></span>
+
+                                PRÓPRIO
+
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- VOLUME -->
+
+                    <div
+                        class="linha-dado-etiqueta"
+                    >
+
+                        <div
+                            class="icone-dado-etiqueta"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                            >
+
+                                <path
+                                    d="M3.5 7L12 2.5 20.5 7 12 11.5 3.5 7Z"
+                                ></path>
+
+                                <path
+                                    d="M3.5 7v10L12 21.5l8.5-4.5V7"
+                                ></path>
+
+                                <path
+                                    d="M12 11.5v10"
+                                ></path>
+
+                            </svg>
+
+                        </div>
+
+
+                        <div
+                            class="rotulo-dado-etiqueta"
+                        >
+                            VOLUME:
+                        </div>
+
+
+                        <div
+                            class="valor-dado-etiqueta"
+                        >
+                            ${volume}/${volumes}
+                        </div>
+
+
+                    </div>
+
 
                 </div>
 
-            `;
 
 
-            lista.appendChild(etiqueta);
+                <!-- =====================================================
+                     QR CODE
+                ====================================================== -->
+
+                <div
+                    class="qr-coluna-etiqueta"
+                >
 
 
-            // QR CODE
-            new QRCode(
-                document.getElementById(
-                    `qr-${id}`
-                ),
-                {
-                    text: dadosCodigo,
+                    <div
+                        class="qrcode"
+                        id="qr-${id}"
+                    ></div>
 
-                    width: 122,
 
-                    height: 122,
+                    <div
+                        class="qr-titulo"
+                    >
+                        ESCANEIE AQUI
+                    </div>
 
-                    correctLevel:
-                        QRCode.CorrectLevel.M
-                }
+
+                    <div
+                        class="qr-legenda"
+                    >
+                        PARA VER AS INFORMAÇÕES<br>
+                        DO PEDIDO
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 RODAPÉ
+            ====================================================== -->
+
+            <div
+                class="rodape-etiqueta"
+            >
+
+
+                <div
+                    class="contato-item"
+                >
+
+                    <span
+                        class="contato-icone"
+                    >
+                        🎧
+                    </span>
+
+                    <span
+                        class="contato-titulo"
+                    >
+                        ENTRE EM CONTATO
+                    </span>
+
+                </div>
+
+
+
+                <div
+                    class="contato-item"
+                >
+
+                    <span
+                        class="contato-icone"
+                    >
+                        🌐
+                    </span>
+
+                    <span
+                        class="site-contato"
+                    >
+                        www.smidobrasil.com.br
+                    </span>
+
+                </div>
+
+
+
+                <div
+                    class="contato-item"
+                >
+
+                    <span
+                        class="contato-icone"
+                    >
+                        ☎
+                    </span>
+
+                    <span>
+                        (11) 3601-5334
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        `;
+
+
+        lista.appendChild(
+            etiqueta
+        );
+
+
+        /* =====================================================
+           GERAR QR CODE REAL
+        ===================================================== */
+
+        const elementoQR =
+            document.getElementById(
+                `qr-${id}`
             );
 
 
-            // CÓDIGO DE BARRAS
-            JsBarcode(
-                `#barcode-${id}`,
+        new QRCode(
+            elementoQR,
+            {
 
-                pedido,
+                text:
+                    dadosQR,
 
-                {
-                    format: "CODE128",
+                width:
+                    185,
 
-                    width: 1.7,
+                height:
+                    185,
 
-                    height: 72,
+                colorDark:
+                    "#000000",
 
-                    displayValue: false,
+                colorLight:
+                    "#ffffff",
 
-                    margin: 0
-                }
-            );
+              correctLevel:
+    QRCode.CorrectLevel.L
+
+            }
+        );
 
 
-            etiquetasAtuais.push({
+        etiquetasAtuais.push(
+            {
 
                 cliente,
 
@@ -1399,370 +2647,482 @@
 
                 volume,
 
-                volumes
+                volumes,
 
-            });
+                dadosQR
 
-        }
-
-
-        salvarHistorico(
-            cliente,
-            nf,
-            pedido,
-            volumes
+            }
         );
 
-    }
-
-
-
-    // ===============================================
-    // IMPRIMIR
-    // ===============================================
-
-    function imprimirEtiquetas() {
-
-        if (
-            etiquetasAtuais.length === 0
-        ) {
-
-            alert(
-                "Primeiro gere a etiqueta."
-            );
-
-            return;
-        }
-
-
-        window.print();
 
     }
 
 
-
-    // ===============================================
-    // LIMPAR
-    // ===============================================
-
-    function limparCampos() {
-
-        document.getElementById(
-            "cliente"
-        ).value = "";
-
-
-        document.getElementById(
-            "nf"
-        ).value = "";
-
-
-        document.getElementById(
-            "pedido"
-        ).value = "";
-
-
-        document.getElementById(
-            "volumes"
-        ).value = 1;
-
-
-        document.getElementById(
-            "listaEtiquetas"
-        ).innerHTML = "";
-
-
-        document.getElementById(
-            "mensagemVazia"
-        ).style.display = "flex";
-
-
-        etiquetasAtuais = [];
-
-
-        document.getElementById(
-            "cliente"
-        ).focus();
-
-    }
-
-
-
-    // ===============================================
-    // HISTÓRICO
-    // ===============================================
-
-    function salvarHistorico(
+    salvarHistorico(
         cliente,
         nf,
         pedido,
         volumes
+    );
+
+}
+
+// =====================================================
+// IMPRIMIR
+// =====================================================
+
+function imprimirEtiquetas() {
+
+
+    if (
+        etiquetasAtuais.length === 0
     ) {
 
-        let historico =
-            JSON.parse(
-                localStorage.getItem(
-                    "wms_etiquetas"
-                )
-            ) || [];
-
-
-        const agora =
-            new Date();
-
-
-        const registro = {
-
-            cliente,
-
-            nf,
-
-            pedido,
-
-            volumes,
-
-            data:
-                agora.toLocaleDateString(
-                    "pt-BR"
-                ),
-
-            hora:
-                agora.toLocaleTimeString(
-                    "pt-BR",
-                    {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    }
-                )
-
-        };
-
-
-        historico.unshift(
-            registro
+        alert(
+            "Primeiro gere a etiqueta."
         );
 
-
-        if (
-            historico.length > 100
-        ) {
-
-            historico =
-                historico.slice(
-                    0,
-                    100
-                );
-
-        }
-
-
-        localStorage.setItem(
-            "wms_etiquetas",
-            JSON.stringify(historico)
-        );
-
-
-        carregarHistorico();
+        return;
 
     }
 
 
+    window.print();
 
-    // ===============================================
-    // CARREGAR HISTÓRICO
-    // ===============================================
-
-    function carregarHistorico() {
-
-        const tabela =
-            document.getElementById(
-                "historicoEtiquetas"
-            );
+}
 
 
-        const historico =
-            JSON.parse(
-                localStorage.getItem(
-                    "wms_etiquetas"
-                )
-            ) || [];
+// =====================================================
+// LIMPAR CAMPOS
+// =====================================================
+
+function limparCampos() {
 
 
-        const hoje =
-            new Date()
+    document
+        .getElementById(
+            "cliente"
+        )
+        .value =
+        "";
+
+
+    document
+        .getElementById(
+            "nf"
+        )
+        .value =
+        "";
+
+
+    document
+        .getElementById(
+            "pedido"
+        )
+        .value =
+        "";
+
+
+    document
+        .getElementById(
+            "volumes"
+        )
+        .value =
+        1;
+
+
+    document
+        .getElementById(
+            "listaEtiquetas"
+        )
+        .innerHTML =
+        "";
+
+
+    document
+        .getElementById(
+            "mensagemVazia"
+        )
+        .style
+        .display =
+        "flex";
+
+
+    etiquetasAtuais =
+        [];
+
+
+    document
+        .getElementById(
+            "cliente"
+        )
+        .focus();
+
+}
+
+
+// =====================================================
+// SALVAR HISTÓRICO
+// =====================================================
+
+function salvarHistorico(
+    cliente,
+    nf,
+    pedido,
+    volumes
+) {
+
+
+    let historico =
+        JSON.parse(
+            localStorage.getItem(
+                "wms_etiquetas"
+            )
+        )
+        ||
+        [];
+
+
+    const agora =
+        new Date();
+
+
+    const registro = {
+
+        cliente,
+
+        nf,
+
+        pedido,
+
+        volumes,
+
+        data:
+            agora
                 .toLocaleDateString(
                     "pt-BR"
-                );
+                ),
+
+        hora:
+            agora
+                .toLocaleTimeString(
+                    "pt-BR",
+                    {
+
+                        hour:
+                            "2-digit",
+
+                        minute:
+                            "2-digit"
+
+                    }
+                )
+
+    };
 
 
-        const registrosHoje =
-            historico.filter(
-                item =>
-                    item.data === hoje
+    historico.unshift(
+        registro
+    );
+
+
+    if (
+        historico.length > 100
+    ) {
+
+        historico =
+            historico.slice(
+                0,
+                100
+            );
+
+    }
+
+
+    localStorage.setItem(
+        "wms_etiquetas",
+        JSON.stringify(
+            historico
+        )
+    );
+
+
+    carregarHistorico();
+
+}
+
+
+// =====================================================
+// CARREGAR HISTÓRICO
+// =====================================================
+
+function carregarHistorico() {
+
+
+    const tabela =
+        document.getElementById(
+            "historicoEtiquetas"
+        );
+
+
+    const historico =
+        JSON.parse(
+            localStorage.getItem(
+                "wms_etiquetas"
+            )
+        )
+        ||
+        [];
+
+
+    const hoje =
+        new Date()
+            .toLocaleDateString(
+                "pt-BR"
             );
 
 
-        tabela.innerHTML = "";
+    const registrosHoje =
+        historico.filter(
+            item =>
+                item.data === hoje
+        );
 
 
-        if (
-            registrosHoje.length === 0
-        ) {
+    tabela.innerHTML =
+        "";
 
-            tabela.innerHTML = `
+
+    if (
+        registrosHoje.length === 0
+    ) {
+
+
+        tabela.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    style="
+                        text-align:center;
+                        color:#7a8797;
+                        padding:25px;
+                    "
+                >
+
+                    Nenhuma etiqueta gerada hoje.
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    registrosHoje.forEach(
+        item => {
+
+
+            tabela.innerHTML += `
 
                 <tr>
 
-                    <td
-                        colspan="6"
-                        style="
-                            text-align:center;
-                            color:#7a8797;
-                            padding:25px;
-                        "
-                    >
-                        Nenhuma etiqueta gerada hoje.
+                    <td>
+                        ${escaparHTML(
+                            item.cliente
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${escaparHTML(
+                            item.nf
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${escaparHTML(
+                            item.pedido
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${item.volumes}
+                    </td>
+
+
+                    <td>
+                        ${item.data}
+                        ${item.hora}
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="status-pronto"
+                        >
+
+                            ✓ Pronto para impressão
+
+                        </span>
+
                     </td>
 
                 </tr>
 
             `;
 
-            return;
-        }
-
-
-        registrosHoje.forEach(
-            item => {
-
-                tabela.innerHTML += `
-
-                    <tr>
-
-                        <td>
-                            ${escaparHTML(item.cliente)}
-                        </td>
-
-                        <td>
-                            ${escaparHTML(item.nf)}
-                        </td>
-
-                        <td>
-                            ${escaparHTML(item.pedido)}
-                        </td>
-
-                        <td>
-                            ${item.volumes}
-                        </td>
-
-                        <td>
-                            ${item.data}
-                            ${item.hora}
-                        </td>
-
-                        <td>
-
-                            <span class="status-pronto">
-                                ✓ Pronto para impressão
-                            </span>
-
-                        </td>
-
-                    </tr>
-
-                `;
-
-            }
-        );
-
-    }
-
-
-
-    // ===============================================
-    // SEGURANÇA TEXTO
-    // ===============================================
-
-    function escaparHTML(texto) {
-
-        const div =
-            document.createElement(
-                "div"
-            );
-
-
-        div.textContent =
-            texto;
-
-
-        return div.innerHTML;
-
-    }
-
-
-
-    // ===============================================
-    // INICIALIZAÇÃO
-    // ===============================================
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        () => {
-
-            carregarHistorico();
-
-            document
-                .getElementById(
-                    "cliente"
-                )
-                .focus();
-
         }
     );
 
-</script>
+}
 
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+// =====================================================
+// SEGURANÇA DE TEXTO
+// =====================================================
 
-    if (typeof lucide !== "undefined") {
-        lucide.createIcons();
-    }
+function escaparHTML(
+    texto
+) {
 
-    const languagePlaceholder = document.getElementById("language-placeholder");
-    const languageSwitcher = document.getElementById("wms-language-switcher");
 
-    if (languagePlaceholder && languageSwitcher) {
-        languagePlaceholder.appendChild(languageSwitcher);
-    }
+    const div =
+        document.createElement(
+            "div"
+        );
 
-    let paginaAtual =
-        window.location.pathname
-            .split("/")
-            .pop();
 
-    if (!paginaAtual) {
-        paginaAtual = "dashboard.html";
-    }
+    div.textContent =
+        texto;
 
-    document
-        .querySelectorAll(".sidebar-wms-novo .menu-item")
-        .forEach(function (item) {
 
-            const pagina =
-                item.getAttribute("data-page");
+    return div.innerHTML;
 
-            item.classList.toggle(
-                "active",
-                pagina === paginaAtual
+}
+
+
+// =====================================================
+// INICIALIZAÇÃO
+// =====================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        carregarHistorico();
+
+
+        const cliente =
+            document.getElementById(
+                "cliente"
             );
 
-        });
 
-});
+        if (
+            cliente
+        ) {
+
+            cliente.focus();
+
+        }
+
+
+        if (
+            typeof lucide !==
+            "undefined"
+        ) {
+
+            lucide.createIcons();
+
+        }
+
+
+        const languagePlaceholder =
+            document.getElementById(
+                "language-placeholder"
+            );
+
+
+        const languageSwitcher =
+            document.getElementById(
+                "wms-language-switcher"
+            );
+
+
+        if (
+            languagePlaceholder &&
+            languageSwitcher
+        ) {
+
+            languagePlaceholder
+                .appendChild(
+                    languageSwitcher
+                );
+
+        }
+
+
+        let paginaAtual =
+            window.location.pathname
+                .split("/")
+                .pop();
+
+
+        if (
+            !paginaAtual
+        ) {
+
+            paginaAtual =
+                "dashboard.html";
+
+        }
+
+
+        document
+            .querySelectorAll(
+                ".sidebar-wms-novo .menu-item"
+            )
+            .forEach(
+                function (
+                    item
+                ) {
+
+
+                    const pagina =
+                        item.getAttribute(
+                            "data-page"
+                        );
+
+
+                    item.classList.toggle(
+                        "active",
+                        pagina === paginaAtual
+                    );
+
+
+                }
+            );
+
+
+    }
+);
+
+
 </script>
 
 
 </body>
+
 </html>
+
