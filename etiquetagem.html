@@ -88,6 +88,7 @@
 
         .grid-principal {
             display: grid;
+
             grid-template-columns:
                 minmax(350px, .8fr)
                 minmax(700px, 1.5fr);
@@ -207,28 +208,19 @@
 
         .preview-area {
             background: #edf1f5;
-
             padding: 20px;
-
             border-radius: 10px;
-
             min-height: 500px;
-
             overflow: auto;
         }
 
 
         .mensagem-vazia {
             min-height: 420px;
-
             display: flex;
-
             align-items: center;
-
             justify-content: center;
-
             text-align: center;
-
             color: #7a8797;
         }
 
@@ -240,9 +232,7 @@
         .etiqueta {
 
             width: 900px;
-
             min-height: 525px;
-
             background: #fff;
 
             border:
@@ -254,7 +244,6 @@
                 0 auto 20px;
 
             overflow: hidden;
-
             color: #07182f;
 
             box-shadow:
@@ -283,7 +272,6 @@
         .marca-etiqueta {
 
             display: flex;
-
             align-items: center;
 
             padding:
@@ -294,11 +282,9 @@
         .logo-etiqueta-img {
 
             width: 330px;
-
             max-height: 95px;
 
             object-fit: contain;
-
             object-position: left center;
         }
 
@@ -306,9 +292,7 @@
         .paises-etiqueta {
 
             display: flex;
-
             align-items: center;
-
             justify-content: center;
 
             gap: 8px;
@@ -317,79 +301,28 @@
         }
 
 
-        .flag-country {
+        /* =====================================================
+           BANDEIRAS REAIS - BRASIL E ITÁLIA
+        ===================================================== */
 
-            position: relative;
+        .bandeira-etiqueta {
 
             width: 46px;
-
             height: 46px;
 
             flex: 0 0 46px;
 
-            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;
 
-            overflow: hidden;
+            border-radius: 50%;
 
             border:
                 1px solid #aeb7c2;
-        }
 
-
-        .flag-italia {
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #009246 0 33.33%,
-                    #fff 33.33% 66.66%,
-                    #ce2b37 66.66% 100%
-                );
-        }
-
-
-        .flag-brasil {
-
-            background: #169b62;
-        }
-
-
-        .flag-brasil::before {
-
-            content: "";
-
-            position: absolute;
-
-            width: 26px;
-            height: 26px;
-
-            background: #ffdf00;
-
-            left: 10px;
-            top: 10px;
-
-            transform:
-                rotate(45deg);
-
-            z-index: 1;
-        }
-
-
-        .flag-brasil span {
-
-            position: absolute;
-
-            width: 14px;
-            height: 14px;
-
-            background: #002776;
-
-            border-radius: 50%;
-
-            left: 16px;
-            top: 16px;
-
-            z-index: 2;
+            box-shadow:
+                0 1px 3px
+                rgba(0, 0, 0, 0.10);
         }
 
 
@@ -408,9 +341,7 @@
                 16px 22px;
 
             display: flex;
-
             flex-direction: column;
-
             justify-content: center;
         }
 
@@ -418,17 +349,13 @@
         .status-etiqueta {
 
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
 
             gap: 15px;
 
             font-size: 31px;
-
             font-weight: 900;
-
             line-height: 1.05;
         }
 
@@ -436,19 +363,15 @@
         .status-check {
 
             width: 50px;
-
             height: 50px;
 
             border-radius: 50%;
 
             background: white;
-
             color: #08335f;
 
             display: flex;
-
             align-items: center;
-
             justify-content: center;
 
             font-size: 30px;
@@ -456,7 +379,8 @@
             flex: 0 0 50px;
         }
 
-                .faixa-paises {
+
+        .faixa-paises {
 
             display: flex;
 
@@ -535,7 +459,6 @@
         .icone-dado-etiqueta {
 
             width: 42px;
-
             height: 42px;
 
             border-radius: 10px;
@@ -543,9 +466,7 @@
             background: #eef3f7;
 
             display: flex;
-
             align-items: center;
-
             justify-content: center;
 
             color: #082f67;
@@ -555,14 +476,11 @@
         .icone-dado-etiqueta svg {
 
             width: 25px;
-
             height: 25px;
 
             stroke: currentColor;
         }
-
-
-        .rotulo-dado-etiqueta {
+                .rotulo-dado-etiqueta {
 
             font-size: 19px;
 
@@ -819,11 +737,13 @@
         ===================================================== */
 
         .historico {
+
             margin-top: 22px;
         }
 
 
         .tabela-container {
+
             overflow-x: auto;
         }
 
@@ -852,6 +772,7 @@
 
 
         th {
+
             background: #eef3f8;
         }
 
@@ -969,9 +890,7 @@
 
                 grid-template-columns:
                     1fr;
-
             }
-
         }
 
 
@@ -986,9 +905,7 @@
                 width: 100%;
 
                 padding: 15px;
-
             }
-
         }
 
 
@@ -1001,7 +918,6 @@
             @page {
 
                 margin: 4mm;
-
             }
 
 
@@ -1009,7 +925,6 @@
 
                 background:
                     #fff !important;
-
             }
 
 
@@ -1017,7 +932,6 @@
 
                 visibility:
                     hidden;
-
             }
 
 
@@ -1026,7 +940,6 @@
 
                 visibility:
                     visible;
-
             }
 
 
@@ -1048,7 +961,6 @@
 
                 overflow:
                     visible;
-
             }
 
 
@@ -1078,7 +990,6 @@
 
                 print-color-adjust:
                     exact;
-
             }
 
 
@@ -1089,9 +1000,7 @@
 
                 break-after:
                     auto;
-
             }
-
         }
 
     </style>
@@ -1320,7 +1229,8 @@
 
             </a>
 
-                        <a
+
+            <a
                 href="transferencia-mobile.html"
                 class="menu-item"
                 data-page="transferencia-mobile.html"
@@ -1431,8 +1341,7 @@
 
             </a>
 
-
-            <div class="menu-titulo">
+                        <div class="menu-titulo">
 
                 <span>
                     SISTEMA
@@ -1572,7 +1481,6 @@
     </aside>
 
 
-
     <!-- =====================================================
          CONTEÚDO
     ===================================================== -->
@@ -1638,7 +1546,6 @@
         </div>
 
 
-
         <div class="grid-principal">
 
 
@@ -1668,7 +1575,6 @@
                 </div>
 
 
-
                 <div class="campo">
 
                     <label for="nf">
@@ -1685,7 +1591,6 @@
                 </div>
 
 
-
                 <div class="campo">
 
                     <label for="pedido">
@@ -1700,7 +1605,6 @@
                     >
 
                 </div>
-
 
 
                 <div
@@ -1720,7 +1624,6 @@
                     >
 
                 </div>
-
 
 
                 <div class="botoes">
@@ -1754,7 +1657,6 @@
 
 
             </section>
-
 
 
             <!-- PREVIEW -->
@@ -1800,7 +1702,6 @@
 
 
         </div>
-
 
 
         <!-- HISTÓRICO -->
@@ -1872,16 +1773,13 @@
 </div>
 
 
-
 <script src="app.js?v=20260917-1004"></script>
-
 
 
 <script>
 
 
 let etiquetasAtuais = [];
-
 
 // =====================================================
 // GERAR ETIQUETAS
@@ -1940,7 +1838,6 @@ function gerarEtiquetas() {
             .focus();
 
         return;
-
     }
 
 
@@ -1957,7 +1854,6 @@ function gerarEtiquetas() {
             .focus();
 
         return;
-
     }
 
 
@@ -1974,7 +1870,6 @@ function gerarEtiquetas() {
             .focus();
 
         return;
-
     }
 
 
@@ -1988,7 +1883,6 @@ function gerarEtiquetas() {
         );
 
         return;
-
     }
 
 
@@ -2002,7 +1896,6 @@ function gerarEtiquetas() {
         );
 
         return;
-
     }
 
 
@@ -2050,12 +1943,14 @@ function gerarEtiquetas() {
         ===================================================== */
 
         const dadosQR =
-    "C:" + cliente +
-    "|NF:" + nf +
-    "|P:" + pedido +
-    "|T:VER ETIQUETA" +
-    "|V:" + volume + "/" + volumes;
-                const etiqueta =
+            "C:" + cliente +
+            "|NF:" + nf +
+            "|P:" + pedido +
+            "|T:VER ETIQUETA" +
+            "|V:" + volume + "/" + volumes;
+
+
+        const etiqueta =
             document.createElement(
                 "div"
             );
@@ -2090,25 +1985,24 @@ function gerarEtiquetas() {
                 </div>
 
 
-
                 <div
                     class="paises-etiqueta"
                     aria-label="Brasil e Itália"
                 >
 
-                    <span
-                        class="flag-country flag-brasil"
+                    <img
+                        src="img/brasil.png"
+                        alt="Brasil"
+                        class="bandeira-etiqueta"
                     >
-                        <span></span>
-                    </span>
 
-
-                    <span
-                        class="flag-country flag-italia"
-                    ></span>
+                    <img
+                        src="img/italia.png"
+                        alt="Itália"
+                        class="bandeira-etiqueta"
+                    >
 
                 </div>
-
 
 
                 <div
@@ -2159,7 +2053,6 @@ function gerarEtiquetas() {
             </div>
 
 
-
             <!-- =====================================================
                  CORPO DA ETIQUETA
             ====================================================== -->
@@ -2172,7 +2065,6 @@ function gerarEtiquetas() {
                 <div
                     class="dados-etiqueta"
                 >
-
 
 
                     <!-- CLIENTE -->
@@ -2223,7 +2115,6 @@ function gerarEtiquetas() {
                     </div>
 
 
-
                     <!-- NF -->
 
                     <div
@@ -2272,7 +2163,6 @@ function gerarEtiquetas() {
 
 
                     </div>
-
 
 
                     <!-- PEDIDO -->
@@ -2329,7 +2219,6 @@ function gerarEtiquetas() {
                     </div>
 
 
-
                     <!-- =====================================================
                          TRANSPORTE
                          SEM O TEXTO "TRANSPORTE:"
@@ -2378,11 +2267,11 @@ function gerarEtiquetas() {
                         </div>
 
 
-
                         <div
                             class="opcoes-transporte"
                         >
 
+                                                
 
                             <span
                                 class="opcao-transporte"
@@ -2397,7 +2286,6 @@ function gerarEtiquetas() {
                             </span>
 
 
-
                             <span
                                 class="opcao-transporte"
                             >
@@ -2409,7 +2297,6 @@ function gerarEtiquetas() {
                                 SEDEX
 
                             </span>
-
 
 
                             <span
@@ -2429,7 +2316,6 @@ function gerarEtiquetas() {
 
 
                     </div>
-
 
 
                     <!-- VOLUME -->
@@ -2485,7 +2371,6 @@ function gerarEtiquetas() {
                 </div>
 
 
-
                 <!-- =====================================================
                      QR CODE
                 ====================================================== -->
@@ -2522,7 +2407,6 @@ function gerarEtiquetas() {
             </div>
 
 
-
             <!-- =====================================================
                  RODAPÉ
             ====================================================== -->
@@ -2551,7 +2435,6 @@ function gerarEtiquetas() {
                 </div>
 
 
-
                 <div
                     class="contato-item"
                 >
@@ -2569,7 +2452,6 @@ function gerarEtiquetas() {
                     </span>
 
                 </div>
-
 
 
                 <div
@@ -2629,8 +2511,8 @@ function gerarEtiquetas() {
                 colorLight:
                     "#ffffff",
 
-              correctLevel:
-    QRCode.CorrectLevel.L
+                correctLevel:
+                    QRCode.CorrectLevel.L
 
             }
         );
@@ -2666,6 +2548,7 @@ function gerarEtiquetas() {
     );
 
 }
+
 
 // =====================================================
 // IMPRIMIR
@@ -2881,8 +2764,7 @@ function carregarHistorico() {
                 "pt-BR"
             );
 
-
-    const registrosHoje =
+                const registrosHoje =
         historico.filter(
             item =>
                 item.data === hoje
@@ -3125,4 +3007,3 @@ document.addEventListener(
 </body>
 
 </html>
-
