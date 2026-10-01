@@ -14,6 +14,7 @@
     <title>SMI WMS - Produtos</title>
 
     <link rel="stylesheet" href="style.css">
+
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <link rel="icon" type="image/png" href="img/favicon.png">
@@ -30,33 +31,95 @@ body.pagina-produtos{background:#f4f7fb}
 
 .pagina-produtos .topbar small{color:#5e7085;font-size:13px}
 
-.prod-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:18px}
+.prod-kpis{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:16px;
+    margin-bottom:18px
+}
 
-.prod-kpi{min-height:118px;background:#fff;border:1px solid #e1e8f0;border-radius:14px;box-shadow:0 5px 18px rgba(0,30,69,.06);padding:18px 20px;display:flex;align-items:center;gap:16px}
+.prod-kpi{
+    min-height:118px;
+    background:#fff;
+    border:1px solid #e1e8f0;
+    border-radius:14px;
+    box-shadow:0 5px 18px rgba(0,30,69,.06);
+    padding:18px 20px;
+    display:flex;
+    align-items:center;
+    gap:16px
+}
 
-.prod-kpi-icone{width:54px;height:54px;min-width:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:25px}
+.prod-kpi-icone{
+    width:54px;
+    height:54px;
+    min-width:54px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px
+}
 
-.prod-kpi.total .prod-kpi-icone{background:#eaf3ff}
+.prod-kpi.total .prod-kpi-icone{
+    background:#eaf3ff
+}
 
-.prod-kpi.com-estoque .prod-kpi-icone{background:#eaf8ee}
+.prod-kpi.com-estoque .prod-kpi-icone{
+    background:#eaf8ee
+}
 
-.prod-kpi.sem-estoque .prod-kpi-icone{background:#fff1e4}
+.prod-kpi.sem-estoque .prod-kpi-icone{
+    background:#fff1e4
+}
 
-.prod-kpi.abaixo-minimo .prod-kpi-icone{background:#fff0f0}
+.prod-kpi.abaixo-minimo .prod-kpi-icone{
+    background:#fff0f0
+}
 
-.prod-kpi small{display:block;margin-bottom:5px;color:#53677e;font-size:11px;font-weight:700}
+.prod-kpi small{
+    display:block;
+    margin-bottom:5px;
+    color:#53677e;
+    font-size:11px;
+    font-weight:700
+}
 
-.prod-kpi strong{display:block;color:#0b3a78;font-size:27px;line-height:1.1}
+.prod-kpi strong{
+    display:block;
+    color:#0b3a78;
+    font-size:27px;
+    line-height:1.1
+}
 
-.prod-kpi.com-estoque strong{color:#15983f}.prod-kpi.sem-estoque strong{color:#ed7f0b}.prod-kpi.abaixo-minimo strong{color:#d62f3d}
+.prod-kpi.com-estoque strong{
+    color:#15983f
+}
 
-.prod-kpi .subtexto{display:block;margin-top:6px;color:#7c8da1;font-size:10px}
+.prod-kpi.sem-estoque strong{
+    color:#ed7f0b
+}
+
+.prod-kpi.abaixo-minimo strong{
+    color:#d62f3d
+}
+
+.prod-kpi .subtexto{
+    display:block;
+    margin-top:6px;
+    color:#7c8da1;
+    font-size:10px
+}
+
 
 .importarExcel{
 
     display:grid!important;
 
-    grid-template-columns:minmax(230px,1.2fr) minmax(300px,1.5fr) auto!important;
+    grid-template-columns:
+        minmax(230px,1.2fr)
+        minmax(300px,1.5fr)
+        auto!important;
 
     align-items:center!important;
 
@@ -76,11 +139,17 @@ body.pagina-produtos{background:#f4f7fb}
 
     border-radius:14px!important;
 
-    box-shadow:0 5px 18px rgba(0,30,69,.06)!important;
+    box-shadow:
+        0 5px 18px
+        rgba(0,30,69,.06)!important;
 
 }
 
-.tituloExcel{min-width:0}
+
+.tituloExcel{
+    min-width:0
+}
+
 
 .tituloExcel h2{
 
@@ -91,6 +160,7 @@ body.pagina-produtos{background:#f4f7fb}
     white-space:nowrap;
 
 }
+
 
 #arquivoExcel{
 
@@ -112,6 +182,7 @@ body.pagina-produtos{background:#f4f7fb}
 
 }
 
+
 .importarExcel > div:last-child{
 
     display:flex!important;
@@ -125,6 +196,7 @@ body.pagina-produtos{background:#f4f7fb}
     flex-wrap:nowrap!important;
 
 }
+
 
 .importarExcel button{
 
@@ -148,57 +220,294 @@ body.pagina-produtos{background:#f4f7fb}
 
 }
 
-#importarExcel{}
 
-#btnImportarProdutos{background:#0a4a89;color:#fff}
+#btnImportarProdutos{
+    background:#0a4a89;
+    color:#fff
+}
 
-#btnLimparProdutos{color:#d72638;border-color:#e14c59}
 
-.prod-ferramentas{display:grid;grid-template-columns:minmax(300px,1fr) 230px 200px;gap:12px;margin-bottom:0;padding:16px;background:#fff;border:1px solid #e1e8f0;border-radius:14px 14px 0 0;box-shadow:0 5px 18px rgba(0,30,69,.04)}
+#btnLimparProdutos{
+    color:#d72638;
+    border-color:#e14c59
+}
 
-.prod-busca{position:relative}.prod-busca span{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#65788f}
 
-.prod-busca input,.prod-ferramentas select{width:100%;height:42px;border:1px solid #d2dce8;border-radius:7px;background:#fff;outline:none;color:#18324f}
+.prod-ferramentas{
+    display:grid;
+    grid-template-columns:
+        minmax(300px,1fr)
+        230px
+        200px;
+    gap:12px;
+    margin-bottom:0;
+    padding:16px;
+    background:#fff;
+    border:1px solid #e1e8f0;
+    border-radius:14px 14px 0 0;
+    box-shadow:0 5px 18px rgba(0,30,69,.04)
+}
 
-.prod-busca input{padding:0 14px 0 39px}.prod-ferramentas select{padding:0 12px}
 
-.produtos-tabela-container{background:#fff;border:1px solid #e1e8f0;border-top:0;border-radius:0 0 14px 14px;box-shadow:0 5px 18px rgba(0,30,69,.06);overflow:hidden}
+.prod-busca{
+    position:relative
+}
 
-.produtos-scroll{overflow-x:auto}
 
-.pagina-produtos .tabela-produtos{width:100%;min-width:1150px;margin:0;border-collapse:collapse;box-shadow:none}
+.prod-busca span{
+    position:absolute;
+    left:13px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#65788f
+}
 
-.pagina-produtos .tabela-produtos thead th{padding:12px 10px;background:#f7f9fc;color:#062b60;border-bottom:1px solid #dfe6ee;font-size:11px;white-space:nowrap}
 
-.pagina-produtos .tabela-produtos tbody td{padding:11px 10px;color:#15385f;border-bottom:1px solid #edf1f5;font-size:11px;vertical-align:middle}
+.prod-busca input,
+.prod-ferramentas select{
+    width:100%;
+    height:42px;
+    border:1px solid #d2dce8;
+    border-radius:7px;
+    background:#fff;
+    outline:none;
+    color:#18324f
+}
 
-.pagina-produtos .tabela-produtos tbody tr:hover{background:#f9fbfe}
 
-.status-produto{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:78px;padding:5px 9px;border-radius:6px;font-weight:700;white-space:nowrap}
+.prod-busca input{
+    padding:0 14px 0 39px
+}
 
-.status-produto.normal{background:#e5f5e9;color:#188038}.status-produto.abaixo{background:#fde8e8;color:#cf2d2d}
 
-.status-contagem-produto{display:inline-flex;align-items:center;justify-content:center;min-width:88px;padding:5px 9px;border-radius:6px;font-weight:700;white-space:nowrap}
+.prod-ferramentas select{
+    padding:0 12px
+}
 
-.status-contagem-produto.contado{background:#e5f5e9;color:#188038}
 
-.status-contagem-produto.pendente{background:#fff4df;color:#b86b00}
+.produtos-tabela-container{
+    background:#fff;
+    border:1px solid #e1e8f0;
+    border-top:0;
+    border-radius:0 0 14px 14px;
+    box-shadow:0 5px 18px rgba(0,30,69,.06);
+    overflow:hidden
+}
 
-.status-contagem-produto.sem-posicao{background:#eef2f7;color:#66788a}
 
-.prod-rodape{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;background:#fff}
+.produtos-scroll{
+    overflow-x:auto
+}
 
-.prod-contador{color:#587089;font-size:11px}.prod-paginacao{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center}
 
-.prod-paginacao button{min-width:32px;height:32px;padding:0 9px;border:1px solid #d2dce8;border-radius:6px;background:#fff;color:#17345c;font-weight:700;cursor:pointer}
+.pagina-produtos .tabela-produtos{
+    width:100%;
+    min-width:1150px;
+    margin:0;
+    border-collapse:collapse;
+    box-shadow:none
+}
 
-.prod-paginacao button.ativo{background:#1263d6;border-color:#1263d6;color:#fff}
 
-.prod-itens-pagina{display:flex;align-items:center;gap:8px;color:#587089;font-size:11px}.prod-itens-pagina select{height:34px;border:1px solid #d2dce8;border-radius:6px;background:#fff;padding:0 8px}
+.pagina-produtos .tabela-produtos thead th{
+    padding:12px 10px;
+    background:#f7f9fc;
+    color:#062b60;
+    border-bottom:1px solid #dfe6ee;
+    font-size:11px;
+    white-space:nowrap
+}
 
-@media(max-width:1250px){.prod-kpis{grid-template-columns:1fr 1fr}.importarExcel{grid-template-columns:1fr 1fr!important}.importarExcel > div:last-child{grid-column:1/-1;justify-content:flex-start!important;flex-wrap:wrap!important}.prod-ferramentas{grid-template-columns:1fr 1fr}}
 
-@media(max-width:760px){.pagina-produtos .conteudo{padding:14px 10px 28px!important}.prod-kpis{grid-template-columns:1fr}.importarExcel{grid-template-columns:1fr!important}.importarExcel > div:last-child{grid-column:auto;justify-content:flex-start!important;flex-wrap:wrap!important}.prod-ferramentas{grid-template-columns:1fr}.prod-rodape{flex-direction:column;align-items:stretch}.prod-itens-pagina{justify-content:center}}
+.pagina-produtos .tabela-produtos tbody td{
+    padding:11px 10px;
+    color:#15385f;
+    border-bottom:1px solid #edf1f5;
+    font-size:11px;
+    vertical-align:middle
+}
+
+
+.pagina-produtos .tabela-produtos tbody tr:hover{
+    background:#f9fbfe
+}
+
+
+.status-produto{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    min-width:78px;
+    padding:5px 9px;
+    border-radius:6px;
+    font-weight:700;
+    white-space:nowrap
+}
+
+
+.status-produto.normal{
+    background:#e5f5e9;
+    color:#188038
+}
+
+
+.status-produto.abaixo{
+    background:#fde8e8;
+    color:#cf2d2d
+}
+
+
+.status-contagem-produto{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:88px;
+    padding:5px 9px;
+    border-radius:6px;
+    font-weight:700;
+    white-space:nowrap
+}
+
+
+.status-contagem-produto.contado{
+    background:#e5f5e9;
+    color:#188038
+}
+
+
+.status-contagem-produto.pendente{
+    background:#fff4df;
+    color:#b86b00
+}
+
+
+.status-contagem-produto.sem-posicao{
+    background:#eef2f7;
+    color:#66788a
+}
+
+
+.prod-rodape{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:14px 16px;
+    background:#fff
+}
+
+
+.prod-contador{
+    color:#587089;
+    font-size:11px
+}
+
+
+.prod-paginacao{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
+    justify-content:center
+}
+
+
+.prod-paginacao button{
+    min-width:32px;
+    height:32px;
+    padding:0 9px;
+    border:1px solid #d2dce8;
+    border-radius:6px;
+    background:#fff;
+    color:#17345c;
+    font-weight:700;
+    cursor:pointer
+}
+
+
+.prod-paginacao button.ativo{
+    background:#1263d6;
+    border-color:#1263d6;
+    color:#fff
+}
+
+
+.prod-itens-pagina{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#587089;
+    font-size:11px
+}
+
+
+.prod-itens-pagina select{
+    height:34px;
+    border:1px solid #d2dce8;
+    border-radius:6px;
+    background:#fff;
+    padding:0 8px
+}
+
+
+@media(max-width:1250px){
+
+    .prod-kpis{
+        grid-template-columns:1fr 1fr
+    }
+
+    .importarExcel{
+        grid-template-columns:1fr 1fr!important
+    }
+
+    .importarExcel > div:last-child{
+        grid-column:1/-1;
+        justify-content:flex-start!important;
+        flex-wrap:wrap!important
+    }
+
+    .prod-ferramentas{
+        grid-template-columns:1fr 1fr
+    }
+
+}
+
+
+@media(max-width:760px){
+
+    .pagina-produtos .conteudo{
+        padding:14px 10px 28px!important
+    }
+
+    .prod-kpis{
+        grid-template-columns:1fr
+    }
+
+    .importarExcel{
+        grid-template-columns:1fr!important
+    }
+
+    .importarExcel > div:last-child{
+        grid-column:auto;
+        justify-content:flex-start!important;
+        flex-wrap:wrap!important
+    }
+
+    .prod-ferramentas{
+        grid-template-columns:1fr
+    }
+
+    .prod-rodape{
+        flex-direction:column;
+        align-items:stretch
+    }
+
+    .prod-itens-pagina{
+        justify-content:center
+    }
+
+}
 
 
 /* =====================================================
@@ -222,6 +531,7 @@ body.pagina-produtos{background:#f4f7fb}
 
 }
 
+
 .pagina-produtos #language-placeholder{
 
     display:flex;
@@ -232,7 +542,10 @@ body.pagina-produtos{background:#f4f7fb}
 
 }
 
-.pagina-produtos #language-placeholder #wms-language-switcher{
+
+.pagina-produtos
+#language-placeholder
+#wms-language-switcher{
 
     position:static!important;
 
@@ -256,12 +569,14 @@ body.pagina-produtos{background:#f4f7fb}
 
 }
 
+
 .pagina-produtos #relogio,
 .pagina-produtos #nomeUsuario{
 
     flex:0 0 auto;
 
 }
+
 
 @media(max-width:950px){
 
@@ -277,11 +592,14 @@ body.pagina-produtos{background:#f4f7fb}
 
 </head>
 
+
 <body class="pagina-produtos">
+
 
     <!-- MENU LATERAL - NOVO PADRÃO SMI WMS -->
 
     <aside class="sidebar sidebar-wms-novo">
+
 
         <div class="sidebar-topo">
 
@@ -297,146 +615,370 @@ body.pagina-produtos{background:#f4f7fb}
 
         </div>
 
+
         <nav class="sidebar-nav" aria-label="Menu principal">
+
 
             <div class="menu-titulo">
                 <span>PRINCIPAL</span>
             </div>
 
-            <a href="dashboard.html" class="menu-item" data-page="dashboard.html">
+
+            <a
+                href="dashboard.html"
+                class="menu-item"
+                data-page="dashboard.html"
+            >
+
                 <span class="menu-icon icone-dashboard">
                     <i data-lucide="house"></i>
                 </span>
-                <span class="menu-texto">Dashboard</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Dashboard
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="produtos.html" class="menu-item" data-page="produtos.html">
+
+            <a
+                href="produtos.html"
+                class="menu-item"
+                data-page="produtos.html"
+            >
+
                 <span class="menu-icon icone-produtos">
                     <i data-lucide="package"></i>
                 </span>
-                <span class="menu-texto">Produtos</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Produtos
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
+
 
             <div class="menu-titulo">
                 <span>OPERAÇÕES</span>
             </div>
 
-            <a href="entradas.html" class="menu-item" data-page="entradas.html">
+
+            <a
+                href="entradas.html"
+                class="menu-item"
+                data-page="entradas.html"
+            >
+
                 <span class="menu-icon icone-entradas">
                     <i data-lucide="download"></i>
                 </span>
-                <span class="menu-texto">Entradas</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Entradas
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="saidas.html" class="menu-item" data-page="saidas.html">
+
+            <a
+                href="saidas.html"
+                class="menu-item"
+                data-page="saidas.html"
+            >
+
                 <span class="menu-icon icone-saidas">
                     <i data-lucide="upload"></i>
                 </span>
-                <span class="menu-texto">Saídas</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Saídas
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="separacao.html" class="menu-item" data-page="separacao.html">
+
+            <a
+                href="separacao.html"
+                class="menu-item"
+                data-page="separacao.html"
+            >
+
                 <span class="menu-icon icone-separacao">
                     <i data-lucide="shopping-cart"></i>
                 </span>
-                <span class="menu-texto">Separação</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Separação
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="conferencia.html" class="menu-item" data-page="conferencia.html">
+
+            <a
+                href="conferencia.html"
+                class="menu-item"
+                data-page="conferencia.html"
+            >
+
                 <span class="menu-icon icone-conferencia">
                     <i data-lucide="clipboard-check"></i>
                 </span>
-                <span class="menu-texto">Conferência</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Conferência
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="transferencias.html" class="menu-item" data-page="transferencias.html">
+
+            <a
+                href="transferencias.html"
+                class="menu-item"
+                data-page="transferencias.html"
+            >
+
                 <span class="menu-icon icone-transferencia">
                     <i data-lucide="arrow-left-right"></i>
                 </span>
-                <span class="menu-texto">Transferências</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Transferências
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-                        <a href="transferencia-mobile.html" class="menu-item" data-page="transferencia-mobile.html">
+
+            <a
+                href="transferencia-mobile.html"
+                class="menu-item"
+                data-page="transferencia-mobile.html"
+            >
+
                 <span class="menu-icon icone-mobile">
                     <i data-lucide="smartphone"></i>
                 </span>
-                <span class="menu-texto">Transf. Mobile</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Transf. Mobile
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="posicoes.html" class="menu-item" data-page="posicoes.html">
+
+            <a
+                href="posicoes.html"
+                class="menu-item"
+                data-page="posicoes.html"
+            >
+
                 <span class="menu-icon icone-posicoes">
                     <i data-lucide="map-pin"></i>
                 </span>
-                <span class="menu-texto">Posições</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Posições
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="inventario.html" class="menu-item" data-page="inventario.html">
+
+            <a
+                href="inventario.html"
+                class="menu-item"
+                data-page="inventario.html"
+            >
+
                 <span class="menu-icon icone-inventario">
                     <i data-lucide="clipboard-list"></i>
                 </span>
-                <span class="menu-texto">Inventário</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Inventário
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="inventario-mobile.html" class="menu-item" data-page="inventario-mobile.html">
+
+            <a
+                href="inventario-mobile.html"
+                class="menu-item"
+                data-page="inventario-mobile.html"
+            >
+
                 <span class="menu-icon icone-invmobile">
                     <i data-lucide="scan-line"></i>
                 </span>
-                <span class="menu-texto">Inv. Mobile</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Inv. Mobile
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
+
 
             <div class="menu-titulo">
                 <span>SISTEMA</span>
             </div>
 
-            <a href="relatorios.html" class="menu-item" data-page="relatorios.html">
+
+            <a
+                href="relatorios.html"
+                class="menu-item"
+                data-page="relatorios.html"
+            >
+
                 <span class="menu-icon icone-relatorios">
                     <i data-lucide="chart-no-axes-column"></i>
                 </span>
-                <span class="menu-texto">Relatórios</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Relatórios
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="etiquetagem.html" class="menu-item" data-page="etiquetagem.html">
+
+            <a
+                href="etiquetagem.html"
+                class="menu-item"
+                data-page="etiquetagem.html"
+            >
+
                 <span class="menu-icon icone-etiqueta">
                     <i data-lucide="tag"></i>
                 </span>
-                <span class="menu-texto">Etiquetagem</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Etiquetagem
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="requisicao.html" class="menu-item" data-page="requisicao.html">
+
+            <a
+                href="requisicao.html"
+                class="menu-item"
+                data-page="requisicao.html"
+            >
+
                 <span class="menu-icon icone-requisicao">
                     <i data-lucide="file-text"></i>
                 </span>
-                <span class="menu-texto">Requisição</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Requisição
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
 
-            <a href="configuracoes.html" class="menu-item" data-page="configuracoes.html">
+
+            <a
+                href="configuracoes.html"
+                class="menu-item"
+                data-page="configuracoes.html"
+            >
+
                 <span class="menu-icon icone-config">
                     <i data-lucide="settings"></i>
                 </span>
-                <span class="menu-texto">Configurações</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+                <span class="menu-texto">
+                    Configurações
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
             </a>
+
 
         </nav>
 
+
         <div class="sidebar-rodape">
-            <span>LOGÍSTICA MAIS INTELIGENTE</span>
-            <small>v1.0.0</small>
+
+            <span>
+                LOGÍSTICA MAIS INTELIGENTE
+            </span>
+
+            <small>
+                v1.0.0
+            </small>
+
         </div>
+
 
     </aside>
 
@@ -445,17 +987,24 @@ body.pagina-produtos{background:#f4f7fb}
 
     <main class="conteudo">
 
+
         <!-- BARRA SUPERIOR -->
 
         <header class="topbar">
 
+
             <div class="titulo-pagina">
 
-                <h1>Produtos</h1>
+                <h1>
+                    Produtos
+                </h1>
 
-                <small>Cadastro, consulta e gestão do estoque</small>
+                <small>
+                    Cadastro, consulta e gestão do estoque
+                </small>
 
             </div>
+
 
             <div class="usuario">
 
@@ -477,6 +1026,7 @@ body.pagina-produtos{background:#f4f7fb}
 
             </div>
 
+
         </header>
 
 
@@ -484,47 +1034,115 @@ body.pagina-produtos{background:#f4f7fb}
 
         <section class="prod-kpis">
 
+
             <div class="prod-kpi total">
-                <div class="prod-kpi-icone">📦</div>
-                <div>
-                    <small>Total de Produtos</small>
-                    <strong id="kpiTotalProdutos">0</strong>
-                    <span class="subtexto">Cadastros ativos</span>
+
+                <div class="prod-kpi-icone">
+                    📦
                 </div>
+
+                <div>
+
+                    <small>
+                        Total de Produtos
+                    </small>
+
+                    <strong id="kpiTotalProdutos">
+                        0
+                    </strong>
+
+                    <span class="subtexto">
+                        Cadastros ativos
+                    </span>
+
+                </div>
+
             </div>
+
 
             <div class="prod-kpi com-estoque">
-                <div class="prod-kpi-icone">✅</div>
+
+                <div class="prod-kpi-icone">
+                    ✅
+                </div>
+
                 <div>
-                    <small>Com Estoque</small>
-                    <strong id="kpiComEstoque">0</strong>
-                    <span class="subtexto" id="kpiComEstoquePercentual">
+
+                    <small>
+                        Com Estoque
+                    </small>
+
+                    <strong id="kpiComEstoque">
+                        0
+                    </strong>
+
+                    <span
+                        class="subtexto"
+                        id="kpiComEstoquePercentual"
+                    >
                         0% do total
                     </span>
+
                 </div>
+
             </div>
+
 
             <div class="prod-kpi sem-estoque">
-                <div class="prod-kpi-icone">📭</div>
+
+                <div class="prod-kpi-icone">
+                    📭
+                </div>
+
                 <div>
-                    <small>Sem Estoque</small>
-                    <strong id="kpiSemEstoque">0</strong>
-                    <span class="subtexto" id="kpiSemEstoquePercentual">
+
+                    <small>
+                        Sem Estoque
+                    </small>
+
+                    <strong id="kpiSemEstoque">
+                        0
+                    </strong>
+
+                    <span
+                        class="subtexto"
+                        id="kpiSemEstoquePercentual"
+                    >
                         0% do total
                     </span>
+
                 </div>
+
             </div>
 
+
             <div class="prod-kpi abaixo-minimo">
-                <div class="prod-kpi-icone">⚠️</div>
+
+                <div class="prod-kpi-icone">
+                    ⚠️
+                </div>
+
                 <div>
-                    <small>Abaixo do Mínimo</small>
-                    <strong id="kpiAbaixoMinimo">0</strong>
-                    <span class="subtexto" id="kpiAbaixoMinimoPercentual">
+
+                    <small>
+                        Abaixo do Mínimo
+                    </small>
+
+                    <strong id="kpiAbaixoMinimo">
+                        0
+                    </strong>
+
+                    <span
+                        class="subtexto"
+                        id="kpiAbaixoMinimoPercentual"
+                    >
                         0% do total
                     </span>
+
                 </div>
+
             </div>
+
 
         </section>
 
@@ -536,16 +1154,22 @@ body.pagina-produtos{background:#f4f7fb}
             aria-labelledby="tituloImportacao"
         >
 
+
             <div class="tituloExcel">
 
                 <h2
                     id="tituloImportacao"
-                    style="margin: 0; color: #0A2D5F; font-size: 28px;"
+                    style="
+                        margin:0;
+                        color:#0A2D5F;
+                        font-size:28px;
+                    "
                 >
                     📥 Importar Estoque Excel
                 </h2>
 
             </div>
+
 
             <input
                 type="file"
@@ -554,7 +1178,15 @@ body.pagina-produtos{background:#f4f7fb}
                 aria-label="Selecionar arquivo de estoque"
             >
 
-            <div style="display:flex; gap:12px; align-items:center;">
+
+            <div
+                style="
+                    display:flex;
+                    gap:12px;
+                    align-items:center;
+                "
+            >
+
 
                 <button
                     type="button"
@@ -562,6 +1194,7 @@ body.pagina-produtos{background:#f4f7fb}
                 >
                     📥 Importar Dados
                 </button>
+
 
                 <button
                     type="button"
@@ -571,6 +1204,7 @@ body.pagina-produtos{background:#f4f7fb}
                     📤 Exportar Estoque
                 </button>
 
+
                 <button
                     type="button"
                     id="btnLimparProdutos"
@@ -579,7 +1213,9 @@ body.pagina-produtos{background:#f4f7fb}
                     🗑️ Limpar Produtos
                 </button>
 
+
             </div>
+
 
         </section>
 
@@ -588,9 +1224,12 @@ body.pagina-produtos{background:#f4f7fb}
 
         <section class="prod-ferramentas">
 
+
             <div class="prod-busca">
 
-                <span>🔍</span>
+                <span>
+                    🔍
+                </span>
 
                 <input
                     type="text"
@@ -601,6 +1240,7 @@ body.pagina-produtos{background:#f4f7fb}
 
             </div>
 
+
             <select id="filtroClienteProdutos">
 
                 <option value="">
@@ -608,6 +1248,7 @@ body.pagina-produtos{background:#f4f7fb}
                 </option>
 
             </select>
+
 
             <select id="filtroStatusProdutos">
 
@@ -629,6 +1270,7 @@ body.pagina-produtos{background:#f4f7fb}
 
             </select>
 
+
         </section>
 
 
@@ -636,29 +1278,43 @@ body.pagina-produtos{background:#f4f7fb}
 
         <section class="produtos-tabela-container">
 
+
             <div class="produtos-scroll">
 
+
                 <table class="tabela tabela-produtos">
+
 
                     <thead>
 
                         <tr>
 
                             <th>Código</th>
+
                             <th>Descrição</th>
+
                             <th>Descrição detalhada</th>
+
                             <th>Quantidade</th>
+
                             <th>Mínimo</th>
+
                             <th>Máximo</th>
+
                             <th>Status</th>
+
                             <th>Contagem</th>
+
                             <th>NCM</th>
+
                             <th>IPI</th>
+
                             <th>Posição</th>
 
                         </tr>
 
                     </thead>
+
 
                     <tbody id="listaProdutos">
 
@@ -675,11 +1331,15 @@ body.pagina-produtos{background:#f4f7fb}
 
                     </tbody>
 
+
                 </table>
+
 
             </div>
 
+
             <div class="prod-rodape">
+
 
                 <div
                     id="contadorProdutos"
@@ -688,10 +1348,12 @@ body.pagina-produtos{background:#f4f7fb}
                     0 produtos
                 </div>
 
+
                 <div
                     id="paginacaoProdutos"
                     class="prod-paginacao"
                 ></div>
+
 
                 <div class="prod-itens-pagina">
 
@@ -705,7 +1367,7 @@ body.pagina-produtos{background:#f4f7fb}
                             20
                         </option>
 
-                        <option value="100">
+                        <option value="100" selected>
                             100
                         </option>
 
@@ -717,7 +1379,7 @@ body.pagina-produtos{background:#f4f7fb}
                             2000
                         </option>
 
-                        <option value="7000" selected>
+                        <option value="7000">
                             7000
                         </option>
 
@@ -725,9 +1387,12 @@ body.pagina-produtos{background:#f4f7fb}
 
                 </div>
 
+
             </div>
 
+
         </section>
+
 
     </main>
 
@@ -743,6 +1408,7 @@ body.pagina-produtos{background:#f4f7fb}
 
 
     <script>
+
 
 let todosProdutosTela = [];
 
@@ -764,8 +1430,10 @@ function criarChaveContagemProduto(
     return (
         String(codigo || "")
             .trim()
-            .toUpperCase() +
-        "__" +
+            .toUpperCase()
+        +
+        "__"
+        +
         String(posicao || "")
             .trim()
             .toUpperCase()
@@ -933,6 +1601,11 @@ function obterStatusContagemProduto(
 }
 
 
+// =====================================================
+// CARREGAR PRODUTOS
+// OTIMIZADO PARA MOSTRAR A TABELA MAIS RÁPIDO
+// =====================================================
+
 async function carregarTodosOsProdutosNaTela() {
 
     const tabela =
@@ -940,9 +1613,13 @@ async function carregarTodosOsProdutosNaTela() {
             "listaProdutos"
         );
 
-    if (!tabela) return;
+    if (!tabela) {
+        return;
+    }
+
 
     let tentativas = 0;
+
 
     while (
         !window.supabaseClient &&
@@ -961,6 +1638,7 @@ async function carregarTodosOsProdutosNaTela() {
 
     }
 
+
     if (!window.supabaseClient) {
 
         tabela.innerHTML =
@@ -970,8 +1648,10 @@ async function carregarTodosOsProdutosNaTela() {
 
     }
 
+
     tabela.innerHTML =
-        '<tr><td colspan="11" class="produtos-vazio">Carregando todos os produtos...</td></tr>';
+        '<tr><td colspan="11" class="produtos-vazio">Carregando produtos...</td></tr>';
+
 
     try {
 
@@ -981,12 +1661,14 @@ async function carregarTodosOsProdutosNaTela() {
 
         let inicio = 0;
 
+
         while (true) {
 
             const fim =
                 inicio +
                 quantidadePorBusca -
                 1;
+
 
             const { data, error } =
                 await window.supabaseClient
@@ -1003,9 +1685,11 @@ async function carregarTodosOsProdutosNaTela() {
                         fim
                     );
 
+
             if (error) {
                 throw error;
             }
+
 
             if (
                 !Array.isArray(data) ||
@@ -1014,9 +1698,11 @@ async function carregarTodosOsProdutosNaTela() {
                 break;
             }
 
+
             todosProdutos.push(
                 ...data
             );
+
 
             if (
                 data.length <
@@ -1025,10 +1711,12 @@ async function carregarTodosOsProdutosNaTela() {
                 break;
             }
 
+
             inicio +=
                 quantidadePorBusca;
 
         }
+
 
         todosProdutos.sort(
             (a, b) =>
@@ -1045,25 +1733,59 @@ async function carregarTodosOsProdutosNaTela() {
                 )
         );
 
-        await carregarStatusContagemProdutos();
+
+        // =====================================================
+        // MOSTRAR PRODUTOS IMEDIATAMENTE
+        // NÃO ESPERA MAIS O INVENTÁRIO TERMINAR
+        // =====================================================
 
         todosProdutosTela =
             todosProdutos;
+
 
         atualizarFiltroComTodosOsProdutos(
             todosProdutosTela
         );
 
+
         atualizarIndicadoresProdutos();
+
 
         paginaAtualProdutos = 1;
 
+
         renderizarProdutosPaginados();
+
 
         console.log(
             "TOTAL DE PRODUTOS CARREGADOS:",
             todosProdutosTela.length
         );
+
+
+        // =====================================================
+        // CONTAGEM DO INVENTÁRIO EM SEGUNDO PLANO
+        // =====================================================
+
+        carregarStatusContagemProdutos()
+            .then(
+                function () {
+
+                    renderizarProdutosPaginados();
+
+                }
+            )
+            .catch(
+                function (erro) {
+
+                    console.error(
+                        "Erro ao atualizar status de contagem:",
+                        erro
+                    );
+
+                }
+            );
+
 
     } catch (erro) {
 
@@ -1071,6 +1793,7 @@ async function carregarTodosOsProdutosNaTela() {
             "Erro ao carregar todos os produtos:",
             erro
         );
+
 
         tabela.innerHTML =
             '<tr><td colspan="11" class="produtos-vazio">Erro ao carregar produtos: ' +
@@ -1089,6 +1812,7 @@ function atualizarIndicadoresProdutos() {
     const total =
         todosProdutosTela.length;
 
+
     const comEstoque =
         todosProdutosTela.filter(
             produto =>
@@ -1096,6 +1820,7 @@ function atualizarIndicadoresProdutos() {
                     produto.quantidade || 0
                 ) > 0
         ).length;
+
 
     const semEstoque =
         todosProdutosTela.filter(
@@ -1121,6 +1846,7 @@ function atualizarIndicadoresProdutos() {
             }
         ).length;
 
+
     const abaixoMinimo =
         todosProdutosTela.filter(
             produto => {
@@ -1145,12 +1871,14 @@ function atualizarIndicadoresProdutos() {
             }
         ).length;
 
+
     atualizarTextoProduto(
         "kpiTotalProdutos",
         total.toLocaleString(
             "pt-BR"
         )
     );
+
 
     atualizarTextoProduto(
         "kpiComEstoque",
@@ -1159,6 +1887,7 @@ function atualizarIndicadoresProdutos() {
         )
     );
 
+
     atualizarTextoProduto(
         "kpiSemEstoque",
         semEstoque.toLocaleString(
@@ -1166,12 +1895,14 @@ function atualizarIndicadoresProdutos() {
         )
     );
 
+
     atualizarTextoProduto(
         "kpiAbaixoMinimo",
         abaixoMinimo.toLocaleString(
             "pt-BR"
         )
     );
+
 
     atualizarTextoProduto(
         "kpiComEstoquePercentual",
@@ -1181,6 +1912,7 @@ function atualizarIndicadoresProdutos() {
         ) + "% do total"
     );
 
+
     atualizarTextoProduto(
         "kpiSemEstoquePercentual",
         percentualProduto(
@@ -1188,6 +1920,7 @@ function atualizarIndicadoresProdutos() {
             total
         ) + "% do total"
     );
+
 
     atualizarTextoProduto(
         "kpiAbaixoMinimoPercentual",
@@ -1209,6 +1942,7 @@ function percentualProduto(
         return "0,00";
     }
 
+
     return (
         (valor / total) *
         100
@@ -1222,7 +1956,6 @@ function percentualProduto(
 
 }
 
-
 function atualizarFiltroComTodosOsProdutos(
     produtos
 ) {
@@ -1233,6 +1966,7 @@ function atualizarFiltroComTodosOsProdutos(
         );
 
     if (!filtro) return;
+
 
     const clientes =
         [
@@ -1249,8 +1983,10 @@ function atualizarFiltroComTodosOsProdutos(
             )
         ].sort();
 
+
     filtro.innerHTML =
         '<option value="">Todos os clientes</option>';
+
 
     clientes.forEach(
         cliente => {
@@ -1276,6 +2012,7 @@ function atualizarFiltroComTodosOsProdutos(
 }
 
 
+
 function obterProdutosFiltrados() {
 
     const pesquisa =
@@ -1289,6 +2026,7 @@ function obterProdutosFiltrados() {
             .trim()
             .toUpperCase();
 
+
     const cliente =
         String(
             document
@@ -1299,6 +2037,7 @@ function obterProdutosFiltrados() {
         )
             .trim()
             .toUpperCase();
+
 
     const status =
         String(
@@ -1311,6 +2050,7 @@ function obterProdutosFiltrados() {
             .trim()
             .toUpperCase();
 
+
     return todosProdutosTela.filter(
         produto => {
 
@@ -1319,6 +2059,7 @@ function obterProdutosFiltrados() {
                     produto.quantidade || 0
                 );
 
+
             const minimo =
                 Number(
                     produto.minimo ??
@@ -1326,9 +2067,11 @@ function obterProdutosFiltrados() {
                     0
                 );
 
+
             const abaixoMinimo =
                 minimo > 0 &&
                 quantidade < minimo;
+
 
             const clienteProduto =
                 String(
@@ -1337,6 +2080,7 @@ function obterProdutosFiltrados() {
                 )
                     .trim()
                     .toUpperCase();
+
 
             const texto =
                 [
@@ -1351,42 +2095,55 @@ function obterProdutosFiltrados() {
                     .join(" ")
                     .toUpperCase();
 
+
             const pesquisaOk =
                 !pesquisa ||
                 texto.includes(
                     pesquisa
                 );
 
+
             const clienteOk =
                 !cliente ||
                 clienteProduto ===
                 cliente;
 
+
             let statusOk = true;
+
 
             if (
                 status ===
                 "COM_ESTOQUE"
             ) {
+
                 statusOk =
                     quantidade > 0;
+
             }
+
 
             if (
                 status ===
                 "SEM_ESTOQUE"
             ) {
+
                 statusOk =
                     quantidade <= 0;
+
             }
+
 
             if (
                 status ===
                 "ABAIXO_MINIMO"
             ) {
+
                 statusOk =
                     abaixoMinimo;
+
             }
+
 
             return (
                 pesquisaOk &&
@@ -1399,6 +2156,8 @@ function obterProdutosFiltrados() {
 
 }
 
+
+
 function renderizarProdutosPaginados() {
 
     const tabela =
@@ -1408,8 +2167,10 @@ function renderizarProdutosPaginados() {
 
     if (!tabela) return;
 
+
     const filtrados =
         obterProdutosFiltrados();
+
 
     const itensPorPagina =
         Number(
@@ -1417,8 +2178,9 @@ function renderizarProdutosPaginados() {
                 .getElementById(
                     "itensPorPaginaProdutos"
                 )?.value ||
-            20
+            100
         );
+
 
     const totalPaginas =
         Math.max(
@@ -1429,13 +2191,17 @@ function renderizarProdutosPaginados() {
             )
         );
 
+
     if (
         paginaAtualProdutos >
         totalPaginas
     ) {
+
         paginaAtualProdutos =
             totalPaginas;
+
     }
+
 
     const inicio =
         (
@@ -1444,6 +2210,7 @@ function renderizarProdutosPaginados() {
         ) *
         itensPorPagina;
 
+
     const fim =
         Math.min(
             inicio +
@@ -1451,13 +2218,16 @@ function renderizarProdutosPaginados() {
             filtrados.length
         );
 
+
     const pagina =
         filtrados.slice(
             inicio,
             fim
         );
 
+
     tabela.innerHTML = "";
+
 
     if (
         pagina.length ===
@@ -1467,6 +2237,7 @@ function renderizarProdutosPaginados() {
         tabela.innerHTML =
             '<tr><td colspan="11" class="produtos-vazio">Nenhum produto encontrado.</td></tr>';
 
+
         atualizarRodapeProdutos(
             0,
             0,
@@ -1474,9 +2245,11 @@ function renderizarProdutosPaginados() {
             1
         );
 
+
         return;
 
     }
+
 
     pagina.forEach(
         produto => {
@@ -1486,11 +2259,13 @@ function renderizarProdutosPaginados() {
                     "tr"
                 );
 
+
             const quantidade =
                 Number(
                     produto.quantidade ||
                     0
                 );
+
 
             const minimo =
                 Number(
@@ -1499,6 +2274,7 @@ function renderizarProdutosPaginados() {
                     0
                 );
 
+
             const maximo =
                 Number(
                     produto.maximo ??
@@ -1506,34 +2282,41 @@ function renderizarProdutosPaginados() {
                     0
                 );
 
+
             const abaixoDoMinimo =
                 minimo > 0 &&
                 quantidade < minimo;
+
 
             const statusEstoque =
                 abaixoDoMinimo
                     ? '<span class="status-produto abaixo">Abaixo do mínimo</span>'
                     : '<span class="status-produto normal">● Normal</span>';
 
+
             const statusContagem =
                 obterStatusContagemProduto(
                     produto
                 );
+
 
             const descricaoDetalhada =
                 produto.descricao_detalhada ??
                 produto.descricaoDetalhada ??
                 "-";
 
+
             const ncm =
                 produto.ncm ??
                 produto.NCM ??
                 "-";
 
+
             const ipi =
                 produto.ipi ??
                 produto.IPI ??
                 "-";
+
 
             linha.innerHTML = `
                 <td>${escaparHTMLProduto(produto.codigo || "-")}</td>
@@ -1557,12 +2340,14 @@ function renderizarProdutosPaginados() {
                 <td>${escaparHTMLProduto(produto.endereco || "-")}</td>
             `;
 
+
             tabela.appendChild(
                 linha
             );
 
         }
     );
+
 
     atualizarRodapeProdutos(
         inicio + 1,
@@ -1572,6 +2357,7 @@ function renderizarProdutosPaginados() {
     );
 
 }
+
 
 
 function atualizarRodapeProdutos(
@@ -1586,6 +2372,7 @@ function atualizarRodapeProdutos(
             "contadorProdutos"
         );
 
+
     if (contador) {
 
         contador.textContent =
@@ -1595,21 +2382,28 @@ function atualizarRodapeProdutos(
 
     }
 
+
     const paginacao =
         document.getElementById(
             "paginacaoProdutos"
         );
 
+
     if (!paginacao) return;
 
+
     paginacao.innerHTML = "";
+
 
     if (
         totalPaginas <=
         1
     ) {
+
         return;
+
     }
+
 
     const adicionar =
         (
@@ -1624,20 +2418,27 @@ function atualizarRodapeProdutos(
                     "button"
                 );
 
+
             botao.type =
                 "button";
+
 
             botao.textContent =
                 texto;
 
+
             botao.disabled =
                 desabilitado;
 
+
             if (ativo) {
+
                 botao.classList.add(
                     "ativo"
                 );
+
             }
+
 
             botao.addEventListener(
                 "click",
@@ -1646,16 +2447,19 @@ function atualizarRodapeProdutos(
                     paginaAtualProdutos =
                         pagina;
 
+
                     renderizarProdutosPaginados();
 
                 }
             );
+
 
             paginacao.appendChild(
                 botao
             );
 
         };
+
 
     adicionar(
         "«",
@@ -1664,6 +2468,7 @@ function atualizarRodapeProdutos(
         paginaAtualProdutos ===
             1
     );
+
 
     adicionar(
         "‹",
@@ -1677,16 +2482,15 @@ function atualizarRodapeProdutos(
             1
     );
 
+
     const paginas =
         [
             ...new Set(
                 [
                     1,
-                    paginaAtualProdutos -
-                        1,
+                    paginaAtualProdutos - 1,
                     paginaAtualProdutos,
-                    paginaAtualProdutos +
-                        1,
+                    paginaAtualProdutos + 1,
                     totalPaginas
                 ]
                     .filter(
@@ -1701,7 +2505,9 @@ function atualizarRodapeProdutos(
                 a - b
         );
 
+
     let anterior = 0;
+
 
     paginas.forEach(
         p => {
@@ -1717,14 +2523,17 @@ function atualizarRodapeProdutos(
                         "span"
                     );
 
+
                 pontos.textContent =
                     "...";
+
 
                 paginacao.appendChild(
                     pontos
                 );
 
             }
+
 
             adicionar(
                 String(p),
@@ -1733,22 +2542,25 @@ function atualizarRodapeProdutos(
                     paginaAtualProdutos
             );
 
+
             anterior = p;
 
         }
     );
+
 
     adicionar(
         "›",
         Math.min(
             totalPaginas,
             paginaAtualProdutos +
-            1
+                1
         ),
         false,
         paginaAtualProdutos ===
             totalPaginas
     );
+
 
     adicionar(
         "»",
@@ -1759,7 +2571,6 @@ function atualizarRodapeProdutos(
     );
 
 }
-
 
 function atualizarTextoProduto(
     id,
@@ -1779,6 +2590,7 @@ function atualizarTextoProduto(
 }
 
 
+
 function formatarQuantidadeProduto(
     valor
 ) {
@@ -1794,6 +2606,7 @@ function formatarQuantidadeProduto(
     );
 
 }
+
 
 
 function escaparHTMLProduto(
@@ -1827,9 +2640,14 @@ function escaparHTMLProduto(
 }
 
 
+
 document.addEventListener(
     "DOMContentLoaded",
     function () {
+
+
+        let timerPesquisaProdutos = null;
+
 
         document
             .getElementById(
@@ -1839,13 +2657,32 @@ document.addEventListener(
                 "input",
                 function () {
 
-                    paginaAtualProdutos =
-                        1;
 
-                    renderizarProdutosPaginados();
+                    clearTimeout(
+                        timerPesquisaProdutos
+                    );
+
+
+                    timerPesquisaProdutos =
+                        setTimeout(
+                            function () {
+
+
+                                paginaAtualProdutos =
+                                    1;
+
+
+                                renderizarProdutosPaginados();
+
+
+                            },
+                            150
+                        );
+
 
                 }
             );
+
 
         document
             .getElementById(
@@ -1855,13 +2692,17 @@ document.addEventListener(
                 "change",
                 function () {
 
+
                     paginaAtualProdutos =
                         1;
 
+
                     renderizarProdutosPaginados();
+
 
                 }
             );
+
 
         document
             .getElementById(
@@ -1871,13 +2712,17 @@ document.addEventListener(
                 "change",
                 function () {
 
+
                     paginaAtualProdutos =
                         1;
 
+
                     renderizarProdutosPaginados();
+
 
                 }
             );
+
 
         document
             .getElementById(
@@ -1887,26 +2732,32 @@ document.addEventListener(
                 "change",
                 function () {
 
+
                     paginaAtualProdutos =
                         1;
 
+
                     renderizarProdutosPaginados();
+
 
                 }
             );
+
 
     }
 );
 
 
+// =====================================================
+// CARREGAMENTO DA TELA
+// SEM ATRASO FIXO DE 500 MS
+// =====================================================
+
 window.addEventListener(
     "load",
     function () {
 
-        setTimeout(
-            carregarTodosOsProdutosNaTela,
-            500
-        );
+        carregarTodosOsProdutosNaTela();
 
     }
 );
@@ -1914,6 +2765,7 @@ window.addEventListener(
 
 window.carregarTodosOsProdutosNaTela =
     carregarTodosOsProdutosNaTela;
+
 
 </script>
 
@@ -1924,61 +2776,82 @@ window.carregarTodosOsProdutosNaTela =
 
 <script src="produtos-supabase.js?v=20260925-170236"></script>
 
+
 <script>
 
 document.addEventListener("DOMContentLoaded", function () {
 
     if (typeof lucide !== "undefined") {
+
         lucide.createIcons();
+
     }
 
+
     const languagePlaceholder =
-        document.getElementById("language-placeholder");
+        document.getElementById(
+            "language-placeholder"
+        );
+
 
     const languageSwitcher =
-        document.getElementById("wms-language-switcher");
+        document.getElementById(
+            "wms-language-switcher"
+        );
+
 
     if (
         languagePlaceholder &&
         languageSwitcher
     ) {
+
         languagePlaceholder.appendChild(
             languageSwitcher
         );
+
     }
+
 
     let paginaAtual =
         window.location.pathname
             .split("/")
             .pop();
 
+
     if (!paginaAtual) {
-        paginaAtual = "dashboard.html";
+
+        paginaAtual =
+            "dashboard.html";
+
     }
+
 
     document
         .querySelectorAll(
             ".sidebar-wms-novo .menu-item"
         )
-        .forEach(function (item) {
+        .forEach(
+            function (item) {
 
-            const pagina =
-                item.getAttribute(
-                    "data-page"
+                const pagina =
+                    item.getAttribute(
+                        "data-page"
+                    );
+
+
+                item.classList.toggle(
+                    "active",
+                    pagina === paginaAtual
                 );
 
-            item.classList.toggle(
-                "active",
-                pagina === paginaAtual
-            );
-
-        });
+            }
+        );
 
 });
 
 </script>
 
+
 </body>
 
 </html>
-
