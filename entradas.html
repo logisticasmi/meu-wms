@@ -1,7 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -12,6 +14,7 @@
     <title>SMI WMS - Entrada de Estoque</title>
 
     <link rel="stylesheet" href="style.css">
+
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <link
@@ -27,39 +30,57 @@
         ===================================================== */
 
         .painel-nova-entrada {
+
             padding: 26px;
+
         }
 
 
         .entrada-grid {
+
             display: grid;
+
             grid-template-columns: 1fr 1fr;
+
             gap: 20px 28px;
+
             margin-top: 20px;
+
         }
 
 
         .entrada-coluna {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 8px;
+
         }
 
 
         .entrada-coluna label {
+
             font-size: 14px;
+
             font-weight: 600;
+
             color: #17345c;
+
         }
 
 
         .entrada-coluna input {
+
             width: 100%;
+
             height: 50px;
 
             box-sizing: border-box;
 
             border: 1px solid #d5deea;
+
             border-radius: 8px;
 
             padding: 0 16px;
@@ -73,15 +94,18 @@
             outline: none;
 
             transition: 0.2s;
+
         }
 
 
         .entrada-coluna input:focus {
+
             border-color: #0d4b8f;
 
             box-shadow:
                 0 0 0 3px
                 rgba(13, 75, 143, 0.08);
+
         }
 
 
@@ -90,19 +114,25 @@
         ===================================================== */
 
         .campo-com-icone {
+
             position: relative;
+
         }
 
 
         .campo-com-icone input {
+
             padding-right: 48px;
+
         }
 
 
         .icone-campo {
+
             position: absolute;
 
             right: 15px;
+
             top: 50%;
 
             transform:
@@ -111,6 +141,7 @@
             color: #55708f;
 
             pointer-events: none;
+
         }
 
 
@@ -119,10 +150,13 @@
         ===================================================== */
 
         .card-produto-entrada {
+
             min-height: 68px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             gap: 15px;
@@ -140,66 +174,86 @@
                     #edf5ff,
                     #f8fbff
                 );
+
         }
 
 
         .produto-entrada-info {
+
             display: flex;
+
             align-items: center;
+
             gap: 12px;
+
         }
 
 
         .produto-entrada-icone {
+
             width: 38px;
+
             height: 38px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             font-size: 22px;
+
         }
 
 
         .produto-entrada-info strong {
+
             display: block;
 
             color: #123d73;
 
             font-size: 14px;
+
         }
 
 
         .produto-entrada-info small {
+
             display: block;
 
             margin-top: 4px;
 
             color: #63758a;
+
         }
 
 
         .produto-estoque-atual {
+
             text-align: right;
 
             min-width: 110px;
+
         }
 
 
         .produto-estoque-atual small {
+
             display: block;
 
             color: #60738b;
+
         }
 
 
         .produto-estoque-atual strong {
+
             font-size: 25px;
 
             color: #0d4b8f;
 
             margin-right: 4px;
+
         }
 
 
@@ -208,9 +262,11 @@
         ===================================================== */
 
         .card-novo-saldo {
+
             min-height: 68px;
 
             display: flex;
+
             align-items: center;
 
             gap: 16px;
@@ -228,11 +284,14 @@
                     #effbf3,
                     #f7fdf9
                 );
+
         }
 
 
         .novo-saldo-icone {
+
             width: 28px;
+
             height: 28px;
 
             border:
@@ -241,32 +300,41 @@
             border-radius: 50%;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             color: #198754;
 
             font-weight: 700;
+
         }
 
 
         .card-novo-saldo small {
+
             display: block;
 
             color: #34704c;
+
         }
 
 
         .card-novo-saldo strong {
+
             display: inline-block;
 
             margin-top: 3px;
+
             margin-right: 5px;
 
             font-size: 25px;
 
             color: #198754;
+
         }
+
 
 /* =====================================================
    ENDEREÇAMENTO INTELIGENTE
@@ -473,9 +541,11 @@
         ===================================================== */
 
         .status-endereco {
+
             min-height: 38px;
 
             display: flex;
+
             align-items: center;
 
             gap: 9px;
@@ -492,7 +562,9 @@
             color: #238147;
 
             font-size: 13px;
+
             font-weight: 600;
+
         }
 
 
@@ -501,11 +573,14 @@
         ===================================================== */
 
         .entrada-botao-container {
+
             justify-content: flex-end;
+
         }
 
 
         .btn-registrar-entrada-novo {
+
             width: 100%;
 
             min-height: 70px;
@@ -530,22 +605,27 @@
             cursor: pointer;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             gap: 10px;
 
             transition: 0.2s;
+
         }
 
 
         .btn-registrar-entrada-novo:hover {
+
             transform:
                 translateY(-1px);
 
             box-shadow:
                 0 7px 17px
                 rgba(5, 58, 112, 0.18);
+
         }
 
 
@@ -554,6 +634,7 @@
         ===================================================== */
 
         .resumo-entrada-dia {
+
             display: grid;
 
             grid-template-columns:
@@ -568,21 +649,27 @@
             gap: 0;
 
             padding: 18px 24px;
+
         }
 
 
         .resumo-entrada-titulo {
+
             display: flex;
+
             align-items: center;
 
             gap: 10px;
 
             color: #123d73;
+
         }
 
 
         .resumo-item {
+
             display: flex;
+
             align-items: center;
 
             gap: 13px;
@@ -593,17 +680,22 @@
 
             border-left:
                 1px solid #dde5ef;
+
         }
 
 
         .resumo-icone {
+
             min-width: 42px;
 
             width: 42px;
+
             height: 42px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             border-radius: 50%;
@@ -611,23 +703,29 @@
             background: #edf4fb;
 
             font-size: 18px;
+
         }
 
 
         .resumo-item small,
         .resumo-item span {
+
             display: block;
+
         }
 
 
         .resumo-item small {
+
             color: #405974;
 
             font-size: 12px;
+
         }
 
 
         .resumo-item strong {
+
             display: block;
 
             color: #123d73;
@@ -635,13 +733,16 @@
             font-size: 22px;
 
             margin: 2px 0;
+
         }
 
 
         .resumo-item span {
+
             color: #718197;
 
             font-size: 11px;
+
         }
 
 
@@ -650,24 +751,29 @@
         ===================================================== */
 
         .historico-entrada-filtros {
+
             display: flex;
 
             align-items: center;
+
             justify-content: space-between;
 
             gap: 20px;
 
             margin:
                 20px 0 14px;
+
         }
 
 
         .busca-historico-entrada {
+
             width: 460px;
 
             max-width: 100%;
 
             display: flex;
+
             align-items: center;
 
             gap: 8px;
@@ -680,10 +786,12 @@
             padding: 0 13px;
 
             background: #ffffff;
+
         }
 
 
         .busca-historico-entrada input {
+
             flex: 1;
 
             height: 42px;
@@ -693,20 +801,25 @@
             outline: none;
 
             font-size: 14px;
+
         }
 
 
         .periodo-historico-entrada {
+
             display: flex;
+
             align-items: center;
 
             gap: 10px;
 
             color: #263e59;
+
         }
 
 
         .periodo-historico-entrada select {
+
             min-width: 180px;
 
             height: 42px;
@@ -721,18 +834,23 @@
             background: white;
 
             color: #263e59;
+
         }
 
 
         .tabela-entrada-container {
+
             overflow-x: auto;
+
         }
 
 
         .rodape-historico-entrada {
+
             display: flex;
 
             align-items: center;
+
             justify-content: space-between;
 
             gap: 20px;
@@ -742,10 +860,12 @@
             color: #60738a;
 
             font-size: 13px;
+
         }
 
 
         .btn-exportar-entrada {
+
             border:
                 1px solid #ced9e5;
 
@@ -760,6 +880,7 @@
             cursor: pointer;
 
             font-weight: 600;
+
         }
 
 
@@ -768,9 +889,11 @@
         ===================================================== */
 
         .toast-entrada {
+
             position: fixed;
 
             left: 50%;
+
             bottom: 25px;
 
             transform:
@@ -784,6 +907,7 @@
             pointer-events: none;
 
             display: flex;
+
             align-items: center;
 
             gap: 10px;
@@ -812,10 +936,12 @@
             z-index: 9999;
 
             transition: 0.3s;
+
         }
 
 
         .toast-entrada.mostrar {
+
             opacity: 1;
 
             transform:
@@ -823,11 +949,14 @@
                     -50%,
                     0
                 );
+
         }
 
 
         .toast-entrada-check {
+
             width: 23px;
+
             height: 23px;
 
             border-radius: 50%;
@@ -837,13 +966,18 @@
             color: white;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
         }
 
 
         .oculto {
+
             display: none !important;
+
         }
 
 
@@ -856,37 +990,47 @@
         ) {
 
             .entrada-grid {
+
                 grid-template-columns:
                     1fr;
+
             }
 
 
             .resumo-entrada-dia {
+
                 grid-template-columns:
                     1fr 1fr;
 
                 gap: 15px;
+
             }
 
 
             .resumo-item {
+
                 border-left: none;
 
                 padding-left: 0;
+
             }
 
 
             .historico-entrada-filtros {
+
                 flex-direction: column;
 
                 align-items: stretch;
+
             }
 
 
             .busca-historico-entrada {
+
                 width: 100%;
 
                 box-sizing: border-box;
+
             }
 
         }
@@ -898,36 +1042,63 @@
         ===================================================== */
 
         .pagina-entradas .topbar .usuario {
+
             display: flex;
+
             align-items: center;
+
             justify-content: flex-end;
+
             gap: 14px;
+
             flex-wrap: nowrap;
+
             white-space: nowrap;
+
         }
+
 
         .pagina-entradas #language-placeholder {
+
             display: flex;
+
             align-items: center;
+
             flex: 0 0 auto;
+
         }
 
+
         .pagina-entradas #language-placeholder #wms-language-switcher {
+
             position: static !important;
+
             top: auto !important;
+
             right: auto !important;
+
             left: auto !important;
+
             bottom: auto !important;
+
             margin: 0 !important;
+
             padding: 0 !important;
+
             z-index: auto !important;
+
             background: transparent !important;
+
             box-shadow: none !important;
+
         }
+
 
         .pagina-entradas #relogio,
         .pagina-entradas #nomeUsuario {
+
             flex: 0 0 auto;
+
         }
 
     </style>
@@ -945,111 +1116,243 @@
 <aside class="sidebar sidebar-wms-novo">
 
     <div class="sidebar-topo">
-        <img src="img/logo.png" alt="SMI do Brasil" class="sidebar-logo">
+
+        <img
+            src="img/logo.png"
+            alt="SMI do Brasil"
+            class="sidebar-logo"
+        >
+
         <h2>SMI WMS</h2>
+
         <p>GESTÃO QUE MOVIMENTA</p>
+
     </div>
+
 
     <nav class="sidebar-nav" aria-label="Menu principal">
 
-        <div class="menu-titulo"><span>PRINCIPAL</span></div>
+        <div class="menu-titulo">
+            <span>PRINCIPAL</span>
+        </div>
+
 
         <a href="dashboard.html" class="menu-item" data-page="dashboard.html">
-            <span class="menu-icon icone-dashboard"><i data-lucide="house"></i></span>
+
+            <span class="menu-icon icone-dashboard">
+                <i data-lucide="house"></i>
+            </span>
+
             <span class="menu-texto">Dashboard</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
 
         <a href="produtos.html" class="menu-item" data-page="produtos.html">
-            <span class="menu-icon icone-produtos"><i data-lucide="package"></i></span>
+
+            <span class="menu-icon icone-produtos">
+                <i data-lucide="package"></i>
+            </span>
+
             <span class="menu-texto">Produtos</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
 
-        <div class="menu-titulo"><span>OPERAÇÕES</span></div>
+
+        <div class="menu-titulo">
+            <span>OPERAÇÕES</span>
+        </div>
+
 
         <a href="entradas.html" class="menu-item" data-page="entradas.html">
-            <span class="menu-icon icone-entradas"><i data-lucide="download"></i></span>
+
+            <span class="menu-icon icone-entradas">
+                <i data-lucide="download"></i>
+            </span>
+
             <span class="menu-texto">Entradas</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
 
         <a href="saidas.html" class="menu-item" data-page="saidas.html">
-            <span class="menu-icon icone-saidas"><i data-lucide="upload"></i></span>
+
+            <span class="menu-icon icone-saidas">
+                <i data-lucide="upload"></i>
+            </span>
+
             <span class="menu-texto">Saídas</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
 
         <a href="separacao.html" class="menu-item" data-page="separacao.html">
-            <span class="menu-icon icone-separacao"><i data-lucide="shopping-cart"></i></span>
+
+            <span class="menu-icon icone-separacao">
+                <i data-lucide="shopping-cart"></i>
+            </span>
+
             <span class="menu-texto">Separação</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
+        <a href="conferencia.html" class="menu-item" data-page="conferencia.html">
+
+            <span class="menu-icon icone-conferencia">
+                <i data-lucide="clipboard-check"></i>
+            </span>
+
+            <span class="menu-texto">Conferência</span>
+
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+
+        </a>
+
 
         <a href="transferencias.html" class="menu-item" data-page="transferencias.html">
-            <span class="menu-icon icone-transferencia"><i data-lucide="arrow-left-right"></i></span>
+
+            <span class="menu-icon icone-transferencia">
+                <i data-lucide="arrow-left-right"></i>
+            </span>
+
             <span class="menu-texto">Transferências</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
 
-        <a href="transferencia-mobile.html" class="menu-item" data-page="transferencia-mobile.html">
-            <span class="menu-icon icone-mobile"><i data-lucide="smartphone"></i></span>
+                <a href="transferencia-mobile.html" class="menu-item" data-page="transferencia-mobile.html">
+
+            <span class="menu-icon icone-mobile">
+                <i data-lucide="smartphone"></i>
+            </span>
+
             <span class="menu-texto">Transf. Mobile</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
 
         <a href="posicoes.html" class="menu-item" data-page="posicoes.html">
-            <span class="menu-icon icone-posicoes"><i data-lucide="map-pin"></i></span>
+
+            <span class="menu-icon icone-posicoes">
+                <i data-lucide="map-pin"></i>
+            </span>
+
             <span class="menu-texto">Posições</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
 
         <a href="inventario.html" class="menu-item" data-page="inventario.html">
-            <span class="menu-icon icone-inventario"><i data-lucide="clipboard-list"></i></span>
+
+            <span class="menu-icon icone-inventario">
+                <i data-lucide="clipboard-list"></i>
+            </span>
+
             <span class="menu-texto">Inventário</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
 
         <a href="inventario-mobile.html" class="menu-item" data-page="inventario-mobile.html">
-            <span class="menu-icon icone-invmobile"><i data-lucide="scan-line"></i></span>
+
+            <span class="menu-icon icone-invmobile">
+                <i data-lucide="scan-line"></i>
+            </span>
+
             <span class="menu-texto">Inv. Mobile</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
 
-        <div class="menu-titulo"><span>SISTEMA</span></div>
+
+        <div class="menu-titulo">
+            <span>SISTEMA</span>
+        </div>
+
 
         <a href="relatorios.html" class="menu-item" data-page="relatorios.html">
-            <span class="menu-icon icone-relatorios"><i data-lucide="chart-no-axes-column"></i></span>
+
+            <span class="menu-icon icone-relatorios">
+                <i data-lucide="chart-no-axes-column"></i>
+            </span>
+
             <span class="menu-texto">Relatórios</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
 
         <a href="etiquetagem.html" class="menu-item" data-page="etiquetagem.html">
-            <span class="menu-icon icone-etiqueta"><i data-lucide="tag"></i></span>
+
+            <span class="menu-icon icone-etiqueta">
+                <i data-lucide="tag"></i>
+            </span>
+
             <span class="menu-texto">Etiquetagem</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
 
         <a href="requisicao.html" class="menu-item" data-page="requisicao.html">
-            <span class="menu-icon icone-requisicao"><i data-lucide="file-text"></i></span>
+
+            <span class="menu-icon icone-requisicao">
+                <i data-lucide="file-text"></i>
+            </span>
+
             <span class="menu-texto">Requisição</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
 
+
         <a href="configuracoes.html" class="menu-item" data-page="configuracoes.html">
-            <span class="menu-icon icone-config"><i data-lucide="settings"></i></span>
+
+            <span class="menu-icon icone-config">
+                <i data-lucide="settings"></i>
+            </span>
+
             <span class="menu-texto">Configurações</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
 
     </nav>
 
+
     <div class="sidebar-rodape">
+
         <span>LOGÍSTICA MAIS INTELIGENTE</span>
+
         <small>v1.0.0</small>
+
     </div>
 
 </aside>
+
 
 <!-- =====================================================
      CONTEÚDO
@@ -1095,7 +1398,6 @@
         </div>
 
     </div>
-
 
 
     <!-- =====================================================
@@ -1198,7 +1500,6 @@
             </div>
 
 
-
             <!-- QUANTIDADE -->
 
             <div class="entrada-coluna">
@@ -1255,55 +1556,56 @@
 
             </div>
 
-
-            <!-- ENDEREÇO -->
-
-
-<!-- =====================================================
-     ENDEREÇAMENTO INTELIGENTE
-===================================================== -->
-
-<div
-    id="cardEnderecoInteligenteEntrada"
-    class="endereco-inteligente-entrada oculto"
->
-
-    <div class="endereco-inteligente-cabecalho">
-
-        <span class="endereco-inteligente-icone">
-            📍
-        </span>
-
-        <div>
-            <strong>
-                Endereçamento Inteligente
-            </strong>
-
-            <small>
-                Posições atuais deste produto
-            </small>
-        </div>
-
-    </div>
+                        <!-- ENDEREÇO -->
 
 
-    <div
-        id="listaEnderecosInteligentesEntrada"
-        class="endereco-inteligente-lista"
-    >
-    </div>
+            <!-- =====================================================
+                 ENDEREÇAMENTO INTELIGENTE
+            ===================================================== -->
+
+            <div
+                id="cardEnderecoInteligenteEntrada"
+                class="endereco-inteligente-entrada oculto"
+            >
+
+                <div class="endereco-inteligente-cabecalho">
+
+                    <span class="endereco-inteligente-icone">
+                        📍
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Endereçamento Inteligente
+                        </strong>
+
+                        <small>
+                            Posições atuais deste produto
+                        </small>
+
+                    </div>
+
+                </div>
 
 
-    <div
-        id="recomendacaoEnderecoEntrada"
-        class="endereco-inteligente-recomendacao"
-    >
-    </div>
-
-</div>
+                <div
+                    id="listaEnderecosInteligentesEntrada"
+                    class="endereco-inteligente-lista"
+                >
+                </div>
 
 
-<!-- ENDEREÇO INFORMADO -->
+                <div
+                    id="recomendacaoEnderecoEntrada"
+                    class="endereco-inteligente-recomendacao"
+                >
+                </div>
+
+            </div>
+
+
+            <!-- ENDEREÇO INFORMADO -->
 
             <div class="entrada-coluna">
 
@@ -1351,7 +1653,6 @@
             </div>
 
 
-
             <!-- BOTÃO -->
 
             <div
@@ -1386,7 +1687,6 @@
     </div>
 
 
-
     <!-- =====================================================
          RESUMO DO DIA
     ===================================================== -->
@@ -1405,7 +1705,6 @@
             </strong>
 
         </div>
-
 
 
         <div class="resumo-item">
@@ -1435,7 +1734,6 @@
         </div>
 
 
-
         <div class="resumo-item">
 
             <div class="resumo-icone">
@@ -1461,7 +1759,6 @@
             </div>
 
         </div>
-
 
 
         <div class="resumo-item">
@@ -1493,7 +1790,6 @@
         </div>
 
 
-
         <div class="resumo-item">
 
             <div class="resumo-icone">
@@ -1518,7 +1814,6 @@
 
 
     </div>
-
 
 
     <!-- =====================================================
@@ -1551,7 +1846,6 @@
                 >
 
             </div>
-
 
 
             <!-- PERÍODO -->
@@ -1590,7 +1884,6 @@
             </div>
 
         </div>
-
 
 
         <div class="tabela-entrada-container">
@@ -1651,9 +1944,7 @@
 
         </div>
 
-
-
-        <div class="rodape-historico-entrada">
+                <div class="rodape-historico-entrada">
 
             <span
                 id="contadorHistoricoEntrada"
@@ -1678,7 +1969,6 @@
 </div>
 
 
-
 <!-- =====================================================
      TOAST DE SUCESSO
 ===================================================== -->
@@ -1699,7 +1989,6 @@
 </div>
 
 
-
 <!-- =====================================================
      SCRIPTS
 ===================================================== -->
@@ -1718,26 +2007,61 @@
 
 
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
+
     if (typeof lucide !== "undefined") {
         lucide.createIcons();
     }
 
-    const languagePlaceholder = document.getElementById("language-placeholder");
-    const languageSwitcher = document.getElementById("wms-language-switcher");
+    const languagePlaceholder =
+        document.getElementById(
+            "language-placeholder"
+        );
 
-    if (languagePlaceholder && languageSwitcher) {
-        languagePlaceholder.appendChild(languageSwitcher);
+    const languageSwitcher =
+        document.getElementById(
+            "wms-language-switcher"
+        );
+
+    if (
+        languagePlaceholder &&
+        languageSwitcher
+    ) {
+        languagePlaceholder.appendChild(
+            languageSwitcher
+        );
     }
 
-    let paginaAtual = window.location.pathname.split("/").pop();
-    if (!paginaAtual) paginaAtual = "dashboard.html";
+    let paginaAtual =
+        window.location.pathname
+            .split("/")
+            .pop();
 
-    document.querySelectorAll(".sidebar-wms-novo .menu-item").forEach(function (item) {
-        const pagina = item.getAttribute("data-page");
-        item.classList.toggle("active", pagina === paginaAtual);
-    });
+    if (!paginaAtual) {
+        paginaAtual = "dashboard.html";
+    }
+
+    document
+        .querySelectorAll(
+            ".sidebar-wms-novo .menu-item"
+        )
+        .forEach(function (item) {
+
+            const pagina =
+                item.getAttribute(
+                    "data-page"
+                );
+
+            item.classList.toggle(
+                "active",
+                pagina === paginaAtual
+            );
+
+        });
+
 });
+
 </script>
 
 </body>

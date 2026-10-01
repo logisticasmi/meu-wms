@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
@@ -222,6 +223,7 @@
 }
 
 @media (max-width: 800px) {
+
     .idioma-opcoes {
         grid-template-columns: 1fr;
     }
@@ -234,6 +236,7 @@
     .btn-salvar-idioma {
         width: 100%;
     }
+
 }
 
 </style>
@@ -311,6 +314,14 @@
                 <i data-lucide="shopping-cart"></i>
             </span>
             <span class="menu-texto">Separação</span>
+            <i data-lucide="chevron-right" class="menu-seta"></i>
+        </a>
+
+        <a href="conferencia.html" class="menu-item" data-page="conferencia.html">
+            <span class="menu-icon icone-conferencia">
+                <i data-lucide="clipboard-check"></i>
+            </span>
+            <span class="menu-texto">Conferência</span>
             <i data-lucide="chevron-right" class="menu-seta"></i>
         </a>
 
@@ -399,8 +410,6 @@
 
 </aside>
 
-
-
 <!-- CONTEÚDO -->
 
 <div class="conteudo">
@@ -415,7 +424,6 @@
 <div id="nomeUsuario"></div>
 
 </header>
-
 
 
 <!-- EMPRESA -->
@@ -449,7 +457,6 @@ SMI WMS
 </div>
 
 
-
 <!-- USUÁRIO -->
 
 <div class="card">
@@ -466,7 +473,6 @@ Usuário conectado:
 </div>
 
 
-
 <!-- =====================================================
      IDIOMA DO SISTEMA
 ===================================================== -->
@@ -478,20 +484,29 @@ Usuário conectado:
 </h2>
 
 <p class="idioma-descricao">
+
 Defina o idioma padrão do WMS.
+
 A seleção também será refletida no seletor BR | IT do sistema.
+
 </p>
 
 <p class="idioma-atual">
+
 Idioma atual:
+
 <strong id="idiomaAtualTexto">
 Português (Brasil)
 </strong>
+
 </p>
+
 
 <div class="idioma-opcoes">
 
+
     <!-- PORTUGUÊS -->
+
     <label
         class="idioma-opcao selecionado"
         id="opcaoIdiomaBR"
@@ -517,6 +532,7 @@ Português (Brasil)
 
 
     <!-- ITALIANO -->
+
     <label
         class="idioma-opcao"
         id="opcaoIdiomaIT"
@@ -558,6 +574,7 @@ Português (Brasil)
 
 </div>
 
+
 <div
     id="mensagemIdioma"
     class="mensagem-idioma"
@@ -566,7 +583,6 @@ Português (Brasil)
 </div>
 
 </div>
-
 
 
 <!-- BACKUP -->
@@ -589,7 +605,6 @@ Exportar Backup
 </button>
 
 </div>
-
 
 
 <!-- LIMPEZA -->
@@ -617,11 +632,11 @@ Limpar Dados
 </div>
 
 
-
 <script src="app.js"></script>
 
 
 <script>
+
 
 /* =====================================================
    CARREGAMENTO DA TELA
@@ -635,13 +650,17 @@ window.addEventListener(
             typeof verificarLogin ===
             "function"
         ) {
+
             verificarLogin();
+
         }
+
 
         const usuario =
             localStorage.getItem(
                 "usuario"
             );
+
 
         if (usuario) {
 
@@ -650,12 +669,16 @@ window.addEventListener(
                     "usuarioConfig"
                 );
 
+
             if (campoUsuario) {
+
                 campoUsuario.textContent =
                     usuario;
+
             }
 
         }
+
 
         carregarIdiomaWMS();
 
@@ -674,6 +697,7 @@ function exportarEstoque() {
             "estoque"
         );
 
+
     if (!dados) {
 
         alert(
@@ -683,6 +707,7 @@ function exportarEstoque() {
         return;
     }
 
+
     const arquivo =
         new Blob(
             [dados],
@@ -691,24 +716,30 @@ function exportarEstoque() {
             }
         );
 
+
     const link =
         document.createElement(
             "a"
         );
+
 
     link.href =
         URL.createObjectURL(
             arquivo
         );
 
+
     link.download =
         "backup_estoque_smi.json";
 
+
     link.click();
+
 
     URL.revokeObjectURL(
         link.href
     );
+
 }
 
 
@@ -737,7 +768,9 @@ function limparSistema() {
         );
 
         location.reload();
+
     }
+
 }
 
 
@@ -756,6 +789,7 @@ function carregarIdiomaWMS() {
         ) ||
         "pt-BR";
 
+
     const radio =
         document.querySelector(
             'input[name="idiomaWms"][value="' +
@@ -763,17 +797,24 @@ function carregarIdiomaWMS() {
             '"]'
         );
 
+
     if (radio) {
+
         radio.checked = true;
+
     }
 
+
     atualizarSelecaoIdioma();
+
     atualizarTextoIdioma(
         idiomaSalvo
     );
 
+
     document.documentElement.lang =
         idiomaSalvo;
+
 }
 
 
@@ -788,31 +829,40 @@ function atualizarSelecaoIdioma() {
             'input[name="idiomaWms"]:checked'
         )?.value || "pt-BR";
 
+
     const opcaoBR =
         document.getElementById(
             "opcaoIdiomaBR"
         );
+
 
     const opcaoIT =
         document.getElementById(
             "opcaoIdiomaIT"
         );
 
+
     if (opcaoBR) {
+
         opcaoBR.classList.toggle(
             "selecionado",
             idiomaSelecionado ===
             "pt-BR"
         );
+
     }
 
+
     if (opcaoIT) {
+
         opcaoIT.classList.toggle(
             "selecionado",
             idiomaSelecionado ===
             "it-IT"
         );
+
     }
+
 }
 
 
@@ -829,14 +879,17 @@ function atualizarTextoIdioma(
             "idiomaAtualTexto"
         );
 
+
     if (!elemento) {
         return;
     }
+
 
     elemento.textContent =
         idioma === "it-IT"
             ? "Italiano"
             : "Português (Brasil)";
+
 }
 
 
@@ -851,6 +904,7 @@ function salvarIdiomaWMS() {
             'input[name="idiomaWms"]:checked'
         )?.value;
 
+
     if (!idiomaSelecionado) {
 
         alert(
@@ -859,6 +913,7 @@ function salvarIdiomaWMS() {
 
         return;
     }
+
 
     /*
        Salva nas duas chaves para manter
@@ -871,23 +926,29 @@ function salvarIdiomaWMS() {
         idiomaSelecionado
     );
 
+
     localStorage.setItem(
         "idiomaWMS",
         idiomaSelecionado
     );
 
+
     document.documentElement.lang =
         idiomaSelecionado;
+
 
     atualizarTextoIdioma(
         idiomaSelecionado
     );
 
+
     atualizarSelecaoIdioma();
+
 
     sincronizarSeletorIdiomaTopo(
         idiomaSelecionado
     );
+
 
     window.dispatchEvent(
         new CustomEvent(
@@ -901,10 +962,12 @@ function salvarIdiomaWMS() {
         )
     );
 
+
     const mensagem =
         document.getElementById(
             "mensagemIdioma"
         );
+
 
     if (mensagem) {
 
@@ -914,19 +977,25 @@ function salvarIdiomaWMS() {
                 ? "Lingua salvata con successo."
                 : "Idioma salvo com sucesso.";
 
+
         mensagem.classList.add(
             "mostrar"
         );
 
+
         setTimeout(
             function () {
+
                 mensagem.classList.remove(
                     "mostrar"
                 );
+
             },
             2500
         );
+
     }
+
 
     /*
        Recarrega para que o app.js e as outras
@@ -935,10 +1004,13 @@ function salvarIdiomaWMS() {
 
     setTimeout(
         function () {
+
             location.reload();
+
         },
         700
     );
+
 }
 
 
@@ -960,6 +1032,7 @@ function sincronizarSeletorIdiomaTopo(
             "[data-idioma]"
         );
 
+
     candidatos.forEach(
         function (item) {
 
@@ -968,6 +1041,7 @@ function sincronizarSeletorIdiomaTopo(
                 item.dataset.language ||
                 item.dataset.idioma ||
                 "";
+
 
             const ativo =
                 (
@@ -987,17 +1061,21 @@ function sincronizarSeletorIdiomaTopo(
                     )
                 );
 
+
             item.classList.toggle(
                 "active",
                 ativo
             );
 
+
             item.classList.toggle(
                 "ativo",
                 ativo
             );
+
         }
     );
+
 }
 
 
@@ -1024,22 +1102,30 @@ document.addEventListener(
                 }
             );
 
+
         if (
             typeof lucide !==
             "undefined"
         ) {
+
             lucide.createIcons();
+
         }
+
 
         let paginaAtual =
             window.location.pathname
                 .split("/")
                 .pop();
 
+
         if (!paginaAtual) {
+
             paginaAtual =
                 "dashboard.html";
+
         }
+
 
         document
             .querySelectorAll(
@@ -1052,6 +1138,7 @@ document.addEventListener(
                         item.getAttribute(
                             "data-page"
                         );
+
 
                     item.classList.toggle(
                         "active",
@@ -1072,11 +1159,14 @@ document.addEventListener(
 window.salvarIdiomaWMS =
     salvarIdiomaWMS;
 
+
 window.exportarEstoque =
     exportarEstoque;
 
+
 window.limparSistema =
     limparSistema;
+
 
 </script>
 

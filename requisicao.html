@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
@@ -25,8 +26,7 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <link rel="stylesheet" href="style.css" data-menu-style-placeholder
-    >
+    <link rel="stylesheet" href="style.css" data-menu-style-placeholder>
 
 
     <style>
@@ -321,6 +321,7 @@
 
 <body class="pagina-requisicao">
 
+
     <!-- =====================================================
          MENU LATERAL - NOVO PADRÃO SMI WMS
     ===================================================== -->
@@ -377,6 +378,12 @@
             <a href="separacao.html" class="menu-item" data-page="separacao.html">
                 <span class="menu-icon icone-separacao"><i data-lucide="shopping-cart"></i></span>
                 <span class="menu-texto">Separação</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
+
+            <a href="conferencia.html" class="menu-item" data-page="conferencia.html">
+                <span class="menu-icon icone-conferencia"><i data-lucide="clipboard-check"></i></span>
+                <span class="menu-texto">Conferência</span>
                 <i data-lucide="chevron-right" class="menu-seta"></i>
             </a>
 
@@ -447,11 +454,7 @@
 
     </aside>
 
-
-
-
-
-<!-- CONTEÚDO -->
+    <!-- CONTEÚDO -->
 
 <div class="conteudo">
 
@@ -469,6 +472,7 @@
             </small>
 
         </div>
+
 
         <div class="usuario">
 
@@ -490,7 +494,6 @@
     </div>
 
 
-
     <div class="requisicao-container">
 
 
@@ -504,35 +507,38 @@
 
             </div>
 
-<div class="acoes-requisicao">
 
-    <button
-        type="button"
-        class="btn-requisicao"
-        onclick="limparRequisicao()"
-    >
-        🧹 Limpar
-    </button>
+            <div class="acoes-requisicao">
 
-    <button
-        type="button"
-        class="btn-requisicao"
-        onclick="exportarRequisicaoPDF()"
-    >
-        📄 Exportar PDF
-    </button>
+                <button
+                    type="button"
+                    class="btn-requisicao"
+                    onclick="limparRequisicao()"
+                >
+                    🧹 Limpar
+                </button>
 
-    <button
-        type="button"
-        class="btn-requisicao"
-        onclick="window.print()"
-    >
-        🖨️ Imprimir Requisição
-    </button>
+                <button
+                    type="button"
+                    class="btn-requisicao"
+                    onclick="exportarRequisicaoPDF()"
+                >
+                    📄 Exportar PDF
+                </button>
 
-</div>
+                <button
+                    type="button"
+                    class="btn-requisicao"
+                    onclick="window.print()"
+                >
+                    🖨️ Imprimir Requisição
+                </button>
 
-</div>
+            </div>
+
+        </div>
+
+
         <!-- FICHA -->
 
         <div class="ficha-requisicao">
@@ -583,7 +589,6 @@
             </div>
 
 
-
             <!-- DADOS PRINCIPAIS -->
 
             <div class="dados-gerais">
@@ -623,16 +628,15 @@
                         Data
                     </label>
 
-                 <input
-    type="text"
-    id="dataRequisicao"
->
+                    <input
+                        type="text"
+                        id="dataRequisicao"
+                    >
 
                 </div>
 
 
             </div>
-
 
 
             <div class="dados-secundarios">
@@ -697,7 +701,6 @@
             </div>
 
 
-
             <div class="titulo-materiais">
 
                 SOLICITO FORNECIMENTO DO(S)
@@ -706,44 +709,42 @@
             </div>
 
 
-
             <!-- TABELA DOS MATERIAIS -->
 
             <table class="tabela-materiais">
 
                 <thead>
 
-<thead>
+                    <tr>
 
-    <tr>
+                        <th style="width: 15%;">
+                            Código do Material
+                        </th>
 
-        <th style="width: 15%;">
-            Código do Material
-        </th>
+                        <th style="width: 12%;">
+                            Quantidade Solicitada
+                        </th>
 
-        <th style="width: 12%;">
-            Quantidade Solicitada
-        </th>
+                        <th style="width: 10%;">
+                            Unidade
+                        </th>
 
-        <th style="width: 10%;">
-            Unidade
-        </th>
+                        <th>
+                            Descrição
+                        </th>
 
-        <th>
-            Descrição
-        </th>
+                        <th style="width: 12%;">
+                            Quantidade Utilizada
+                        </th>
 
-        <th style="width: 12%;">
-            Quantidade Utilizada
-        </th>
+                        <th style="width: 22%;">
+                            Autorizado Por:
+                        </th>
 
-        <th style="width: 22%;">
-            Autorizado Por:
-        </th>
+                    </tr>
 
-    </tr>
+                </thead>
 
-</thead>
 
                 <tbody id="materiaisRequisicao">
 
@@ -801,7 +802,7 @@
                         <td><input type="text"></td>
                     </tr>
 
-                    <tr>
+                                        <tr>
                         <td><input type="text"></td>
                         <td><input type="number"></td>
                         <td><input type="text"></td>
@@ -929,7 +930,7 @@
 
                 </tbody>
 
-</table>
+            </table>
 
 
             <!-- ASSINATURAS -->
@@ -967,7 +968,6 @@
             </div>
 
 
-
             <div class="observacao-ficha">
 
                 As peças devem ser entregues assim que
@@ -983,7 +983,6 @@
     </div>
 
 </div>
-
 
 
 <script src="app.js"></script>
@@ -1018,8 +1017,8 @@
 </script>
 
 
-
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
 
     if (typeof lucide !== "undefined") {
@@ -1060,6 +1059,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 });
+
 </script>
 
 

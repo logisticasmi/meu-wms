@@ -21,6 +21,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- QR CODE REAL -->
+
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
     ></script>
@@ -35,25 +36,36 @@
     <style>
 
         * {
+
             box-sizing: border-box;
+
             margin: 0;
+
             padding: 0;
+
             font-family:
                 Arial,
                 Helvetica,
                 sans-serif;
+
         }
 
 
         body {
+
             background: #f3f6fa;
+
             color: #14213d;
+
         }
 
 
         .layout {
+
             display: flex;
+
             min-height: 100vh;
+
         }
 
 
@@ -62,31 +74,45 @@
         ===================================================== */
 
         .conteudo {
+
             margin-left: 185px;
+
             width: calc(100% - 185px);
+
             padding: 30px;
+
         }
 
 
         .titulo-pagina {
+
             margin-bottom: 25px;
+
         }
 
 
         .titulo-pagina h1 {
+
             font-size: 30px;
+
             margin-bottom: 7px;
+
             color: #082f67;
+
         }
 
 
         .titulo-pagina p {
+
             color: #637083;
+
             font-size: 15px;
+
         }
 
 
         .grid-principal {
+
             display: grid;
 
             grid-template-columns:
@@ -94,24 +120,33 @@
                 minmax(700px, 1.5fr);
 
             gap: 20px;
+
         }
 
 
         .card {
+
             background: white;
+
             border-radius: 13px;
+
             padding: 24px;
 
             box-shadow:
                 0 3px 15px
                 rgba(0, 0, 0, 0.06);
+
         }
 
 
         .card h2 {
+
             font-size: 19px;
+
             margin-bottom: 22px;
+
             color: #082f67;
+
         }
 
 
@@ -120,20 +155,29 @@
         ===================================================== */
 
         .campo {
+
             margin-bottom: 17px;
+
         }
 
 
         .campo label {
+
             display: block;
+
             font-size: 14px;
+
             font-weight: 700;
+
             margin-bottom: 7px;
+
         }
 
 
         .campo input {
+
             width: 100%;
+
             padding: 12px 13px;
 
             border:
@@ -142,63 +186,93 @@
             border-radius: 7px;
 
             font-size: 15px;
+
             outline: none;
+
         }
 
 
         .campo input:focus {
+
             border-color: #087bea;
 
             box-shadow:
                 0 0 0 3px
                 rgba(8, 123, 234, 0.10);
+
         }
 
 
         .campo-pequeno {
+
             max-width: 180px;
+
         }
 
 
         .botoes {
+
             display: flex;
+
             gap: 10px;
+
             margin-top: 25px;
+
             flex-wrap: wrap;
+
         }
 
 
         button {
+
             border: none;
+
             padding: 12px 18px;
+
             border-radius: 7px;
+
             font-size: 14px;
+
             font-weight: 700;
+
             cursor: pointer;
+
             transition: .2s;
+
         }
 
 
         button:hover {
+
             transform: translateY(-1px);
+
         }
 
 
         .btn-gerar {
+
             background: #087bea;
+
             color: #fff;
+
         }
 
 
         .btn-limpar {
+
             background: #e4e9ef;
+
             color: #14213d;
+
         }
 
 
         .btn-imprimir {
+
             background: #18a957;
+
             color: white;
+
         }
 
 
@@ -207,21 +281,34 @@
         ===================================================== */
 
         .preview-area {
+
             background: #edf1f5;
+
             padding: 20px;
+
             border-radius: 10px;
+
             min-height: 500px;
+
             overflow: auto;
+
         }
 
 
         .mensagem-vazia {
+
             min-height: 420px;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             text-align: center;
+
             color: #7a8797;
+
         }
 
 
@@ -232,7 +319,9 @@
         .etiqueta {
 
             width: 900px;
+
             min-height: 525px;
+
             background: #fff;
 
             border:
@@ -244,11 +333,13 @@
                 0 auto 20px;
 
             overflow: hidden;
+
             color: #07182f;
 
             box-shadow:
                 0 6px 18px
                 rgba(0, 30, 70, .12);
+
         }
 
 
@@ -266,38 +357,47 @@
                 310px;
 
             align-items: stretch;
+
         }
 
 
         .marca-etiqueta {
 
             display: flex;
+
             align-items: center;
 
             padding:
                 18px 12px 18px 25px;
+
         }
 
 
         .logo-etiqueta-img {
 
             width: 330px;
+
             max-height: 95px;
 
             object-fit: contain;
+
             object-position: left center;
+
         }
 
 
         .paises-etiqueta {
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             gap: 8px;
 
             padding: 0 16px;
+
         }
 
 
@@ -308,11 +408,13 @@
         .bandeira-etiqueta {
 
             width: 46px;
+
             height: 46px;
 
             flex: 0 0 46px;
 
             object-fit: cover;
+
             object-position: center;
 
             border-radius: 50%;
@@ -323,6 +425,7 @@
             box-shadow:
                 0 1px 3px
                 rgba(0, 0, 0, 0.10);
+
         }
 
 
@@ -341,42 +444,55 @@
                 16px 22px;
 
             display: flex;
+
             flex-direction: column;
+
             justify-content: center;
+
         }
 
 
         .status-etiqueta {
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             gap: 15px;
 
             font-size: 31px;
+
             font-weight: 900;
+
             line-height: 1.05;
+
         }
 
 
         .status-check {
 
             width: 50px;
+
             height: 50px;
 
             border-radius: 50%;
 
             background: white;
+
             color: #08335f;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             font-size: 30px;
 
             flex: 0 0 50px;
+
         }
 
 
@@ -391,26 +507,35 @@
             border-radius: 20px;
 
             overflow: hidden;
+
         }
 
 
         .faixa-paises span {
+
             flex: 1;
+
         }
 
 
         .faixa-paises .verde {
+
             background: #12a158;
+
         }
 
 
         .faixa-paises .neutra {
+
             background: #efefef;
+
         }
 
 
         .faixa-paises .vermelha {
+
             background: #d92b3e;
+
         }
 
 
@@ -430,11 +555,14 @@
 
             padding:
                 14px 28px 12px;
+
         }
 
 
         .dados-etiqueta {
+
             min-width: 0;
+
         }
 
 
@@ -453,12 +581,14 @@
 
             border-bottom:
                 1px solid #dbe3eb;
+
         }
 
 
         .icone-dado-etiqueta {
 
             width: 42px;
+
             height: 42px;
 
             border-radius: 10px;
@@ -466,27 +596,35 @@
             background: #eef3f7;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             color: #082f67;
+
         }
 
 
         .icone-dado-etiqueta svg {
 
             width: 25px;
+
             height: 25px;
 
             stroke: currentColor;
+
         }
-                .rotulo-dado-etiqueta {
+
+
+        .rotulo-dado-etiqueta {
 
             font-size: 19px;
 
             font-weight: 900;
 
             color: #082f67;
+
         }
 
 
@@ -497,6 +635,7 @@
             color: #05080c;
 
             overflow-wrap: anywhere;
+
         }
 
 
@@ -509,6 +648,7 @@
             grid-template-columns:
                 52px
                 minmax(0, 1fr);
+
         }
 
 
@@ -531,6 +671,7 @@
             font-weight: 800;
 
             color: #082f67;
+
         }
 
 
@@ -543,6 +684,7 @@
             gap: 8px;
 
             white-space: nowrap;
+
         }
 
 
@@ -562,6 +704,7 @@
                 3px solid #082f67;
 
             border-radius: 4px;
+
         }
 
 
@@ -583,6 +726,7 @@
             justify-content: center;
 
             padding-left: 20px;
+
         }
 
 
@@ -606,6 +750,7 @@
                 1px solid #cdd8e3;
 
             border-radius: 10px;
+
         }
 
 
@@ -617,6 +762,7 @@
             height: 185px !important;
 
             image-rendering: pixelated;
+
         }
 
 
@@ -633,6 +779,7 @@
             color: #082f67;
 
             text-align: center;
+
         }
 
 
@@ -649,10 +796,10 @@
             text-align: center;
 
             line-height: 1.4;
+
         }
 
-
-        /* =====================================================
+                /* =====================================================
            RODAPÉ
         ===================================================== */
 
@@ -680,6 +827,7 @@
             align-items: center;
 
             gap: 0;
+
         }
 
 
@@ -701,6 +849,7 @@
             font-weight: 700;
 
             font-size: 17px;
+
         }
 
 
@@ -709,6 +858,7 @@
             border-right:
                 1px solid
                 rgba(255,255,255,.55);
+
         }
 
 
@@ -717,18 +867,21 @@
             font-size: 21px;
 
             font-weight: 900;
+
         }
 
 
         .contato-icone {
 
             font-size: 34px;
+
         }
 
 
         .site-contato {
 
             font-size: 17px;
+
         }
 
 
@@ -739,12 +892,14 @@
         .historico {
 
             margin-top: 22px;
+
         }
 
 
         .tabela-container {
 
             overflow-x: auto;
+
         }
 
 
@@ -756,6 +911,7 @@
                 collapse;
 
             font-size: 14px;
+
         }
 
 
@@ -768,12 +924,14 @@
                 1px solid #e2e7ed;
 
             text-align: left;
+
         }
 
 
         th {
 
             background: #eef3f8;
+
         }
 
 
@@ -792,6 +950,7 @@
             font-size: 12px;
 
             font-weight: 700;
+
         }
 
 
@@ -811,6 +970,7 @@
             gap: 24px;
 
             margin-bottom: 25px;
+
         }
 
 
@@ -819,6 +979,7 @@
         .titulo-pagina {
 
             margin-bottom: 0;
+
         }
 
 
@@ -835,6 +996,7 @@
             gap: 14px;
 
             white-space: nowrap;
+
         }
 
 
@@ -844,6 +1006,7 @@
             display: flex;
 
             align-items: center;
+
         }
 
 
@@ -862,6 +1025,7 @@
 
             box-shadow:
                 none !important;
+
         }
 
 
@@ -875,6 +1039,7 @@
 
             padding:
                 10px 16px;
+
         }
 
 
@@ -890,7 +1055,9 @@
 
                 grid-template-columns:
                     1fr;
+
             }
+
         }
 
 
@@ -905,7 +1072,9 @@
                 width: 100%;
 
                 padding: 15px;
+
             }
+
         }
 
 
@@ -918,6 +1087,7 @@
             @page {
 
                 margin: 4mm;
+
             }
 
 
@@ -925,6 +1095,7 @@
 
                 background:
                     #fff !important;
+
             }
 
 
@@ -932,6 +1103,7 @@
 
                 visibility:
                     hidden;
+
             }
 
 
@@ -940,6 +1112,7 @@
 
                 visibility:
                     visible;
+
             }
 
 
@@ -961,6 +1134,7 @@
 
                 overflow:
                     visible;
+
             }
 
 
@@ -990,6 +1164,7 @@
 
                 print-color-adjust:
                     exact;
+
             }
 
 
@@ -1000,8 +1175,11 @@
 
                 break-after:
                     auto;
+
             }
+
         }
+
 
     </style>
 
@@ -1203,6 +1381,34 @@
 
 
             <a
+                href="conferencia.html"
+                class="menu-item"
+                data-page="conferencia.html"
+            >
+
+                <span
+                    class="menu-icon icone-conferencia"
+                >
+
+                    <i
+                        data-lucide="clipboard-check"
+                    ></i>
+
+                </span>
+
+                <span class="menu-texto">
+                    Conferência
+                </span>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="menu-seta"
+                ></i>
+
+            </a>
+
+
+            <a
                 href="transferencias.html"
                 class="menu-item"
                 data-page="transferencias.html"
@@ -1341,7 +1547,8 @@
 
             </a>
 
-                        <div class="menu-titulo">
+
+            <div class="menu-titulo">
 
                 <span>
                     SISTEMA
@@ -1504,8 +1711,7 @@
 
             </div>
 
-
-            <div class="usuario">
+                        <div class="usuario">
 
                 <div
                     id="language-placeholder"
@@ -1781,6 +1987,7 @@
 
 let etiquetasAtuais = [];
 
+
 // =====================================================
 // GERAR ETIQUETAS
 // =====================================================
@@ -1954,6 +2161,8 @@ function gerarEtiquetas() {
             document.createElement(
                 "div"
             );
+
+                        );
 
 
         etiqueta.className =
@@ -2271,7 +2480,6 @@ function gerarEtiquetas() {
                             class="opcoes-transporte"
                         >
 
-                                                
 
                             <span
                                 class="opcao-transporte"
@@ -2747,8 +2955,7 @@ function carregarHistorico() {
             "historicoEtiquetas"
         );
 
-
-    const historico =
+            const historico =
         JSON.parse(
             localStorage.getItem(
                 "wms_etiquetas"
@@ -2764,7 +2971,8 @@ function carregarHistorico() {
                 "pt-BR"
             );
 
-                const registrosHoje =
+
+    const registrosHoje =
         historico.filter(
             item =>
                 item.data === hoje
@@ -3007,3 +3215,4 @@ document.addEventListener(
 </body>
 
 </html>
+

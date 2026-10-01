@@ -1,7 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -16,140 +18,259 @@
 
     <link rel="icon" type="image/png" href="img/favicon.png">
 
-
 <style>
+
 body.pagina-produtos{background:#f4f7fb}
+
 .pagina-produtos .conteudo{padding:22px 26px 34px!important}
+
 .pagina-produtos .topbar{margin-bottom:18px}
+
 .pagina-produtos .topbar h1{color:#082f67;font-size:32px;margin:0 0 4px}
+
 .pagina-produtos .topbar small{color:#5e7085;font-size:13px}
+
 .prod-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:18px}
+
 .prod-kpi{min-height:118px;background:#fff;border:1px solid #e1e8f0;border-radius:14px;box-shadow:0 5px 18px rgba(0,30,69,.06);padding:18px 20px;display:flex;align-items:center;gap:16px}
+
 .prod-kpi-icone{width:54px;height:54px;min-width:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:25px}
+
 .prod-kpi.total .prod-kpi-icone{background:#eaf3ff}
+
 .prod-kpi.com-estoque .prod-kpi-icone{background:#eaf8ee}
+
 .prod-kpi.sem-estoque .prod-kpi-icone{background:#fff1e4}
+
 .prod-kpi.abaixo-minimo .prod-kpi-icone{background:#fff0f0}
+
 .prod-kpi small{display:block;margin-bottom:5px;color:#53677e;font-size:11px;font-weight:700}
+
 .prod-kpi strong{display:block;color:#0b3a78;font-size:27px;line-height:1.1}
+
 .prod-kpi.com-estoque strong{color:#15983f}.prod-kpi.sem-estoque strong{color:#ed7f0b}.prod-kpi.abaixo-minimo strong{color:#d62f3d}
+
 .prod-kpi .subtexto{display:block;margin-top:6px;color:#7c8da1;font-size:10px}
+
 .importarExcel{
+
     display:grid!important;
+
     grid-template-columns:minmax(230px,1.2fr) minmax(300px,1.5fr) auto!important;
+
     align-items:center!important;
+
     gap:12px!important;
+
     width:100%!important;
+
     box-sizing:border-box!important;
+
     margin-bottom:18px!important;
+
     padding:18px 20px!important;
+
     background:#fff!important;
+
     border:1px solid #e1e8f0!important;
+
     border-radius:14px!important;
+
     box-shadow:0 5px 18px rgba(0,30,69,.06)!important;
+
 }
+
 .tituloExcel{min-width:0}
+
 .tituloExcel h2{
+
     margin:0!important;
+
     font-size:17px!important;
+
     white-space:nowrap;
+
 }
+
 #arquivoExcel{
+
     width:100%!important;
+
     min-width:0!important;
+
     height:42px!important;
+
     box-sizing:border-box!important;
+
     border:1px solid #d2dce8!important;
+
     border-radius:7px!important;
+
     padding:7px!important;
+
     background:#fff!important;
+
 }
+
 .importarExcel > div:last-child{
+
     display:flex!important;
+
     gap:12px!important;
+
     align-items:center!important;
+
     justify-content:flex-end!important;
+
     flex-wrap:nowrap!important;
+
 }
+
 .importarExcel button{
+
     height:42px!important;
+
     padding:0 16px!important;
+
     border-radius:7px!important;
+
     border:1px solid #0a4a89;
+
     background:#fff;
+
     color:#0a4a89;
+
     font-weight:700;
+
     cursor:pointer;
+
     white-space:nowrap!important;
+
 }
+
 #importarExcel{}
+
 #btnImportarProdutos{background:#0a4a89;color:#fff}
+
 #btnLimparProdutos{color:#d72638;border-color:#e14c59}
+
 .prod-ferramentas{display:grid;grid-template-columns:minmax(300px,1fr) 230px 200px;gap:12px;margin-bottom:0;padding:16px;background:#fff;border:1px solid #e1e8f0;border-radius:14px 14px 0 0;box-shadow:0 5px 18px rgba(0,30,69,.04)}
+
 .prod-busca{position:relative}.prod-busca span{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#65788f}
+
 .prod-busca input,.prod-ferramentas select{width:100%;height:42px;border:1px solid #d2dce8;border-radius:7px;background:#fff;outline:none;color:#18324f}
+
 .prod-busca input{padding:0 14px 0 39px}.prod-ferramentas select{padding:0 12px}
+
 .produtos-tabela-container{background:#fff;border:1px solid #e1e8f0;border-top:0;border-radius:0 0 14px 14px;box-shadow:0 5px 18px rgba(0,30,69,.06);overflow:hidden}
+
 .produtos-scroll{overflow-x:auto}
+
 .pagina-produtos .tabela-produtos{width:100%;min-width:1150px;margin:0;border-collapse:collapse;box-shadow:none}
+
 .pagina-produtos .tabela-produtos thead th{padding:12px 10px;background:#f7f9fc;color:#062b60;border-bottom:1px solid #dfe6ee;font-size:11px;white-space:nowrap}
+
 .pagina-produtos .tabela-produtos tbody td{padding:11px 10px;color:#15385f;border-bottom:1px solid #edf1f5;font-size:11px;vertical-align:middle}
+
 .pagina-produtos .tabela-produtos tbody tr:hover{background:#f9fbfe}
+
 .status-produto{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:78px;padding:5px 9px;border-radius:6px;font-weight:700;white-space:nowrap}
+
 .status-produto.normal{background:#e5f5e9;color:#188038}.status-produto.abaixo{background:#fde8e8;color:#cf2d2d}
+
 .status-contagem-produto{display:inline-flex;align-items:center;justify-content:center;min-width:88px;padding:5px 9px;border-radius:6px;font-weight:700;white-space:nowrap}
+
 .status-contagem-produto.contado{background:#e5f5e9;color:#188038}
+
 .status-contagem-produto.pendente{background:#fff4df;color:#b86b00}
+
 .status-contagem-produto.sem-posicao{background:#eef2f7;color:#66788a}
+
 .prod-rodape{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;background:#fff}
+
 .prod-contador{color:#587089;font-size:11px}.prod-paginacao{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center}
+
 .prod-paginacao button{min-width:32px;height:32px;padding:0 9px;border:1px solid #d2dce8;border-radius:6px;background:#fff;color:#17345c;font-weight:700;cursor:pointer}
+
 .prod-paginacao button.ativo{background:#1263d6;border-color:#1263d6;color:#fff}
+
 .prod-itens-pagina{display:flex;align-items:center;gap:8px;color:#587089;font-size:11px}.prod-itens-pagina select{height:34px;border:1px solid #d2dce8;border-radius:6px;background:#fff;padding:0 8px}
+
 @media(max-width:1250px){.prod-kpis{grid-template-columns:1fr 1fr}.importarExcel{grid-template-columns:1fr 1fr!important}.importarExcel > div:last-child{grid-column:1/-1;justify-content:flex-start!important;flex-wrap:wrap!important}.prod-ferramentas{grid-template-columns:1fr 1fr}}
+
 @media(max-width:760px){.pagina-produtos .conteudo{padding:14px 10px 28px!important}.prod-kpis{grid-template-columns:1fr}.importarExcel{grid-template-columns:1fr!important}.importarExcel > div:last-child{grid-column:auto;justify-content:flex-start!important;flex-wrap:wrap!important}.prod-ferramentas{grid-template-columns:1fr}.prod-rodape{flex-direction:column;align-items:stretch}.prod-itens-pagina{justify-content:center}}
+
 
 /* =====================================================
    TOPO PADRÃO DASHBOARD
    BR/IT + DATA/HORA + USUÁRIO + SAIR
 ===================================================== */
+
 .pagina-produtos .topbar .usuario{
+
     display:flex;
+
     align-items:center;
+
     justify-content:flex-end;
+
     gap:14px;
+
     flex-wrap:nowrap;
+
     white-space:nowrap;
+
 }
 
 .pagina-produtos #language-placeholder{
+
     display:flex;
+
     align-items:center;
+
     flex:0 0 auto;
+
 }
 
 .pagina-produtos #language-placeholder #wms-language-switcher{
+
     position:static!important;
+
     top:auto!important;
+
     right:auto!important;
+
     left:auto!important;
+
     bottom:auto!important;
+
     margin:0!important;
+
     padding:0!important;
+
     z-index:auto!important;
+
     background:transparent!important;
+
     box-shadow:none!important;
+
 }
 
 .pagina-produtos #relogio,
 .pagina-produtos #nomeUsuario{
+
     flex:0 0 auto;
+
 }
 
 @media(max-width:950px){
+
     .pagina-produtos .topbar .usuario{
+
         flex-wrap:wrap;
+
     }
+
 }
 
 </style>
@@ -159,6 +280,7 @@ body.pagina-produtos{background:#f4f7fb}
 <body class="pagina-produtos">
 
     <!-- MENU LATERAL - NOVO PADRÃO SMI WMS -->
+
     <aside class="sidebar sidebar-wms-novo">
 
         <div class="sidebar-topo">
@@ -225,6 +347,14 @@ body.pagina-produtos{background:#f4f7fb}
                 <i data-lucide="chevron-right" class="menu-seta"></i>
             </a>
 
+            <a href="conferencia.html" class="menu-item" data-page="conferencia.html">
+                <span class="menu-icon icone-conferencia">
+                    <i data-lucide="clipboard-check"></i>
+                </span>
+                <span class="menu-texto">Conferência</span>
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+            </a>
+
             <a href="transferencias.html" class="menu-item" data-page="transferencias.html">
                 <span class="menu-icon icone-transferencia">
                     <i data-lucide="arrow-left-right"></i>
@@ -233,7 +363,7 @@ body.pagina-produtos{background:#f4f7fb}
                 <i data-lucide="chevron-right" class="menu-seta"></i>
             </a>
 
-            <a href="transferencia-mobile.html" class="menu-item" data-page="transferencia-mobile.html">
+                        <a href="transferencia-mobile.html" class="menu-item" data-page="transferencia-mobile.html">
                 <span class="menu-icon icone-mobile">
                     <i data-lucide="smartphone"></i>
                 </span>
@@ -311,17 +441,20 @@ body.pagina-produtos{background:#f4f7fb}
     </aside>
 
 
-
-
     <!-- CONTEÚDO PRINCIPAL -->
+
     <main class="conteudo">
 
         <!-- BARRA SUPERIOR -->
+
         <header class="topbar">
 
             <div class="titulo-pagina">
+
                 <h1>Produtos</h1>
+
                 <small>Cadastro, consulta e gestão do estoque</small>
+
             </div>
 
             <div class="usuario">
@@ -348,38 +481,70 @@ body.pagina-produtos{background:#f4f7fb}
 
 
         <!-- INDICADORES -->
+
         <section class="prod-kpis">
+
             <div class="prod-kpi total">
                 <div class="prod-kpi-icone">📦</div>
-                <div><small>Total de Produtos</small><strong id="kpiTotalProdutos">0</strong><span class="subtexto">Cadastros ativos</span></div>
+                <div>
+                    <small>Total de Produtos</small>
+                    <strong id="kpiTotalProdutos">0</strong>
+                    <span class="subtexto">Cadastros ativos</span>
+                </div>
             </div>
+
             <div class="prod-kpi com-estoque">
                 <div class="prod-kpi-icone">✅</div>
-                <div><small>Com Estoque</small><strong id="kpiComEstoque">0</strong><span class="subtexto" id="kpiComEstoquePercentual">0% do total</span></div>
+                <div>
+                    <small>Com Estoque</small>
+                    <strong id="kpiComEstoque">0</strong>
+                    <span class="subtexto" id="kpiComEstoquePercentual">
+                        0% do total
+                    </span>
+                </div>
             </div>
+
             <div class="prod-kpi sem-estoque">
                 <div class="prod-kpi-icone">📭</div>
-                <div><small>Sem Estoque</small><strong id="kpiSemEstoque">0</strong><span class="subtexto" id="kpiSemEstoquePercentual">0% do total</span></div>
+                <div>
+                    <small>Sem Estoque</small>
+                    <strong id="kpiSemEstoque">0</strong>
+                    <span class="subtexto" id="kpiSemEstoquePercentual">
+                        0% do total
+                    </span>
+                </div>
             </div>
+
             <div class="prod-kpi abaixo-minimo">
                 <div class="prod-kpi-icone">⚠️</div>
-                <div><small>Abaixo do Mínimo</small><strong id="kpiAbaixoMinimo">0</strong><span class="subtexto" id="kpiAbaixoMinimoPercentual">0% do total</span></div>
+                <div>
+                    <small>Abaixo do Mínimo</small>
+                    <strong id="kpiAbaixoMinimo">0</strong>
+                    <span class="subtexto" id="kpiAbaixoMinimoPercentual">
+                        0% do total
+                    </span>
+                </div>
             </div>
+
         </section>
 
+
         <!-- IMPORTAÇÃO DE ESTOQUE -->
+
         <section
             class="importarExcel"
             aria-labelledby="tituloImportacao"
         >
 
             <div class="tituloExcel">
+
                 <h2
                     id="tituloImportacao"
                     style="margin: 0; color: #0A2D5F; font-size: 28px;"
                 >
                     📥 Importar Estoque Excel
                 </h2>
+
             </div>
 
             <input
@@ -388,120 +553,201 @@ body.pagina-produtos{background:#f4f7fb}
                 accept=".xlsx,.xls,.json"
                 aria-label="Selecionar arquivo de estoque"
             >
-<div style="display:flex; gap:12px; align-items:center;">
 
-    <button
-        type="button"
-        id="btnImportarProdutos">
-        📥 Importar Dados
-    </button>
+            <div style="display:flex; gap:12px; align-items:center;">
 
-    <button
-        type="button"
-        id="btnExportarEstoque"
-        onclick="exportarEstoqueExcel()">
-        📤 Exportar Estoque
-    </button>
+                <button
+                    type="button"
+                    id="btnImportarProdutos"
+                >
+                    📥 Importar Dados
+                </button>
 
-    <button
-        type="button"
-        id="btnLimparProdutos"
-        onclick="limparTodosProdutosSupabase()">
-        🗑️ Limpar Produtos
-    </button>
+                <button
+                    type="button"
+                    id="btnExportarEstoque"
+                    onclick="exportarEstoqueExcel()"
+                >
+                    📤 Exportar Estoque
+                </button>
 
-</div>
+                <button
+                    type="button"
+                    id="btnLimparProdutos"
+                    onclick="limparTodosProdutosSupabase()"
+                >
+                    🗑️ Limpar Produtos
+                </button>
+
+            </div>
 
         </section>
 
-<!-- BUSCA E FILTROS -->
-<section class="prod-ferramentas">
-    <div class="prod-busca">
-        <span>🔍</span>
-        <input type="text" id="pesquisaProdutos" placeholder="Buscar por código, descrição, posição ou NCM..." autocomplete="off">
-    </div>
 
-    <select id="filtroClienteProdutos">
-        <option value="">Todos os clientes</option>
-    </select>
+        <!-- BUSCA E FILTROS -->
 
-    <select id="filtroStatusProdutos">
-        <option value="">Todos os status</option>
-        <option value="COM_ESTOQUE">Com estoque</option>
-        <option value="SEM_ESTOQUE">Sem estoque</option>
-        <option value="ABAIXO_MINIMO">Abaixo do mínimo</option>
-    </select>
-</section>
+        <section class="prod-ferramentas">
 
-<!-- TABELA DE PRODUTOS -->
+            <div class="prod-busca">
+
+                <span>🔍</span>
+
+                <input
+                    type="text"
+                    id="pesquisaProdutos"
+                    placeholder="Buscar por código, descrição, posição ou NCM..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <select id="filtroClienteProdutos">
+
+                <option value="">
+                    Todos os clientes
+                </option>
+
+            </select>
+
+            <select id="filtroStatusProdutos">
+
+                <option value="">
+                    Todos os status
+                </option>
+
+                <option value="COM_ESTOQUE">
+                    Com estoque
+                </option>
+
+                <option value="SEM_ESTOQUE">
+                    Sem estoque
+                </option>
+
+                <option value="ABAIXO_MINIMO">
+                    Abaixo do mínimo
+                </option>
+
+            </select>
+
+        </section>
+
 
         <!-- TABELA DE PRODUTOS -->
+
         <section class="produtos-tabela-container">
 
             <div class="produtos-scroll">
 
-            <table class="tabela tabela-produtos">
+                <table class="tabela tabela-produtos">
 
-                <thead>
-                    <tr>
-                     
-<th>Código</th>
-<th>Descrição</th>
-<th>Descrição detalhada</th>
-<th>Quantidade</th>
-<th>Mínimo</th>
-<th>Máximo</th>
-<th>Status</th>
-<th>Contagem</th>
-<th>NCM</th>
-<th>IPI</th>
-<th>Posição</th>
-                    </tr>
-                </thead>
+                    <thead>
 
-                <tbody id="listaProdutos">
-                    <tr>
-                        <td
-                            colspan="11"
-                            class="produtos-vazio"
-                        >
-                            Nenhum produto cadastrado.
-                        </td>
-                    </tr>
-                </tbody>
+                        <tr>
 
-            </table>
+                            <th>Código</th>
+                            <th>Descrição</th>
+                            <th>Descrição detalhada</th>
+                            <th>Quantidade</th>
+                            <th>Mínimo</th>
+                            <th>Máximo</th>
+                            <th>Status</th>
+                            <th>Contagem</th>
+                            <th>NCM</th>
+                            <th>IPI</th>
+                            <th>Posição</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="listaProdutos">
+
+                        <tr>
+
+                            <td
+                                colspan="11"
+                                class="produtos-vazio"
+                            >
+                                Nenhum produto cadastrado.
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
 
             </div>
 
             <div class="prod-rodape">
-                <div id="contadorProdutos" class="prod-contador">0 produtos</div>
-                <div id="paginacaoProdutos" class="prod-paginacao"></div>
-                <div class="prod-itens-pagina">
-                    <span>Itens por página:</span>
-                   <select id="itensPorPaginaProdutos">
-    <option value="20">20</option>
-    <option value="100">100</option>
-    <option value="500">500</option>
-    <option value="2000">2000</option>
-    <option value="7000" selected>7000</option>
-</select>
+
+                <div
+                    id="contadorProdutos"
+                    class="prod-contador"
+                >
+                    0 produtos
                 </div>
+
+                <div
+                    id="paginacaoProdutos"
+                    class="prod-paginacao"
+                ></div>
+
+                <div class="prod-itens-pagina">
+
+                    <span>
+                        Itens por página:
+                    </span>
+
+                    <select id="itensPorPaginaProdutos">
+
+                        <option value="20">
+                            20
+                        </option>
+
+                        <option value="100">
+                            100
+                        </option>
+
+                        <option value="500">
+                            500
+                        </option>
+
+                        <option value="2000">
+                            2000
+                        </option>
+
+                        <option value="7000" selected>
+                            7000
+                        </option>
+
+                    </select>
+
+                </div>
+
             </div>
 
         </section>
 
     </main>
 
-<!-- BIBLIOTECA PARA LEITURA DO EXCEL -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- BIBLIOTECA PARA LEITURA DO EXCEL -->
 
-<script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
 let todosProdutosTela = [];
+
 let paginaAtualProdutos = 1;
+
 
 // =====================================================
 // STATUS DE CONTAGEM DO INVENTÁRIO NA TELA DE PRODUTOS
@@ -527,7 +773,6 @@ function criarChaveContagemProduto(
 
 }
 
-
 async function carregarStatusContagemProdutos() {
 
     mapaContagemProdutos = {};
@@ -544,14 +789,12 @@ async function carregarStatusContagemProdutos() {
 
         let inicio = 0;
 
-
         while (true) {
 
             const fim =
                 inicio +
                 quantidadePorBusca -
                 1;
-
 
             const { data, error } =
                 await window.supabaseClient
@@ -570,11 +813,9 @@ async function carregarStatusContagemProdutos() {
                         fim
                     );
 
-
             if (error) {
                 throw error;
             }
-
 
             if (
                 !Array.isArray(data) ||
@@ -583,9 +824,7 @@ async function carregarStatusContagemProdutos() {
                 break;
             }
 
-
             registros.push(...data);
-
 
             if (
                 data.length <
@@ -594,12 +833,10 @@ async function carregarStatusContagemProdutos() {
                 break;
             }
 
-
             inicio +=
                 quantidadePorBusca;
 
         }
-
 
         registros.forEach(
             function (registro) {
@@ -610,19 +847,16 @@ async function carregarStatusContagemProdutos() {
                         registro.posicao
                     );
 
-
                 mapaContagemProdutos[chave] =
                     registro;
 
             }
         );
 
-
         console.log(
             "Status de contagem carregados:",
             registros.length
         );
-
 
     } catch (erro) {
 
@@ -647,7 +881,6 @@ function obterStatusContagemProduto(
             .trim()
             .toUpperCase();
 
-
     const posicao =
         String(
             produto.endereco ||
@@ -656,7 +889,6 @@ function obterStatusContagemProduto(
         )
             .trim()
             .toUpperCase();
-
 
     if (!posicao) {
 
@@ -668,23 +900,19 @@ function obterStatusContagemProduto(
 
     }
 
-
     const chave =
         criarChaveContagemProduto(
             codigo,
             posicao
         );
 
-
     const registro =
         mapaContagemProdutos[chave];
-
 
     const possuiContagem =
         registro &&
         registro.quantidade_contada !== null &&
         registro.quantidade_contada !== undefined;
-
 
     if (possuiContagem) {
 
@@ -696,7 +924,6 @@ function obterStatusContagemProduto(
 
     }
 
-
     return `
         <span class="status-contagem-produto pendente">
             ● Pendente
@@ -707,357 +934,998 @@ function obterStatusContagemProduto(
 
 
 async function carregarTodosOsProdutosNaTela() {
-    const tabela = document.getElementById("listaProdutos");
+
+    const tabela =
+        document.getElementById(
+            "listaProdutos"
+        );
+
     if (!tabela) return;
 
     let tentativas = 0;
-    while (!window.supabaseClient && tentativas < 30) {
-        await new Promise(resolve => setTimeout(resolve, 200));
+
+    while (
+        !window.supabaseClient &&
+        tentativas < 30
+    ) {
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    200
+                )
+        );
+
         tentativas++;
+
     }
 
     if (!window.supabaseClient) {
-        tabela.innerHTML = '<tr><td colspan="11" class="produtos-vazio">Não foi possível conectar ao banco de produtos.</td></tr>';
+
+        tabela.innerHTML =
+            '<tr><td colspan="11" class="produtos-vazio">Não foi possível conectar ao banco de produtos.</td></tr>';
+
         return;
+
     }
 
-    tabela.innerHTML = '<tr><td colspan="11" class="produtos-vazio">Carregando todos os produtos...</td></tr>';
+    tabela.innerHTML =
+        '<tr><td colspan="11" class="produtos-vazio">Carregando todos os produtos...</td></tr>';
 
     try {
+
         const todosProdutos = [];
+
         const quantidadePorBusca = 1000;
+
         let inicio = 0;
 
         while (true) {
-            const fim = inicio + quantidadePorBusca - 1;
 
-            const { data, error } = await window.supabaseClient
-                .from("produtos")
-                .select("*")
-                .order("id", { ascending: true })
-                .range(inicio, fim);
+            const fim =
+                inicio +
+                quantidadePorBusca -
+                1;
 
-            if (error) throw error;
-            if (!Array.isArray(data) || data.length === 0) break;
+            const { data, error } =
+                await window.supabaseClient
+                    .from("produtos")
+                    .select("*")
+                    .order(
+                        "id",
+                        {
+                            ascending: true
+                        }
+                    )
+                    .range(
+                        inicio,
+                        fim
+                    );
 
-            todosProdutos.push(...data);
+            if (error) {
+                throw error;
+            }
 
-            if (data.length < quantidadePorBusca) break;
-            inicio += quantidadePorBusca;
+            if (
+                !Array.isArray(data) ||
+                data.length === 0
+            ) {
+                break;
+            }
+
+            todosProdutos.push(
+                ...data
+            );
+
+            if (
+                data.length <
+                quantidadePorBusca
+            ) {
+                break;
+            }
+
+            inicio +=
+                quantidadePorBusca;
+
         }
 
-        todosProdutos.sort((a, b) =>
-            String(a.endereco || "").localeCompare(
-                String(b.endereco || ""),
-                "pt-BR",
-                { numeric: true }
-            )
+        todosProdutos.sort(
+            (a, b) =>
+                String(
+                    a.endereco || ""
+                ).localeCompare(
+                    String(
+                        b.endereco || ""
+                    ),
+                    "pt-BR",
+                    {
+                        numeric: true
+                    }
+                )
         );
-await carregarStatusContagemProdutos();
-        todosProdutosTela = todosProdutos;
 
-        atualizarFiltroComTodosOsProdutos(todosProdutosTela);
+        await carregarStatusContagemProdutos();
+
+        todosProdutosTela =
+            todosProdutos;
+
+        atualizarFiltroComTodosOsProdutos(
+            todosProdutosTela
+        );
+
         atualizarIndicadoresProdutos();
 
         paginaAtualProdutos = 1;
+
         renderizarProdutosPaginados();
 
-        console.log("TOTAL DE PRODUTOS CARREGADOS:", todosProdutosTela.length);
+        console.log(
+            "TOTAL DE PRODUTOS CARREGADOS:",
+            todosProdutosTela.length
+        );
 
     } catch (erro) {
-        console.error("Erro ao carregar todos os produtos:", erro);
+
+        console.error(
+            "Erro ao carregar todos os produtos:",
+            erro
+        );
+
         tabela.innerHTML =
             '<tr><td colspan="11" class="produtos-vazio">Erro ao carregar produtos: ' +
-            escaparHTMLProduto(erro.message) +
+            escaparHTMLProduto(
+                erro.message
+            ) +
             '</td></tr>';
+
     }
+
 }
+
 
 function atualizarIndicadoresProdutos() {
-    const total = todosProdutosTela.length;
 
-    const comEstoque = todosProdutosTela.filter(produto =>
-        Number(produto.quantidade || 0) > 0
-    ).length;
+    const total =
+        todosProdutosTela.length;
 
-  const semEstoque = todosProdutosTela.filter(produto => {
+    const comEstoque =
+        todosProdutosTela.filter(
+            produto =>
+                Number(
+                    produto.quantidade || 0
+                ) > 0
+        ).length;
 
-    const quantidade =
-        Number(produto.quantidade || 0);
+    const semEstoque =
+        todosProdutosTela.filter(
+            produto => {
 
-    const posicao =
-        String(
-            produto.endereco ||
-            produto.posicao ||
-            ""
-        ).trim();
+                const quantidade =
+                    Number(
+                        produto.quantidade || 0
+                    );
 
-    return (
-        posicao !== "" &&
-        quantidade <= 0
+                const posicao =
+                    String(
+                        produto.endereco ||
+                        produto.posicao ||
+                        ""
+                    ).trim();
+
+                return (
+                    posicao !== "" &&
+                    quantidade <= 0
+                );
+
+            }
+        ).length;
+
+    const abaixoMinimo =
+        todosProdutosTela.filter(
+            produto => {
+
+                const quantidade =
+                    Number(
+                        produto.quantidade || 0
+                    );
+
+                const minimo =
+                    Number(
+                        produto.minimo ??
+                        produto.estoque_minimo ??
+                        0
+                    );
+
+                return (
+                    minimo > 0 &&
+                    quantidade < minimo
+                );
+
+            }
+        ).length;
+
+    atualizarTextoProduto(
+        "kpiTotalProdutos",
+        total.toLocaleString(
+            "pt-BR"
+        )
     );
 
-}).length;
+    atualizarTextoProduto(
+        "kpiComEstoque",
+        comEstoque.toLocaleString(
+            "pt-BR"
+        )
+    );
 
-    const abaixoMinimo = todosProdutosTela.filter(produto => {
-        const quantidade = Number(produto.quantidade || 0);
-        const minimo = Number(produto.minimo ?? produto.estoque_minimo ?? 0);
-        return minimo > 0 && quantidade < minimo;
-    }).length;
+    atualizarTextoProduto(
+        "kpiSemEstoque",
+        semEstoque.toLocaleString(
+            "pt-BR"
+        )
+    );
 
-    atualizarTextoProduto("kpiTotalProdutos", total.toLocaleString("pt-BR"));
-    atualizarTextoProduto("kpiComEstoque", comEstoque.toLocaleString("pt-BR"));
-    atualizarTextoProduto("kpiSemEstoque", semEstoque.toLocaleString("pt-BR"));
-    atualizarTextoProduto("kpiAbaixoMinimo", abaixoMinimo.toLocaleString("pt-BR"));
+    atualizarTextoProduto(
+        "kpiAbaixoMinimo",
+        abaixoMinimo.toLocaleString(
+            "pt-BR"
+        )
+    );
 
-    atualizarTextoProduto("kpiComEstoquePercentual", percentualProduto(comEstoque, total) + "% do total");
-    atualizarTextoProduto("kpiSemEstoquePercentual", percentualProduto(semEstoque, total) + "% do total");
-    atualizarTextoProduto("kpiAbaixoMinimoPercentual", percentualProduto(abaixoMinimo, total) + "% do total");
+    atualizarTextoProduto(
+        "kpiComEstoquePercentual",
+        percentualProduto(
+            comEstoque,
+            total
+        ) + "% do total"
+    );
+
+    atualizarTextoProduto(
+        "kpiSemEstoquePercentual",
+        percentualProduto(
+            semEstoque,
+            total
+        ) + "% do total"
+    );
+
+    atualizarTextoProduto(
+        "kpiAbaixoMinimoPercentual",
+        percentualProduto(
+            abaixoMinimo,
+            total
+        ) + "% do total"
+    );
+
 }
 
-function percentualProduto(valor, total) {
-    if (!total) return "0,00";
-    return ((valor / total) * 100).toLocaleString("pt-BR", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+
+function percentualProduto(
+    valor,
+    total
+) {
+
+    if (!total) {
+        return "0,00";
+    }
+
+    return (
+        (valor / total) *
+        100
+    ).toLocaleString(
+        "pt-BR",
+        {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }
+    );
+
 }
 
-function atualizarFiltroComTodosOsProdutos(produtos) {
-    const filtro = document.getElementById("filtroClienteProdutos");
+
+function atualizarFiltroComTodosOsProdutos(
+    produtos
+) {
+
+    const filtro =
+        document.getElementById(
+            "filtroClienteProdutos"
+        );
+
     if (!filtro) return;
 
-    const clientes = [...new Set(
-        produtos
-            .map(produto => String(produto.cliente || "SMI").trim())
-            .filter(Boolean)
-    )].sort();
+    const clientes =
+        [
+            ...new Set(
+                produtos
+                    .map(
+                        produto =>
+                            String(
+                                produto.cliente ||
+                                "SMI"
+                            ).trim()
+                    )
+                    .filter(Boolean)
+            )
+        ].sort();
 
-    filtro.innerHTML = '<option value="">Todos os clientes</option>';
+    filtro.innerHTML =
+        '<option value="">Todos os clientes</option>';
 
-    clientes.forEach(cliente => {
-        const opcao = document.createElement("option");
-        opcao.value = cliente;
-        opcao.textContent = cliente;
-        filtro.appendChild(opcao);
-    });
+    clientes.forEach(
+        cliente => {
+
+            const opcao =
+                document.createElement(
+                    "option"
+                );
+
+            opcao.value =
+                cliente;
+
+            opcao.textContent =
+                cliente;
+
+            filtro.appendChild(
+                opcao
+            );
+
+        }
+    );
+
 }
 
+
 function obterProdutosFiltrados() {
-    const pesquisa = String(document.getElementById("pesquisaProdutos")?.value || "")
-        .trim().toUpperCase();
 
-    const cliente = String(document.getElementById("filtroClienteProdutos")?.value || "")
-        .trim().toUpperCase();
+    const pesquisa =
+        String(
+            document
+                .getElementById(
+                    "pesquisaProdutos"
+                )?.value ||
+            ""
+        )
+            .trim()
+            .toUpperCase();
 
-    const status = String(document.getElementById("filtroStatusProdutos")?.value || "")
-        .trim().toUpperCase();
+    const cliente =
+        String(
+            document
+                .getElementById(
+                    "filtroClienteProdutos"
+                )?.value ||
+            ""
+        )
+            .trim()
+            .toUpperCase();
 
-    return todosProdutosTela.filter(produto => {
-        const quantidade = Number(produto.quantidade || 0);
-        const minimo = Number(produto.minimo ?? produto.estoque_minimo ?? 0);
-        const abaixoMinimo = minimo > 0 && quantidade < minimo;
+    const status =
+        String(
+            document
+                .getElementById(
+                    "filtroStatusProdutos"
+                )?.value ||
+            ""
+        )
+            .trim()
+            .toUpperCase();
 
-        const clienteProduto = String(produto.cliente || "SMI").trim().toUpperCase();
+    return todosProdutosTela.filter(
+        produto => {
 
-        const texto = [
-            produto.codigo,
-            produto.descricao,
-            produto.descricao_detalhada,
-            produto.descricaoDetalhada,
-            produto.endereco,
-            produto.ncm,
-            produto.NCM
-        ].join(" ").toUpperCase();
+            const quantidade =
+                Number(
+                    produto.quantidade || 0
+                );
 
-        const pesquisaOk = !pesquisa || texto.includes(pesquisa);
-        const clienteOk = !cliente || clienteProduto === cliente;
+            const minimo =
+                Number(
+                    produto.minimo ??
+                    produto.estoque_minimo ??
+                    0
+                );
 
-        let statusOk = true;
-        if (status === "COM_ESTOQUE") statusOk = quantidade > 0;
-        if (status === "SEM_ESTOQUE") statusOk = quantidade <= 0;
-        if (status === "ABAIXO_MINIMO") statusOk = abaixoMinimo;
+            const abaixoMinimo =
+                minimo > 0 &&
+                quantidade < minimo;
 
-        return pesquisaOk && clienteOk && statusOk;
-    });
+            const clienteProduto =
+                String(
+                    produto.cliente ||
+                    "SMI"
+                )
+                    .trim()
+                    .toUpperCase();
+
+            const texto =
+                [
+                    produto.codigo,
+                    produto.descricao,
+                    produto.descricao_detalhada,
+                    produto.descricaoDetalhada,
+                    produto.endereco,
+                    produto.ncm,
+                    produto.NCM
+                ]
+                    .join(" ")
+                    .toUpperCase();
+
+            const pesquisaOk =
+                !pesquisa ||
+                texto.includes(
+                    pesquisa
+                );
+
+            const clienteOk =
+                !cliente ||
+                clienteProduto ===
+                cliente;
+
+            let statusOk = true;
+
+            if (
+                status ===
+                "COM_ESTOQUE"
+            ) {
+                statusOk =
+                    quantidade > 0;
+            }
+
+            if (
+                status ===
+                "SEM_ESTOQUE"
+            ) {
+                statusOk =
+                    quantidade <= 0;
+            }
+
+            if (
+                status ===
+                "ABAIXO_MINIMO"
+            ) {
+                statusOk =
+                    abaixoMinimo;
+            }
+
+            return (
+                pesquisaOk &&
+                clienteOk &&
+                statusOk
+            );
+
+        }
+    );
+
 }
 
 function renderizarProdutosPaginados() {
-    const tabela = document.getElementById("listaProdutos");
+
+    const tabela =
+        document.getElementById(
+            "listaProdutos"
+        );
+
     if (!tabela) return;
 
-    const filtrados = obterProdutosFiltrados();
-    const itensPorPagina = Number(
-        document.getElementById("itensPorPaginaProdutos")?.value || 20
-    );
+    const filtrados =
+        obterProdutosFiltrados();
 
-    const totalPaginas = Math.max(1, Math.ceil(filtrados.length / itensPorPagina));
-    if (paginaAtualProdutos > totalPaginas) paginaAtualProdutos = totalPaginas;
+    const itensPorPagina =
+        Number(
+            document
+                .getElementById(
+                    "itensPorPaginaProdutos"
+                )?.value ||
+            20
+        );
 
-    const inicio = (paginaAtualProdutos - 1) * itensPorPagina;
-    const fim = Math.min(inicio + itensPorPagina, filtrados.length);
-    const pagina = filtrados.slice(inicio, fim);
+    const totalPaginas =
+        Math.max(
+            1,
+            Math.ceil(
+                filtrados.length /
+                itensPorPagina
+            )
+        );
+
+    if (
+        paginaAtualProdutos >
+        totalPaginas
+    ) {
+        paginaAtualProdutos =
+            totalPaginas;
+    }
+
+    const inicio =
+        (
+            paginaAtualProdutos -
+            1
+        ) *
+        itensPorPagina;
+
+    const fim =
+        Math.min(
+            inicio +
+            itensPorPagina,
+            filtrados.length
+        );
+
+    const pagina =
+        filtrados.slice(
+            inicio,
+            fim
+        );
 
     tabela.innerHTML = "";
 
-    if (pagina.length === 0) {
-        tabela.innerHTML = '<tr><td colspan="11" class="produtos-vazio">Nenhum produto encontrado.</td></tr>';
-        atualizarRodapeProdutos(0, 0, 0, 1);
+    if (
+        pagina.length ===
+        0
+    ) {
+
+        tabela.innerHTML =
+            '<tr><td colspan="11" class="produtos-vazio">Nenhum produto encontrado.</td></tr>';
+
+        atualizarRodapeProdutos(
+            0,
+            0,
+            0,
+            1
+        );
+
         return;
+
     }
 
-    pagina.forEach(produto => {
-        const linha = document.createElement("tr");
+    pagina.forEach(
+        produto => {
 
-        const quantidade = Number(produto.quantidade || 0);
-        const minimo = Number(produto.minimo ?? produto.estoque_minimo ?? 0);
-        const maximo = Number(produto.maximo ?? produto.estoque_maximo ?? 0);
-        const abaixoDoMinimo = minimo > 0 && quantidade < minimo;
+            const linha =
+                document.createElement(
+                    "tr"
+                );
 
-        const statusEstoque = abaixoDoMinimo
-            ? '<span class="status-produto abaixo">Abaixo do mínimo</span>'
-            : '<span class="status-produto normal">● Normal</span>';
+            const quantidade =
+                Number(
+                    produto.quantidade ||
+                    0
+                );
+
+            const minimo =
+                Number(
+                    produto.minimo ??
+                    produto.estoque_minimo ??
+                    0
+                );
+
+            const maximo =
+                Number(
+                    produto.maximo ??
+                    produto.estoque_maximo ??
+                    0
+                );
+
+            const abaixoDoMinimo =
+                minimo > 0 &&
+                quantidade < minimo;
+
+            const statusEstoque =
+                abaixoDoMinimo
+                    ? '<span class="status-produto abaixo">Abaixo do mínimo</span>'
+                    : '<span class="status-produto normal">● Normal</span>';
+
             const statusContagem =
-    obterStatusContagemProduto(
-        produto
+                obterStatusContagemProduto(
+                    produto
+                );
+
+            const descricaoDetalhada =
+                produto.descricao_detalhada ??
+                produto.descricaoDetalhada ??
+                "-";
+
+            const ncm =
+                produto.ncm ??
+                produto.NCM ??
+                "-";
+
+            const ipi =
+                produto.ipi ??
+                produto.IPI ??
+                "-";
+
+            linha.innerHTML = `
+                <td>${escaparHTMLProduto(produto.codigo || "-")}</td>
+                <td>${escaparHTMLProduto(produto.descricao || "-")}</td>
+                <td>${escaparHTMLProduto(descricaoDetalhada || "-")}</td>
+                <td>${formatarQuantidadeProduto(quantidade)}</td>
+                <td>${formatarQuantidadeProduto(minimo)}</td>
+                <td>${formatarQuantidadeProduto(maximo)}</td>
+                <td>${statusEstoque}</td>
+                <td>${statusContagem}</td>
+                <td>${escaparHTMLProduto(ncm || "-")}</td>
+                <td>${
+                    ipi === "" ||
+                    ipi === null ||
+                    ipi === undefined
+                        ? "-"
+                        : escaparHTMLProduto(
+                            ipi
+                        )
+                }</td>
+                <td>${escaparHTMLProduto(produto.endereco || "-")}</td>
+            `;
+
+            tabela.appendChild(
+                linha
+            );
+
+        }
     );
 
-        const descricaoDetalhada = produto.descricao_detalhada ?? produto.descricaoDetalhada ?? "-";
-        const ncm = produto.ncm ?? produto.NCM ?? "-";
-        const ipi = produto.ipi ?? produto.IPI ?? "-";
+    atualizarRodapeProdutos(
+        inicio + 1,
+        fim,
+        filtrados.length,
+        totalPaginas
+    );
 
-        linha.innerHTML = `
-            <td>${escaparHTMLProduto(produto.codigo || "-")}</td>
-            <td>${escaparHTMLProduto(produto.descricao || "-")}</td>
-            <td>${escaparHTMLProduto(descricaoDetalhada || "-")}</td>
-            <td>${formatarQuantidadeProduto(quantidade)}</td>
-            <td>${formatarQuantidadeProduto(minimo)}</td>
-            <td>${formatarQuantidadeProduto(maximo)}</td>
-            <td>${statusEstoque}</td>
-            <td>${statusContagem}</td>
-            <td>${escaparHTMLProduto(ncm || "-")}</td>
-            <td>${ipi === "" || ipi === null || ipi === undefined ? "-" : escaparHTMLProduto(ipi)}</td>
-            <td>${escaparHTMLProduto(produto.endereco || "-")}</td>
-        `;
-
-        tabela.appendChild(linha);
-    });
-
-    atualizarRodapeProdutos(inicio + 1, fim, filtrados.length, totalPaginas);
 }
 
-function atualizarRodapeProdutos(inicio, fim, total, totalPaginas) {
-    const contador = document.getElementById("contadorProdutos");
+
+function atualizarRodapeProdutos(
+    inicio,
+    fim,
+    total,
+    totalPaginas
+) {
+
+    const contador =
+        document.getElementById(
+            "contadorProdutos"
+        );
+
     if (contador) {
-        contador.textContent = total === 0
-            ? "0 produtos"
-            : `Mostrando ${inicio} a ${fim} de ${total.toLocaleString("pt-BR")} produtos`;
+
+        contador.textContent =
+            total === 0
+                ? "0 produtos"
+                : `Mostrando ${inicio} a ${fim} de ${total.toLocaleString("pt-BR")} produtos`;
+
     }
 
-    const paginacao = document.getElementById("paginacaoProdutos");
+    const paginacao =
+        document.getElementById(
+            "paginacaoProdutos"
+        );
+
     if (!paginacao) return;
 
     paginacao.innerHTML = "";
-    if (totalPaginas <= 1) return;
 
-    const adicionar = (texto, pagina, ativo = false, desabilitado = false) => {
-        const botao = document.createElement("button");
-        botao.type = "button";
-        botao.textContent = texto;
-        botao.disabled = desabilitado;
-        if (ativo) botao.classList.add("ativo");
+    if (
+        totalPaginas <=
+        1
+    ) {
+        return;
+    }
 
-        botao.addEventListener("click", () => {
-            paginaAtualProdutos = pagina;
-            renderizarProdutosPaginados();
-        });
+    const adicionar =
+        (
+            texto,
+            pagina,
+            ativo = false,
+            desabilitado = false
+        ) => {
 
-        paginacao.appendChild(botao);
-    };
+            const botao =
+                document.createElement(
+                    "button"
+                );
 
-    adicionar("«", 1, false, paginaAtualProdutos === 1);
-    adicionar("‹", Math.max(1, paginaAtualProdutos - 1), false, paginaAtualProdutos === 1);
+            botao.type =
+                "button";
 
-    const paginas = [...new Set([
+            botao.textContent =
+                texto;
+
+            botao.disabled =
+                desabilitado;
+
+            if (ativo) {
+                botao.classList.add(
+                    "ativo"
+                );
+            }
+
+            botao.addEventListener(
+                "click",
+                () => {
+
+                    paginaAtualProdutos =
+                        pagina;
+
+                    renderizarProdutosPaginados();
+
+                }
+            );
+
+            paginacao.appendChild(
+                botao
+            );
+
+        };
+
+    adicionar(
+        "«",
         1,
-        paginaAtualProdutos - 1,
-        paginaAtualProdutos,
-        paginaAtualProdutos + 1,
-        totalPaginas
-    ].filter(p => p >= 1 && p <= totalPaginas))].sort((a, b) => a - b);
+        false,
+        paginaAtualProdutos ===
+            1
+    );
+
+    adicionar(
+        "‹",
+        Math.max(
+            1,
+            paginaAtualProdutos -
+            1
+        ),
+        false,
+        paginaAtualProdutos ===
+            1
+    );
+
+    const paginas =
+        [
+            ...new Set(
+                [
+                    1,
+                    paginaAtualProdutos -
+                        1,
+                    paginaAtualProdutos,
+                    paginaAtualProdutos +
+                        1,
+                    totalPaginas
+                ]
+                    .filter(
+                        p =>
+                            p >= 1 &&
+                            p <=
+                                totalPaginas
+                    )
+            )
+        ].sort(
+            (a, b) =>
+                a - b
+        );
 
     let anterior = 0;
-    paginas.forEach(p => {
-        if (anterior && p - anterior > 1) {
-            const pontos = document.createElement("span");
-            pontos.textContent = "...";
-            paginacao.appendChild(pontos);
+
+    paginas.forEach(
+        p => {
+
+            if (
+                anterior &&
+                p - anterior >
+                    1
+            ) {
+
+                const pontos =
+                    document.createElement(
+                        "span"
+                    );
+
+                pontos.textContent =
+                    "...";
+
+                paginacao.appendChild(
+                    pontos
+                );
+
+            }
+
+            adicionar(
+                String(p),
+                p,
+                p ===
+                    paginaAtualProdutos
+            );
+
+            anterior = p;
+
         }
+    );
 
-        adicionar(String(p), p, p === paginaAtualProdutos);
-        anterior = p;
-    });
+    adicionar(
+        "›",
+        Math.min(
+            totalPaginas,
+            paginaAtualProdutos +
+            1
+        ),
+        false,
+        paginaAtualProdutos ===
+            totalPaginas
+    );
 
-    adicionar("›", Math.min(totalPaginas, paginaAtualProdutos + 1), false, paginaAtualProdutos === totalPaginas);
-    adicionar("»", totalPaginas, false, paginaAtualProdutos === totalPaginas);
+    adicionar(
+        "»",
+        totalPaginas,
+        false,
+        paginaAtualProdutos ===
+            totalPaginas
+    );
+
 }
 
-function atualizarTextoProduto(id, valor) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = valor;
+
+function atualizarTextoProduto(
+    id,
+    valor
+) {
+
+    const el =
+        document.getElementById(
+            id
+        );
+
+    if (el) {
+        el.textContent =
+            valor;
+    }
+
 }
 
-function formatarQuantidadeProduto(valor) {
-    return Number(valor || 0).toLocaleString("pt-BR", {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 3
-    });
+
+function formatarQuantidadeProduto(
+    valor
+) {
+
+    return Number(
+        valor || 0
+    ).toLocaleString(
+        "pt-BR",
+        {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 3
+        }
+    );
+
 }
 
-function escaparHTMLProduto(valor) {
-    return String(valor ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+
+function escaparHTMLProduto(
+    valor
+) {
+
+    return String(
+        valor ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("pesquisaProdutos")?.addEventListener("input", function () {
-        paginaAtualProdutos = 1;
-        renderizarProdutosPaginados();
-    });
 
-    document.getElementById("filtroClienteProdutos")?.addEventListener("change", function () {
-        paginaAtualProdutos = 1;
-        renderizarProdutosPaginados();
-    });
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    document.getElementById("filtroStatusProdutos")?.addEventListener("change", function () {
-        paginaAtualProdutos = 1;
-        renderizarProdutosPaginados();
-    });
+        document
+            .getElementById(
+                "pesquisaProdutos"
+            )
+            ?.addEventListener(
+                "input",
+                function () {
 
-    document.getElementById("itensPorPaginaProdutos")?.addEventListener("change", function () {
-        paginaAtualProdutos = 1;
-        renderizarProdutosPaginados();
-    });
-});
+                    paginaAtualProdutos =
+                        1;
 
-window.addEventListener("load", function () {
-    setTimeout(carregarTodosOsProdutosNaTela, 500);
-});
+                    renderizarProdutosPaginados();
 
-window.carregarTodosOsProdutosNaTela = carregarTodosOsProdutosNaTela;
+                }
+            );
+
+        document
+            .getElementById(
+                "filtroClienteProdutos"
+            )
+            ?.addEventListener(
+                "change",
+                function () {
+
+                    paginaAtualProdutos =
+                        1;
+
+                    renderizarProdutosPaginados();
+
+                }
+            );
+
+        document
+            .getElementById(
+                "filtroStatusProdutos"
+            )
+            ?.addEventListener(
+                "change",
+                function () {
+
+                    paginaAtualProdutos =
+                        1;
+
+                    renderizarProdutosPaginados();
+
+                }
+            );
+
+        document
+            .getElementById(
+                "itensPorPaginaProdutos"
+            )
+            ?.addEventListener(
+                "change",
+                function () {
+
+                    paginaAtualProdutos =
+                        1;
+
+                    renderizarProdutosPaginados();
+
+                }
+            );
+
+    }
+);
+
+
+window.addEventListener(
+    "load",
+    function () {
+
+        setTimeout(
+            carregarTodosOsProdutosNaTela,
+            500
+        );
+
+    }
+);
+
+
+window.carregarTodosOsProdutosNaTela =
+    carregarTodosOsProdutosNaTela;
+
 </script>
 
+
 <script src="supabase.js"></script>
+
 <script src="app.js?v=2100"></script>
+
 <script src="produtos-supabase.js?v=20260925-170236"></script>
 
-
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
 
     if (typeof lucide !== "undefined") {
@@ -1070,8 +1938,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const languageSwitcher =
         document.getElementById("wms-language-switcher");
 
-    if (languagePlaceholder && languageSwitcher) {
-        languagePlaceholder.appendChild(languageSwitcher);
+    if (
+        languagePlaceholder &&
+        languageSwitcher
+    ) {
+        languagePlaceholder.appendChild(
+            languageSwitcher
+        );
     }
 
     let paginaAtual =
@@ -1084,11 +1957,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     document
-        .querySelectorAll(".sidebar-wms-novo .menu-item")
+        .querySelectorAll(
+            ".sidebar-wms-novo .menu-item"
+        )
         .forEach(function (item) {
 
             const pagina =
-                item.getAttribute("data-page");
+                item.getAttribute(
+                    "data-page"
+                );
 
             item.classList.toggle(
                 "active",
@@ -1098,12 +1975,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 });
+
 </script>
 
 </body>
+
 </html>
-
-
-
-
 

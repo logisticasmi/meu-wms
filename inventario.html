@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -12,432 +13,903 @@
     <title>SMI WMS - Inventário</title>
 
     <link rel="stylesheet" href="style.css">
+
     <script src="https://unpkg.com/lucide@latest"></script>
 
+
     <style>
+
         .inventario-container {
+
             background: #ffffff;
+
             border-radius: 18px;
+
             padding: 24px;
+
             box-shadow: 0 6px 20px rgba(0, 30, 69, 0.08);
+
         }
+
 
         .inventario-cabecalho {
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
+
             flex-wrap: wrap;
+
             gap: 15px;
+
             margin-bottom: 22px;
+
         }
+
 
         .inventario-cabecalho h2 {
+
             margin: 0;
+
             color: #062d63;
+
         }
+
 
         .inventario-acoes {
+
             display: flex;
+
             gap: 10px;
+
             flex-wrap: wrap;
+
         }
+
 
         .btn-inventario {
+
             padding: 11px 17px;
+
             border: none;
+
             border-radius: 9px;
+
             background: #063b73;
+
             color: #ffffff;
+
             font-weight: bold;
+
             cursor: pointer;
+
         }
+
 
         .btn-inventario:hover {
+
             filter: brightness(1.08);
+
         }
+
 
         .btn-limpar-inventario {
+
             background: #dc2626;
+
         }
+
 
         .inventario-tabela-container {
+
             width: 100%;
+
             overflow-x: auto;
+
         }
 
+
         .inventario-tabela {
+
             width: 100%;
+
             border-collapse: collapse;
+
             min-width: 950px;
+
         }
+
 
         .inventario-tabela th,
         .inventario-tabela td {
+
             padding: 13px 12px;
+
             border-bottom: 1px solid #e5ebf2;
+
             text-align: left;
+
         }
+
 
         .inventario-tabela th {
+
             color: #062d63;
+
             background: #f5f8fc;
+
             white-space: nowrap;
+
         }
+
 
         .coluna-numero {
+
             text-align: right !important;
+
         }
+
 
         .quantidade-contada {
+
             width: 125px;
+
             padding: 10px;
+
             border: 1px solid #cbd5e1;
+
             border-radius: 8px;
+
             outline: none;
+
             text-align: right;
+
         }
+
 
         .quantidade-contada:focus {
+
             border-color: #1264e8;
+
             box-shadow: 0 0 0 3px rgba(18, 100, 232, 0.12);
+
         }
+
 
         .status-inventario {
+
             display: inline-block;
+
             min-width: 120px;
+
             padding: 7px 10px;
+
             border-radius: 20px;
+
             text-align: center;
+
             font-weight: bold;
+
             white-space: nowrap;
+
         }
+
 
         .status-pendente {
+
             color: #92400e;
+
             background: #fef3c7;
+
         }
+
 
         .status-ok {
+
             color: #166534;
+
             background: #dcfce7;
+
         }
+
 
         .status-divergente {
+
             color: #991b1b;
+
             background: #fee2e2;
+
         }
+
 
         .diferenca-positiva {
+
             color: #166534;
+
             font-weight: bold;
+
         }
+
 
         .diferenca-negativa {
+
             color: #dc2626;
+
             font-weight: bold;
+
         }
+
 
         .diferenca-zero {
+
             color: #166534;
+
             font-weight: bold;
+
         }
+
 
         .inventario-vazio {
+
             padding: 35px !important;
+
             text-align: center !important;
+
             color: #64748b;
+
         }
+
 
         .resumo-inventario {
+
             display: grid;
+
             grid-template-columns: repeat(4, minmax(150px, 1fr));
+
             gap: 14px;
+
             margin-bottom: 22px;
+
         }
+
 
         .resumo-card {
+
             padding: 17px;
+
             border: 1px solid #e5ebf2;
+
             border-radius: 12px;
+
             background: #f8fafc;
+
         }
+
 
         .resumo-card span {
+
             display: block;
+
             margin-bottom: 6px;
+
             color: #64748b;
+
             font-size: 13px;
+
         }
 
+
         .resumo-card strong {
+
             color: #062d63;
+
             font-size: 22px;
+
         }
 
 
         .situacao-aprovacao {
+
             display: inline-block;
+
             min-width: 120px;
+
             padding: 7px 10px;
+
             border-radius: 20px;
+
             text-align: center;
+
             font-weight: bold;
+
             white-space: nowrap;
+
         }
+
 
         .aprovacao-pendente {
+
             color: #92400e;
+
             background: #fef3c7;
+
         }
+
 
         .aprovacao-aprovado {
+
             color: #166534;
+
             background: #dcfce7;
+
         }
+
 
         .aprovacao-reprovado {
+
             color: #991b1b;
+
             background: #fee2e2;
+
         }
 
+
         .acoes-aprovacao {
+
             display: flex;
+
             gap: 7px;
+
             flex-wrap: wrap;
+
             min-width: 190px;
+
         }
+
 
         .btn-aprovar-inventario,
         .btn-reprovar-inventario {
+
             border: none;
+
             border-radius: 8px;
+
             padding: 8px 10px;
+
             color: #ffffff;
+
             font-weight: bold;
+
             cursor: pointer;
+
             white-space: nowrap;
+
         }
+
 
         .btn-aprovar-inventario {
+
             background: #16a34a;
+
         }
 
+
         .btn-reprovar-inventario {
+
             background: #dc2626;
+
         }
+
 
         .btn-aprovar-inventario:disabled,
         .btn-reprovar-inventario:disabled {
+
             opacity: 0.55;
+
             cursor: not-allowed;
+
         }
 
+
         .detalhe-aprovacao {
+
             display: block;
+
             margin-top: 5px;
+
             color: #64748b;
+
             font-size: 11px;
+
             line-height: 1.3;
+
         }
 
 
         .inventario-busca {
+
             display: flex;
+
             align-items: center;
+
             gap: 10px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .inventario-busca input {
+
+            width: 100%;
+
+            max-width: 520px;
+
+            padding: 12px 14px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 9px;
+
+            outline: none;
+
+            font-size: 15px;
+
+        }
+
+
+        .inventario-busca input:focus {
+
+            border-color: #1264e8;
+
+            box-shadow: 0 0 0 3px rgba(18, 100, 232, 0.12);
+
+        }
+
+
+        .inventario-busca small {
+
+            color: #64748b;
+
+        }
+
+
+        .indicadores-inventario {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(180px, 1fr));
+            gap: 14px;
             margin-bottom: 18px;
         }
 
-        .inventario-busca input {
+
+        .indicador-inventario,
+        .grafico-inventario-card {
+            background: #fff;
+            border: 1px solid #e5ebf2;
+            border-radius: 14px;
+            padding: 17px;
+            box-shadow: 0 4px 14px rgba(0,30,69,.06);
+        }
+
+
+        .indicador-inventario h3,
+        .grafico-inventario-card h3 {
+            margin: 0 0 14px;
+            color: #062d63;
+            font-size: 13px;
+        }
+
+
+        .indicador-principal {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 13px;
+        }
+
+
+        .indicador-icone {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-size: 22px;
+        }
+
+
+        .azul {
+            background: #0b57d0;
+        }
+
+        .verde {
+            background: #16a34a;
+        }
+
+        .laranja {
+            background: #f97316;
+        }
+
+        .vermelho {
+            background: #dc2626;
+        }
+
+
+        .indicador-valor {
+            color: #062d63;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+
+        .indicador-detalhes {
+            border-top: 1px solid #e5ebf2;
+            padding-top: 10px;
+            display: grid;
+            gap: 7px;
+            font-size: 12px;
+        }
+
+
+        .indicador-linha {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+
+        .graficos-inventario {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+
+        .grafico-area {
+            position: relative;
+            height: 240px;
+        }
+
+
+        .top5-divergencias-wrap {
+            height: 240px;
+            overflow: auto;
+        }
+
+
+        .top5-divergencias {
             width: 100%;
-            max-width: 520px;
-            padding: 12px 14px;
-            border: 1px solid #cbd5e1;
-            border-radius: 9px;
-            outline: none;
-            font-size: 15px;
-        }
-
-        .inventario-busca input:focus {
-            border-color: #1264e8;
-            box-shadow: 0 0 0 3px rgba(18, 100, 232, 0.12);
-        }
-
-        .inventario-busca small {
-            color: #64748b;
+            border-collapse: collapse;
+            font-size: 12px;
         }
 
 
-        .indicadores-inventario{display:grid;grid-template-columns:repeat(5,minmax(180px,1fr));gap:14px;margin-bottom:18px}
-        .indicador-inventario,.grafico-inventario-card{background:#fff;border:1px solid #e5ebf2;border-radius:14px;padding:17px;box-shadow:0 4px 14px rgba(0,30,69,.06)}
-        .indicador-inventario h3,.grafico-inventario-card h3{margin:0 0 14px;color:#062d63;font-size:13px}
-        .indicador-principal{display:flex;align-items:center;gap:12px;margin-bottom:13px}
-        .indicador-icone{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:22px}
-        .azul{background:#0b57d0}.verde{background:#16a34a}.laranja{background:#f97316}.vermelho{background:#dc2626}
-        .indicador-valor{color:#062d63;font-size:22px;font-weight:800}
-        .indicador-detalhes{border-top:1px solid #e5ebf2;padding-top:10px;display:grid;gap:7px;font-size:12px}
-        .indicador-linha{display:flex;justify-content:space-between;gap:8px}
-        .graficos-inventario{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
-        .grafico-area{position:relative;height:240px}
-        .top5-divergencias-wrap{height:240px;overflow:auto}
-        .top5-divergencias{width:100%;border-collapse:collapse;font-size:12px}
-        .top5-divergencias th{background:#063b73;color:#fff;padding:9px 8px;text-align:left;white-space:nowrap}
-        .top5-divergencias td{padding:9px 8px;border-bottom:1px solid #e5ebf2}
-        .top5-divergencias th:first-child,.top5-divergencias td:first-child{text-align:center;width:34px}
-        .top5-divergencias th:last-child,.top5-divergencias td:last-child{text-align:right;white-space:nowrap}
-        .top5-positivo{color:#166534;font-weight:700}
-        .top5-negativo{color:#dc2626;font-weight:700}
-        @media(max-width:1200px){.indicadores-inventario{grid-template-columns:repeat(2,1fr)}.graficos-inventario{grid-template-columns:1fr}}
+        .top5-divergencias th {
+            background: #063b73;
+            color: #fff;
+            padding: 9px 8px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+
+        .top5-divergencias td {
+            padding: 9px 8px;
+            border-bottom: 1px solid #e5ebf2;
+        }
+
+
+        .top5-divergencias th:first-child,
+        .top5-divergencias td:first-child {
+            text-align: center;
+            width: 34px;
+        }
+
+
+        .top5-divergencias th:last-child,
+        .top5-divergencias td:last-child {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+
+        .top5-positivo {
+            color: #166534;
+            font-weight: 700;
+        }
+
+
+        .top5-negativo {
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+
+        @media(max-width:1200px) {
+
+            .indicadores-inventario {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .graficos-inventario {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
 
         @media (max-width: 800px) {
+
             .resumo-inventario {
+
                 grid-template-columns: repeat(2, 1fr);
+
             }
+
         }
-        /* =====================================================
-   VELOCÍMETRO - COBERTURA DO INVENTÁRIO
-===================================================== */
 
-.indicador-cobertura {
-    display: flex;
-    flex-direction: column;
-}
-
-.velocimetro-inventario {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 2px 0 10px;
-}
-
-.velocimetro-arco {
-    position: relative;
-    width: 150px;
-    height: 75px;
-    overflow: hidden;
-}
-
-.velocimetro-arco::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background: conic-gradient(
-        from 270deg,
-        #22c55e 0deg 90deg,
-        #f59e0b 90deg 144deg,
-        #ef4444 144deg 180deg,
-        #e5e7eb 180deg 360deg
-    );
-}
-
-.velocimetro-arco::after {
-    content: "";
-    position: absolute;
-    left: 24px;
-    top: 24px;
-    width: 102px;
-    height: 102px;
-    border-radius: 50%;
-    background: #ffffff;
-}
-
-.velocimetro-preenchimento {
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 3px;
-    height: 58px;
-    background: #0f172a;
-    transform-origin: bottom center;
-    transform: translateX(-50%) rotate(-90deg);
-    z-index: 3;
-    border-radius: 3px;
-    transition: transform .5s ease;
-}
-
-.velocimetro-preenchimento::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: -5px;
-    width: 10px;
-    height: 10px;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    background: #0f172a;
-}
-
-.velocimetro-centro {
-    position: absolute;
-    left: 50%;
-    bottom: 3px;
-    transform: translateX(-50%);
-    z-index: 4;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.velocimetro-centro strong {
-    color: #062d63;
-    font-size: 22px;
-    line-height: 1;
-}
-
-.velocimetro-centro span {
-    margin-top: 4px;
-    color: #64748b;
-    font-size: 8px;
-    font-weight: 800;
-}
 
         /* =====================================================
+           VELOCÍMETRO - COBERTURA DO INVENTÁRIO
+        ===================================================== */
+
+        .indicador-cobertura {
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        .velocimetro-inventario {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            margin: 2px 0 10px;
+
+        }
+
+
+        .velocimetro-arco {
+
+            position: relative;
+
+            width: 150px;
+
+            height: 75px;
+
+            overflow: hidden;
+
+        }
+
+
+        .velocimetro-arco::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 0;
+
+            width: 150px;
+
+            height: 150px;
+
+            border-radius: 50%;
+
+            background: conic-gradient(
+                from 270deg,
+                #22c55e 0deg 90deg,
+                #f59e0b 90deg 144deg,
+                #ef4444 144deg 180deg,
+                #e5e7eb 180deg 360deg
+            );
+
+        }
+
+
+        .velocimetro-arco::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 24px;
+
+            top: 24px;
+
+            width: 102px;
+
+            height: 102px;
+
+            border-radius: 50%;
+
+            background: #ffffff;
+
+        }
+
+
+        .velocimetro-preenchimento {
+
+            position: absolute;
+
+            left: 50%;
+
+            bottom: 0;
+
+            width: 3px;
+
+            height: 58px;
+
+            background: #0f172a;
+
+            transform-origin: bottom center;
+
+            transform: translateX(-50%) rotate(-90deg);
+
+            z-index: 3;
+
+            border-radius: 3px;
+
+            transition: transform .5s ease;
+
+        }
+
+
+        .velocimetro-preenchimento::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 50%;
+
+            bottom: -5px;
+
+            width: 10px;
+
+            height: 10px;
+
+            transform: translateX(-50%);
+
+            border-radius: 50%;
+
+            background: #0f172a;
+
+        }
+
+
+        .velocimetro-centro {
+
+            position: absolute;
+
+            left: 50%;
+
+            bottom: 3px;
+
+            transform: translateX(-50%);
+
+            z-index: 4;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+        }
+
+
+        .velocimetro-centro strong {
+
+            color: #062d63;
+
+            font-size: 22px;
+
+            line-height: 1;
+
+        }
+
+
+        .velocimetro-centro span {
+
+            margin-top: 4px;
+
+            color: #64748b;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+        }
+
+                /* =====================================================
            TOPO PADRÃO DASHBOARD
            BR/IT + DATA/HORA + USUÁRIO + SAIR
         ===================================================== */
 
         .pagina-inventario .topbar .usuario {
+
             display: flex;
+
             align-items: center;
+
             justify-content: flex-end;
+
             gap: 14px;
+
             flex-wrap: nowrap;
+
             white-space: nowrap;
+
         }
+
 
         .pagina-inventario #language-placeholder {
+
             display: flex;
+
             align-items: center;
+
             flex: 0 0 auto;
+
         }
 
+
         .pagina-inventario #language-placeholder #wms-language-switcher {
+
             position: static !important;
+
             top: auto !important;
+
             right: auto !important;
+
             left: auto !important;
+
             bottom: auto !important;
+
             margin: 0 !important;
+
             padding: 0 !important;
+
             z-index: auto !important;
+
             background: transparent !important;
+
             box-shadow: none !important;
+
         }
+
 
         .pagina-inventario #relogio,
         .pagina-inventario #nomeUsuario {
+
             flex: 0 0 auto;
+
         }
 
+
         @media (max-width: 950px) {
+
             .pagina-inventario .topbar .usuario {
+
                 flex-wrap: wrap;
+
             }
+
         }
+
 
     </style>
 
@@ -445,13 +917,16 @@
 
 </head>
 
+
 <body class="pagina-inventario">
+
 
     <!-- =====================================================
          MENU LATERAL - NOVO PADRÃO SMI WMS
     ===================================================== -->
 
     <aside class="sidebar sidebar-wms-novo">
+
 
         <div class="sidebar-topo">
 
@@ -462,133 +937,274 @@
             >
 
             <h2>SMI WMS</h2>
+
             <p>GESTÃO QUE MOVIMENTA</p>
 
         </div>
 
+
         <nav class="sidebar-nav" aria-label="Menu principal">
 
+
             <div class="menu-titulo">
+
                 <span>PRINCIPAL</span>
+
             </div>
+
 
             <a href="dashboard.html" class="menu-item" data-page="dashboard.html">
-                <span class="menu-icon icone-dashboard"><i data-lucide="house"></i></span>
+
+                <span class="menu-icon icone-dashboard">
+                    <i data-lucide="house"></i>
+                </span>
+
                 <span class="menu-texto">Dashboard</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
+
 
             <a href="produtos.html" class="menu-item" data-page="produtos.html">
-                <span class="menu-icon icone-produtos"><i data-lucide="package"></i></span>
+
+                <span class="menu-icon icone-produtos">
+                    <i data-lucide="package"></i>
+                </span>
+
                 <span class="menu-texto">Produtos</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
 
+
             <div class="menu-titulo">
+
                 <span>OPERAÇÕES</span>
+
             </div>
+
 
             <a href="entradas.html" class="menu-item" data-page="entradas.html">
-                <span class="menu-icon icone-entradas"><i data-lucide="download"></i></span>
+
+                <span class="menu-icon icone-entradas">
+                    <i data-lucide="download"></i>
+                </span>
+
                 <span class="menu-texto">Entradas</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
+
 
             <a href="saidas.html" class="menu-item" data-page="saidas.html">
-                <span class="menu-icon icone-saidas"><i data-lucide="upload"></i></span>
+
+                <span class="menu-icon icone-saidas">
+                    <i data-lucide="upload"></i>
+                </span>
+
                 <span class="menu-texto">Saídas</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
+
 
             <a href="separacao.html" class="menu-item" data-page="separacao.html">
-                <span class="menu-icon icone-separacao"><i data-lucide="shopping-cart"></i></span>
+
+                <span class="menu-icon icone-separacao">
+                    <i data-lucide="shopping-cart"></i>
+                </span>
+
                 <span class="menu-texto">Separação</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
+
+
+            <a href="conferencia.html" class="menu-item" data-page="conferencia.html">
+
+                <span class="menu-icon icone-conferencia">
+                    <i data-lucide="clipboard-check"></i>
+                </span>
+
+                <span class="menu-texto">Conferência</span>
+
+                <i data-lucide="chevron-right" class="menu-seta"></i>
+
+            </a>
+
 
             <a href="transferencias.html" class="menu-item" data-page="transferencias.html">
-                <span class="menu-icon icone-transferencia"><i data-lucide="arrow-left-right"></i></span>
+
+                <span class="menu-icon icone-transferencia">
+                    <i data-lucide="arrow-left-right"></i>
+                </span>
+
                 <span class="menu-texto">Transferências</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
+
 
             <a href="transferencia-mobile.html" class="menu-item" data-page="transferencia-mobile.html">
-                <span class="menu-icon icone-mobile"><i data-lucide="smartphone"></i></span>
+
+                <span class="menu-icon icone-mobile">
+                    <i data-lucide="smartphone"></i>
+                </span>
+
                 <span class="menu-texto">Transf. Mobile</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
+
 
             <a href="posicoes.html" class="menu-item" data-page="posicoes.html">
-                <span class="menu-icon icone-posicoes"><i data-lucide="map-pin"></i></span>
+
+                <span class="menu-icon icone-posicoes">
+                    <i data-lucide="map-pin"></i>
+                </span>
+
                 <span class="menu-texto">Posições</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
+
 
             <a href="inventario.html" class="menu-item" data-page="inventario.html">
-                <span class="menu-icon icone-inventario"><i data-lucide="clipboard-list"></i></span>
+
+                <span class="menu-icon icone-inventario">
+                    <i data-lucide="clipboard-list"></i>
+                </span>
+
                 <span class="menu-texto">Inventário</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
+
 
             <a href="inventario-mobile.html" class="menu-item" data-page="inventario-mobile.html">
-                <span class="menu-icon icone-invmobile"><i data-lucide="scan-line"></i></span>
+
+                <span class="menu-icon icone-invmobile">
+                    <i data-lucide="scan-line"></i>
+                </span>
+
                 <span class="menu-texto">Inv. Mobile</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
+
 
             <div class="menu-titulo">
+
                 <span>SISTEMA</span>
+
             </div>
 
+
             <a href="relatorios.html" class="menu-item" data-page="relatorios.html">
-                <span class="menu-icon icone-relatorios"><i data-lucide="chart-no-axes-column"></i></span>
+
+                <span class="menu-icon icone-relatorios">
+                    <i data-lucide="chart-no-axes-column"></i>
+                </span>
+
                 <span class="menu-texto">Relatórios</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
+
 
             <a href="etiquetagem.html" class="menu-item" data-page="etiquetagem.html">
-                <span class="menu-icon icone-etiqueta"><i data-lucide="tag"></i></span>
+
+                <span class="menu-icon icone-etiqueta">
+                    <i data-lucide="tag"></i>
+                </span>
+
                 <span class="menu-texto">Etiquetagem</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
+
 
             <a href="requisicao.html" class="menu-item" data-page="requisicao.html">
-                <span class="menu-icon icone-requisicao"><i data-lucide="file-text"></i></span>
+
+                <span class="menu-icon icone-requisicao">
+                    <i data-lucide="file-text"></i>
+                </span>
+
                 <span class="menu-texto">Requisição</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
 
+
             <a href="configuracoes.html" class="menu-item" data-page="configuracoes.html">
-                <span class="menu-icon icone-config"><i data-lucide="settings"></i></span>
+
+                <span class="menu-icon icone-config">
+                    <i data-lucide="settings"></i>
+                </span>
+
                 <span class="menu-texto">Configurações</span>
+
                 <i data-lucide="chevron-right" class="menu-seta"></i>
+
             </a>
+
 
         </nav>
 
+
         <div class="sidebar-rodape">
+
             <span>LOGÍSTICA MAIS INTELIGENTE</span>
+
             <small>v1.0.0</small>
+
         </div>
+
 
     </aside>
 
+
     <main class="conteudo">
+
 
         <header class="topbar">
 
+
             <div class="titulo-pagina">
+
                 <h1>Inventário</h1>
-                <small>Contagem física e conferência do estoque</small>
+
+                <small>
+                    Contagem física e conferência do estoque
+                </small>
+
             </div>
+
 
             <div class="usuario">
 
+
                 <div id="language-placeholder"></div>
+
 
                 <span id="relogio"></span>
 
+
                 <span id="nomeUsuario"></span>
+
 
                 <button
                     type="button"
@@ -597,17 +1213,26 @@
                     Sair
                 </button>
 
+
             </div>
+
 
         </header>
 
+
         <section class="inventario-container">
+
 
             <div class="inventario-cabecalho">
 
-                <h2>📋 Contagem de Inventário</h2>
+
+                <h2>
+                    📋 Contagem de Inventário
+                </h2>
+
 
                 <div class="inventario-acoes">
+
 
                     <button
                         type="button"
@@ -616,6 +1241,7 @@
                     >
                         🔄 Atualizar Lista
                     </button>
+
 
                     <button
                         type="button"
@@ -626,6 +1252,7 @@
                         ✅ Aprovar Selecionados
                     </button>
 
+
                     <button
                         type="button"
                         class="btn-inventario"
@@ -635,6 +1262,7 @@
                         ❌ Recusar Selecionados
                     </button>
 
+
                     <button
                         type="button"
                         class="btn-inventario"
@@ -642,6 +1270,7 @@
                     >
                         📄 Exportar Excel
                     </button>
+
 
                     <button
                         type="button"
@@ -651,12 +1280,15 @@
                         🗑️ Limpar Contagens
                     </button>
 
+
                 </div>
+
 
             </div>
 
 
             <div class="inventario-busca">
+
                 <input
                     type="search"
                     id="pesquisaInventario"
@@ -664,175 +1296,559 @@
                     autocomplete="off"
                     aria-label="Pesquisar em todo o inventário"
                 >
+
                 <small id="resultadoPesquisaInventario"></small>
+
             </div>
+
 
             <section class="painel-indicadores-inventario">
+
+
                 <div class="indicadores-inventario">
-                   <div class="indicador-inventario indicador-cobertura">
 
-    <h3>COBERTURA DO INVENTÁRIO</h3>
 
-    <div class="velocimetro-inventario">
+                    <div class="indicador-inventario indicador-cobertura">
 
-        <div class="velocimetro-arco">
-            <div
-                class="velocimetro-preenchimento"
-                id="velocimetroCobertura"
-            ></div>
 
-            <div class="velocimetro-centro">
-                <strong id="indCobertura">—</strong>
-                <span>CONCLUÍDO</span>
-            </div>
-        </div>
+                        <h3>
+                            COBERTURA DO INVENTÁRIO
+                        </h3>
 
-    </div>
 
-    <div class="indicador-detalhes">
+                        <div class="velocimetro-inventario">
 
-        <div class="indicador-linha">
-            <span>Itens contados</span>
-            <strong id="indContados">—</strong>
-        </div>
 
-        <div class="indicador-linha">
-            <span>Total de itens</span>
-            <strong id="indTotal">—</strong>
-        </div>
+                            <div class="velocimetro-arco">
 
-    </div>
+                                <div
+                                    class="velocimetro-preenchimento"
+                                    id="velocimetroCobertura"
+                                ></div>
 
-</div>
-                    <div class="indicador-inventario"><h3>ACURÁCIA DO INVENTÁRIO</h3><div class="indicador-principal"><div class="indicador-icone verde">🎯</div><div class="indicador-valor" id="indAcuracia">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>Itens sem divergência</span><strong id="indCorretos">—</strong></div><div class="indicador-linha"><span>Total de itens contados</span><strong id="indContados2">—</strong></div></div></div>
-                    <div class="indicador-inventario"><h3>DIVERGÊNCIA TOTAL (R$)</h3><div class="indicador-principal"><div class="indicador-icone laranja">$</div><div class="indicador-valor" id="indDivFinanceira">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>Divergência positiva</span><strong id="indDivPos">—</strong></div><div class="indicador-linha"><span>Divergência negativa</span><strong id="indDivNeg">—</strong></div></div></div>
-                    <div class="indicador-inventario"><h3>ITENS COM DIVERGÊNCIA</h3><div class="indicador-principal"><div class="indicador-icone vermelho">⚠</div><div class="indicador-valor" id="indDivergentes">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>% sobre o total contado</span><strong id="indPercDiv">—</strong></div></div></div>
-                    <div class="indicador-inventario"><h3>VALOR TOTAL INVENTARIADO</h3><div class="indicador-principal"><div class="indicador-icone azul">📦</div><div class="indicador-valor" id="indValorInventariado">—</div></div><div class="indicador-detalhes"><div class="indicador-linha"><span>Valor contábil</span><strong id="indValorContabil">—</strong></div><div class="indicador-linha"><span>Diferença</span><strong id="indDifValor">—</strong></div></div></div>
-                </div>
-                <div class="graficos-inventario">
-                    <div class="grafico-inventario-card"><h3>STATUS DO INVENTÁRIO</h3><div class="grafico-area"><canvas id="graficoStatusInventario"></canvas></div></div>
-                    <div class="grafico-inventario-card">
-                        <h3>TOP 5 ITENS COM MAIOR DIVERGÊNCIA (R$)</h3>
-                        <div class="top5-divergencias-wrap">
-                            <table class="top5-divergencias">
-                                <thead><tr><th>#</th><th>Código</th><th>Descrição</th><th>Posição</th><th>Dif. Qtde</th><th>Divergência (R$)</th></tr></thead>
-                                <tbody id="top5DivergenciasInventario">
-                                    <tr><td colspan="6" style="text-align:center;color:#64748b;">Nenhuma divergência contabilizada.</td></tr>
-                                </tbody>
-                            </table>
+
+                                <div class="velocimetro-centro">
+
+                                    <strong id="indCobertura">
+                                        —
+                                    </strong>
+
+                                    <span>
+                                        CONCLUÍDO
+                                    </span>
+
+                                </div>
+
+
+                            </div>
+
+
                         </div>
+
+
+                        <div class="indicador-detalhes">
+
+
+                            <div class="indicador-linha">
+
+                                <span>
+                                    Itens contados
+                                </span>
+
+                                <strong id="indContados">
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                            <div class="indicador-linha">
+
+                                <span>
+                                    Total de itens
+                                </span>
+
+                                <strong id="indTotal">
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
                     </div>
+
+                                        <div class="indicador-inventario">
+                        <h3>ACURÁCIA DO INVENTÁRIO</h3>
+
+                        <div class="indicador-principal">
+
+                            <div class="indicador-icone verde">
+                                🎯
+                            </div>
+
+                            <div
+                                class="indicador-valor"
+                                id="indAcuracia"
+                            >
+                                —
+                            </div>
+
+                        </div>
+
+                        <div class="indicador-detalhes">
+
+                            <div class="indicador-linha">
+
+                                <span>
+                                    Itens sem divergência
+                                </span>
+
+                                <strong id="indCorretos">
+                                    —
+                                </strong>
+
+                            </div>
+
+                            <div class="indicador-linha">
+
+                                <span>
+                                    Total de itens contados
+                                </span>
+
+                                <strong id="indContados2">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="indicador-inventario">
+
+                        <h3>
+                            DIVERGÊNCIA TOTAL (R$)
+                        </h3>
+
+                        <div class="indicador-principal">
+
+                            <div class="indicador-icone laranja">
+                                $
+                            </div>
+
+                            <div
+                                class="indicador-valor"
+                                id="indDivFinanceira"
+                            >
+                                —
+                            </div>
+
+                        </div>
+
+                        <div class="indicador-detalhes">
+
+                            <div class="indicador-linha">
+
+                                <span>
+                                    Divergência positiva
+                                </span>
+
+                                <strong id="indDivPos">
+                                    —
+                                </strong>
+
+                            </div>
+
+                            <div class="indicador-linha">
+
+                                <span>
+                                    Divergência negativa
+                                </span>
+
+                                <strong id="indDivNeg">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="indicador-inventario">
+
+                        <h3>
+                            ITENS COM DIVERGÊNCIA
+                        </h3>
+
+                        <div class="indicador-principal">
+
+                            <div class="indicador-icone vermelho">
+                                ⚠
+                            </div>
+
+                            <div
+                                class="indicador-valor"
+                                id="indDivergentes"
+                            >
+                                —
+                            </div>
+
+                        </div>
+
+                        <div class="indicador-detalhes">
+
+                            <div class="indicador-linha">
+
+                                <span>
+                                    % sobre o total contado
+                                </span>
+
+                                <strong id="indPercDiv">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="indicador-inventario">
+
+                        <h3>
+                            VALOR TOTAL INVENTARIADO
+                        </h3>
+
+                        <div class="indicador-principal">
+
+                            <div class="indicador-icone azul">
+                                📦
+                            </div>
+
+                            <div
+                                class="indicador-valor"
+                                id="indValorInventariado"
+                            >
+                                —
+                            </div>
+
+                        </div>
+
+                        <div class="indicador-detalhes">
+
+                            <div class="indicador-linha">
+
+                                <span>
+                                    Valor contábil
+                                </span>
+
+                                <strong id="indValorContabil">
+                                    —
+                                </strong>
+
+                            </div>
+
+                            <div class="indicador-linha">
+
+                                <span>
+                                    Diferença
+                                </span>
+
+                                <strong id="indDifValor">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
                 </div>
+
+
+                <div class="graficos-inventario">
+
+
+                    <div class="grafico-inventario-card">
+
+                        <h3>
+                            STATUS DO INVENTÁRIO
+                        </h3>
+
+                        <div class="grafico-area">
+
+                            <canvas id="graficoStatusInventario"></canvas>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="grafico-inventario-card">
+
+                        <h3>
+                            TOP 5 ITENS COM MAIOR DIVERGÊNCIA (R$)
+                        </h3>
+
+                        <div class="top5-divergencias-wrap">
+
+                            <table class="top5-divergencias">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>#</th>
+
+                                        <th>Código</th>
+
+                                        <th>Descrição</th>
+
+                                        <th>Posição</th>
+
+                                        <th>Dif. Qtde</th>
+
+                                        <th>Divergência (R$)</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="top5DivergenciasInventario">
+
+                                    <tr>
+
+                                        <td
+                                            colspan="6"
+                                            style="text-align:center;color:#64748b;"
+                                        >
+                                            Nenhuma divergência contabilizada.
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
             </section>
-            <div style="display:none"><span id="resumoTotalInventario">0</span><span id="resumoContadosInventario">0</span><span id="resumoOkInventario">0</span><span id="resumoDivergenciasInventario">0</span></div>
+
+
+            <div style="display:none">
+
+                <span id="resumoTotalInventario">
+                    0
+                </span>
+
+                <span id="resumoContadosInventario">
+                    0
+                </span>
+
+                <span id="resumoOkInventario">
+                    0
+                </span>
+
+                <span id="resumoDivergenciasInventario">
+                    0
+                </span>
+
+            </div>
+
 
             <div class="inventario-tabela-container">
 
+
                 <table class="inventario-tabela">
 
+
                     <thead>
+
                         <tr>
+
                             <th style="width: 40px; text-align: center;">
+
                                 <input
                                     type="checkbox"
                                     id="selecionarTodosInventario"
                                     aria-label="Selecionar todos os itens desta página"
                                 >
+
                             </th>
-                            <th>Código</th>
-                            <th>Descrição</th>
-                            <th>Posição</th>
+
+                            <th>
+                                Código
+                            </th>
+
+                            <th>
+                                Descrição
+                            </th>
+
+                            <th>
+                                Posição
+                            </th>
+
                             <th class="coluna-numero">
                                 Qtde Sistema
                             </th>
+
                             <th class="coluna-numero">
                                 Qtde Contada
                             </th>
+
                             <th class="coluna-numero">
                                 Diferença
                             </th>
-                            <th>Status</th>
-                            <th>Contado por</th>
-                            <th>Aprovação</th>
-                            <th>Ações</th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Contado por
+                            </th>
+
+                            <th>
+                                Aprovação
+                            </th>
+
+                            <th>
+                                Ações
+                            </th>
+
                         </tr>
+
                     </thead>
+
 
                     <tbody id="listaInventario">
 
+
                         <tr>
+
                             <td
                                 colspan="11"
                                 class="inventario-vazio"
                             >
                                 Carregando inventário...
                             </td>
+
                         </tr>
+
 
                     </tbody>
 
+
                 </table>
+
 
             </div>
 
+
         </section>
 
-    </main>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-<script src="app.js"></script>
-<script src="inventario-supabase.js"></script>
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase.js"></script>
+
+    <script src="app.js"></script>
+
+    <script src="inventario-supabase.js"></script>
+
 
     <script>
+
     let timerAtualizacaoInventario = null;
+
     let salvamentosEmAndamento = new Set();
+
     let mapaContagensGlobal = {};
+
     let paginaInventarioAtual = 1;
+
     let timerPesquisaInventario = null;
+
     let graficoStatusInventarioInstancia = null;
+
 
     const ITENS_POR_PAGINA_INVENTARIO = 100;
 
+
     async function obterEstoqueInventario() {
+
         /*
            Fonte principal: tabela "produtos" do Supabase.
            Dessa forma, qualquer planilha importada em Produtos
            passa a refletir diretamente no Inventário.
         */
+
         if (
             typeof buscarProdutosInventarioSupabase ===
             "function"
         ) {
+
             const produtosOnline =
                 await buscarProdutosInventarioSupabase();
+
 
             if (
                 Array.isArray(produtosOnline)
             ) {
+
                 return produtosOnline;
+
             }
+
         }
+
 
         /*
            Fallback de segurança:
            usa o estoque local apenas se a consulta online falhar.
            Mantém somente itens com posição e não remove itens zerados.
         */
+
         try {
+
             const dados = JSON.parse(
                 localStorage.getItem("estoque")
             );
+
 
             const estoqueLocal =
                 Array.isArray(dados)
                     ? dados
                     : [];
 
+
             return estoqueLocal.filter(
                 function (produto) {
+
                     const posicao =
                         String(
                             produto.endereco ||
@@ -840,26 +1856,36 @@
                             ""
                         ).trim();
 
+
                     return posicao !== "";
+
                 }
             );
 
+
         } catch (erro) {
+
             console.error(
                 "Erro ao carregar estoque local de contingência:",
                 erro
             );
 
+
             return [];
+
         }
+
     }
 
+
     function criarChaveProdutoInventario(produto) {
+
         const codigo = String(
             produto.codigo || ""
         )
             .trim()
             .toUpperCase();
+
 
         const posicao = String(
             produto.endereco ||
@@ -869,46 +1895,64 @@
             .trim()
             .toUpperCase();
 
+
         return codigo + "__" + posicao;
+
     }
 
+
     function converterNumeroInventario(valor) {
+
         if (
             valor === undefined ||
             valor === null ||
             String(valor).trim() === ""
         ) {
+
             return 0;
+
         }
+
 
         let texto = String(valor)
             .trim()
             .replace(/\s/g, "");
 
+
         if (
             texto.includes(".") &&
             texto.includes(",")
         ) {
+
             texto = texto
                 .replace(/\./g, "")
                 .replace(",", ".");
+
         } else if (texto.includes(",")) {
+
             texto = texto.replace(",", ".");
+
         }
+
 
         texto = texto.replace(
             /[^0-9.-]/g,
             ""
         );
 
+
         const numero = Number(texto);
+
 
         return Number.isFinite(numero)
             ? numero
             : 0;
+
     }
 
+
     function formatarNumeroInventario(valor) {
+
         return converterNumeroInventario(valor)
             .toLocaleString(
                 "pt-BR",
@@ -917,22 +1961,30 @@
                     maximumFractionDigits: 3
                 }
             );
+
     }
 
+
     async function carregarInventario() {
+
         const tabela =
             document.getElementById(
                 "listaInventario"
             );
 
+
         if (!tabela) {
+
             return;
+
         }
+
 
         if (
             typeof buscarContagensInventarioSupabase !==
             "function"
         ) {
+
             tabela.innerHTML =
                 "<tr>" +
                     "<td colspan='11' class='inventario-vazio'>" +
@@ -940,25 +1992,34 @@
                     "</td>" +
                 "</tr>";
 
+
             return;
+
         }
+
 
         const estoque =
             await obterEstoqueInventario();
 
+
         const registrosOnline =
             await buscarContagensInventarioSupabase();
+
 
         mapaContagensGlobal =
             criarMapaContagensInventario(
                 registrosOnline
             );
 
+
         atualizarPainelIndicadoresInventario(estoque);
+
 
         tabela.innerHTML = "";
 
+
         if (estoque.length === 0) {
+
             tabela.innerHTML =
                 "<tr>" +
                     "<td colspan='11' class='inventario-vazio'>" +
@@ -966,17 +2027,25 @@
                     "</td>" +
                 "</tr>";
 
+
             atualizarResumoInventario();
+
             renderizarPaginacaoInventario(0);
+
             return;
+
         }
 
+
         estoque.sort(function (a, b) {
+
             const posicaoA =
                 String(a.endereco || "");
 
+
             const posicaoB =
                 String(b.endereco || "");
+
 
             return posicaoA.localeCompare(
                 posicaoB,
@@ -986,39 +2055,48 @@
                     sensitivity: "base"
                 }
             );
+
         });
+
 
         const campoPesquisa =
             document.getElementById(
                 "pesquisaInventario"
             );
-const termoPesquisaBruto =
-    String(
-        campoPesquisa?.value || ""
-    )
-        .trim()
-        .toUpperCase();
 
 
-const termoPesquisa =
-    termoPesquisaBruto.length > 8
-        ? termoPesquisaBruto.substring(0, 8)
-        : termoPesquisaBruto;
+        const termoPesquisaBruto =
+            String(
+                campoPesquisa?.value || ""
+            )
+                .trim()
+                .toUpperCase();
+
+
+        const termoPesquisa =
+            termoPesquisaBruto.length > 8
+                ? termoPesquisaBruto.substring(0, 8)
+                : termoPesquisaBruto;
+
 
         const estoqueFiltrado =
             termoPesquisa
+
                 ? estoque.filter(function (produto) {
+
                     const codigo = String(
                         produto.codigo || ""
                     )
                         .trim()
                         .toUpperCase();
 
+
                     const descricao = String(
                         produto.descricao || ""
                     )
                         .trim()
                         .toUpperCase();
+
 
                     const posicao = String(
                         produto.endereco ||
@@ -1028,30 +2106,43 @@ const termoPesquisa =
                         .trim()
                         .toUpperCase();
 
+
                     return (
                         codigo.includes(termoPesquisa) ||
                         descricao.includes(termoPesquisa) ||
                         posicao.includes(termoPesquisa)
                     );
+
                 })
+
                 : estoque;
+
 
         const resultadoPesquisa =
             document.getElementById(
                 "resultadoPesquisaInventario"
             );
 
+
         if (resultadoPesquisa) {
+
             if (termoPesquisa) {
+
                 resultadoPesquisa.textContent =
                     estoqueFiltrado.length +
                     " item(ns) encontrado(s) em toda a base";
+
             } else {
+
                 resultadoPesquisa.textContent = "";
+
             }
+
         }
 
+
         if (estoqueFiltrado.length === 0) {
+
             tabela.innerHTML =
                 "<tr>" +
                     "<td colspan='11' class='inventario-vazio'>" +
@@ -1059,21 +2150,30 @@ const termoPesquisa =
                     "</td>" +
                 "</tr>";
 
+
             atualizarResumoInventario();
+
 
             const totalElemento =
                 document.getElementById(
                     "resumoTotalInventario"
                 );
 
+
             if (totalElemento) {
+
                 totalElemento.textContent =
                     estoque.length;
+
             }
 
+
             renderizarPaginacaoInventario(0);
+
             return;
+
         }
+
 
         const totalPaginas =
             Math.max(
@@ -1084,13 +2184,18 @@ const termoPesquisa =
                 )
             );
 
+
         if (paginaInventarioAtual > totalPaginas) {
+
             paginaInventarioAtual = totalPaginas;
+
         }
+
 
         const inicioPagina =
             (paginaInventarioAtual - 1) *
             ITENS_POR_PAGINA_INVENTARIO;
+
 
         const produtosPagina =
             estoqueFiltrado.slice(
@@ -1099,42 +2204,54 @@ const termoPesquisa =
                 ITENS_POR_PAGINA_INVENTARIO
             );
 
+
         produtosPagina.forEach(function (produto) {
+
             const linha =
                 document.createElement("tr");
 
+
             linha.className =
                 "linha-inventario";
+
 
             const chaveProduto =
                 criarChaveProdutoInventario(
                     produto
                 );
 
+
             const registroOnline =
                 mapaContagensGlobal[
                     chaveProduto
                 ];
 
+
             const celulaSelecionar =
                 document.createElement("td");
+
 
             celulaSelecionar.style.textAlign =
                 "center";
 
+
             const checkSelecionar =
                 document.createElement("input");
+
 
             checkSelecionar.type =
                 "checkbox";
 
+
             checkSelecionar.className =
                 "checkInventario";
+
 
             checkSelecionar.dataset.codigo =
                 String(produto.codigo || "")
                     .trim()
                     .toUpperCase();
+
 
             checkSelecionar.dataset.posicao =
                 String(
@@ -1145,6 +2262,7 @@ const termoPesquisa =
                     .trim()
                     .toUpperCase();
 
+
             const situacaoRegistro =
                 String(
                     registroOnline?.situacao_aprovacao ||
@@ -1153,92 +2271,122 @@ const termoPesquisa =
                     .trim()
                     .toUpperCase();
 
+
             const possuiContagem =
                 registroOnline &&
                 registroOnline.quantidade_contada !== null &&
                 registroOnline.quantidade_contada !== undefined;
 
+
             checkSelecionar.disabled =
                 !possuiContagem ||
                 situacaoRegistro === "APROVADO";
+
 
             celulaSelecionar.appendChild(
                 checkSelecionar
             );
 
+
             const celulaCodigo =
                 document.createElement("td");
+
 
             celulaCodigo.textContent =
                 produto.codigo || "-";
 
+
             const celulaDescricao =
                 document.createElement("td");
+
 
             celulaDescricao.textContent =
                 produto.descricao ||
                 "Sem descrição";
 
+
             const celulaPosicao =
                 document.createElement("td");
+
 
             celulaPosicao.textContent =
                 produto.endereco || "-";
 
+
             const celulaSistema =
                 document.createElement("td");
 
+
             celulaSistema.className =
                 "coluna-numero quantidade-sistema";
+
 
             celulaSistema.textContent =
                 formatarNumeroInventario(
                     produto.quantidade
                 );
 
+
             const celulaContada =
                 document.createElement("td");
+
 
             celulaContada.className =
                 "coluna-numero";
 
+
             const campoContado =
                 document.createElement("input");
 
+
             campoContado.type = "number";
+
             campoContado.min = "0";
+
             campoContado.step = "0.001";
+
             campoContado.placeholder =
                 "Digite a contagem";
+
 
             campoContado.className =
                 "quantidade-contada";
 
+
             campoContado.dataset.chave =
                 chaveProduto;
 
+
             if (possuiContagem) {
+
                 campoContado.value =
                     registroOnline.quantidade_contada;
+
             }
+
 
             const celulaDiferenca =
                 document.createElement("td");
 
-            celulaDiferenca.className =
+                            celulaDiferenca.className =
                 "coluna-numero diferenca-inventario";
+
 
             const celulaStatus =
                 document.createElement("td");
 
+
             celulaStatus.className =
                 "status-celula-inventario";
+
 
             const celulaUsuario =
                 document.createElement("td");
 
+
             celulaUsuario.className =
                 "usuario-inventario";
+
 
             celulaUsuario.textContent =
                 registroOnline &&
@@ -1246,14 +2394,18 @@ const termoPesquisa =
                     ? registroOnline.usuario
                     : "-";
 
+
             const celulaAprovacao =
                 document.createElement("td");
+
 
             const celulaAcoes =
                 document.createElement("td");
 
+
             celulaAcoes.className =
                 "acoes-aprovacao";
+
 
             configurarAprovacaoInventario(
                 registroOnline,
@@ -1263,6 +2415,7 @@ const termoPesquisa =
                 celulaAcoes
             );
 
+
             atualizarResultadoLinhaInventario(
                 produto,
                 campoContado,
@@ -1270,11 +2423,14 @@ const termoPesquisa =
                 celulaStatus
             );
 
+
             let timerSalvamento = null;
+
 
             campoContado.addEventListener(
                 "input",
                 function () {
+
                     atualizarResultadoLinhaInventario(
                         produto,
                         campoContado,
@@ -1282,24 +2438,33 @@ const termoPesquisa =
                         celulaStatus
                     );
 
+
                     clearTimeout(timerSalvamento);
+
 
                     timerSalvamento = setTimeout(
                         async function () {
+
                             const valorDigitado =
                                 String(
                                     campoContado.value || ""
                                 ).trim();
 
+
                             if (valorDigitado === "") {
+
                                 return;
+
                             }
+
 
                             salvamentosEmAndamento.add(
                                 chaveProduto
                             );
 
+
                             campoContado.disabled = true;
+
 
                             const resultado =
                                 await salvarContagemInventarioSupabase(
@@ -1307,29 +2472,41 @@ const termoPesquisa =
                                     valorDigitado
                                 );
 
+
                             campoContado.disabled = false;
+
 
                             salvamentosEmAndamento.delete(
                                 chaveProduto
                             );
 
+
                             if (!resultado.sucesso) {
+
                                 campoContado.focus();
+
                                 return;
+
                             }
+
 
                             if (
                                 resultado.registro &&
                                 resultado.registro.usuario
                             ) {
+
                                 celulaUsuario.textContent =
                                     resultado.registro.usuario;
+
                             }
 
+
                             if (resultado.registro) {
+
                                 mapaContagensGlobal[
                                     chaveProduto
                                 ] = resultado.registro;
+
 
                                 configurarAprovacaoInventario(
                                     resultado.registro,
@@ -1339,64 +2516,96 @@ const termoPesquisa =
                                     celulaAcoes
                                 );
 
+
                                 checkSelecionar.disabled = false;
+
                             }
+
 
                             console.log(
                                 "Contagem salva online:",
                                 chaveProduto
                             );
+
                         },
                         600
                     );
+
                 }
             );
+
 
             celulaContada.appendChild(
                 campoContado
             );
 
+
             linha.appendChild(celulaSelecionar);
+
             linha.appendChild(celulaCodigo);
+
             linha.appendChild(celulaDescricao);
+
             linha.appendChild(celulaPosicao);
+
             linha.appendChild(celulaSistema);
+
             linha.appendChild(celulaContada);
+
             linha.appendChild(celulaDiferenca);
+
             linha.appendChild(celulaStatus);
+
             linha.appendChild(celulaUsuario);
+
             linha.appendChild(celulaAprovacao);
+
             linha.appendChild(celulaAcoes);
 
+
             tabela.appendChild(linha);
+
         });
+
 
         const selecionarTodos =
             document.getElementById(
                 "selecionarTodosInventario"
             );
 
+
         if (selecionarTodos) {
+
             selecionarTodos.checked = false;
+
             selecionarTodos.indeterminate = false;
+
         }
 
+
         atualizarResumoInventario();
+
 
         const totalElemento =
             document.getElementById(
                 "resumoTotalInventario"
             );
 
+
         if (totalElemento) {
+
             totalElemento.textContent =
                 estoque.length;
+
         }
+
 
         renderizarPaginacaoInventario(
             estoqueFiltrado.length
         );
+
     }
+
 
 
     // =====================================================
@@ -1406,6 +2615,7 @@ const termoPesquisa =
     function renderizarPaginacaoInventario(
         totalProdutos
     ) {
+
         const totalPaginas =
             Math.max(
                 1,
@@ -1415,75 +2625,108 @@ const termoPesquisa =
                 )
             );
 
+
         let paginacao =
             document.getElementById(
                 "paginacaoInventario"
             );
 
+
         if (!paginacao) {
+
             paginacao =
                 document.createElement("div");
+
 
             paginacao.id =
                 "paginacaoInventario";
 
+
             paginacao.style.display =
                 "flex";
+
             paginacao.style.justifyContent =
                 "center";
+
             paginacao.style.alignItems =
                 "center";
+
             paginacao.style.gap =
                 "12px";
+
             paginacao.style.marginTop =
                 "20px";
+
             paginacao.style.flexWrap =
                 "wrap";
+
 
             const tabelaContainer =
                 document.querySelector(
                     ".inventario-tabela-container"
                 );
 
+
             if (tabelaContainer) {
+
                 tabelaContainer.insertAdjacentElement(
                     "afterend",
                     paginacao
                 );
+
             }
+
         }
+
 
         paginacao.innerHTML = "";
 
+
         if (totalProdutos === 0) {
+
             return;
+
         }
+
 
         const botaoAnterior =
             document.createElement("button");
 
+
         botaoAnterior.type = "button";
+
         botaoAnterior.className =
             "btn-inventario";
+
         botaoAnterior.textContent =
             "⬅ Anterior";
+
         botaoAnterior.disabled =
             paginaInventarioAtual <= 1;
+
 
         botaoAnterior.addEventListener(
             "click",
             async function () {
+
                 if (paginaInventarioAtual <= 1) {
+
                     return;
+
                 }
 
+
                 paginaInventarioAtual--;
+
                 await carregarInventario();
+
             }
         );
 
+
         const textoPagina =
             document.createElement("strong");
+
 
         textoPagina.textContent =
             "Página " +
@@ -1491,37 +2734,54 @@ const termoPesquisa =
             " de " +
             totalPaginas;
 
+
         const botaoProxima =
             document.createElement("button");
 
+
         botaoProxima.type = "button";
+
         botaoProxima.className =
             "btn-inventario";
+
         botaoProxima.textContent =
             "Próxima ➡";
+
         botaoProxima.disabled =
             paginaInventarioAtual >=
             totalPaginas;
 
+
         botaoProxima.addEventListener(
             "click",
             async function () {
+
                 if (
                     paginaInventarioAtual >=
                     totalPaginas
                 ) {
+
                     return;
+
                 }
 
+
                 paginaInventarioAtual++;
+
                 await carregarInventario();
+
             }
         );
 
+
         paginacao.appendChild(botaoAnterior);
+
         paginacao.appendChild(textoPagina);
+
         paginacao.appendChild(botaoProxima);
+
     }
+
 
 
     // =====================================================
@@ -1529,6 +2789,7 @@ const termoPesquisa =
     // =====================================================
 
     async function aprovarSelecionadosInventario() {
+
         const checks =
             Array.from(
                 document.querySelectorAll(
@@ -1536,12 +2797,17 @@ const termoPesquisa =
                 )
             );
 
+
         if (checks.length === 0) {
+
             alert(
                 "Selecione pelo menos um item contado."
             );
+
             return;
+
         }
+
 
         const confirmou = confirm(
             "Deseja aprovar " +
@@ -1550,15 +2816,23 @@ const termoPesquisa =
             "As quantidades oficiais serão ajustadas."
         );
 
+
         if (!confirmou) {
+
             return;
+
         }
 
+
         let aprovados = 0;
+
         let falhas = 0;
 
+
         for (const check of checks) {
+
             check.disabled = true;
+
 
             const chave =
                 String(check.dataset.codigo || "")
@@ -1569,27 +2843,41 @@ const termoPesquisa =
                     .trim()
                     .toUpperCase();
 
+
             const registro =
                 mapaContagensGlobal[chave];
 
+
             if (!registro) {
+
                 falhas++;
+
                 continue;
+
             }
+
 
             const resultado =
                 await aprovarContagemInventarioSupabase(
                     registro
                 );
 
+
             if (resultado?.sucesso) {
+
                 aprovados++;
+
             } else {
+
                 falhas++;
+
             }
+
         }
 
+
         await carregarInventario();
+
 
         alert(
             "Aprovação concluída.\n\n" +
@@ -1598,7 +2886,9 @@ const termoPesquisa =
                 ? "\nNão processados: " + falhas
                 : "")
         );
+
     }
+
 
 
     // =====================================================
@@ -1606,6 +2896,7 @@ const termoPesquisa =
     // =====================================================
 
     async function reprovarSelecionadosInventario() {
+
         const checks =
             Array.from(
                 document.querySelectorAll(
@@ -1613,27 +2904,40 @@ const termoPesquisa =
                 )
             );
 
+
         if (checks.length === 0) {
+
             alert(
                 "Selecione pelo menos um item contado."
             );
+
             return;
+
         }
+
 
         const motivo = prompt(
             "Informe o motivo da recusa dos itens selecionados:",
             "Contagem recusada em lote."
         );
 
+
         if (motivo === null) {
+
             return;
+
         }
 
+
         let reprovados = 0;
+
         let falhas = 0;
 
+
         for (const check of checks) {
+
             check.disabled = true;
+
 
             const chave =
                 String(check.dataset.codigo || "")
@@ -1644,13 +2948,19 @@ const termoPesquisa =
                     .trim()
                     .toUpperCase();
 
+
             const registro =
                 mapaContagensGlobal[chave];
 
+
             if (!registro) {
+
                 falhas++;
+
                 continue;
+
             }
+
 
             const resultado =
                 await reprovarContagemInventarioSupabase(
@@ -1658,14 +2968,22 @@ const termoPesquisa =
                     motivo
                 );
 
+
             if (resultado?.sucesso) {
+
                 reprovados++;
+
             } else {
+
                 falhas++;
+
             }
+
         }
 
+
         await carregarInventario();
+
 
         alert(
             "Recusa concluída.\n\n" +
@@ -1674,19 +2992,29 @@ const termoPesquisa =
                 ? "\nNão processados: " + falhas
                 : "")
         );
+
     }
 
 
+
     function formatarDataAprovacaoInventario(valor) {
+
         if (!valor) {
+
             return "";
+
         }
+
 
         const data = new Date(valor);
 
+
         if (isNaN(data.getTime())) {
+
             return "";
+
         }
+
 
         return data.toLocaleString(
             "pt-BR",
@@ -1698,7 +3026,10 @@ const termoPesquisa =
                 minute: "2-digit"
             }
         );
+
     }
+
+
 
     function configurarAprovacaoInventario(
         registroOnline,
@@ -1707,22 +3038,31 @@ const termoPesquisa =
         celulaAprovacao,
         celulaAcoes
     ) {
+
         celulaAprovacao.innerHTML = "";
+
         celulaAcoes.innerHTML = "";
+
 
         if (
             !registroOnline ||
             registroOnline.quantidade_contada === null ||
             registroOnline.quantidade_contada === undefined
         ) {
+
             celulaAprovacao.innerHTML =
                 "<span class='situacao-aprovacao aprovacao-pendente'>" +
                     "🟡 Sem contagem" +
                 "</span>";
 
+
             campoContado.disabled = false;
+
             return;
+
         }
+
+                }
 
         const situacao =
             String(
@@ -1732,15 +3072,19 @@ const termoPesquisa =
                 .trim()
                 .toUpperCase();
 
+
         if (situacao === "APROVADO") {
+
             const aprovador =
                 registroOnline.aprovado_por ||
                 "Usuário";
+
 
             const dataAprovacao =
                 formatarDataAprovacaoInventario(
                     registroOnline.aprovado_em
                 );
+
 
             celulaAprovacao.innerHTML =
                 "<span class='situacao-aprovacao aprovacao-aprovado'>" +
@@ -1753,20 +3097,28 @@ const termoPesquisa =
                         : "") +
                 "</small>";
 
+
             campoContado.disabled = true;
+
             celulaAcoes.textContent = "🔒";
+
             return;
+
         }
 
+
         if (situacao === "REPROVADO") {
+
             const responsavel =
                 registroOnline.aprovado_por ||
                 "Usuário";
+
 
             const dataReprovacao =
                 formatarDataAprovacaoInventario(
                     registroOnline.aprovado_em
                 );
+
 
             celulaAprovacao.innerHTML =
                 "<span class='situacao-aprovacao aprovacao-reprovado'>" +
@@ -1779,38 +3131,53 @@ const termoPesquisa =
                         : "") +
                 "</small>";
 
+
             campoContado.disabled = false;
+
             return;
+
         }
+
 
         celulaAprovacao.innerHTML =
             "<span class='situacao-aprovacao aprovacao-pendente'>" +
                 "🟡 Pendente" +
             "</span>";
 
+
         campoContado.disabled = false;
+
 
         const botaoAprovar =
             document.createElement("button");
 
+
         botaoAprovar.type = "button";
+
         botaoAprovar.className =
             "btn-aprovar-inventario";
+
         botaoAprovar.textContent =
             "✅ Aprovar";
+
 
         const botaoReprovar =
             document.createElement("button");
 
+
         botaoReprovar.type = "button";
+
         botaoReprovar.className =
             "btn-reprovar-inventario";
+
         botaoReprovar.textContent =
             "❌ Reprovar";
+
 
         botaoAprovar.addEventListener(
             "click",
             async function () {
+
                 const confirmou = confirm(
                     "Deseja aprovar esta contagem?\n\n" +
                     "Código: " +
@@ -1822,46 +3189,68 @@ const termoPesquisa =
                     "\n\nO estoque oficial será ajustado."
                 );
 
+
                 if (!confirmou) {
+
                     return;
+
                 }
 
+
                 botaoAprovar.disabled = true;
+
                 botaoReprovar.disabled = true;
+
 
                 const resultado =
                     await aprovarContagemInventarioSupabase(
                         registroOnline
                     );
 
+
                 if (!resultado.sucesso) {
+
                     botaoAprovar.disabled = false;
+
                     botaoReprovar.disabled = false;
+
                     return;
+
                 }
+
 
                 alert(
                     "Inventário aprovado e estoque ajustado com sucesso."
                 );
 
+
                 await carregarInventario();
+
             }
         );
+
 
         botaoReprovar.addEventListener(
             "click",
             async function () {
+
                 const motivo = prompt(
                     "Informe o motivo da reprovação:",
                     ""
                 );
 
+
                 if (motivo === null) {
+
                     return;
+
                 }
 
+
                 botaoAprovar.disabled = true;
+
                 botaoReprovar.disabled = true;
+
 
                 const resultado =
                     await reprovarContagemInventarioSupabase(
@@ -1869,28 +3258,41 @@ const termoPesquisa =
                         motivo
                     );
 
+
                 if (!resultado.sucesso) {
+
                     botaoAprovar.disabled = false;
+
                     botaoReprovar.disabled = false;
+
                     return;
+
                 }
+
 
                 alert(
                     "Contagem reprovada. O estoque não foi alterado."
                 );
 
+
                 await carregarInventario();
+
             }
         );
+
 
         celulaAcoes.appendChild(
             botaoAprovar
         );
 
+
         celulaAcoes.appendChild(
             botaoReprovar
         );
+
     }
+
+
 
     function atualizarResultadoLinhaInventario(
         produto,
@@ -1898,94 +3300,127 @@ const termoPesquisa =
         celulaDiferenca,
         celulaStatus
     ) {
+
         const quantidadeSistema =
             converterNumeroInventario(
                 produto.quantidade
             );
+
 
         const valorDigitado =
             String(
                 campoContado.value || ""
             ).trim();
 
+
         celulaDiferenca.className =
             "coluna-numero diferenca-inventario";
 
+
         if (valorDigitado === "") {
+
             celulaDiferenca.textContent = "-";
+
 
             celulaStatus.innerHTML =
                 "<span class='status-inventario status-pendente'>" +
                     "🟡 Pendente" +
                 "</span>";
 
+
             atualizarResumoInventario();
+
             return;
+
         }
+
 
         const quantidadeContada =
             converterNumeroInventario(
                 valorDigitado
             );
 
+
         const diferenca =
             quantidadeContada -
             quantidadeSistema;
+
 
         celulaDiferenca.textContent =
             formatarNumeroInventario(
                 diferenca
             );
 
+
         if (diferenca === 0) {
+
             celulaDiferenca.classList.add(
                 "diferenca-zero"
             );
+
 
             celulaStatus.innerHTML =
                 "<span class='status-inventario status-ok'>" +
                     "🟢 OK" +
                 "</span>";
 
+
         } else {
+
             celulaDiferenca.classList.add(
                 diferenca > 0
                     ? "diferenca-positiva"
                     : "diferenca-negativa"
             );
 
+
             celulaStatus.innerHTML =
                 "<span class='status-inventario status-divergente'>" +
                     "🔴 Divergente" +
                 "</span>";
+
         }
 
+
         atualizarResumoInventario();
+
     }
 
+
+
     function atualizarResumoInventario() {
+
         const linhas =
             document.querySelectorAll(
                 ".linha-inventario"
             );
 
+
         let total = 0;
+
         let contados = 0;
+
         let corretos = 0;
+
         let divergencias = 0;
 
+
         linhas.forEach(function (linha) {
+
             total++;
+
 
             const campo =
                 linha.querySelector(
                     ".quantidade-contada"
                 );
 
+
             const status =
                 linha.querySelector(
                     ".status-inventario"
                 );
+
 
             if (
                 campo &&
@@ -1993,8 +3428,11 @@ const termoPesquisa =
                     campo.value || ""
                 ).trim() !== ""
             ) {
+
                 contados++;
+
             }
+
 
             if (
                 status &&
@@ -2002,8 +3440,11 @@ const termoPesquisa =
                     "status-ok"
                 )
             ) {
+
                 corretos++;
+
             }
+
 
             if (
                 status &&
@@ -2011,208 +3452,659 @@ const termoPesquisa =
                     "status-divergente"
                 )
             ) {
+
                 divergencias++;
+
             }
+
         });
+
 
         const totalElemento =
             document.getElementById(
                 "resumoTotalInventario"
             );
 
+
         const contadosElemento =
             document.getElementById(
                 "resumoContadosInventario"
             );
+
 
         const okElemento =
             document.getElementById(
                 "resumoOkInventario"
             );
 
+
         const divergenciasElemento =
             document.getElementById(
                 "resumoDivergenciasInventario"
             );
 
+
         if (totalElemento) {
+
             totalElemento.textContent = total;
+
         }
+
 
         if (contadosElemento) {
+
             contadosElemento.textContent =
                 contados;
+
         }
+
 
         if (okElemento) {
+
             okElemento.textContent =
                 corretos;
+
         }
 
+
         if (divergenciasElemento) {
+
             divergenciasElemento.textContent =
                 divergencias;
+
         }
+
     }
+
 
 
     function atualizarPainelIndicadoresInventario(estoque) {
-        const produtos=Array.isArray(estoque)?estoque:[];
-        let contados=0,corretos=0,divergentes=0,pendentes=0,divPos=0,divNeg=0,valorContabil=0,valorInventariado=0; const listaDivergencias=[];
-        produtos.forEach(function(p){
-            const reg=mapaContagensGlobal[criarChaveProdutoInventario(p)];
-            const qs=converterNumeroInventario(p.quantidade);
-            let vu=converterNumeroInventario(p.valor_unitario ?? p.valorUnitario ?? 0);
-            const vt=converterNumeroInventario(p.valor_total ?? p.valorTotal ?? 0);
-            if((!vu||!Number.isFinite(vu))&&qs>0&&vt>0) vu=vt/qs;
-            valorContabil+=qs*vu;
-            const tem=reg&&reg.quantidade_contada!==null&&reg.quantidade_contada!==undefined;
-            if(!tem){pendentes++;return;}
+
+        const produtos =
+            Array.isArray(estoque)
+                ? estoque
+                : [];
+
+
+        let contados = 0,
+            corretos = 0,
+            divergentes = 0,
+            pendentes = 0,
+            divPos = 0,
+            divNeg = 0,
+            valorContabil = 0,
+            valorInventariado = 0;
+
+
+        const listaDivergencias = [];
+
+
+        produtos.forEach(function (p) {
+
+            const reg =
+                mapaContagensGlobal[
+                    criarChaveProdutoInventario(p)
+                ];
+
+
+            const qs =
+                converterNumeroInventario(
+                    p.quantidade
+                );
+
+
+            let vu =
+                converterNumeroInventario(
+                    p.valor_unitario ??
+                    p.valorUnitario ??
+                    0
+                );
+
+
+            const vt =
+                converterNumeroInventario(
+                    p.valor_total ??
+                    p.valorTotal ??
+                    0
+                );
+
+
+            if (
+                (!vu || !Number.isFinite(vu)) &&
+                qs > 0 &&
+                vt > 0
+            ) {
+
+                vu = vt / qs;
+
+            }
+
+
+            valorContabil +=
+                qs * vu;
+
+
+            const tem =
+                reg &&
+                reg.quantidade_contada !== null &&
+                reg.quantidade_contada !== undefined;
+
+
+            if (!tem) {
+
+                pendentes++;
+
+                return;
+
+            }
+
+
             contados++;
-            const qc=converterNumeroInventario(reg.quantidade_contada), d=qc-qs, impacto=d*vu;
-            valorInventariado+=qc*vu;
-            if(d===0) corretos++; else {
+
+
+            const qc =
+                converterNumeroInventario(
+                    reg.quantidade_contada
+                );
+
+
+            const d =
+                qc - qs;
+
+
+            const impacto =
+                d * vu;
+
+
+            valorInventariado +=
+                qc * vu;
+
+
+            if (d === 0) {
+
+                corretos++;
+
+            } else {
+
                 divergentes++;
-                if(impacto>0)divPos+=impacto; else divNeg+=impacto;
+
+
+                if (impacto > 0) {
+
+                    divPos += impacto;
+
+                } else {
+
+                    divNeg += impacto;
+
+                }
+
+
                 listaDivergencias.push({
-                    codigo:String(p.codigo||"-"),
-                    descricao:String(p.descricao||"Sem descrição"),
-                    posicao:String(p.endereco||p.posicao||"-"),
-                    diferenca:d,
-                    impacto:impacto
+                    codigo:
+                        String(p.codigo || "-"),
+
+                    descricao:
+                        String(
+                            p.descricao ||
+                            "Sem descrição"
+                        ),
+
+                    posicao:
+                        String(
+                            p.endereco ||
+                            p.posicao ||
+                            "-"
+                        ),
+
+                    diferenca:
+                        d,
+
+                    impacto:
+                        impacto
                 });
+
             }
+
         });
-        const total=produtos.length,cob=total?contados/total*100:0,acu=contados?corretos/contados*100:0,pdiv=contados?divergentes/contados*100:0,dif=divPos+divNeg;
-        const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
-        const moeda=v=>Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
-        set("indCobertura",cob.toFixed(1).replace(".",",")+"%");
 
-// =====================================================
-// PONTEIRO DO VELOCÍMETRO - COBERTURA DO INVENTÁRIO
-// =====================================================
 
-const ponteiroCobertura =
-    document.getElementById(
-        "velocimetroCobertura"
-    );
+        const total =
+            produtos.length;
 
-if (ponteiroCobertura) {
 
-    const percentualCobertura =
-        Math.max(
-            0,
-            Math.min(
-                cob,
-                100
-            )
+        const cob =
+            total
+                ? contados / total * 100
+                : 0;
+
+
+        const acu =
+            contados
+                ? corretos / contados * 100
+                : 0;
+
+
+        const pdiv =
+            contados
+                ? divergentes / contados * 100
+                : 0;
+
+
+        const dif =
+            divPos + divNeg;
+
+
+        const set =
+            (id, v) => {
+
+                const e =
+                    document.getElementById(id);
+
+                if (e) {
+
+                    e.textContent = v;
+
+                }
+
+            };
+
+
+        const moeda =
+            v =>
+                Number(v || 0)
+                    .toLocaleString(
+                        "pt-BR",
+                        {
+                            style: "currency",
+                            currency: "BRL"
+                        }
+                    );
+
+
+        set(
+            "indCobertura",
+            cob
+                .toFixed(1)
+                .replace(".", ",") +
+            "%"
         );
 
-    const anguloCobertura =
-        -90 +
-        (
-            percentualCobertura *
-            1.8
-        );
 
-    ponteiroCobertura.style.transform =
-        "translateX(-50%) rotate(" +
-        anguloCobertura +
-        "deg)";
-}
-        
-        set("indContados",contados.toLocaleString("pt-BR")); set("indTotal",total.toLocaleString("pt-BR"));
-        set("indAcuracia",acu.toFixed(2).replace(".",",")+"%"); set("indCorretos",corretos.toLocaleString("pt-BR")); set("indContados2",contados.toLocaleString("pt-BR"));
-        set("indDivFinanceira",moeda(dif)); set("indDivPos",moeda(divPos)); set("indDivNeg",moeda(divNeg));
-        set("indDivergentes",divergentes.toLocaleString("pt-BR")); set("indPercDiv",pdiv.toFixed(2).replace(".",",")+"%");
-        set("indValorInventariado",moeda(valorInventariado)); set("indValorContabil",moeda(valorContabil)); set("indDifValor",moeda(dif));
-        const corpoTop5=document.getElementById("top5DivergenciasInventario");
-        if(corpoTop5){
-            const top5=listaDivergencias
-                .sort((a,b)=>Math.abs(b.impacto)-Math.abs(a.impacto))
-                .slice(0,5);
-            if(top5.length===0){
-                corpoTop5.innerHTML='<tr><td colspan="6" style="text-align:center;color:#64748b;">Nenhuma divergência contabilizada.</td></tr>';
-            }else{
-                corpoTop5.innerHTML=top5.map((item,i)=>{
-                    const classe=item.impacto>=0?"top5-positivo":"top5-negativo";
-                    return `<tr>
-                        <td>${i+1}</td>
-                        <td>${item.codigo}</td>
-                        <td>${item.descricao}</td>
-                        <td>${item.posicao}</td>
-                        <td class="${item.diferenca>=0?"top5-positivo":"top5-negativo"}">${formatarNumeroInventario(item.diferenca)}</td>
-                        <td class="${classe}">${moeda(item.impacto)}</td>
-                    </tr>`;
-                }).join("");
-            }
+        // =====================================================
+        // PONTEIRO DO VELOCÍMETRO - COBERTURA DO INVENTÁRIO
+        // =====================================================
+
+        const ponteiroCobertura =
+            document.getElementById(
+                "velocimetroCobertura"
+            );
+
+
+        if (ponteiroCobertura) {
+
+            const percentualCobertura =
+                Math.max(
+                    0,
+                    Math.min(
+                        cob,
+                        100
+                    )
+                );
+
+
+            const anguloCobertura =
+                -90 +
+                (
+                    percentualCobertura *
+                    1.8
+                );
+
+
+            ponteiroCobertura.style.transform =
+                "translateX(-50%) rotate(" +
+                anguloCobertura +
+                "deg)";
+
         }
-        if(typeof Chart==="undefined")return;
-        const cs=document.getElementById("graficoStatusInventario");
-        if(cs){if(graficoStatusInventarioInstancia)graficoStatusInventarioInstancia.destroy();graficoStatusInventarioInstancia=new Chart(cs,{type:"doughnut",data:{labels:["Corretos","Divergentes","Pendentes"],datasets:[{data:[corretos,divergentes,pendentes],backgroundColor:["#16a34a","#dc2626","#fbbf24"]}]},options:{responsive:true,maintainAspectRatio:false,cutout:"62%",plugins:{legend:{position:"right"}}}});}
+
+
+        set(
+            "indContados",
+            contados.toLocaleString("pt-BR")
+        );
+
+
+        set(
+            "indTotal",
+            total.toLocaleString("pt-BR")
+        );
+
+
+        set(
+            "indAcuracia",
+            acu.toFixed(2).replace(".", ",") + "%"
+        );
+
+
+        set(
+            "indCorretos",
+            corretos.toLocaleString("pt-BR")
+        );
+
+
+        set(
+            "indContados2",
+            contados.toLocaleString("pt-BR")
+        );
+
+
+        set(
+            "indDivFinanceira",
+            moeda(dif)
+        );
+
+
+        set(
+            "indDivPos",
+            moeda(divPos)
+        );
+
+
+        set(
+            "indDivNeg",
+            moeda(divNeg)
+        );
+
+
+        set(
+            "indDivergentes",
+            divergentes.toLocaleString("pt-BR")
+        );
+
+
+        set(
+            "indPercDiv",
+            pdiv.toFixed(2).replace(".", ",") + "%"
+        );
+
+
+        set(
+            "indValorInventariado",
+            moeda(valorInventariado)
+        );
+
+
+        set(
+            "indValorContabil",
+            moeda(valorContabil)
+        );
+
+
+        set(
+            "indDifValor",
+            moeda(dif)
+        );
+
+
+        const corpoTop5 =
+            document.getElementById(
+                "top5DivergenciasInventario"
+            );
+
+
+        if (corpoTop5) {
+
+            const top5 =
+                listaDivergencias
+                    .sort(
+                        (a, b) =>
+                            Math.abs(b.impacto) -
+                            Math.abs(a.impacto)
+                    )
+                    .slice(0, 5);
+
+
+            if (top5.length === 0) {
+
+                corpoTop5.innerHTML =
+                    '<tr>' +
+                        '<td colspan="6" style="text-align:center;color:#64748b;">' +
+                            'Nenhuma divergência contabilizada.' +
+                        '</td>' +
+                    '</tr>';
+
+            } else {
+
+                corpoTop5.innerHTML =
+                    top5
+                        .map((item, i) => {
+
+                            const classe =
+                                item.impacto >= 0
+                                    ? "top5-positivo"
+                                    : "top5-negativo";
+
+
+                            return `
+                                <tr>
+
+                                    <td>
+                                        ${i + 1}
+                                    </td>
+
+                                    <td>
+                                        ${item.codigo}
+                                    </td>
+
+                                    <td>
+                                        ${item.descricao}
+                                    </td>
+
+                                    <td>
+                                        ${item.posicao}
+                                    </td>
+
+                                    <td class="${
+                                        item.diferenca >= 0
+                                            ? "top5-positivo"
+                                            : "top5-negativo"
+                                    }">
+                                        ${formatarNumeroInventario(
+                                            item.diferenca
+                                        )}
+                                    </td>
+
+                                    <td class="${classe}">
+                                        ${moeda(
+                                            item.impacto
+                                        )}
+                                    </td>
+
+                                </tr>
+                            `;
+
+                        })
+                        .join("");
+
+            }
+
+        }
+
+
+        if (typeof Chart === "undefined") {
+
+            return;
+
+        }
+
+
+        const cs =
+            document.getElementById(
+                "graficoStatusInventario"
+            );
+
+
+        if (cs) {
+
+            if (graficoStatusInventarioInstancia) {
+
+                graficoStatusInventarioInstancia.destroy();
+
+            }
+
+
+            graficoStatusInventarioInstancia =
+                new Chart(
+                    cs,
+                    {
+                        type: "doughnut",
+
+                        data: {
+
+                            labels: [
+                                "Corretos",
+                                "Divergentes",
+                                "Pendentes"
+                            ],
+
+                            datasets: [
+                                {
+                                    data: [
+                                        corretos,
+                                        divergentes,
+                                        pendentes
+                                    ],
+
+                                    backgroundColor: [
+                                        "#16a34a",
+                                        "#dc2626",
+                                        "#fbbf24"
+                                    ]
+                                }
+                            ]
+
+                        },
+
+                        options: {
+
+                            responsive: true,
+
+                            maintainAspectRatio: false,
+
+                            cutout: "62%",
+
+                            plugins: {
+
+                                legend: {
+
+                                    position: "right"
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                );
+
+        }
+
     }
 
+
+
     async function limparContagensInventario() {
+
         const confirmou = confirm(
             "Deseja limpar todas as contagens compartilhadas?\n\n" +
             "Essa ação será aplicada para todos os usuários."
         );
 
+
         if (!confirmou) {
+
             return;
+
         }
+
 
         const sucesso =
             await limparContagensInventarioSupabase();
 
+
         if (!sucesso) {
+
             return;
+
         }
 
+
         await carregarInventario();
+
 
         alert(
             "As contagens compartilhadas foram limpas."
         );
+
     }
 
+
+
     function exportarInventarioExcel() {
+
         if (typeof XLSX === "undefined") {
+
             alert(
                 "A biblioteca de exportação Excel não foi carregada."
             );
+
             return;
+
         }
+
 
         const linhas =
             document.querySelectorAll(
                 ".linha-inventario"
             );
 
+
         if (linhas.length === 0) {
+
             alert(
                 "Não há dados para exportar."
             );
+
             return;
+
         }
+
 
         const dadosExportacao = [];
 
+
         linhas.forEach(function (linha) {
+
             const celulas =
                 linha.querySelectorAll("td");
+
 
             const campoContado =
                 linha.querySelector(
                     ".quantidade-contada"
                 );
 
+
             const status =
                 linha.querySelector(
                     ".status-inventario"
                 );
 
+
             dadosExportacao.push({
+
                 "Código":
                     celulas[0]?.textContent.trim() || "",
 
@@ -2222,7 +4114,7 @@ if (ponteiroCobertura) {
                 "Posição":
                     celulas[2]?.textContent.trim() || "",
 
-                "Qtde Sistema":
+                                    "Qtde Sistema":
                     celulas[3]?.textContent.trim() || "0",
 
                 "Qtde Contada":
@@ -2240,15 +4132,19 @@ if (ponteiroCobertura) {
                 "Aprovação":
                     celulas[8]?.textContent.trim() || ""
             });
+
         });
+
 
         const planilha =
             XLSX.utils.json_to_sheet(
                 dadosExportacao
             );
 
+
         const livro =
             XLSX.utils.book_new();
+
 
         XLSX.utils.book_append_sheet(
             livro,
@@ -2256,28 +4152,41 @@ if (ponteiroCobertura) {
             "Inventário"
         );
 
+
         XLSX.writeFile(
             livro,
             "inventario_compartilhado_smi.xlsx"
         );
+
     }
 
+
+
     async function atualizarInventarioCompartilhado() {
+
         const existeItemSelecionado =
             document.querySelector(
                 ".checkInventario:checked"
             );
 
+
         if (existeItemSelecionado) {
+
             return;
+
         }
 
+
         if (salvamentosEmAndamento.size > 0) {
+
             return;
+
         }
+
 
         const campoAtivo =
             document.activeElement;
+
 
         if (
             campoAtivo &&
@@ -2286,137 +4195,200 @@ if (ponteiroCobertura) {
                 "quantidade-contada"
             )
         ) {
+
             return;
+
         }
 
+
         await carregarInventario();
+
     }
+
+
 
     document.addEventListener(
         "DOMContentLoaded",
         async function () {
+
+
             const selecionarTodos =
                 document.getElementById(
                     "selecionarTodosInventario"
                 );
 
+
             if (selecionarTodos) {
+
                 selecionarTodos.addEventListener(
                     "change",
                     function () {
+
+
                         const checksDisponiveis =
                             document.querySelectorAll(
                                 ".checkInventario:not(:disabled)"
                             );
 
+
                         checksDisponiveis.forEach(
                             function (check) {
+
                                 check.checked =
                                     selecionarTodos.checked;
+
                             }
                         );
+
                     }
                 );
+
             }
+
 
             const campoPesquisa =
                 document.getElementById(
                     "pesquisaInventario"
                 );
 
+
             if (campoPesquisa) {
+
                 campoPesquisa.addEventListener(
                     "input",
                     function () {
+
+
                         clearTimeout(
                             timerPesquisaInventario
                         );
 
+
                         timerPesquisaInventario =
                             setTimeout(
                                 async function () {
+
                                     paginaInventarioAtual = 1;
+
                                     await carregarInventario();
+
                                 },
                                 250
                             );
+
                     }
                 );
+
 
                 campoPesquisa.addEventListener(
                     "keydown",
                     async function (evento) {
+
+
                         if (evento.key === "Enter") {
+
                             evento.preventDefault();
+
 
                             clearTimeout(
                                 timerPesquisaInventario
                             );
 
+
                             paginaInventarioAtual = 1;
+
                             await carregarInventario();
+
                         }
+
                     }
                 );
 
+
                 campoPesquisa.focus();
+
             }
 
+
             await carregarInventario();
+
 
             timerAtualizacaoInventario =
                 setInterval(
                     atualizarInventarioCompartilhado,
                     5000
                 );
+
         }
     );
+
 </script>
 
 
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
 
+
     if (typeof lucide !== "undefined") {
+
         lucide.createIcons();
+
     }
+
 
     const languagePlaceholder =
         document.getElementById("language-placeholder");
 
+
     const languageSwitcher =
         document.getElementById("wms-language-switcher");
 
+
     if (languagePlaceholder && languageSwitcher) {
+
         languagePlaceholder.appendChild(languageSwitcher);
+
     }
 
-let paginaAtual =
+
+    let paginaAtual =
         window.location.pathname
             .split("/")
             .pop();
 
+
     if (!paginaAtual) {
+
         paginaAtual = "dashboard.html";
+
     }
+
 
     document
         .querySelectorAll(".sidebar-wms-novo .menu-item")
         .forEach(function (item) {
 
+
             const pagina =
                 item.getAttribute("data-page");
+
 
             item.classList.toggle(
                 "active",
                 pagina === paginaAtual
             );
 
+
         });
 
+
 });
+
 </script>
 
 
 </body>
+
 </html>
+
