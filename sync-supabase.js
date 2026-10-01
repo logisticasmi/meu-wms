@@ -8,14 +8,15 @@
     "use strict";
 
     const CHAVES_COMPARTILHADAS = [
-        "estoque",
-        "movimentacoes",
-        "entradas",
-        "saidas",
-        "transferencias",
-        "posicoes",
-        "configuracoes"
-    ];
+    "estoque",
+    "movimentacoes",
+    "entradas",
+    "saidas",
+    "transferencias",
+    "posicoes",
+    "configuracoes",
+    "pedidosConferencia"
+];
 
     const ID_ESTADO = "global";
     const INTERVALO_ATUALIZACAO = 3000;
@@ -183,56 +184,63 @@
     }
 
 
-    function atualizarTelasDepoisDaSincronizacao() {
-        if (
-            typeof window.atualizarDashboard ===
-            "function"
-        ) {
-            window.atualizarDashboard();
-        }
-
-        if (
-            typeof window.atualizarResumoMovimentacoes ===
-            "function"
-        ) {
-            window.atualizarResumoMovimentacoes();
-        }
-
-        if (
-            typeof window.carregarUltimasMovimentacoes ===
-            "function"
-        ) {
-            window.carregarUltimasMovimentacoes();
-        }
-
-        if (
-            typeof window.carregarHistoricoEntradas ===
-            "function"
-        ) {
-            window.carregarHistoricoEntradas();
-        }
-
-        if (
-            typeof window.carregarHistoricoSaidas ===
-            "function"
-        ) {
-            window.carregarHistoricoSaidas();
-        }
-
-        if (
-            typeof window.carregarHistoricoTransferencias ===
-            "function"
-        ) {
-            window.carregarHistoricoTransferencias();
-        }
-
-        if (
-            typeof window.carregarTabelaProdutosSupabase ===
-            "function"
-        ) {
-            window.carregarTabelaProdutosSupabase();
-        }
+ function atualizarTelasDepoisDaSincronizacao() {
+    if (
+        typeof window.atualizarDashboard ===
+        "function"
+    ) {
+        window.atualizarDashboard();
     }
+
+    if (
+        typeof window.atualizarResumoMovimentacoes ===
+        "function"
+    ) {
+        window.atualizarResumoMovimentacoes();
+    }
+
+    if (
+        typeof window.carregarUltimasMovimentacoes ===
+        "function"
+    ) {
+        window.carregarUltimasMovimentacoes();
+    }
+
+    if (
+        typeof window.carregarHistoricoEntradas ===
+        "function"
+    ) {
+        window.carregarHistoricoEntradas();
+    }
+
+    if (
+        typeof window.carregarHistoricoSaidas ===
+        "function"
+    ) {
+        window.carregarHistoricoSaidas();
+    }
+
+    if (
+        typeof window.carregarHistoricoTransferencias ===
+        "function"
+    ) {
+        window.carregarHistoricoTransferencias();
+    }
+
+    if (
+        typeof window.carregarTabelaProdutosSupabase ===
+        "function"
+    ) {
+        window.carregarTabelaProdutosSupabase();
+    }
+
+    if (
+        typeof window.carregarPedidosConferencia ===
+        "function"
+    ) {
+        window.carregarPedidosConferencia();
+    }
+}
 
 
     async function buscarDadosDoBanco() {
