@@ -3211,6 +3211,35 @@ document.addEventListener(
 
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    function carregarIconesLucide() {
+
+        if (typeof lucide !== "undefined") {
+
+            lucide.createIcons();
+
+            console.log("Ícones Lucide carregados na Etiquetagem.");
+
+        } else {
+
+            console.warn("Lucide ainda não carregou.");
+
+            setTimeout(
+                carregarIconesLucide,
+                300
+            );
+
+        }
+
+    }
+
+    carregarIconesLucide();
+
+});
+</script>
+
 
 </body>
 
