@@ -1,0 +1,4894 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SMI WMS - Conferência</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="img/favicon.png"
+    >
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        :root {
+
+            --azul-900: #062b59;
+            --azul-800: #0a3f7a;
+            --azul-700: #0d4e92;
+            --azul-600: #1769c2;
+
+            --verde: #1b9b48;
+            --verde-fundo: #eaf8ef;
+
+            --amarelo: #f59e0b;
+            --amarelo-fundo: #fff7dd;
+
+            --vermelho: #ef3340;
+            --vermelho-fundo: #fff0f2;
+
+            --texto: #18324f;
+            --texto-claro: #6b7f95;
+
+            --borda: #dce5ef;
+            --fundo: #f3f7fb;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                var(--fundo);
+
+            color:
+                var(--texto);
+        }
+
+
+        button,
+        input,
+        select {
+
+            font: inherit;
+        }
+
+
+        /* =====================================================
+           CONTEÚDO COM SIDEBAR
+        ===================================================== */
+
+        .conteudo-conferencia {
+
+            min-height: 100vh;
+
+            margin-left: 180px;
+
+            padding: 18px;
+        }
+
+
+        .pagina-conferencia {
+
+            width: 100%;
+
+            max-width: 1600px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           TOPO
+        ===================================================== */
+
+        .topo-conferencia {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 16px;
+        }
+
+
+        .topo-conferencia-esquerda h1 {
+
+            margin: 0;
+
+            color: #0a2d5f;
+
+            font-size: 31px;
+        }
+
+
+        .topo-conferencia-esquerda p {
+
+            margin:
+                5px
+                0
+                0;
+
+            color: #5f748b;
+
+            font-size: 13px;
+        }
+
+
+        .topo-conferencia-direita {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+#language-placeholder {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+#language-placeholder #wms-language-switcher {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    bottom: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    z-index: auto !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+        .usuario-topo {
+
+            font-weight: 700;
+
+            color: #213c5e;
+        }
+
+
+        .btn-sair-conferencia {
+
+            min-height: 34px;
+
+            padding:
+                0
+                15px;
+
+            border: 0;
+
+            border-radius: 7px;
+
+            background: #d9152b;
+
+            color: #ffffff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           CARDS INDICADORES
+        ===================================================== */
+
+        .cards-indicadores {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    4,
+                    1fr
+                );
+
+            gap: 12px;
+
+            margin-bottom: 16px;
+        }
+
+
+        .card-indicador {
+
+            background: #fff;
+
+            border:
+                1px solid
+                var(--borda);
+
+            border-radius: 14px;
+
+            padding: 16px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            box-shadow:
+                0
+                5px
+                18px
+                rgba(
+                    20,
+                    45,
+                    80,
+                    0.06
+                );
+        }
+
+
+        .card-indicador-icone {
+
+            width: 52px;
+
+            height: 52px;
+
+            flex: 0 0 auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            font-size: 23px;
+
+            font-weight: 700;
+        }
+
+
+        .indicador-azul
+        .card-indicador-icone {
+
+            background:
+                #e9f3ff;
+
+            color:
+                #1473e6;
+        }
+
+
+        .indicador-verde
+        .card-indicador-icone {
+
+            background:
+                #e9f9ef;
+
+            color:
+                #13a358;
+        }
+
+
+        .indicador-amarelo
+        .card-indicador-icone {
+
+            background:
+                #fff5dd;
+
+            color:
+                #f59e0b;
+        }
+
+
+        .indicador-vermelho
+        .card-indicador-icone {
+
+            background:
+                #fff0f2;
+
+            color:
+                #ef3340;
+        }
+
+
+        .card-indicador-info small {
+
+            display: block;
+
+            color:
+                #18324f;
+
+            font-size:
+                11px;
+
+            font-weight:
+                700;
+        }
+
+
+        .card-indicador-info strong {
+
+            display: block;
+
+            margin-top:
+                2px;
+
+            color:
+                #0a2d5f;
+
+            font-size:
+                28px;
+
+            line-height:
+                1;
+        }
+
+
+        .card-indicador-info span {
+
+            display: block;
+
+            margin-top:
+                5px;
+
+            color:
+                #7c8ca0;
+
+            font-size:
+                10px;
+        }
+
+
+        /* =====================================================
+           CARDS GERAIS
+        ===================================================== */
+
+        .card {
+
+            background:
+                #fff;
+
+            border:
+                1px solid
+                var(--borda);
+
+            border-radius:
+                14px;
+
+            box-shadow:
+                0
+                5px
+                18px
+                rgba(
+                    20,
+                    45,
+                    80,
+                    0.06
+                );
+        }
+
+
+        .card-conteudo {
+
+            padding:
+                14px;
+        }
+
+
+        .card-titulo {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                10px;
+
+            margin-bottom:
+                12px;
+        }
+
+
+        .card-titulo-esquerda {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                9px;
+        }
+
+
+        .card-titulo-icone {
+
+            width:
+                34px;
+
+            height:
+                34px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                10px;
+
+            background:
+                #eaf3ff;
+
+            color:
+                #1769c2;
+
+            font-size:
+                17px;
+        }
+
+
+        .card-titulo-icone.verde {
+
+            background:
+                #eaf8ef;
+
+            color:
+                #1b9b48;
+        }
+
+
+        .card-titulo h2 {
+
+            margin:
+                0;
+
+            color:
+                #0a2d5f;
+
+            font-size:
+                17px;
+        }
+
+
+        .contador-card {
+
+            padding:
+                5px
+                9px;
+
+            border:
+                1px solid
+                #d8e4f0;
+
+            border-radius:
+                8px;
+
+            color:
+                #536b84;
+
+            background:
+                #f8fbff;
+
+            font-size:
+                10px;
+
+            font-weight:
+                700;
+        }
+
+
+        /* =====================================================
+           DUAS COLUNAS
+        ===================================================== */
+
+        .grade-pedidos {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap:
+                14px;
+
+            margin-bottom:
+                16px;
+        }
+
+
+        /* =====================================================
+           FILTROS
+        ===================================================== */
+
+        .filtros {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1.6fr
+                .9fr
+                .9fr
+                auto;
+
+            gap:
+                8px;
+
+            margin-bottom:
+                10px;
+        }
+
+
+        .filtros input,
+        .filtros select {
+
+            width:
+                100%;
+
+            height:
+                38px;
+
+            border:
+                1px solid
+                #d3deea;
+
+            border-radius:
+                8px;
+
+            padding:
+                0
+                10px;
+
+            outline:
+                none;
+
+            background:
+                #fff;
+
+            color:
+                #18324f;
+
+            font-size:
+                11px;
+        }
+
+
+        .filtros input:focus,
+        .filtros select:focus {
+
+            border-color:
+                #1769c2;
+        }
+
+
+        .btn-limpar {
+
+            min-height:
+                38px;
+
+            padding:
+                0
+                13px;
+
+            border:
+                1px solid
+                #d3deea;
+
+            border-radius:
+                8px;
+
+            background:
+                #fff;
+
+            color:
+                #50677f;
+
+            font-size:
+                11px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+        }
+
+
+        /* =====================================================
+           TABELAS
+        ===================================================== */
+
+        .tabela-scroll {
+
+            width:
+                100%;
+
+            overflow-x:
+                auto;
+        }
+
+
+        table {
+
+            width:
+                100%;
+
+            border-collapse:
+                collapse;
+        }
+
+
+        th {
+
+            background:
+                #f1f6fb;
+
+            color:
+                #445c75;
+
+            font-size:
+                10px;
+
+            font-weight:
+                700;
+
+            text-align:
+                left;
+
+            padding:
+                9px
+                8px;
+
+            border-bottom:
+                1px solid
+                #dce5ef;
+
+            white-space:
+                nowrap;
+        }
+
+
+        td {
+
+            color:
+                #263f5b;
+
+            font-size:
+                10px;
+
+            padding:
+                9px
+                8px;
+
+            border-bottom:
+                1px solid
+                #edf1f5;
+
+            vertical-align:
+                middle;
+        }
+
+
+        tbody tr:hover {
+
+            background:
+                #f8fbff;
+        }
+
+
+        .btn-conferir {
+
+            min-height:
+                30px;
+
+            padding:
+                0
+                12px;
+
+            border:
+                0;
+
+            border-radius:
+                7px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1473e6,
+                    #0d5fc4
+                );
+
+            color:
+                #fff;
+
+            font-size:
+                10px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+        }
+
+
+        .btn-acao {
+
+            min-height:
+                30px;
+
+            padding:
+                0
+                10px;
+
+            border:
+                1px solid
+                #d3deea;
+
+            border-radius:
+                7px;
+
+            background:
+                #fff;
+
+            color:
+                #1769c2;
+
+            font-size:
+                10px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+        }
+
+
+        /* =====================================================
+           BADGES
+        ===================================================== */
+
+        .badge {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            min-height:
+                22px;
+
+            padding:
+                3px
+                9px;
+
+            border-radius:
+                999px;
+
+            font-size:
+                9px;
+
+            font-weight:
+                700;
+
+            white-space:
+                nowrap;
+        }
+
+
+        .badge-separado {
+
+            background:
+                #fff1c9;
+
+            color:
+                #be7800;
+        }
+
+
+        .badge-conferido {
+
+            background:
+                #dcf7e5;
+
+            color:
+                #168843;
+        }
+
+
+        .badge-divergencia {
+
+            background:
+                #ffe0e3;
+
+            color:
+                #d51f2e;
+        }
+
+
+        .badge-pendente {
+
+            background:
+                #e9eef4;
+
+            color:
+                #64768b;
+        }
+
+
+        /* =====================================================
+           CONFERÊNCIA DO PEDIDO
+        ===================================================== */
+
+        .card-conferencia-pedido {
+
+            margin-bottom:
+                16px;
+        }
+
+
+        .cabecalho-conferencia-pedido {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+            margin-bottom:
+                12px;
+        }
+
+
+        .btn-finalizar {
+
+            min-height:
+                38px;
+
+            padding:
+                0
+                16px;
+
+            border:
+                0;
+
+            border-radius:
+                8px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #16a34a,
+                    #11823b
+                );
+
+            color:
+                #fff;
+
+            font-size:
+                11px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+        }
+
+
+        .btn-finalizar:disabled {
+
+            background:
+                #a7b3c2;
+
+            cursor:
+                not-allowed;
+        }
+
+
+        .resumo-pedido {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1.4fr
+                .9fr
+                .9fr
+                .8fr
+                1.1fr;
+
+            border:
+                1px solid
+                #dce5ef;
+
+            border-radius:
+                10px;
+
+            overflow:
+                hidden;
+
+            margin-bottom:
+                12px;
+
+            background:
+                #fbfdff;
+        }
+
+
+        .resumo-pedido-item {
+
+            padding:
+                10px
+                12px;
+
+            min-width:
+                0;
+        }
+
+
+        .resumo-pedido-item +
+        .resumo-pedido-item {
+
+            border-left:
+                1px solid
+                #dce5ef;
+        }
+
+
+        .resumo-pedido-item small {
+
+            display:
+                block;
+
+            margin-bottom:
+                3px;
+
+            color:
+                #7c8ca0;
+
+            font-size:
+                9px;
+        }
+
+
+        .resumo-pedido-item strong {
+
+            color:
+                #0a2d5f;
+
+            font-size:
+                12px;
+
+            overflow-wrap:
+                anywhere;
+        }
+
+
+        .qtd-input {
+
+            width:
+                80px;
+
+            height:
+                30px;
+
+            padding:
+                0
+                6px;
+
+            border:
+                1px solid
+                #cbd8e5;
+
+            border-radius:
+                6px;
+
+            text-align:
+                center;
+
+            outline:
+                none;
+        }
+
+
+        .qtd-input:focus {
+
+            border-color:
+                #1769c2;
+
+            box-shadow:
+                0
+                0
+                0
+                2px
+                rgba(
+                    23,
+                    105,
+                    194,
+                    .10
+                );
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .grade-pedidos {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .cards-indicadores {
+
+                grid-template-columns:
+                    1fr
+                    1fr;
+            }
+
+
+            .resumo-pedido {
+
+                grid-template-columns:
+                    1fr
+                    1fr;
+            }
+
+
+            .resumo-pedido-item:nth-child(n+3) {
+
+                border-top:
+                    1px solid
+                    #dce5ef;
+            }
+
+
+            .resumo-pedido-item:nth-child(3),
+            .resumo-pedido-item:nth-child(5) {
+
+                border-left:
+                    0;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .conteudo-conferencia {
+
+                margin-left:
+                    0;
+
+                padding:
+                    10px;
+            }
+
+
+            .cards-indicadores {
+
+                grid-template-columns:
+                    1fr
+                    1fr;
+
+                gap:
+                    8px;
+            }
+
+
+            .topo-conferencia {
+
+                align-items:
+                    flex-start;
+            }
+
+
+            .topo-conferencia-esquerda h1 {
+
+                font-size:
+                    27px;
+            }
+
+
+            .topo-conferencia-direita {
+
+                display:
+                    none;
+            }
+
+
+            .filtros {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .resumo-pedido {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .resumo-pedido-item +
+            .resumo-pedido-item {
+
+                border-left:
+                    0;
+
+                border-top:
+                    1px solid
+                    #dce5ef;
+            }
+
+        }
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     MENU LATERAL - PADRÃO SMI WMS
+===================================================== -->
+
+<aside class="sidebar sidebar-wms-novo">
+
+
+    <div class="sidebar-topo">
+
+
+        <img
+            src="img/logo.png"
+            alt="SMI do Brasil"
+            class="sidebar-logo"
+        >
+
+
+        <h2>
+            SMI WMS
+        </h2>
+
+
+        <p>
+            GESTÃO QUE MOVIMENTA
+        </p>
+
+
+    </div>
+
+
+    <nav
+        class="sidebar-nav"
+        aria-label="Menu principal"
+    >
+
+
+        <!-- PRINCIPAL -->
+
+        <div class="menu-titulo">
+
+            <span>
+                PRINCIPAL
+            </span>
+
+        </div>
+
+
+        <a
+            href="dashboard.html"
+            class="menu-item"
+            data-page="dashboard.html"
+        >
+
+            <span class="menu-icon icone-dashboard">
+
+                <i data-lucide="house"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Dashboard
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="produtos.html"
+            class="menu-item"
+            data-page="produtos.html"
+        >
+
+            <span class="menu-icon icone-produtos">
+
+                <i data-lucide="package"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Produtos
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <!-- OPERAÇÕES -->
+
+        <div class="menu-titulo">
+
+            <span>
+                OPERAÇÕES
+            </span>
+
+        </div>
+
+
+        <a
+            href="entradas.html"
+            class="menu-item"
+            data-page="entradas.html"
+        >
+
+            <span class="menu-icon icone-entradas">
+
+                <i data-lucide="download"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Entradas
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="saidas.html"
+            class="menu-item"
+            data-page="saidas.html"
+        >
+
+            <span class="menu-icon icone-saidas">
+
+                <i data-lucide="upload"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Saídas
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="separacao.html"
+            class="menu-item"
+            data-page="separacao.html"
+        >
+
+            <span class="menu-icon icone-separacao">
+
+                <i data-lucide="shopping-cart"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Separação
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <!-- CONFERÊNCIA -->
+
+        <a
+            href="conferencia.html"
+            class="menu-item active"
+            data-page="conferencia.html"
+        >
+
+            <span class="menu-icon icone-conferencia">
+
+                <i data-lucide="clipboard-check"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Conferência
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="transferencias.html"
+            class="menu-item"
+            data-page="transferencias.html"
+        >
+
+            <span class="menu-icon icone-transferencia">
+
+                <i data-lucide="arrow-left-right"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Transferências
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="transferencia-mobile.html"
+            class="menu-item"
+            data-page="transferencia-mobile.html"
+        >
+
+            <span class="menu-icon icone-mobile">
+
+                <i data-lucide="smartphone"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Transf. Mobile
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="posicoes.html"
+            class="menu-item"
+            data-page="posicoes.html"
+        >
+
+            <span class="menu-icon icone-posicoes">
+
+                <i data-lucide="map-pin"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Posições
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="inventario.html"
+            class="menu-item"
+            data-page="inventario.html"
+        >
+
+            <span class="menu-icon icone-inventario">
+
+                <i data-lucide="clipboard-list"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Inventário
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="inventario-mobile.html"
+            class="menu-item"
+            data-page="inventario-mobile.html"
+        >
+
+            <span class="menu-icon icone-invmobile">
+
+                <i data-lucide="scan-line"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Inv. Mobile
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <!-- SISTEMA -->
+
+        <div class="menu-titulo">
+
+            <span>
+                SISTEMA
+            </span>
+
+        </div>
+
+
+        <a
+            href="relatorios.html"
+            class="menu-item"
+            data-page="relatorios.html"
+        >
+
+            <span class="menu-icon icone-relatorios">
+
+                <i data-lucide="chart-no-axes-column"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Relatórios
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="etiquetagem.html"
+            class="menu-item"
+            data-page="etiquetagem.html"
+        >
+
+            <span class="menu-icon icone-etiqueta">
+
+                <i data-lucide="tag"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Etiquetagem
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="requisicao.html"
+            class="menu-item"
+            data-page="requisicao.html"
+        >
+
+            <span class="menu-icon icone-requisicao">
+
+                <i data-lucide="file-text"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Requisição
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="configuracoes.html"
+            class="menu-item"
+            data-page="configuracoes.html"
+        >
+
+            <span class="menu-icon icone-config">
+
+                <i data-lucide="settings"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Configurações
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+    </nav>
+
+
+    <div class="sidebar-rodape">
+
+        <span>
+            LOGÍSTICA MAIS INTELIGENTE
+        </span>
+
+        <small>
+            v1.0.0
+        </small>
+
+    </div>
+
+
+</aside>
+
+
+<!-- =====================================================
+     CONTEÚDO DA CONFERÊNCIA
+===================================================== -->
+
+<div class="conteudo-conferencia">
+
+
+<div class="pagina-conferencia">
+
+
+    <!-- =====================================================
+         TOPO
+    ===================================================== -->
+
+    <div class="topo-conferencia">
+
+
+        <div class="topo-conferencia-esquerda">
+
+
+            <h1>
+                Conferência
+            </h1>
+
+
+            <p>
+                Conferência de pedidos separados para expedição
+            </p>
+
+
+        </div>
+
+
+        <div class="topo-conferencia-direita">
+
+
+            <div id="language-placeholder"></div>
+
+
+            <span id="dataHoraTopo">
+                -
+            </span>
+
+
+            <span
+                id="usuarioTopoConferencia"
+                class="usuario-topo"
+            >
+                -
+            </span>
+
+
+            <button
+                type="button"
+                class="btn-sair-conferencia"
+                onclick="sairSistema()"
+            >
+                Sair
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         INDICADORES
+    ===================================================== -->
+
+    <section class="cards-indicadores">
+
+
+        <div class="card-indicador indicador-azul">
+
+
+            <div class="card-indicador-icone">
+
+                <i data-lucide="clipboard-list"></i>
+
+            </div>
+
+
+            <div class="card-indicador-info">
+
+
+                <small>
+                    Pedidos para Conferir
+                </small>
+
+
+                <strong id="cardPedidosConferir">
+                    0
+                </strong>
+
+
+                <span>
+                    Aguardando conferência
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="card-indicador indicador-verde">
+
+
+            <div class="card-indicador-icone">
+
+                <i data-lucide="circle-check"></i>
+
+            </div>
+
+
+            <div class="card-indicador-info">
+
+
+                <small>
+                    Pedidos Conferidos
+                </small>
+
+
+                <strong id="cardPedidosConferidos">
+                    0
+                </strong>
+
+
+                <span>
+                    Finalizados
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="card-indicador indicador-amarelo">
+
+
+            <div class="card-indicador-icone">
+
+                <i data-lucide="clock"></i>
+
+            </div>
+
+
+            <div class="card-indicador-info">
+
+
+                <small>
+                    Em Conferência
+                </small>
+
+
+                <strong id="cardEmConferencia">
+                    0
+                </strong>
+
+
+                <span>
+                    Em andamento
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="card-indicador indicador-vermelho">
+
+
+            <div class="card-indicador-icone">
+
+                <i data-lucide="triangle-alert"></i>
+
+            </div>
+
+
+            <div class="card-indicador-info">
+
+
+                <small>
+                    Com Divergência
+                </small>
+
+
+                <strong id="cardComDivergencia">
+                    0
+                </strong>
+
+
+                <span>
+                    Requer atenção
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+        <!-- =====================================================
+         PEDIDOS PARA CONFERIR + PEDIDOS CONFERIDOS
+    ===================================================== -->
+
+    <section class="grade-pedidos">
+
+
+        <!-- =================================================
+             PEDIDOS PARA CONFERIR
+        ================================================== -->
+
+        <div class="card card-conteudo">
+
+            <div class="card-titulo">
+
+                <div class="card-titulo-esquerda">
+
+                    <div class="card-titulo-icone">
+                        ▣
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Pedidos para Conferir
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <span
+                    id="contadorPedidosPendentes"
+                    class="contador-card"
+                >
+                    0 pedidos
+                </span>
+
+            </div>
+
+
+            <div class="filtros">
+
+                <input
+                    type="text"
+                    id="filtroPendentesTexto"
+                    placeholder="Buscar por cliente, pedido ou nota..."
+                    autocomplete="off"
+                >
+
+
+                <select id="filtroPendentesCliente">
+
+                    <option value="">
+                        Todos os clientes
+                    </option>
+
+                </select>
+
+
+                <select id="filtroPendentesStatus">
+
+                    <option value="">
+                        Todos os status
+                    </option>
+
+                    <option value="AGUARDANDO_CONFERENCIA">
+                        Separado
+                    </option>
+
+                    <option value="EM_CONFERENCIA">
+                        Em Conferência
+                    </option>
+
+                    <option value="DIVERGENCIA">
+                        Divergência
+                    </option>
+
+                </select>
+
+
+                <button
+                    type="button"
+                    class="btn-limpar"
+                    onclick="limparFiltrosPendentes()"
+                >
+                    Limpar filtros
+                </button>
+
+            </div>
+
+
+            <div class="tabela-scroll">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Cliente
+                            </th>
+
+                            <th>
+                                Nº Pedido
+                            </th>
+
+                            <th>
+                                Nº Nota
+                            </th>
+
+                            <th>
+                                Data
+                            </th>
+
+                            <th>
+                                Qtd Itens
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Ações
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tabelaPedidosPendentes">
+
+                        <tr>
+
+                            <td colspan="7">
+
+                                Nenhum pedido aguardando conferência.
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PEDIDOS CONFERIDOS
+        ================================================== -->
+
+        <div class="card card-conteudo">
+
+            <div class="card-titulo">
+
+                <div class="card-titulo-esquerda">
+
+                    <div class="card-titulo-icone verde">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Pedidos Conferidos
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <span
+                    id="contadorPedidosConferidos"
+                    class="contador-card"
+                >
+                    0 pedidos
+                </span>
+
+            </div>
+
+
+            <div class="filtros">
+
+                <input
+                    type="text"
+                    id="filtroConferidosTexto"
+                    placeholder="Buscar por cliente, pedido ou nota..."
+                    autocomplete="off"
+                >
+
+
+                <select id="filtroConferidosCliente">
+
+                    <option value="">
+                        Todos os clientes
+                    </option>
+
+                </select>
+
+
+                <select id="filtroConferidosPeriodo">
+
+                    <option value="">
+                        Todos
+                    </option>
+
+                    <option value="7">
+                        Últimos 7 dias
+                    </option>
+
+                    <option value="30">
+                        Últimos 30 dias
+                    </option>
+
+                </select>
+
+
+                <button
+                    type="button"
+                    class="btn-limpar"
+                    onclick="limparFiltrosConferidos()"
+                >
+                    Limpar filtros
+                </button>
+
+            </div>
+
+
+            <div class="tabela-scroll">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Cliente
+                            </th>
+
+                            <th>
+                                Nº Pedido
+                            </th>
+
+                            <th>
+                                Nº Nota
+                            </th>
+
+                            <th>
+                                Data
+                            </th>
+
+                            <th>
+                                Qtd Itens
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Ações
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tabelaPedidosConferidos">
+
+                        <tr>
+
+                            <td colspan="7">
+
+                                Nenhum pedido conferido.
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         CONFERÊNCIA DO PEDIDO
+    ===================================================== -->
+
+    <section class="card card-conteudo card-conferencia-pedido">
+
+
+        <div class="cabecalho-conferencia-pedido">
+
+            <div class="card-titulo-esquerda">
+
+                <div class="card-titulo-icone">
+                    ◈
+                </div>
+
+                <div>
+
+                    <h2 style="margin:0;color:#0a2d5f;font-size:18px;">
+                        Conferência do Pedido
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="btnFinalizarConferencia"
+                class="btn-finalizar"
+                onclick="finalizarConferenciaPedido()"
+                disabled
+            >
+                ✓ Finalizar Conferência
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             RESUMO DO PEDIDO
+        ================================================== -->
+
+        <div class="resumo-pedido">
+
+
+            <div class="resumo-pedido-item">
+
+                <small>
+                    Cliente
+                </small>
+
+                <strong id="resumoClientePedido">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="resumo-pedido-item">
+
+                <small>
+                    Nº do Pedido
+                </small>
+
+                <strong id="resumoNumeroPedido">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="resumo-pedido-item">
+
+                <small>
+                    Nº da Nota
+                </small>
+
+                <strong id="resumoNumeroNota">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="resumo-pedido-item">
+
+                <small>
+                    Data
+                </small>
+
+                <strong id="resumoDataPedido">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="resumo-pedido-item">
+
+                <small>
+                    Status
+                </small>
+
+                <strong id="resumoStatusPedido">
+                    -
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             ITENS DO PEDIDO
+        ================================================== -->
+
+        <div class="tabela-scroll">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Código
+                        </th>
+
+                        <th>
+                            Descrição
+                        </th>
+
+                        <th>
+                            Endereço
+                        </th>
+
+                        <th>
+                            Qtd Separada
+                        </th>
+
+                        <th>
+                            Qtd Conferida
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Usuário
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="tabelaItensConferencia">
+
+                    <tr>
+
+                        <td colspan="7">
+
+                            Selecione um pedido para iniciar a conferência.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     SCRIPTS
+===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
+<script src="app.js?v=20260806-01"></script>
+
+<script src="sync-supabase.js"></script>
+
+
+<script>
+
+    let pedidosConferencia = [];
+
+    let pedidoSelecionadoConferencia = null;
+
+</script>
+
+
+<script>
+
+    /* =====================================================
+       UTILITÁRIOS
+    ===================================================== */
+
+    function carregarListaConferencia(chave) {
+
+        try {
+
+            const dados =
+                JSON.parse(
+                    localStorage.getItem(chave)
+                );
+
+
+            return Array.isArray(dados)
+                ? dados
+                : [];
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao carregar " + chave + ":",
+                erro
+            );
+
+
+            return [];
+        }
+    }
+
+
+    function salvarListaConferencia(
+        chave,
+        lista
+    ) {
+
+        localStorage.setItem(
+            chave,
+            JSON.stringify(
+                Array.isArray(lista)
+                    ? lista
+                    : []
+            )
+        );
+    }
+
+
+    function obterUsuarioConferencia() {
+
+        let usuario =
+            "DAVI.SMI";
+
+
+        try {
+
+            const usuarioLogado =
+                JSON.parse(
+                    localStorage.getItem(
+                        "usuarioLogado"
+                    ) || "{}"
+                );
+
+
+            usuario =
+                usuarioLogado.nome ||
+                usuarioLogado.usuario ||
+                usuarioLogado.login ||
+                localStorage.getItem(
+                    "usuario"
+                ) ||
+                "DAVI.SMI";
+
+
+        } catch (erro) {
+
+            usuario =
+                localStorage.getItem(
+                    "usuario"
+                ) ||
+                "DAVI.SMI";
+        }
+
+
+        if (
+            String(usuario)
+                .trim()
+                .toLowerCase() ===
+            "administrador"
+        ) {
+
+            usuario =
+                "DAVI.SMI";
+        }
+
+
+        return String(
+            usuario
+        ).trim();
+    }
+
+
+    function obterDataHoraConferencia() {
+
+        return new Date()
+            .toLocaleString(
+                "pt-BR",
+                {
+                    day:
+                        "2-digit",
+
+                    month:
+                        "2-digit",
+
+                    year:
+                        "numeric",
+
+                    hour:
+                        "2-digit",
+
+                    minute:
+                        "2-digit"
+                }
+            );
+    }
+
+
+    function formatarQuantidadeConferencia(
+        valor
+    ) {
+
+        const numero =
+            Number(
+                String(
+                    valor === undefined ||
+                    valor === null
+                        ? 0
+                        : valor
+                )
+                .replace(
+                    ",",
+                    "."
+                )
+            );
+
+
+        return Number.isFinite(numero)
+            ? numero.toLocaleString(
+                "pt-BR",
+                {
+                    maximumFractionDigits:
+                        3
+                }
+            )
+            : "0";
+    }
+
+
+    function escaparHTMLConferencia(
+        valor
+    ) {
+
+        return String(
+            valor ||
+            ""
+        )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+    }
+
+
+    function normalizarStatusConferencia(
+        status
+    ) {
+
+        return String(
+            status ||
+            ""
+        )
+        .trim()
+        .toUpperCase();
+    }
+
+
+    /* =====================================================
+       DATA E USUÁRIO DO TOPO
+    ===================================================== */
+
+    function atualizarTopoConferencia() {
+
+        const campoData =
+            document.getElementById(
+                "dataHoraTopo"
+            );
+
+
+        const campoUsuario =
+            document.getElementById(
+                "usuarioTopoConferencia"
+            );
+
+
+        if (
+            campoData
+        ) {
+
+            campoData.textContent =
+                new Date()
+                    .toLocaleString(
+                        "pt-BR"
+                    );
+        }
+
+
+        if (
+            campoUsuario
+        ) {
+
+            campoUsuario.textContent =
+                obterUsuarioConferencia();
+        }
+    }
+
+
+    /* =====================================================
+       SAIR DO SISTEMA
+    ===================================================== */
+
+    function sairSistema() {
+
+        localStorage.removeItem(
+            "usuarioLogado"
+        );
+
+
+        window.location.href =
+            "index.html";
+    }
+
+
+    /* =====================================================
+       CARREGAR PEDIDOS
+    ===================================================== */
+
+    function carregarPedidosConferencia() {
+
+        pedidosConferencia =
+            carregarListaConferencia(
+                "pedidosConferencia"
+            );
+
+
+        atualizarIndicadoresConferencia();
+
+        carregarClientesNosFiltros();
+
+        renderizarTabelaPedidosPendentes();
+
+        renderizarTabelaPedidosConferidos();
+
+
+        if (
+            pedidoSelecionadoConferencia
+        ) {
+
+            const pedidoAtualizado =
+                pedidosConferencia.find(
+                    function (pedido) {
+
+                        return (
+                            String(
+                                pedido.id ||
+                                ""
+                            ) ===
+                            String(
+                                pedidoSelecionadoConferencia.id ||
+                                ""
+                            )
+                        );
+
+                    }
+                );
+
+
+            if (
+                pedidoAtualizado
+            ) {
+
+                pedidoSelecionadoConferencia =
+                    pedidoAtualizado;
+
+
+                renderizarPedidoSelecionado();
+            }
+        }
+    }
+
+        /* =====================================================
+       INDICADORES
+    ===================================================== */
+
+    function atualizarIndicadoresConferencia() {
+
+        const pedidosPendentes =
+            pedidosConferencia.filter(
+                function (pedido) {
+
+                    const status =
+                        normalizarStatusConferencia(
+                            pedido.status
+                        );
+
+                    return (
+                        status ===
+                        "AGUARDANDO_CONFERENCIA"
+                    );
+
+                }
+            );
+
+
+        const pedidosConferidos =
+            pedidosConferencia.filter(
+                function (pedido) {
+
+                    const status =
+                        normalizarStatusConferencia(
+                            pedido.status
+                        );
+
+                    return (
+                        status ===
+                        "CONFERIDO"
+                    );
+
+                }
+            );
+
+
+        const pedidosEmConferencia =
+            pedidosConferencia.filter(
+                function (pedido) {
+
+                    const status =
+                        normalizarStatusConferencia(
+                            pedido.status
+                        );
+
+                    return (
+                        status ===
+                        "EM_CONFERENCIA"
+                    );
+
+                }
+            );
+
+
+        const pedidosDivergencia =
+            pedidosConferencia.filter(
+                function (pedido) {
+
+                    const status =
+                        normalizarStatusConferencia(
+                            pedido.status
+                        );
+
+                    return (
+                        status ===
+                        "DIVERGENCIA"
+                    );
+
+                }
+            );
+
+
+        document.getElementById(
+            "cardPedidosConferir"
+        ).textContent =
+            pedidosPendentes.length;
+
+
+        document.getElementById(
+            "cardPedidosConferidos"
+        ).textContent =
+            pedidosConferidos.length;
+
+
+        document.getElementById(
+            "cardEmConferencia"
+        ).textContent =
+            pedidosEmConferencia.length;
+
+
+        document.getElementById(
+            "cardComDivergencia"
+        ).textContent =
+            pedidosDivergencia.length;
+    }
+
+
+    /* =====================================================
+       CLIENTES DOS FILTROS
+    ===================================================== */
+
+    function carregarClientesNosFiltros() {
+
+        const clientes =
+            [
+                ...new Set(
+                    pedidosConferencia
+                        .map(
+                            function (pedido) {
+
+                                return String(
+                                    pedido.cliente ||
+                                    ""
+                                ).trim();
+
+                            }
+                        )
+                        .filter(Boolean)
+                )
+            ]
+            .sort(
+                function (a, b) {
+
+                    return a.localeCompare(
+                        b,
+                        "pt-BR"
+                    );
+
+                }
+            );
+
+
+        const selects = [
+
+            document.getElementById(
+                "filtroPendentesCliente"
+            ),
+
+            document.getElementById(
+                "filtroConferidosCliente"
+            )
+
+        ];
+
+
+        selects.forEach(
+            function (select) {
+
+                if (
+                    !select
+                ) {
+
+                    return;
+                }
+
+
+                const valorAtual =
+                    select.value;
+
+
+                select.innerHTML =
+                    '<option value="">Todos os clientes</option>';
+
+
+                clientes.forEach(
+                    function (cliente) {
+
+                        const opcao =
+                            document.createElement(
+                                "option"
+                            );
+
+
+                        opcao.value =
+                            cliente;
+
+
+                        opcao.textContent =
+                            cliente;
+
+
+                        select.appendChild(
+                            opcao
+                        );
+
+                    }
+                );
+
+
+                select.value =
+                    valorAtual;
+
+            }
+        );
+    }
+
+
+    /* =====================================================
+       FILTRAR PENDENTES
+    ===================================================== */
+
+    function obterPedidosPendentesFiltrados() {
+
+        const texto =
+            String(
+                document.getElementById(
+                    "filtroPendentesTexto"
+                ).value ||
+                ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+        const clienteFiltro =
+            String(
+                document.getElementById(
+                    "filtroPendentesCliente"
+                ).value ||
+                ""
+            )
+            .trim();
+
+
+        const statusFiltro =
+            String(
+                document.getElementById(
+                    "filtroPendentesStatus"
+                ).value ||
+                ""
+            )
+            .trim()
+            .toUpperCase();
+
+
+        return pedidosConferencia.filter(
+            function (pedido) {
+
+                const status =
+                    normalizarStatusConferencia(
+                        pedido.status
+                    );
+
+
+                const fazPartePendentes =
+                    (
+                        status ===
+                        "AGUARDANDO_CONFERENCIA" ||
+
+                        status ===
+                        "EM_CONFERENCIA" ||
+
+                        status ===
+                        "DIVERGENCIA"
+                    );
+
+
+                if (
+                    !fazPartePendentes
+                ) {
+
+                    return false;
+                }
+
+
+                const cliente =
+                    String(
+                        pedido.cliente ||
+                        ""
+                    );
+
+
+                const numeroPedido =
+                    String(
+                        pedido.numeroPedido ||
+                        pedido.referencia ||
+                        ""
+                    );
+
+
+                const numeroNota =
+                    String(
+                        pedido.numeroNota ||
+                        pedido.notaFiscal ||
+                        ""
+                    );
+
+
+                const textoPesquisa =
+                    (
+                        cliente +
+                        " " +
+                        numeroPedido +
+                        " " +
+                        numeroNota
+                    )
+                    .toLowerCase();
+
+
+                if (
+                    texto &&
+                    !textoPesquisa.includes(
+                        texto
+                    )
+                ) {
+
+                    return false;
+                }
+
+
+                if (
+                    clienteFiltro &&
+                    cliente !==
+                    clienteFiltro
+                ) {
+
+                    return false;
+                }
+
+
+                if (
+                    statusFiltro &&
+                    status !==
+                    statusFiltro
+                ) {
+
+                    return false;
+                }
+
+
+                return true;
+
+            }
+        );
+    }
+
+
+    /* =====================================================
+       RENDERIZAR PEDIDOS PARA CONFERIR
+    ===================================================== */
+
+    function renderizarTabelaPedidosPendentes() {
+
+        const corpo =
+            document.getElementById(
+                "tabelaPedidosPendentes"
+            );
+
+
+        const pedidos =
+            obterPedidosPendentesFiltrados();
+
+
+        const contador =
+            document.getElementById(
+                "contadorPedidosPendentes"
+            );
+
+
+        contador.textContent =
+            pedidos.length +
+            (
+                pedidos.length === 1
+                    ? " pedido"
+                    : " pedidos"
+            );
+
+
+        corpo.innerHTML =
+            "";
+
+
+        if (
+            pedidos.length === 0
+        ) {
+
+            corpo.innerHTML = `
+
+                <tr>
+
+                    <td colspan="7">
+
+                        Nenhum pedido aguardando conferência.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+        }
+
+
+        pedidos.forEach(
+            function (pedido) {
+
+                const linha =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                const status =
+                    normalizarStatusConferencia(
+                        pedido.status
+                    );
+
+
+                const qtdItens =
+                    Array.isArray(
+                        pedido.itens
+                    )
+                        ? pedido.itens.length
+                        : 0;
+
+
+                let textoStatus =
+                    "Separado";
+
+
+                let classeStatus =
+                    "badge-separado";
+
+
+                if (
+                    status ===
+                    "EM_CONFERENCIA"
+                ) {
+
+                    textoStatus =
+                        "Em Conferência";
+
+
+                    classeStatus =
+                        "badge-separado";
+                }
+
+
+                if (
+                    status ===
+                    "DIVERGENCIA"
+                ) {
+
+                    textoStatus =
+                        "Com Divergência";
+
+
+                    classeStatus =
+                        "badge-divergencia";
+                }
+
+
+                linha.innerHTML = `
+
+                    <td>
+
+                        <strong>
+
+                            ${escaparHTMLConferencia(
+                                pedido.cliente ||
+                                "-"
+                            )}
+
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escaparHTMLConferencia(
+                            pedido.numeroPedido ||
+                            pedido.referencia ||
+                            "-"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${escaparHTMLConferencia(
+                            pedido.numeroNota ||
+                            pedido.notaFiscal ||
+                            "-"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${escaparHTMLConferencia(
+                            pedido.dataFinalizacao ||
+                            pedido.dataInicio ||
+                            "-"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${qtdItens}
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="badge ${classeStatus}">
+
+                            ${textoStatus}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <button
+                            type="button"
+                            class="btn-conferir"
+                            onclick="abrirPedidoConferencia(
+                                '${escaparHTMLConferencia(
+                                    pedido.id
+                                )}'
+                            )"
+                        >
+
+                            ▶ Conferir
+
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                corpo.appendChild(
+                    linha
+                );
+
+            }
+        );
+    }
+
+
+    /* =====================================================
+       FILTRAR CONFERIDOS
+    ===================================================== */
+
+    function obterPedidosConferidosFiltrados() {
+
+        const texto =
+            String(
+                document.getElementById(
+                    "filtroConferidosTexto"
+                ).value ||
+                ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+        const clienteFiltro =
+            String(
+                document.getElementById(
+                    "filtroConferidosCliente"
+                ).value ||
+                ""
+            )
+            .trim();
+
+
+        const periodo =
+            Number(
+                document.getElementById(
+                    "filtroConferidosPeriodo"
+                ).value ||
+                0
+            );
+
+
+        return pedidosConferencia.filter(
+            function (pedido) {
+
+                const status =
+                    normalizarStatusConferencia(
+                        pedido.status
+                    );
+
+
+                if (
+                    status !==
+                    "CONFERIDO"
+                ) {
+
+                    return false;
+                }
+
+
+                const cliente =
+                    String(
+                        pedido.cliente ||
+                        ""
+                    );
+
+
+                const numeroPedido =
+                    String(
+                        pedido.numeroPedido ||
+                        pedido.referencia ||
+                        ""
+                    );
+
+
+                const numeroNota =
+                    String(
+                        pedido.numeroNota ||
+                        pedido.notaFiscal ||
+                        ""
+                    );
+
+
+                const textoPesquisa =
+                    (
+                        cliente +
+                        " " +
+                        numeroPedido +
+                        " " +
+                        numeroNota
+                    )
+                    .toLowerCase();
+
+
+                if (
+                    texto &&
+                    !textoPesquisa.includes(
+                        texto
+                    )
+                ) {
+
+                    return false;
+                }
+
+
+                if (
+                    clienteFiltro &&
+                    cliente !==
+                    clienteFiltro
+                ) {
+
+                    return false;
+                }
+
+
+                if (
+                    periodo > 0
+                ) {
+
+                    const textoData =
+                        String(
+                            pedido.dataConferencia ||
+                            ""
+                        );
+
+
+                    const partes =
+                        textoData.match(
+                            /(\d{2})\/(\d{2})\/(\d{4})/
+                        );
+
+
+                    if (
+                        partes
+                    ) {
+
+                        const dataPedido =
+                            new Date(
+                                Number(
+                                    partes[3]
+                                ),
+                                Number(
+                                    partes[2]
+                                ) - 1,
+                                Number(
+                                    partes[1]
+                                )
+                            );
+
+
+                        const limite =
+                            new Date();
+
+
+                        limite.setDate(
+                            limite.getDate() -
+                            periodo
+                        );
+
+
+                        if (
+                            dataPedido <
+                            limite
+                        ) {
+
+                            return false;
+                        }
+
+                    }
+
+                }
+
+
+                return true;
+
+            }
+        );
+    }
+
+
+    /* =====================================================
+       RENDERIZAR PEDIDOS CONFERIDOS
+    ===================================================== */
+
+    function renderizarTabelaPedidosConferidos() {
+
+        const corpo =
+            document.getElementById(
+                "tabelaPedidosConferidos"
+            );
+
+
+        const pedidos =
+            obterPedidosConferidosFiltrados();
+
+
+        const contador =
+            document.getElementById(
+                "contadorPedidosConferidos"
+            );
+
+
+        contador.textContent =
+            pedidos.length +
+            (
+                pedidos.length === 1
+                    ? " pedido"
+                    : " pedidos"
+            );
+
+
+        corpo.innerHTML =
+            "";
+
+
+        if (
+            pedidos.length === 0
+        ) {
+
+            corpo.innerHTML = `
+
+                <tr>
+
+                    <td colspan="7">
+
+                        Nenhum pedido conferido.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+        }
+
+
+        pedidos.forEach(
+            function (pedido) {
+
+                const linha =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                const qtdItens =
+                    Array.isArray(
+                        pedido.itens
+                    )
+                        ? pedido.itens.length
+                        : 0;
+
+
+                linha.innerHTML = `
+
+                    <td>
+
+                        <strong>
+
+                            ${escaparHTMLConferencia(
+                                pedido.cliente ||
+                                "-"
+                            )}
+
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escaparHTMLConferencia(
+                            pedido.numeroPedido ||
+                            pedido.referencia ||
+                            "-"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${escaparHTMLConferencia(
+                            pedido.numeroNota ||
+                            pedido.notaFiscal ||
+                            "-"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${escaparHTMLConferencia(
+                            pedido.dataConferencia ||
+                            "-"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${qtdItens}
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="badge badge-conferido">
+
+                            Conferido
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <button
+                            type="button"
+                            class="btn-acao"
+                            onclick="visualizarPedidoConferido(
+                                '${escaparHTMLConferencia(
+                                    pedido.id
+                                )}'
+                            )"
+                        >
+
+                            Visualizar
+
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                corpo.appendChild(
+                    linha
+                );
+
+            }
+        );
+    }
+
+
+    /* =====================================================
+       ABRIR PEDIDO PARA CONFERÊNCIA
+    ===================================================== */
+
+    function abrirPedidoConferencia(
+        idPedido
+    ) {
+
+        const pedido =
+            pedidosConferencia.find(
+                function (pedido) {
+
+                    return (
+                        String(
+                            pedido.id ||
+                            ""
+                        ) ===
+                        String(
+                            idPedido ||
+                            ""
+                        )
+                    );
+
+                }
+            );
+
+
+        if (
+            !pedido
+        ) {
+
+            alert(
+                "Pedido não encontrado."
+            );
+
+
+            return;
+        }
+
+
+        pedidoSelecionadoConferencia =
+            pedido;
+
+
+        if (
+            normalizarStatusConferencia(
+                pedido.status
+            ) ===
+            "AGUARDANDO_CONFERENCIA"
+        ) {
+
+            pedido.status =
+                "EM_CONFERENCIA";
+
+
+            salvarListaConferencia(
+                "pedidosConferencia",
+                pedidosConferencia
+            );
+
+        }
+
+
+        renderizarPedidoSelecionado();
+
+
+        atualizarIndicadoresConferencia();
+
+
+        renderizarTabelaPedidosPendentes();
+
+
+        document
+            .querySelector(
+                ".card-conferencia-pedido"
+            )
+            .scrollIntoView(
+                {
+                    behavior:
+                        "smooth",
+
+                    block:
+                        "start"
+                }
+            );
+    }
+
+
+    /* =====================================================
+       VISUALIZAR PEDIDO CONFERIDO
+    ===================================================== */
+
+    function visualizarPedidoConferido(
+        idPedido
+    ) {
+
+        const pedido =
+            pedidosConferencia.find(
+                function (pedido) {
+
+                    return (
+                        String(
+                            pedido.id ||
+                            ""
+                        ) ===
+                        String(
+                            idPedido ||
+                            ""
+                        )
+                    );
+
+                }
+            );
+
+
+        if (
+            !pedido
+        ) {
+
+            return;
+        }
+
+
+        pedidoSelecionadoConferencia =
+            pedido;
+
+
+        renderizarPedidoSelecionado();
+
+
+        document.getElementById(
+            "btnFinalizarConferencia"
+        ).disabled =
+            true;
+
+
+        document
+            .querySelector(
+                ".card-conferencia-pedido"
+            )
+            .scrollIntoView(
+                {
+                    behavior:
+                        "smooth",
+
+                    block:
+                        "start"
+                }
+            );
+    }
+
+        /* =====================================================
+       RENDERIZAR PEDIDO SELECIONADO
+    ===================================================== */
+
+    function renderizarPedidoSelecionado() {
+
+        if (
+            !pedidoSelecionadoConferencia
+        ) {
+
+            return;
+        }
+
+
+        const pedido =
+            pedidoSelecionadoConferencia;
+
+
+        const itens =
+            Array.isArray(
+                pedido.itens
+            )
+                ? pedido.itens
+                : [];
+
+
+        document.getElementById(
+            "resumoClientePedido"
+        ).textContent =
+            pedido.cliente ||
+            "-";
+
+
+        document.getElementById(
+            "resumoNumeroPedido"
+        ).textContent =
+            pedido.numeroPedido ||
+            pedido.referencia ||
+            "-";
+
+
+        document.getElementById(
+            "resumoNumeroNota"
+        ).textContent =
+            pedido.numeroNota ||
+            pedido.notaFiscal ||
+            "-";
+
+
+        document.getElementById(
+            "resumoDataPedido"
+        ).textContent =
+            pedido.dataFinalizacao ||
+            pedido.dataInicio ||
+            "-";
+
+
+        const status =
+            normalizarStatusConferencia(
+                pedido.status
+            );
+
+
+        let textoStatus =
+            "Separado";
+
+
+        if (
+            status ===
+            "EM_CONFERENCIA"
+        ) {
+
+            textoStatus =
+                "Em Conferência";
+        }
+
+
+        if (
+            status ===
+            "DIVERGENCIA"
+        ) {
+
+            textoStatus =
+                "Com Divergência";
+        }
+
+
+        if (
+            status ===
+            "CONFERIDO"
+        ) {
+
+            textoStatus =
+                "Conferido";
+        }
+
+
+        document.getElementById(
+            "resumoStatusPedido"
+        ).textContent =
+            textoStatus;
+
+
+        renderizarItensPedidoConferencia();
+    }
+
+
+    /* =====================================================
+       RENDERIZAR ITENS DO PEDIDO
+    ===================================================== */
+
+    function renderizarItensPedidoConferencia() {
+
+        const corpo =
+            document.getElementById(
+                "tabelaItensConferencia"
+            );
+
+
+        corpo.innerHTML =
+            "";
+
+
+        if (
+            !pedidoSelecionadoConferencia
+        ) {
+
+            corpo.innerHTML = `
+
+                <tr>
+
+                    <td colspan="7">
+
+                        Selecione um pedido para iniciar a conferência.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+        }
+
+
+        const itens =
+            Array.isArray(
+                pedidoSelecionadoConferencia.itens
+            )
+                ? pedidoSelecionadoConferencia.itens
+                : [];
+
+
+        if (
+            itens.length === 0
+        ) {
+
+            corpo.innerHTML = `
+
+                <tr>
+
+                    <td colspan="7">
+
+                        Este pedido não possui itens.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+        }
+
+
+        itens.forEach(
+            function (
+                item,
+                indice
+            ) {
+
+                const linha =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                const quantidadeSeparada =
+                    Number(
+                        item.quantidadeSeparada ||
+                        0
+                    );
+
+
+                const quantidadeConferida =
+                    Number(
+                        item.quantidadeConferida ||
+                        0
+                    );
+
+
+                const statusItem =
+                    normalizarStatusConferencia(
+                        item.statusConferencia ||
+                        "PENDENTE"
+                    );
+
+
+                let classeStatus =
+                    "badge-pendente";
+
+
+                let textoStatus =
+                    "Pendente";
+
+
+                if (
+                    statusItem ===
+                    "CONFERIDO"
+                ) {
+
+                    classeStatus =
+                        "badge-conferido";
+
+
+                    textoStatus =
+                        "Conferido";
+                }
+
+
+                if (
+                    statusItem ===
+                    "DIVERGENCIA"
+                ) {
+
+                    classeStatus =
+                        "badge-divergencia";
+
+
+                    textoStatus =
+                        "Divergência";
+                }
+
+
+                const bloqueado =
+                    (
+                        normalizarStatusConferencia(
+                            pedidoSelecionadoConferencia.status
+                        ) ===
+                        "CONFERIDO"
+                    );
+
+
+                linha.innerHTML = `
+
+                    <td>
+
+                        ${escaparHTMLConferencia(
+                            item.codigo ||
+                            "-"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${escaparHTMLConferencia(
+                            item.descricao ||
+                            "-"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${escaparHTMLConferencia(
+                            item.endereco ||
+                            "-"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        <strong>
+
+                            ${formatarQuantidadeConferencia(
+                                quantidadeSeparada
+                            )}
+
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+
+                        <input
+                            type="number"
+                            class="qtd-input"
+                            min="0"
+                            step="0.001"
+                            value="${quantidadeConferida}"
+                            ${
+                                bloqueado
+                                    ? "disabled"
+                                    : ""
+                            }
+                            onchange="alterarQuantidadeConferida(
+                                ${indice},
+                                this.value
+                            )"
+                        >
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="badge ${classeStatus}">
+
+                            ${textoStatus}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escaparHTMLConferencia(
+                            item.usuarioConferencia ||
+                            "-"
+                        )}
+
+                    </td>
+
+                `;
+
+
+                corpo.appendChild(
+                    linha
+                );
+
+            }
+        );
+
+
+        atualizarBotaoFinalizarConferencia();
+    }
+
+
+    /* =====================================================
+       ALTERAR QUANTIDADE CONFERIDA
+    ===================================================== */
+
+    function alterarQuantidadeConferida(
+        indice,
+        valor
+    ) {
+
+        if (
+            !pedidoSelecionadoConferencia
+        ) {
+
+            return;
+        }
+
+
+        const itens =
+            pedidoSelecionadoConferencia.itens ||
+            [];
+
+
+        const item =
+            itens[indice];
+
+
+        if (
+            !item
+        ) {
+
+            return;
+        }
+
+
+        const quantidadeConferida =
+            Number(
+                String(
+                    valor || 0
+                )
+                .replace(
+                    ",",
+                    "."
+                )
+            );
+
+
+        const quantidadeSeparada =
+            Number(
+                item.quantidadeSeparada ||
+                0
+            );
+
+
+        item.quantidadeConferida =
+            Number.isFinite(
+                quantidadeConferida
+            )
+                ? quantidadeConferida
+                : 0;
+
+
+        item.usuarioConferencia =
+            obterUsuarioConferencia();
+
+
+        item.dataConferencia =
+            obterDataHoraConferencia();
+
+
+        if (
+            item.quantidadeConferida ===
+            quantidadeSeparada
+        ) {
+
+            item.statusConferencia =
+                "CONFERIDO";
+
+        } else {
+
+            item.statusConferencia =
+                "DIVERGENCIA";
+        }
+
+
+        atualizarStatusPedidoDuranteConferencia();
+
+
+        salvarListaConferencia(
+            "pedidosConferencia",
+            pedidosConferencia
+        );
+
+
+        renderizarItensPedidoConferencia();
+
+        atualizarIndicadoresConferencia();
+
+        renderizarTabelaPedidosPendentes();
+    }
+
+
+    /* =====================================================
+       STATUS DO PEDIDO DURANTE CONFERÊNCIA
+    ===================================================== */
+
+    function atualizarStatusPedidoDuranteConferencia() {
+
+        if (
+            !pedidoSelecionadoConferencia
+        ) {
+
+            return;
+        }
+
+
+        const itens =
+            pedidoSelecionadoConferencia.itens ||
+            [];
+
+
+        const possuiDivergencia =
+            itens.some(
+                function (item) {
+
+                    return (
+                        normalizarStatusConferencia(
+                            item.statusConferencia
+                        ) ===
+                        "DIVERGENCIA"
+                    );
+
+                }
+            );
+
+
+        if (
+            possuiDivergencia
+        ) {
+
+            pedidoSelecionadoConferencia.status =
+                "DIVERGENCIA";
+
+        } else {
+
+            pedidoSelecionadoConferencia.status =
+                "EM_CONFERENCIA";
+        }
+
+
+        document.getElementById(
+            "resumoStatusPedido"
+        ).textContent =
+            possuiDivergencia
+                ? "Com Divergência"
+                : "Em Conferência";
+    }
+
+
+    /* =====================================================
+       BOTÃO FINALIZAR
+    ===================================================== */
+
+    function atualizarBotaoFinalizarConferencia() {
+
+        const botao =
+            document.getElementById(
+                "btnFinalizarConferencia"
+            );
+
+
+        if (
+            !pedidoSelecionadoConferencia
+        ) {
+
+            botao.disabled =
+                true;
+
+
+            return;
+        }
+
+
+        if (
+            normalizarStatusConferencia(
+                pedidoSelecionadoConferencia.status
+            ) ===
+            "CONFERIDO"
+        ) {
+
+            botao.disabled =
+                true;
+
+
+            return;
+        }
+
+
+        const itens =
+            pedidoSelecionadoConferencia.itens ||
+            [];
+
+
+        if (
+            itens.length === 0
+        ) {
+
+            botao.disabled =
+                true;
+
+
+            return;
+        }
+
+
+        const todosProcessados =
+            itens.every(
+                function (item) {
+
+                    const status =
+                        normalizarStatusConferencia(
+                            item.statusConferencia
+                        );
+
+
+                    return (
+                        status ===
+                        "CONFERIDO" ||
+
+                        status ===
+                        "DIVERGENCIA"
+                    );
+
+                }
+            );
+
+
+        botao.disabled =
+            !todosProcessados;
+    }
+
+
+    /* =====================================================
+       FINALIZAR CONFERÊNCIA
+    ===================================================== */
+
+    function finalizarConferenciaPedido() {
+
+        if (
+            !pedidoSelecionadoConferencia
+        ) {
+
+            alert(
+                "Selecione um pedido."
+            );
+
+
+            return;
+        }
+
+
+        const itens =
+            pedidoSelecionadoConferencia.itens ||
+            [];
+
+
+        const pendentes =
+            itens.some(
+                function (item) {
+
+                    const status =
+                        normalizarStatusConferencia(
+                            item.statusConferencia
+                        );
+
+
+                    return (
+                        status !==
+                        "CONFERIDO" &&
+
+                        status !==
+                        "DIVERGENCIA"
+                    );
+
+                }
+            );
+
+
+        if (
+            pendentes
+        ) {
+
+            alert(
+                "Ainda existem itens pendentes de conferência."
+            );
+
+
+            return;
+        }
+
+
+        const possuiDivergencia =
+            itens.some(
+                function (item) {
+
+                    return (
+                        normalizarStatusConferencia(
+                            item.statusConferencia
+                        ) ===
+                        "DIVERGENCIA"
+                    );
+
+                }
+            );
+
+
+        const confirmou =
+            confirm(
+                "Finalizar conferência?\n\n" +
+
+                "Cliente: " +
+                (
+                    pedidoSelecionadoConferencia.cliente ||
+                    "-"
+                ) +
+
+                "\nPedido / Referência: " +
+                (
+                    pedidoSelecionadoConferencia.numeroPedido ||
+                    pedidoSelecionadoConferencia.referencia ||
+                    "-"
+                ) +
+
+                "\nItens: " +
+                itens.length +
+
+                (
+                    possuiDivergencia
+                        ? "\n\nATENÇÃO: este pedido possui divergência."
+                        : "\n\nTodos os itens foram conferidos."
+                )
+            );
+
+
+        if (
+            !confirmou
+        ) {
+
+            return;
+        }
+
+
+        pedidoSelecionadoConferencia.dataConferencia =
+            obterDataHoraConferencia();
+
+
+        pedidoSelecionadoConferencia.usuarioConferencia =
+            obterUsuarioConferencia();
+
+
+        if (
+            possuiDivergencia
+        ) {
+
+            pedidoSelecionadoConferencia.status =
+                "DIVERGENCIA";
+
+        } else {
+
+            pedidoSelecionadoConferencia.status =
+                "CONFERIDO";
+        }
+
+
+        salvarListaConferencia(
+            "pedidosConferencia",
+            pedidosConferencia
+        );
+
+
+        /* =================================================
+           HISTÓRICO
+        ================================================= */
+
+        const historico =
+            carregarListaConferencia(
+                "historicoConferencias"
+            );
+
+
+        const indiceHistorico =
+            historico.findIndex(
+                function (pedido) {
+
+                    return (
+                        String(
+                            pedido.id ||
+                            ""
+                        ) ===
+                        String(
+                            pedidoSelecionadoConferencia.id ||
+                            ""
+                        )
+                    );
+
+                }
+            );
+
+
+        if (
+            indiceHistorico >= 0
+        ) {
+
+            historico[
+                indiceHistorico
+            ] =
+                pedidoSelecionadoConferencia;
+
+        } else {
+
+            historico.unshift(
+                pedidoSelecionadoConferencia
+            );
+        }
+
+
+        salvarListaConferencia(
+            "historicoConferencias",
+            historico
+        );
+
+
+        const statusFinal =
+            pedidoSelecionadoConferencia.status;
+
+
+        const referenciaFinal =
+            pedidoSelecionadoConferencia.numeroPedido ||
+            pedidoSelecionadoConferencia.referencia ||
+            "";
+
+
+        pedidoSelecionadoConferencia =
+            null;
+
+
+        limparPedidoSelecionadoConferencia();
+
+
+        carregarPedidosConferencia();
+
+
+        if (
+            statusFinal ===
+            "CONFERIDO"
+        ) {
+
+            alert(
+                "Pedido " +
+                referenciaFinal +
+                " conferido com sucesso."
+            );
+
+        } else {
+
+            alert(
+                "Pedido " +
+                referenciaFinal +
+                " finalizado com divergência."
+            );
+        }
+    }
+
+
+    /* =====================================================
+       LIMPAR PEDIDO SELECIONADO
+    ===================================================== */
+
+    function limparPedidoSelecionadoConferencia() {
+
+        document.getElementById(
+            "resumoClientePedido"
+        ).textContent =
+            "-";
+
+
+        document.getElementById(
+            "resumoNumeroPedido"
+        ).textContent =
+            "-";
+
+
+        document.getElementById(
+            "resumoNumeroNota"
+        ).textContent =
+            "-";
+
+
+        document.getElementById(
+            "resumoDataPedido"
+        ).textContent =
+            "-";
+
+
+        document.getElementById(
+            "resumoStatusPedido"
+        ).textContent =
+            "-";
+
+
+        document.getElementById(
+            "tabelaItensConferencia"
+        ).innerHTML = `
+
+            <tr>
+
+                <td colspan="7">
+
+                    Selecione um pedido para iniciar a conferência.
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        document.getElementById(
+            "btnFinalizarConferencia"
+        ).disabled =
+            true;
+    }
+
+        /* =====================================================
+       FILTROS
+    ===================================================== */
+
+    function limparFiltrosPendentes() {
+
+        document.getElementById(
+            "filtroPendentesTexto"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "filtroPendentesCliente"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "filtroPendentesStatus"
+        ).value =
+            "";
+
+
+        renderizarTabelaPedidosPendentes();
+    }
+
+
+    function limparFiltrosConferidos() {
+
+        document.getElementById(
+            "filtroConferidosTexto"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "filtroConferidosCliente"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "filtroConferidosPeriodo"
+        ).value =
+            "";
+
+
+        renderizarTabelaPedidosConferidos();
+    }
+
+
+    /* =====================================================
+       EVENTOS DOS FILTROS
+    ===================================================== */
+
+    document.getElementById(
+        "filtroPendentesTexto"
+    )
+    .addEventListener(
+        "input",
+        renderizarTabelaPedidosPendentes
+    );
+
+
+    document.getElementById(
+        "filtroPendentesCliente"
+    )
+    .addEventListener(
+        "change",
+        renderizarTabelaPedidosPendentes
+    );
+
+
+    document.getElementById(
+        "filtroPendentesStatus"
+    )
+    .addEventListener(
+        "change",
+        renderizarTabelaPedidosPendentes
+    );
+
+
+    document.getElementById(
+        "filtroConferidosTexto"
+    )
+    .addEventListener(
+        "input",
+        renderizarTabelaPedidosConferidos
+    );
+
+
+    document.getElementById(
+        "filtroConferidosCliente"
+    )
+    .addEventListener(
+        "change",
+        renderizarTabelaPedidosConferidos
+    );
+
+
+    document.getElementById(
+        "filtroConferidosPeriodo"
+    )
+    .addEventListener(
+        "change",
+        renderizarTabelaPedidosConferidos
+    );
+
+
+    /* =====================================================
+       MARCAR ITEM ATIVO DA SIDEBAR
+    ===================================================== */
+
+    function atualizarMenuAtivoConferencia() {
+
+        let paginaAtual =
+            window.location.pathname
+                .split("/")
+                .pop();
+
+
+        if (
+            !paginaAtual
+        ) {
+
+            paginaAtual =
+                "conferencia.html";
+        }
+
+
+        document
+            .querySelectorAll(
+                ".sidebar-wms-novo .menu-item"
+            )
+            .forEach(
+                function (item) {
+
+                    const pagina =
+                        item.getAttribute(
+                            "data-page"
+                        );
+
+
+                    item.classList.toggle(
+                        "active",
+                        pagina === paginaAtual
+                    );
+
+                }
+            );
+    }
+
+
+    /* =====================================================
+       CARREGAMENTO INICIAL
+    ===================================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const languagePlaceholder =
+    document.getElementById(
+        "language-placeholder"
+    );
+
+const languageSwitcher =
+    document.getElementById(
+        "wms-language-switcher"
+    );
+
+if (
+    languagePlaceholder &&
+    languageSwitcher
+) {
+
+    languagePlaceholder.appendChild(
+        languageSwitcher
+    );
+
+}
+
+            atualizarTopoConferencia();
+
+
+            carregarPedidosConferencia();
+
+
+            limparPedidoSelecionadoConferencia();
+
+
+            atualizarMenuAtivoConferencia();
+
+
+            if (
+                typeof lucide !==
+                "undefined"
+            ) {
+
+                lucide.createIcons();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       ATUALIZAR DATA / HORA
+    ===================================================== */
+
+    setInterval(
+        atualizarTopoConferencia,
+        1000
+    );
+
+
+    /* =====================================================
+       ATUALIZAÇÃO AUTOMÁTICA DOS PEDIDOS
+    ===================================================== */
+
+    setInterval(
+        function () {
+
+            carregarPedidosConferencia();
+
+        },
+        3000
+    );
+
+
+    /* =====================================================
+       ATUALIZAÇÃO ENTRE ABAS DO NAVEGADOR
+    ===================================================== */
+
+    window.addEventListener(
+        "storage",
+        function (evento) {
+
+            if (
+                evento.key ===
+                "pedidosConferencia"
+            ) {
+
+                carregarPedidosConferencia();
+
+            }
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>
+

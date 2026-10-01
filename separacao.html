@@ -1,46 +1,85 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0a3f7a">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0a3f7a"
+    >
+
     <title>SMI WMS - Separação</title>
-    <link rel="icon" type="image/png" href="img/favicon.png">
-    <link rel="stylesheet" href="style.css">
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="img/favicon.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
     <script src="https://unpkg.com/lucide@latest"></script>
 
 
     <style>
+
         * {
             box-sizing: border-box;
         }
 
+
         :root {
+
             --azul-900: #062b59;
             --azul-800: #0a3f7a;
             --azul-700: #0d4e92;
             --azul-100: #eaf3ff;
+
             --texto: #18324f;
             --texto-claro: #6b7f95;
+
             --borda: #dce5ef;
             --fundo: #f2f6fb;
+
             --verde: #1b9b48;
             --verde-fundo: #eef9f1;
+
             --amarelo-fundo: #fff8df;
             --amarelo-borda: #f4dda0;
+
             --vermelho: #c62828;
             --vermelho-fundo: #fff0f0;
         }
+
 
         html {
             scroll-behavior: smooth;
         }
 
+
         body {
+
             margin: 0;
+
             min-height: 100vh;
-            font-family: Arial, Helvetica, sans-serif;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
             color: var(--texto);
+
             background:
                 linear-gradient(
                     180deg,
@@ -50,407 +89,1122 @@
                 );
         }
 
+
         button,
         input,
         select {
             font: inherit;
         }
 
+
         button {
             -webkit-tap-highlight-color: transparent;
         }
 
+
         .pagina {
+
             width: 100%;
+
             max-width: 860px;
+
             margin: 0 auto;
-            padding: 16px 14px 96px;
+
+            padding:
+                16px
+                14px
+                96px;
         }
+
 
         /* =====================================================
            CABEÇALHO
         ===================================================== */
 
         .topo {
+
             position: relative;
+
             overflow: hidden;
+
             display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                auto;
+
             align-items: center;
+
             gap: 14px;
+
             padding: 20px;
+
             margin-bottom: 16px;
+
             border-radius: 22px;
+
             background:
                 linear-gradient(
                     135deg,
                     #062b59 0%,
                     #0b4f94 100%
                 );
-            box-shadow: 0 12px 30px rgba(10, 45, 95, 0.18);
+
+            box-shadow:
+                0
+                12px
+                30px
+                rgba(10, 45, 95, 0.18);
         }
+
 
         .topo::after {
+
             content: "";
+
             position: absolute;
+
             right: -70px;
+
             top: -80px;
+
             width: 210px;
+
             height: 210px;
+
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.04);
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.04
+                );
         }
 
+
         .topo-conteudo {
+
             display: flex;
+
             align-items: center;
+
             gap: 14px;
+
             min-width: 0;
         }
 
+
         .topo-logo {
+
             width: 95px;
+
             flex: 0 0 auto;
         }
 
+
         .topo-logo img {
+
             width: 100%;
+
             display: block;
         }
+
 
         .topo-texto {
             min-width: 0;
         }
 
+
         .identificacao {
+
             display: inline-block;
+
             margin-bottom: 4px;
+
             color: #9cc9ff;
+
             font-size: 11px;
+
             font-weight: 700;
+
             letter-spacing: 1px;
+
             text-transform: uppercase;
         }
 
+
         .topo h1 {
+
             margin: 0;
+
             color: #ffffff;
+
             font-size: 29px;
+
             line-height: 1.05;
         }
 
+
         .topo p {
-            margin: 7px 0 0;
+
+            margin:
+                7px
+                0
+                0;
+
             max-width: 420px;
+
             color: #dcecff;
+
             font-size: 13px;
+
             line-height: 1.45;
         }
 
+
         .btn-bipar-topo {
+
             position: relative;
+
             z-index: 2;
+
             width: 74px;
+
             min-height: 74px;
+
             padding: 8px;
+
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
+
             justify-content: center;
+
             gap: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.24);
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.24
+                );
+
             border-radius: 16px;
+
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.07);
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.07
+                );
+
             cursor: pointer;
         }
 
+
         .btn-bipar-topo .icone {
+
             font-size: 26px;
+
             line-height: 1;
         }
 
+
         .btn-bipar-topo span:last-child {
+
             font-size: 11px;
+
             font-weight: 700;
         }
+
 
         /* =====================================================
            CARDS
         ===================================================== */
 
         .card {
+
             background: #ffffff;
-            border: 1px solid var(--borda);
+
+            border:
+                1px solid
+                var(--borda);
+
             border-radius: 18px;
-            box-shadow: 0 9px 28px rgba(15, 42, 80, 0.08);
+
+            box-shadow:
+                0
+                9px
+                28px
+                rgba(
+                    15,
+                    42,
+                    80,
+                    0.08
+                );
         }
+
 
         .painel-operacao {
             padding: 20px;
         }
 
+
         .titulo-operacao {
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
+
             gap: 12px;
+
             margin-bottom: 20px;
+
             padding-bottom: 14px;
-            border-bottom: 1px solid #e8edf3;
+
+            border-bottom:
+                1px solid
+                #e8edf3;
         }
 
+
         .titulo-operacao-esquerda {
+
             display: flex;
+
             align-items: center;
+
             gap: 10px;
+
             min-width: 0;
         }
 
+
         .titulo-operacao-icone {
+
             width: 42px;
+
             height: 42px;
+
             flex: 0 0 auto;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             border-radius: 12px;
-            background: var(--azul-100);
+
+            background:
+                var(--azul-100);
+
             font-size: 20px;
         }
 
+
         .titulo-operacao h2 {
+
             margin: 0;
+
             color: #0a2d5f;
+
             font-size: 19px;
         }
 
+
         .titulo-operacao small {
+
             display: block;
+
             margin-top: 2px;
+
             color: var(--texto-claro);
+
             font-size: 12px;
         }
 
+
         .status-leitor {
+
             flex: 0 0 auto;
-            padding: 8px 10px;
-            border: 1px solid #b9d7fb;
+
+            padding:
+                8px
+                10px;
+
+            border:
+                1px solid
+                #b9d7fb;
+
             border-radius: 9px;
-            background: #eef6ff;
-            color: #1769c2;
-            font-size: 11px;
+
+            background:
+                #eef6ff;
+
+            color:
+                #1769c2;
+
+            font-size:
+                11px;
+
+            font-weight:
+                700;
+        }
+
+
+        /* =====================================================
+           PEDIDO / CLIENTE
+        ===================================================== */
+
+        .pedido-box {
+
+            margin-bottom: 18px;
+
+            padding: 15px;
+
+            border:
+                1px solid
+                #cfe0f1;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f5faff,
+                    #ffffff
+                );
+        }
+
+
+        .pedido-box-titulo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 12px;
+
+            color: #0a2d5f;
+
+            font-size: 14px;
+
             font-weight: 700;
         }
+
+
+        .pedido-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap: 12px;
+        }
+
+
+        .pedido-status {
+
+            display: none;
+
+            margin-top: 10px;
+
+            padding:
+                9px
+                11px;
+
+            border-radius: 9px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        .pedido-status.ativo {
+
+            display: block;
+
+            background:
+                #eef9f1;
+
+            border:
+                1px solid
+                #bee4c9;
+
+            color:
+                #14763a;
+        }
+
 
         /* =====================================================
            FORMULÁRIO
         ===================================================== */
 
         .campo {
+
             margin-bottom: 15px;
         }
 
+
         .campo label {
+
             display: block;
+
             margin-bottom: 7px;
+
             color: #203b5d;
+
             font-size: 13px;
+
             font-weight: 700;
         }
 
+
         .campo input,
         .campo select {
+
             width: 100%;
+
             height: 50px;
-            padding: 0 14px;
-            border: 1px solid #ccd8e5;
+
+            padding:
+                0
+                14px;
+
+            border:
+                1px solid
+                #ccd8e5;
+
             border-radius: 10px;
+
             outline: none;
-            background: #ffffff;
-            color: #172033;
-            font-size: 16px;
-            transition: 0.2s;
+
+            background:
+                #ffffff;
+
+            color:
+                #172033;
+
+            font-size:
+                16px;
+
+            transition:
+                0.2s;
         }
+
 
         .campo input:focus,
         .campo select:focus {
-            border-color: #1769c2;
-            box-shadow: 0 0 0 3px rgba(23, 105, 194, 0.10);
+
+            border-color:
+                #1769c2;
+
+            box-shadow:
+                0
+                0
+                0
+                3px
+                rgba(
+                    23,
+                    105,
+                    194,
+                    0.10
+                );
         }
+
 
         .campo input[readonly],
         .campo select:disabled {
-            background: #f4f7fb;
-            color: #243b5a;
-            font-weight: 600;
+
+            background:
+                #f4f7fb;
+
+            color:
+                #243b5a;
+
+            font-weight:
+                600;
         }
 
+
+        .campo input.bloqueado-pedido {
+
+            background:
+                #eef4fb;
+
+            border-color:
+                #cad9e8;
+
+            color:
+                #38516d;
+
+            font-weight:
+                700;
+        }
+
+
         .busca {
+
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 122px;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                122px;
+
             gap: 10px;
         }
 
+
         .campo-codigo-wrapper {
+
             position: relative;
         }
 
+
         .campo-codigo-wrapper input {
+
             padding-right: 44px;
         }
 
+
         .codigo-icone {
+
             position: absolute;
+
             right: 14px;
+
             top: 50%;
-            transform: translateY(-50%);
-            color: #0d4e92;
-            font-size: 18px;
-            pointer-events: none;
+
+            transform:
+                translateY(-50%);
+
+            color:
+                #0d4e92;
+
+            font-size:
+                18px;
+
+            pointer-events:
+                none;
         }
+
 
         .linha-dupla {
+
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap:
+                12px;
         }
+
 
         .estoque-destaque {
-            color: #16843f !important;
-            background: #f1fbf4 !important;
-            border-color: #c9ead3 !important;
+
+            color:
+                #16843f !important;
+
+            background:
+                #f1fbf4 !important;
+
+            border-color:
+                #c9ead3 !important;
         }
 
+
         .quantidade-linha {
+
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 82px;
-            gap: 10px;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                82px;
+
+            gap:
+                10px;
         }
+
 
         .btn-buscar,
         .btn-max,
         .btn-confirmar,
+        .btn-finalizar-pedido,
         .acao-rapida,
         .btn-bipar-topo {
+
             border: none;
         }
 
+
         .btn-buscar {
-            min-height: 50px;
-            padding: 0 18px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #0a2d5f, #0d4e92);
-            color: #ffffff;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 5px 12px rgba(10, 45, 95, 0.16);
+
+            min-height:
+                50px;
+
+            padding:
+                0
+                18px;
+
+            border-radius:
+                10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0a2d5f,
+                    #0d4e92
+                );
+
+            color:
+                #ffffff;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+
+            box-shadow:
+                0
+                5px
+                12px
+                rgba(
+                    10,
+                    45,
+                    95,
+                    0.16
+                );
         }
+
 
         .btn-max {
-            min-height: 50px;
-            border: 1px solid #c8d7e8;
-            border-radius: 10px;
-            background: #f5f8fc;
-            color: #1769c2;
-            font-weight: 700;
-            cursor: pointer;
+
+            min-height:
+                50px;
+
+            border:
+                1px solid
+                #c8d7e8;
+
+            border-radius:
+                10px;
+
+            background:
+                #f5f8fc;
+
+            color:
+                #1769c2;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
         }
+
 
         .saldo-preview {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            margin: 4px 0 14px;
-            border: 1px solid #cfe0f1;
-            border-radius: 12px;
-            background: linear-gradient(90deg, #f6fbff, #fbfdff);
-            overflow: hidden;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            margin:
+                4px
+                0
+                14px;
+
+            border:
+                1px solid
+                #cfe0f1;
+
+            border-radius:
+                12px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #f6fbff,
+                    #fbfdff
+                );
+
+            overflow:
+                hidden;
         }
+
 
         .saldo-preview-item {
-            padding: 14px 12px;
-            text-align: center;
+
+            padding:
+                14px
+                12px;
+
+            text-align:
+                center;
         }
 
-        .saldo-preview-item + .saldo-preview-item {
-            border-left: 1px solid #d8e3ee;
+
+        .saldo-preview-item +
+        .saldo-preview-item {
+
+            border-left:
+                1px solid
+                #d8e3ee;
         }
+
 
         .saldo-preview-item small {
-            display: block;
-            margin-bottom: 4px;
-            color: #5e7186;
-            font-size: 11px;
+
+            display:
+                block;
+
+            margin-bottom:
+                4px;
+
+            color:
+                #5e7186;
+
+            font-size:
+                11px;
         }
+
 
         .saldo-preview-item strong {
-            display: block;
-            color: #0a2d5f;
-            font-size: 22px;
+
+            display:
+                block;
+
+            color:
+                #0a2d5f;
+
+            font-size:
+                22px;
         }
+
 
         .saldo-preview-item.disponivel strong {
-            color: var(--verde);
+
+            color:
+                var(--verde);
         }
 
+
         .btn-confirmar {
+
+            width:
+                100%;
+
+            min-height:
+                56px;
+
+            padding:
+                0
+                18px;
+
+            border-radius:
+                11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #08366c,
+                    #0c4f95
+                );
+
+            color:
+                #ffffff;
+
+            font-size:
+                16px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+
+            box-shadow:
+                0
+                6px
+                14px
+                rgba(
+                    10,
+                    45,
+                    95,
+                    0.18
+                );
+        }
+
+
+        .btn-confirmar:disabled {
+
+            background:
+                #a7b3c2;
+
+            cursor:
+                not-allowed;
+
+            box-shadow:
+                none;
+        }
+
+
+        .btn-finalizar-pedido {
+
+            width:
+                100%;
+
+            min-height:
+                56px;
+
+            margin-top:
+                12px;
+
+            padding:
+                0
+                18px;
+
+            border-radius:
+                11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #16843f,
+                    #1ca650
+                );
+
+            color:
+                #ffffff;
+
+            font-size:
+                16px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+
+            box-shadow:
+                0
+                6px
+                14px
+                rgba(
+                    27,
+                    155,
+                    72,
+                    0.20
+                );
+        }
+
+
+        .btn-finalizar-pedido:disabled {
+
+            background:
+                #a7b3c2;
+
+            cursor:
+                not-allowed;
+
+            box-shadow:
+                none;
+        }
+
+
+        .dica {
+
+            display:
+                flex;
+
+            gap:
+                10px;
+
+            align-items:
+                flex-start;
+
+            margin-top:
+                14px;
+
+            padding:
+                12px
+                13px;
+
+            border-radius:
+                10px;
+
+            background:
+                #edf6ff;
+
+            color:
+                #27496c;
+
+            font-size:
+                12px;
+
+            line-height:
+                1.4;
+        }
+
+
+        .dica strong {
+
+            color:
+                #0d4e92;
+        }
+
+
+        .mensagem {
+
+            display:
+                none;
+
+            margin-top:
+                14px;
+
+            padding:
+                12px
+                14px;
+
+            border-radius:
+                10px;
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+        }
+
+
+        .mensagem.sucesso {
+
+            display:
+                block;
+
+            background:
+                #e9f9ef;
+
+            border:
+                1px solid
+                #b7ebc8;
+
+            color:
+                #126b34;
+        }
+
+
+        .mensagem.erro {
+
+            display:
+                block;
+
+            background:
+                var(--vermelho-fundo);
+
+            border:
+                1px solid
+                #f4c2c2;
+
+            color:
+                #a11d1d;
+        }
+
+                /* =====================================================
+           PEDIDO EM SEPARAÇÃO
+        ===================================================== */
+
+        .pedido-cabecalho {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 14px;
+            border: 1px solid #d8e6f5;
+            border-radius: 14px;
+            background: #f7fbff;
+        }
+
+        .pedido-cabecalho .campo {
+            margin-bottom: 0;
+        }
+
+        .pedido-info-ativa {
+            display: none;
+            margin: 0 0 16px;
+            padding: 12px 14px;
+            border: 1px solid #b9d7fb;
+            border-radius: 12px;
+            background: #eef6ff;
+            color: #174a7e;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .pedido-info-ativa.ativo {
+            display: block;
+        }
+
+        .pedido-info-ativa strong {
+            color: #0a2d5f;
+        }
+
+        .btn-finalizar-pedido {
             width: 100%;
             min-height: 56px;
+            margin-top: 10px;
             padding: 0 18px;
+            border: none;
             border-radius: 11px;
-            background: linear-gradient(135deg, #08366c, #0c4f95);
+            background: linear-gradient(
+                135deg,
+                #16843f,
+                #1b9b48
+            );
             color: #ffffff;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 6px 14px rgba(10, 45, 95, 0.18);
+            box-shadow:
+                0 6px 14px
+                rgba(27, 155, 72, 0.18);
         }
 
-        .btn-confirmar:disabled {
+        .btn-finalizar-pedido:disabled {
             background: #a7b3c2;
             cursor: not-allowed;
             box-shadow: none;
         }
 
-        .dica {
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
-            margin-top: 14px;
-            padding: 12px 13px;
-            border-radius: 10px;
-            background: #edf6ff;
-            color: #27496c;
-            font-size: 12px;
-            line-height: 1.4;
+        @media (max-width: 560px) {
+            .pedido-cabecalho {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .dica strong {
-            color: #0d4e92;
-        }
-
-        .mensagem {
-            display: none;
-            margin-top: 14px;
-            padding: 12px 14px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .mensagem.sucesso {
-            display: block;
-            background: #e9f9ef;
-            border: 1px solid #b7ebc8;
-            color: #126b34;
-        }
-
-        .mensagem.erro {
-            display: block;
-            background: var(--vermelho-fundo);
-            border: 1px solid #f4c2c2;
-            color: #a11d1d;
-        }
 
         /* =====================================================
            RESUMO
@@ -487,7 +1241,9 @@
 
         .resumo-linha {
             display: grid;
-            grid-template-columns: 1fr minmax(0, 1.4fr);
+            grid-template-columns:
+                1fr
+                minmax(0, 1.4fr);
             gap: 12px;
             padding: 10px 0;
             border-bottom: 1px solid #edf1f5;
@@ -512,13 +1268,16 @@
             color: var(--verde);
         }
 
+
         /* =====================================================
            ÚLTIMAS / AÇÕES
         ===================================================== */
 
         .grade-secundaria {
             display: grid;
-            grid-template-columns: minmax(0, 1.35fr) minmax(220px, .65fr);
+            grid-template-columns:
+                minmax(0, 1.35fr)
+                minmax(220px, .65fr);
             gap: 16px;
             margin-top: 16px;
         }
@@ -538,7 +1297,11 @@
 
         .ultima-item {
             display: grid;
-            grid-template-columns: 28px 48px minmax(0, 1fr) auto;
+            grid-template-columns:
+                28px
+                48px
+                minmax(0, 1fr)
+                auto;
             gap: 8px;
             align-items: center;
             padding: 10px 0;
@@ -608,6 +1371,7 @@
             text-align: left;
         }
 
+
         /* =====================================================
            COMO SEPARAR
         ===================================================== */
@@ -667,6 +1431,7 @@
             line-height: 1.25;
         }
 
+
         /* =====================================================
            NAVEGAÇÃO MOBILE
         ===================================================== */
@@ -686,7 +1451,9 @@
             border: 1px solid #dbe4ee;
             border-radius: 18px;
             background: rgba(255, 255, 255, 0.97);
-            box-shadow: 0 8px 24px rgba(21, 47, 75, 0.16);
+            box-shadow:
+                0 8px 24px
+                rgba(21, 47, 75, 0.16);
             backdrop-filter: blur(8px);
         }
 
@@ -710,15 +1477,21 @@
         }
 
         .nav-mobile a.ativo {
-            background: linear-gradient(135deg, #07366e, #0a4b91);
+            background: linear-gradient(
+                135deg,
+                #07366e,
+                #0a4b91
+            );
             color: #ffffff;
         }
+
 
         /* =====================================================
            RESPONSIVO - CELULAR
         ===================================================== */
 
         @media (max-width: 700px) {
+
             .pagina {
                 padding: 0 10px 92px;
             }
@@ -772,7 +1545,9 @@
             }
 
             .busca {
-                grid-template-columns: minmax(0, 1fr) 105px;
+                grid-template-columns:
+                    minmax(0, 1fr)
+                    105px;
             }
 
             .campo input,
@@ -794,12 +1569,18 @@
             }
 
             .grade-secundaria {
-                grid-template-columns: minmax(0, 1.3fr) minmax(145px, .7fr);
+                grid-template-columns:
+                    minmax(0, 1.3fr)
+                    minmax(145px, .7fr);
                 gap: 10px;
             }
 
             .passos {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
+                grid-template-columns:
+                    repeat(
+                        4,
+                        minmax(0, 1fr)
+                    );
                 gap: 5px;
             }
 
@@ -825,7 +1606,9 @@
             }
         }
 
+
         @media (max-width: 480px) {
+
             .topo-logo {
                 width: 60px;
             }
@@ -847,7 +1630,9 @@
             }
 
             .busca {
-                grid-template-columns: minmax(0, 1fr) 92px;
+                grid-template-columns:
+                    minmax(0, 1fr)
+                    92px;
             }
 
             .btn-buscar {
@@ -869,7 +1654,8 @@
             }
 
             .card-acoes .acoes-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns:
+                    repeat(3, 1fr);
             }
 
             .acao-rapida {
@@ -880,7 +1666,9 @@
             }
 
             .resumo-linha {
-                grid-template-columns: .9fr 1.4fr;
+                grid-template-columns:
+                    .9fr
+                    1.4fr;
             }
 
             .passo-icone {
@@ -889,7 +1677,7 @@
             }
         }
 
-        @media print {
+                @media print {
             .nav-mobile,
             .btn-bipar-topo,
             .btn-buscar,
@@ -915,7 +1703,8 @@
                 box-shadow: none;
             }
         }
-    
+
+
         /* =====================================================
            INTEGRAÇÃO COM O MENU LATERAL PADRÃO DO SMI WMS
         ===================================================== */
@@ -930,6 +1719,7 @@
         }
 
         @media (max-width: 700px) {
+
             .sidebar.sidebar-wms-novo {
                 display: none !important;
             }
@@ -941,12 +1731,13 @@
             }
         }
 
-    
+
         /* =====================================================
            AJUSTE MOBILE 16/09/2026
            Corrige deslocamento causado pelo .conteudo global
            e evita estouro horizontal em celulares.
         ===================================================== */
+
         html,
         body {
             width: 100%;
@@ -960,6 +1751,7 @@
         }
 
         @media (max-width: 700px) {
+
             body > .conteudo.separacao-conteudo-shell,
             .conteudo.separacao-conteudo-shell,
             .separacao-conteudo-shell {
@@ -975,15 +1767,36 @@
                 width: 100% !important;
                 max-width: 100% !important;
                 margin: 0 !important;
-                padding: 0 12px calc(104px + env(safe-area-inset-bottom)) !important;
+                padding:
+                    0
+                    12px
+                    calc(
+                        104px +
+                        env(safe-area-inset-bottom)
+                    ) !important;
             }
 
             .separacao-conteudo-shell .topo {
                 width: auto !important;
-                margin: 0 -12px 16px !important;
-                padding: calc(18px + env(safe-area-inset-top)) 16px 22px !important;
-                border-radius: 0 0 26px 26px !important;
-                grid-template-columns: minmax(0, 1fr) auto !important;
+                margin:
+                    0
+                    -12px
+                    16px !important;
+                padding:
+                    calc(
+                        18px +
+                        env(safe-area-inset-top)
+                    )
+                    16px
+                    22px !important;
+                border-radius:
+                    0
+                    0
+                    26px
+                    26px !important;
+                grid-template-columns:
+                    minmax(0, 1fr)
+                    auto !important;
                 gap: 12px !important;
             }
 
@@ -1001,22 +1814,42 @@
             }
 
             .separacao-conteudo-shell .topo h1 {
-                font-size: clamp(25px, 8vw, 34px) !important;
-                line-height: 1.05 !important;
-                overflow-wrap: anywhere;
+                font-size:
+                    clamp(
+                        25px,
+                        8vw,
+                        34px
+                    ) !important;
+                line-height:
+                    1.05 !important;
+                overflow-wrap:
+                    anywhere;
             }
 
             .separacao-conteudo-shell .topo p {
-                max-width: 100% !important;
-                font-size: 12px !important;
-                line-height: 1.4 !important;
+                max-width:
+                    100% !important;
+                font-size:
+                    12px !important;
+                line-height:
+                    1.4 !important;
             }
 
             .separacao-conteudo-shell .btn-bipar-topo {
-                width: 66px !important;
-                min-width: 66px !important;
-                min-height: 66px !important;
-                border: 1px solid rgba(255,255,255,.18) !important;
+                width:
+                    66px !important;
+                min-width:
+                    66px !important;
+                min-height:
+                    66px !important;
+                border:
+                    1px solid
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .18
+                    ) !important;
             }
 
             .separacao-conteudo-shell .card,
@@ -1025,32 +1858,44 @@
             .separacao-conteudo-shell .card-ultimas,
             .separacao-conteudo-shell .card-acoes,
             .separacao-conteudo-shell .como-separar {
-                width: 100% !important;
-                max-width: 100% !important;
+                width:
+                    100% !important;
+                max-width:
+                    100% !important;
             }
 
             .separacao-conteudo-shell .painel-operacao {
-                padding: 18px 16px !important;
-                border-radius: 20px !important;
+                padding:
+                    18px
+                    16px !important;
+                border-radius:
+                    20px !important;
             }
 
             .separacao-conteudo-shell .titulo-operacao {
-                align-items: center !important;
-                gap: 8px !important;
-                margin-bottom: 18px !important;
+                align-items:
+                    center !important;
+                gap:
+                    8px !important;
+                margin-bottom:
+                    18px !important;
             }
 
             .separacao-conteudo-shell .titulo-operacao-esquerda {
-                min-width: 0 !important;
+                min-width:
+                    0 !important;
             }
 
             .separacao-conteudo-shell .titulo-operacao h2 {
-                font-size: 20px !important;
-                line-height: 1.15 !important;
+                font-size:
+                    20px !important;
+                line-height:
+                    1.15 !important;
             }
 
             .separacao-conteudo-shell .titulo-operacao small {
-                font-size: 11px !important;
+                font-size:
+                    11px !important;
             }
 
             .separacao-conteudo-shell .campo,
@@ -1058,1524 +1903,3745 @@
             .separacao-conteudo-shell .busca,
             .separacao-conteudo-shell .linha-dupla,
             .separacao-conteudo-shell .quantidade-linha {
-                min-width: 0 !important;
+                min-width:
+                    0 !important;
             }
 
             .separacao-conteudo-shell .campo input,
             .separacao-conteudo-shell .campo select {
-                width: 100% !important;
-                min-width: 0 !important;
-                height: 54px !important;
-                font-size: 16px !important;
+                width:
+                    100% !important;
+                min-width:
+                    0 !important;
+                height:
+                    54px !important;
+                font-size:
+                    16px !important;
             }
 
             .separacao-conteudo-shell .busca {
-                grid-template-columns: minmax(0, 1fr) 108px !important;
-                gap: 8px !important;
+                grid-template-columns:
+                    minmax(0, 1fr)
+                    108px !important;
+                gap:
+                    8px !important;
             }
 
             .separacao-conteudo-shell .btn-buscar {
-                width: 100% !important;
-                min-width: 0 !important;
-                min-height: 54px !important;
-                padding: 0 12px !important;
+                width:
+                    100% !important;
+                min-width:
+                    0 !important;
+                min-height:
+                    54px !important;
+                padding:
+                    0
+                    12px !important;
             }
 
             .separacao-conteudo-shell .linha-dupla {
-                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-                gap: 10px !important;
+                grid-template-columns:
+                    minmax(0, 1fr)
+                    minmax(0, 1fr) !important;
+                gap:
+                    10px !important;
             }
 
             .separacao-conteudo-shell .quantidade-linha {
-                grid-template-columns: minmax(0, 1fr) 74px !important;
-                gap: 8px !important;
+                grid-template-columns:
+                    minmax(0, 1fr)
+                    74px !important;
+                gap:
+                    8px !important;
             }
 
             .separacao-conteudo-shell .saldo-preview {
-                width: 100% !important;
-                grid-template-columns: 1fr 1fr !important;
+                width:
+                    100% !important;
+                grid-template-columns:
+                    1fr
+                    1fr !important;
             }
 
             .separacao-conteudo-shell .saldo-preview-item {
-                min-width: 0 !important;
-                padding: 13px 8px !important;
+                min-width:
+                    0 !important;
+                padding:
+                    13px
+                    8px !important;
             }
 
             .separacao-conteudo-shell .saldo-preview-item small {
-                line-height: 1.2 !important;
+                line-height:
+                    1.2 !important;
             }
 
             .separacao-conteudo-shell .btn-confirmar {
-                min-height: 58px !important;
-                border-radius: 14px !important;
-                font-size: 16px !important;
+                min-height:
+                    58px !important;
+                border-radius:
+                    14px !important;
+                font-size:
+                    16px !important;
             }
 
             .separacao-conteudo-shell .grade-secundaria {
-                grid-template-columns: 1fr !important;
-                gap: 12px !important;
+                grid-template-columns:
+                    1fr !important;
+                gap:
+                    12px !important;
             }
 
             .separacao-conteudo-shell .card-acoes .acoes-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                grid-template-columns:
+                    repeat(
+                        3,
+                        minmax(0, 1fr)
+                    ) !important;
             }
 
             .separacao-conteudo-shell .acao-rapida {
-                text-align: center !important;
-                min-height: 52px !important;
-                padding: 6px !important;
+                text-align:
+                    center !important;
+                min-height:
+                    52px !important;
+                padding:
+                    6px !important;
             }
 
             .separacao-conteudo-shell .passos {
-                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+                grid-template-columns:
+                    repeat(
+                        4,
+                        minmax(0, 1fr)
+                    ) !important;
             }
 
             .separacao-conteudo-shell + .nav-mobile,
             .nav-mobile {
-                left: 10px !important;
-                right: 10px !important;
-                bottom: calc(10px + env(safe-area-inset-bottom)) !important;
-                width: auto !important;
-                max-width: none !important;
-                transform: none !important;
-                padding: 7px !important;
+                left:
+                    10px !important;
+                right:
+                    10px !important;
+                bottom:
+                    calc(
+                        10px +
+                        env(safe-area-inset-bottom)
+                    ) !important;
+                width:
+                    auto !important;
+                max-width:
+                    none !important;
+                transform:
+                    none !important;
+                padding:
+                    7px !important;
             }
 
             .nav-mobile a {
-                min-width: 0 !important;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
+                min-width:
+                    0 !important;
+                overflow:
+                    hidden;
+                text-overflow:
+                    ellipsis;
+                white-space:
+                    nowrap;
             }
         }
 
+
         @media (max-width: 420px) {
+
             .separacao-conteudo-shell .topo-logo {
-                width: 70px !important;
+                width:
+                    70px !important;
             }
 
             .separacao-conteudo-shell .topo h1 {
-                font-size: 26px !important;
+                font-size:
+                    26px !important;
             }
 
             .separacao-conteudo-shell .btn-bipar-topo {
-                width: 60px !important;
-                min-width: 60px !important;
+                width:
+                    60px !important;
+                min-width:
+                    60px !important;
             }
 
             .separacao-conteudo-shell .busca {
-                grid-template-columns: minmax(0, 1fr) 94px !important;
+                grid-template-columns:
+                    minmax(0, 1fr)
+                    94px !important;
             }
 
             .separacao-conteudo-shell .btn-buscar {
-                font-size: 13px !important;
+                font-size:
+                    13px !important;
             }
 
             .separacao-conteudo-shell .linha-dupla {
-                gap: 8px !important;
+                gap:
+                    8px !important;
             }
         }
 
     </style>
+
 </head>
 
+
 <body>
-    <div class="conteudo separacao-conteudo-shell">
 
-    <main class="pagina">
 
-        <!-- =====================================================
-             CABEÇALHO
-        ===================================================== -->
-        <section class="topo">
-            <div class="topo-conteudo">
-                <div class="topo-logo">
-                    <img src="img/logo.png" alt="SMI do Brasil">
-                </div>
+<div class="conteudo separacao-conteudo-shell">
 
-                <div class="topo-texto">
-                    <span class="identificacao">SMI WMS</span>
-                    <h1>Separação</h1>
-                    <p>
-                        Consulte o produto, localize a posição e registre a quantidade separada.
-                    </p>
-                </div>
-            </div>
 
-            <button
-                type="button"
-                class="btn-bipar-topo"
-                onclick="focarCodigoSeparacao()"
-                title="Focar campo para leitura"
-            >
-                <span class="icone">▥</span>
-                <span>Bipar</span>
-            </button>
-        </section>
+<main class="pagina">
 
-        <!-- =====================================================
-             OPERAÇÃO
-        ===================================================== -->
-        <section class="card painel-operacao">
 
-            <div class="titulo-operacao">
-                <div class="titulo-operacao-esquerda">
-                    <div class="titulo-operacao-icone">📦</div>
+    <!-- =====================================================
+         CABEÇALHO
+    ===================================================== -->
 
-                    <div>
-                        <h2>Separação de Produto</h2>
-                        <small>Localização e baixa de estoque</small>
-                    </div>
-                </div>
+    <section class="topo">
 
-                <div class="status-leitor">▥ Leitor ativo</div>
-            </div>
 
-            <!-- CÓDIGO -->
-            <div class="campo">
-                <label for="codigoProduto">Código do Produto</label>
+        <div class="topo-conteudo">
 
-                <div class="busca">
-                    <div class="campo-codigo-wrapper">
-                        <input
-                            type="text"
-                            id="codigoProduto"
-                            placeholder="Digite o código ou bipar"
-                            autocomplete="off"
-                            autocapitalize="characters"
-                        >
 
-                        <span class="codigo-icone">▥</span>
-                    </div>
+            <div class="topo-logo">
 
-                    <button
-                        type="button"
-                        class="btn-buscar"
-                        onclick="buscarProdutoSeparacao()"
-                    >
-                        Buscar
-                    </button>
-                </div>
-            </div>
-
-            <!-- DESCRIÇÃO -->
-            <div class="campo">
-                <label for="descricaoProduto">Descrição do Produto</label>
-
-                <input
-                    type="text"
-                    id="descricaoProduto"
-                    readonly
+                <img
+                    src="img/logo.png"
+                    alt="SMI do Brasil"
                 >
+
             </div>
 
-            <!-- POSIÇÃO + ESTOQUE -->
-            <div class="linha-dupla">
-                <div class="campo">
-                    <label for="posicaoProduto">Posição</label>
 
-                    <select
-                        id="posicaoProduto"
-                        disabled
-                        onchange="alterarPosicaoSeparacao()"
-                    >
-                        <option value="">-</option>
-                    </select>
-                </div>
+            <div class="topo-texto">
 
-                <div class="campo">
-                    <label for="quantidadeDisponivel">Estoque Atual</label>
+                <span class="identificacao">
+                    SMI WMS
+                </span>
 
-                    <input
-                        type="text"
-                        id="quantidadeDisponivel"
-                        class="estoque-destaque"
-                        readonly
-                    >
-                </div>
+                <h1>
+                    Separação
+                </h1>
+
+                <p>
+                    Consulte o produto,
+                    localize a posição
+                    e registre a quantidade separada.
+                </p>
+
             </div>
 
-            <!-- QUANTIDADE -->
-            <div class="campo">
-                <label for="quantidadeSeparar">Quantidade a Separar</label>
-
-                <div class="quantidade-linha">
-                    <input
-                        type="number"
-                        id="quantidadeSeparar"
-                        min="0.001"
-                        step="0.001"
-                        inputmode="decimal"
-                        placeholder="Informe a quantidade"
-                    >
-
-                    <button
-                        type="button"
-                        class="btn-max"
-                        onclick="usarQuantidadeMaximaSeparacao()"
-                    >
-                        Máx.
-                    </button>
-                </div>
-            </div>
-
-            <!-- PREVIEW SALDO -->
-            <div class="saldo-preview">
-                <div class="saldo-preview-item disponivel">
-                    <small>Disponível para separação</small>
-                    <strong id="saldoDisponivelPreview">0</strong>
-                    <small>unidades</small>
-                </div>
-
-                <div class="saldo-preview-item">
-                    <small>Após separação</small>
-                    <strong id="saldoDepoisPreview">0</strong>
-                    <small>unidades</small>
-                </div>
-            </div>
-
-            <button
-                type="button"
-                id="btnConfirmarSeparacao"
-                class="btn-confirmar"
-                onclick="confirmarSeparacao()"
-                disabled
-            >
-                ✓ Confirmar Separação
-            </button>
-
-            <div class="dica">
-                <span>ⓘ</span>
-                <div>
-                    <strong>Dica:</strong>
-                    Bipar o código do produto preenche automaticamente os campos.
-                </div>
-            </div>
-
-            <div
-                id="mensagemSeparacao"
-                class="mensagem"
-            ></div>
-        </section>
-
-        <!-- =====================================================
-             RESUMO
-        ===================================================== -->
-        <section class="card card-resumo secao-abaixo" id="resumoSeparacaoCard">
-            <div class="cabecalho-card">
-                <h3>📋 Resumo da Separação</h3>
-            </div>
-
-            <div class="resumo-linha">
-                <span>Produto</span>
-                <strong id="resumoProdutoSeparacao">-</strong>
-            </div>
-
-            <div class="resumo-linha">
-                <span>Posição</span>
-                <strong id="resumoPosicaoSeparacao">-</strong>
-            </div>
-
-            <div class="resumo-linha">
-                <span>Estoque Atual</span>
-                <strong id="resumoEstoqueSeparacao" class="verde">0 unidades</strong>
-            </div>
-
-            <div class="resumo-linha">
-                <span>Quantidade a Separar</span>
-                <strong id="resumoQuantidadeSeparar">-</strong>
-            </div>
-
-            <div class="resumo-linha">
-                <span>Após Separação</span>
-                <strong id="resumoAposSeparacao">-</strong>
-            </div>
-        </section>
-
-        <!-- =====================================================
-             ÚLTIMAS + AÇÕES
-        ===================================================== -->
-        <div class="grade-secundaria">
-
-            <section class="card card-ultimas" id="ultimasSeparacoesCard">
-                <div class="cabecalho-card">
-                    <h3>◷ Últimas Separações</h3>
-                    <span class="link-simples" onclick="rolarParaUltimasSeparacoes()">Ver todas</span>
-                </div>
-
-                <div id="listaUltimasSeparacoes" class="lista-ultimas">
-                    <div class="ultima-item">
-                        <div class="ultima-check">✓</div>
-                        <div class="ultima-hora">--:--</div>
-                        <div class="ultima-produto">
-                            <strong>Nenhuma separação recente</strong>
-                            <small>-</small>
-                        </div>
-                        <div class="ultima-qtd">-</div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="card card-acoes">
-                <div class="cabecalho-card">
-                    <h3>⚡ Ações Rápidas</h3>
-                </div>
-
-                <div class="acoes-grid">
-                    <button
-                        type="button"
-                        class="acao-rapida"
-                        onclick="limparTelaSeparacao()"
-                    >
-                        🧹 Limpar
-                    </button>
-
-                    <button
-                        type="button"
-                        class="acao-rapida"
-                        onclick="rolarParaUltimasSeparacoes()"
-                    >
-                        📋 Histórico
-                    </button>
-
-                    <button
-                        type="button"
-                        class="acao-rapida"
-                        onclick="window.print()"
-                    >
-                        🖨️ Imprimir
-                    </button>
-                </div>
-            </section>
 
         </div>
 
-        <!-- =====================================================
-             COMO SEPARAR
-        ===================================================== -->
-        <section class="como-separar">
-            <h3>Como separar?</h3>
 
-            <div class="passos">
-                <div class="passo">
-                    <div class="passo-icone">▥</div>
-                    <div>
-                        <strong>1. Digite ou bipar</strong>
-                        <span>o código do produto</span>
-                    </div>
-                </div>
+        <button
+            type="button"
+            class="btn-bipar-topo"
+            onclick="focarCodigoSeparacao()"
+            title="Focar campo para leitura"
+        >
 
-                <div class="passo">
-                    <div class="passo-icone">◎</div>
-                    <div>
-                        <strong>2. Localize a posição</strong>
-                        <span>indicada no WMS</span>
-                    </div>
-                </div>
+            <span class="icone">
+                ▥
+            </span>
 
-                <div class="passo">
-                    <div class="passo-icone">📦</div>
-                    <div>
-                        <strong>3. Separe a quantidade</strong>
-                        <span>solicitada</span>
-                    </div>
-                </div>
+            <span>
+                Bipar
+            </span>
 
-                <div class="passo">
-                    <div class="passo-icone">✓</div>
-                    <div>
-                        <strong>4. Confirme</strong>
-                        <span>para baixar do estoque</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </button>
 
-    </main>
+
+    </section>
+
 
     <!-- =====================================================
-         NAVEGAÇÃO MOBILE
+         OPERAÇÃO
     ===================================================== -->
-    <nav class="nav-mobile">
-        <a href="dashboard.html">
-            <span class="nav-icone">⌂</span>
-            Dashboard
-        </a>
 
-        <a href="produtos.html">
-            <span class="nav-icone">📦</span>
-            Produtos
-        </a>
+    <section class="card painel-operacao">
 
-        <a href="separacao.html" class="ativo">
-            <span class="nav-icone">🛒</span>
-            Separação
-        </a>
 
-        <a href="transferencias.html">
-            <span class="nav-icone">⇄</span>
-            Transferência
-        </a>
+        <div class="titulo-operacao">
 
-        <a href="dashboard.html">
-            <span class="nav-icone">•••</span>
-            Mais
-        </a>
-    </nav>
+
+            <div class="titulo-operacao-esquerda">
+
+
+                <div class="titulo-operacao-icone">
+                    📦
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Separação de Produto
+                    </h2>
+
+                    <small>
+                        Localização e baixa de estoque
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="status-leitor">
+                ▥ Leitor ativo
+            </div>
+
+
+        </div>
+
+
+        <!-- =====================================================
+             CLIENTE + PEDIDO
+        ===================================================== -->
+
+        <div class="pedido-cabecalho">
+
+
+            <div class="campo">
+
+                <label for="clientePedido">
+                    Nome do Cliente
+                </label>
+
+                <input
+                    type="text"
+                    id="clientePedido"
+                    placeholder="Digite o nome do cliente"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="numeroPedido">
+                    Nº do Pedido / Referência
+                </label>
+
+                <input
+                    type="text"
+                    id="numeroPedido"
+                    placeholder="Número, nome ou referência"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <div
+            id="pedidoInfoAtiva"
+            class="pedido-info-ativa"
+        ></div>
+
+
+        <!-- =====================================================
+             CÓDIGO
+        ===================================================== -->
+
+        <div class="campo">
+
+            <label for="codigoProduto">
+                Código do Produto
+            </label>
+
+
+            <div class="busca">
+
+
+                <div class="campo-codigo-wrapper">
+
+
+                    <input
+                        type="text"
+                        id="codigoProduto"
+                        placeholder="Digite o código ou bipar"
+                        autocomplete="off"
+                        autocapitalize="characters"
+                    >
+
+
+                    <span class="codigo-icone">
+                        ▥
+                    </span>
+
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn-buscar"
+                    onclick="buscarProdutoSeparacao()"
+                >
+                    Buscar
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =====================================================
+             DESCRIÇÃO
+        ===================================================== -->
+
+        <div class="campo">
+
+            <label for="descricaoProduto">
+                Descrição do Produto
+            </label>
+
+            <input
+                type="text"
+                id="descricaoProduto"
+                readonly
+            >
+
+        </div>
+
+
+        <!-- =====================================================
+             POSIÇÃO + ESTOQUE
+        ===================================================== -->
+
+        <div class="linha-dupla">
+
+
+            <div class="campo">
+
+                <label for="posicaoProduto">
+                    Posição
+                </label>
+
+                <select
+                    id="posicaoProduto"
+                    disabled
+                    onchange="alterarPosicaoSeparacao()"
+                >
+
+                    <option value="">
+                        -
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="quantidadeDisponivel">
+                    Estoque Atual
+                </label>
+
+                <input
+                    type="text"
+                    id="quantidadeDisponivel"
+                    class="estoque-destaque"
+                    readonly
+                >
+
+            </div>
+
+
+        </div>
+
+                <!-- =====================================================
+             QUANTIDADE
+        ===================================================== -->
+
+        <div class="campo">
+
+            <label for="quantidadeSeparar">
+                Quantidade a Separar
+            </label>
+
+
+            <div class="quantidade-linha">
+
+
+                <input
+                    type="number"
+                    id="quantidadeSeparar"
+                    min="0.001"
+                    step="0.001"
+                    inputmode="decimal"
+                    placeholder="Informe a quantidade"
+                >
+
+
+                <button
+                    type="button"
+                    class="btn-max"
+                    onclick="usarQuantidadeMaximaSeparacao()"
+                >
+                    Máx.
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =====================================================
+             PREVIEW SALDO
+        ===================================================== -->
+
+        <div class="saldo-preview">
+
+
+            <div class="saldo-preview-item disponivel">
+
+                <small>
+                    Disponível para separação
+                </small>
+
+                <strong id="saldoDisponivelPreview">
+                    0
+                </strong>
+
+                <small>
+                    unidades
+                </small>
+
+            </div>
+
+
+            <div class="saldo-preview-item">
+
+                <small>
+                    Após separação
+                </small>
+
+                <strong id="saldoDepoisPreview">
+                    0
+                </strong>
+
+                <small>
+                    unidades
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+        <button
+            type="button"
+            id="btnConfirmarSeparacao"
+            class="btn-confirmar"
+            onclick="confirmarSeparacao()"
+            disabled
+        >
+            ✓ Confirmar Separação
+        </button>
+
+
+        <button
+            type="button"
+            id="btnFinalizarPedido"
+            class="btn-finalizar-pedido"
+            onclick="finalizarPedidoSeparacao()"
+            disabled
+        >
+            ✓ Finalizar Pedido
+        </button>
+
+
+        <div class="dica">
+
+            <span>
+                ⓘ
+            </span>
+
+            <div>
+
+                <strong>
+                    Dica:
+                </strong>
+
+                Informe o cliente e o número do pedido/referência.
+                Depois, vá separando todos os produtos normalmente.
+
+                Quando terminar todos os itens,
+                clique em <strong>Finalizar Pedido</strong>
+                para enviar o pedido para a conferência.
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="mensagemSeparacao"
+            class="mensagem"
+        ></div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         RESUMO
+    ===================================================== -->
+
+    <section
+        class="card card-resumo secao-abaixo"
+        id="resumoSeparacaoCard"
+    >
+
+
+        <div class="cabecalho-card">
+
+            <h3>
+                📋 Resumo da Separação
+            </h3>
+
+        </div>
+
+
+        <div class="resumo-linha">
+
+            <span>
+                Cliente
+            </span>
+
+            <strong id="resumoClienteSeparacao">
+                -
+            </strong>
+
+        </div>
+
+
+        <div class="resumo-linha">
+
+            <span>
+                Pedido / Referência
+            </span>
+
+            <strong id="resumoPedidoSeparacao">
+                -
+            </strong>
+
+        </div>
+
+
+        <div class="resumo-linha">
+
+            <span>
+                Produto
+            </span>
+
+            <strong id="resumoProdutoSeparacao">
+                -
+            </strong>
+
+        </div>
+
+
+        <div class="resumo-linha">
+
+            <span>
+                Posição
+            </span>
+
+            <strong id="resumoPosicaoSeparacao">
+                -
+            </strong>
+
+        </div>
+
+
+        <div class="resumo-linha">
+
+            <span>
+                Estoque Atual
+            </span>
+
+            <strong
+                id="resumoEstoqueSeparacao"
+                class="verde"
+            >
+                0 unidades
+            </strong>
+
+        </div>
+
+
+        <div class="resumo-linha">
+
+            <span>
+                Quantidade a Separar
+            </span>
+
+            <strong id="resumoQuantidadeSeparar">
+                -
+            </strong>
+
+        </div>
+
+
+        <div class="resumo-linha">
+
+            <span>
+                Após Separação
+            </span>
+
+            <strong id="resumoAposSeparacao">
+                -
+            </strong>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         ÚLTIMAS + AÇÕES
+    ===================================================== -->
+
+    <div class="grade-secundaria">
+
+
+        <section
+            class="card card-ultimas"
+            id="ultimasSeparacoesCard"
+        >
+
+
+            <div class="cabecalho-card">
+
+                <h3>
+                    ◷ Últimas Separações
+                </h3>
+
+                <span
+                    class="link-simples"
+                    onclick="rolarParaUltimasSeparacoes()"
+                >
+                    Ver todas
+                </span>
+
+            </div>
+
+
+            <div
+                id="listaUltimasSeparacoes"
+                class="lista-ultimas"
+            >
+
+
+                <div class="ultima-item">
+
+                    <div class="ultima-check">
+                        ✓
+                    </div>
+
+                    <div class="ultima-hora">
+                        --:--
+                    </div>
+
+                    <div class="ultima-produto">
+
+                        <strong>
+                            Nenhuma separação recente
+                        </strong>
+
+                        <small>
+                            -
+                        </small>
+
+                    </div>
+
+                    <div class="ultima-qtd">
+                        -
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+        <section class="card card-acoes">
+
+
+            <div class="cabecalho-card">
+
+                <h3>
+                    ⚡ Ações Rápidas
+                </h3>
+
+            </div>
+
+
+            <div class="acoes-grid">
+
+
+                <button
+                    type="button"
+                    class="acao-rapida"
+                    onclick="limparTelaSeparacao()"
+                >
+                    🧹 Limpar
+                </button>
+
+
+                <button
+                    type="button"
+                    class="acao-rapida"
+                    onclick="rolarParaUltimasSeparacoes()"
+                >
+                    📋 Histórico
+                </button>
+
+
+                <button
+                    type="button"
+                    class="acao-rapida"
+                    onclick="window.print()"
+                >
+                    🖨️ Imprimir
+                </button>
+
+
+            </div>
+
+
+        </section>
+
 
     </div>
 
+
     <!-- =====================================================
-         SCRIPTS
+         COMO SEPARAR
     ===================================================== -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase.js"></script>
-    <script src="sync-supabase.js"></script>
 
-    <script>
-        let produtosEncontrados = [];
-        let produtoSelecionado = null;
+    <section class="como-separar">
 
-        // =====================================================
-        // STORAGE / MOVIMENTAÇÃO
-        // =====================================================
 
-        function carregarListaSeparacao(chave) {
-            try {
-                const dados = JSON.parse(
-                    localStorage.getItem(chave)
+        <h3>
+            Como separar?
+        </h3>
+
+
+        <div class="passos">
+
+
+            <div class="passo">
+
+                <div class="passo-icone">
+                    👤
+                </div>
+
+                <div>
+
+                    <strong>
+                        1. Informe o cliente
+                    </strong>
+
+                    <span>
+                        e o pedido/referência
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="passo">
+
+                <div class="passo-icone">
+                    ▥
+                </div>
+
+                <div>
+
+                    <strong>
+                        2. Digite ou bipar
+                    </strong>
+
+                    <span>
+                        o código do produto
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="passo">
+
+                <div class="passo-icone">
+                    📦
+                </div>
+
+                <div>
+
+                    <strong>
+                        3. Separe
+                    </strong>
+
+                    <span>
+                        todos os produtos
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="passo">
+
+                <div class="passo-icone">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        4. Finalize o pedido
+                    </strong>
+
+                    <span>
+                        e envie à conferência
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<!-- =====================================================
+     NAVEGAÇÃO MOBILE
+===================================================== -->
+
+<nav class="nav-mobile">
+
+
+    <a href="dashboard.html">
+
+        <span class="nav-icone">
+            ⌂
+        </span>
+
+        Dashboard
+
+    </a>
+
+
+    <a href="produtos.html">
+
+        <span class="nav-icone">
+            📦
+        </span>
+
+        Produtos
+
+    </a>
+
+
+    <a
+        href="separacao.html"
+        class="ativo"
+    >
+
+        <span class="nav-icone">
+            🛒
+        </span>
+
+        Separação
+
+    </a>
+
+
+    <a href="transferencias.html">
+
+        <span class="nav-icone">
+            ⇄
+        </span>
+
+        Transferência
+
+    </a>
+
+
+    <a href="dashboard.html">
+
+        <span class="nav-icone">
+            •••
+        </span>
+
+        Mais
+
+    </a>
+
+
+</nav>
+
+
+</div>
+
+
+<!-- =====================================================
+     SCRIPTS
+===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
+<script src="sync-supabase.js"></script>
+
+
+<script>
+
+    let produtosEncontrados = [];
+
+    let produtoSelecionado = null;
+
+
+    /*
+    =====================================================
+    PEDIDO ATUAL
+    =====================================================
+    */
+
+    let pedidoAtualSeparacao = null;
+
+
+    function obterUsuarioLogadoSeparacao() {
+
+        let operador = "DAVI.SMI";
+
+        try {
+
+            const usuarioLogado =
+                JSON.parse(
+                    localStorage.getItem(
+                        "usuarioLogado"
+                    ) || "{}"
                 );
 
-                return Array.isArray(dados)
-                    ? dados
-                    : [];
 
-            } catch (erro) {
-                console.error(
-                    "Erro ao carregar " + chave + ":",
-                    erro
-                );
+            operador =
+                usuarioLogado.nome ||
+                usuarioLogado.usuario ||
+                usuarioLogado.login ||
+                localStorage.getItem(
+                    "usuario"
+                ) ||
+                "DAVI.SMI";
 
-                return [];
-            }
+
+        } catch (erro) {
+
+            operador =
+                localStorage.getItem(
+                    "usuario"
+                ) ||
+                "DAVI.SMI";
+
         }
 
 
-        function obterDataHoraSeparacao() {
-            return new Date().toLocaleString(
-                "pt-BR",
-                {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit"
-                }
-            );
-        }
-
-
-        function registrarMovimentacaoSeparacao(
-            produto,
-            quantidade
+        if (
+            String(operador)
+                .trim()
+                .toLowerCase() ===
+            "administrador"
         ) {
-            const endereco =
-                produto.endereco || "-";
 
-            let operador = "DAVI.SMI";
+            operador =
+                "DAVI.SMI";
 
-            try {
-                const usuarioLogado =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "usuarioLogado"
-                        ) || "{}"
-                    );
-
-                operador =
-                    usuarioLogado.nome ||
-                    usuarioLogado.usuario ||
-                    usuarioLogado.login ||
-                    localStorage.getItem("usuario") ||
-                    "DAVI.SMI";
-
-            } catch (erro) {
-                operador =
-                    localStorage.getItem("usuario") ||
-                    "DAVI.SMI";
-            }
-
-            if (
-                String(operador)
-                    .trim()
-                    .toLowerCase() ===
-                "administrador"
-            ) {
-                operador = "DAVI.SMI";
-            }
-
-            const movimentacao = {
-                tipo: "SAIDA",
-                codigo: produto.codigo || "",
-                descricao:
-                    produto.descricao ||
-                    "Sem descrição",
-                quantidade: quantidade,
-                origem: endereco,
-                endereco: endereco,
-                destino: "Venda",
-                requisitante: "VENDA",
-                data: obterDataHoraSeparacao(),
-                operador: operador
-            };
-
-            const saidas =
-                carregarListaSeparacao(
-                    "saidas"
-                );
-
-            saidas.unshift(
-                movimentacao
-            );
-
-            localStorage.setItem(
-                "saidas",
-                JSON.stringify(saidas)
-            );
-
-            const movimentacoes =
-                carregarListaSeparacao(
-                    "movimentacoes"
-                );
-
-            movimentacoes.unshift(
-                movimentacao
-            );
-
-            localStorage.setItem(
-                "movimentacoes",
-                JSON.stringify(
-                    movimentacoes
-                )
-            );
-
-            atualizarUltimasSeparacoes();
         }
 
 
-        // =====================================================
-        // MENSAGENS
-        // =====================================================
+        return String(
+            operador
+        ).trim();
 
-        function mostrarMensagem(
-            texto,
-            tipo
-        ) {
-            const mensagem =
-                document.getElementById(
-                    "mensagemSeparacao"
-                );
-
-            mensagem.textContent =
-                texto;
-
-            mensagem.className =
-                "mensagem " + tipo;
-        }
+    }
 
 
-        function limparMensagem() {
-            const mensagem =
-                document.getElementById(
-                    "mensagemSeparacao"
-                );
+    /*
+    =====================================================
+    STORAGE / MOVIMENTAÇÃO
+    =====================================================
+    */
 
-            mensagem.textContent = "";
-            mensagem.className = "mensagem";
-        }
+    function carregarListaSeparacao(
+        chave
+    ) {
 
+        try {
 
-        // =====================================================
-        // NÚMEROS
-        // =====================================================
-
-        function converterNumeroSeparacao(
-            valor
-        ) {
-            if (
-                valor === undefined ||
-                valor === null ||
-                String(valor).trim() === ""
-            ) {
-                return 0;
-            }
-
-            const numero =
-                Number(
-                    String(valor)
-                        .replace(",", ".")
-                );
-
-            return Number.isFinite(numero)
-                ? numero
-                : 0;
-        }
-
-
-        function formatarQuantidadeSeparacao(
-            valor
-        ) {
-            return converterNumeroSeparacao(
-                valor
-            ).toLocaleString(
-                "pt-BR",
-                {
-                    maximumFractionDigits: 3
-                }
-            );
-        }
-
-
-        // =====================================================
-        // INTERFACE / RESUMO
-        // =====================================================
-
-        function preencherProdutoSelecionado() {
-            const descricao =
-                document.getElementById(
-                    "descricaoProduto"
-                );
-
-            const quantidade =
-                document.getElementById(
-                    "quantidadeDisponivel"
-                );
-
-            const botao =
-                document.getElementById(
-                    "btnConfirmarSeparacao"
-                );
-
-            if (!produtoSelecionado) {
-                descricao.value = "";
-                quantidade.value = "";
-                botao.disabled = true;
-
-                atualizarPreviewSeparacao();
-                atualizarResumoSeparacao();
-
-                return;
-            }
-
-            descricao.value =
-                produtoSelecionado.descricao ||
-                "";
-
-            quantidade.value =
-                formatarQuantidadeSeparacao(
-                    produtoSelecionado.quantidade
-                );
-
-            botao.disabled = false;
-
-            atualizarPreviewSeparacao();
-            atualizarResumoSeparacao();
-        }
-
-
-        function atualizarPreviewSeparacao() {
-            const quantidadeEstoque =
-                produtoSelecionado
-                    ? converterNumeroSeparacao(
-                        produtoSelecionado.quantidade
+            const dados =
+                JSON.parse(
+                    localStorage.getItem(
+                        chave
                     )
-                    : 0;
-
-            const quantidadeSeparar =
-                converterNumeroSeparacao(
-                    document.getElementById(
-                        "quantidadeSeparar"
-                    ).value
                 );
 
-            const saldoDepois =
-                Math.max(
-                    0,
-                    quantidadeEstoque -
-                    quantidadeSeparar
-                );
 
-            document.getElementById(
-                "saldoDisponivelPreview"
-            ).textContent =
-                formatarQuantidadeSeparacao(
-                    quantidadeEstoque
-                );
+            return Array.isArray(
+                dados
+            )
+                ? dados
+                : [];
 
-            document.getElementById(
-                "saldoDepoisPreview"
-            ).textContent =
-                formatarQuantidadeSeparacao(
-                    saldoDepois
-                );
 
-            atualizarResumoSeparacao();
+        } catch (erro) {
+
+            console.error(
+                "Erro ao carregar " +
+                chave +
+                ":",
+                erro
+            );
+
+
+            return [];
+
         }
 
+    }
 
-        function atualizarResumoSeparacao() {
-            const quantidadeSeparar =
-                converterNumeroSeparacao(
-                    document.getElementById(
-                        "quantidadeSeparar"
-                    ).value
-                );
 
-            const quantidadeEstoque =
-                produtoSelecionado
-                    ? converterNumeroSeparacao(
-                        produtoSelecionado.quantidade
-                    )
-                    : 0;
+    function salvarListaSeparacao(
+        chave,
+        lista
+    ) {
 
-            const saldoDepois =
-                Math.max(
-                    0,
-                    quantidadeEstoque -
-                    quantidadeSeparar
-                );
+        localStorage.setItem(
+            chave,
+            JSON.stringify(
+                Array.isArray(lista)
+                    ? lista
+                    : []
+            )
+        );
 
+    }
+
+
+    function obterDataHoraSeparacao() {
+
+        return new Date().toLocaleString(
+            "pt-BR",
+            {
+                day:
+                    "2-digit",
+
+                month:
+                    "2-digit",
+
+                year:
+                    "numeric",
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit"
+            }
+        );
+
+    }
+
+
+    function gerarIdPedidoSeparacao() {
+
+        return (
+            "PED-" +
+            Date.now() +
+            "-" +
+            Math.random()
+                .toString(36)
+                .substring(2, 8)
+                .toUpperCase()
+        );
+
+    }
+
+        function obterClientePedidoSeparacao() {
+
+        const campo =
             document.getElementById(
-                "resumoProdutoSeparacao"
-            ).textContent =
-                produtoSelecionado
-                    ? (
-                        produtoSelecionado.descricao ||
-                        produtoSelecionado.codigo ||
-                        "-"
-                    )
-                    : "-";
+                "clientePedido"
+            );
 
-            document.getElementById(
-                "resumoPosicaoSeparacao"
-            ).textContent =
-                produtoSelecionado
-                    ? (
-                        produtoSelecionado.endereco ||
-                        "-"
-                    )
-                    : "-";
-
-            document.getElementById(
-                "resumoEstoqueSeparacao"
-            ).textContent =
-                formatarQuantidadeSeparacao(
-                    quantidadeEstoque
-                ) +
-                " unidades";
-
-            document.getElementById(
-                "resumoQuantidadeSeparar"
-            ).textContent =
-                quantidadeSeparar > 0
-                    ? formatarQuantidadeSeparacao(
-                        quantidadeSeparar
-                    ) + " unidades"
-                    : "-";
-
-            document.getElementById(
-                "resumoAposSeparacao"
-            ).textContent =
-                quantidadeSeparar > 0
-                    ? formatarQuantidadeSeparacao(
-                        saldoDepois
-                    ) + " unidades"
-                    : "-";
-        }
-
-
-        // =====================================================
-        // POSIÇÃO
-        // =====================================================
-
-        function alterarPosicaoSeparacao() {
-            const select =
-                document.getElementById(
-                    "posicaoProduto"
-                );
-
-            const id =
-                Number(select.value);
-
-            produtoSelecionado =
-                produtosEncontrados.find(
-                    function (produto) {
-                        return (
-                            Number(produto.id) ===
-                            id
-                        );
-                    }
-                ) || null;
-
-            preencherProdutoSelecionado();
-        }
-
-
-        // =====================================================
-        // BUSCAR PRODUTO
-        // =====================================================
-
-        async function buscarProdutoSeparacao() {
-            limparMensagem();
-
-            const campoCodigo =
-                document.getElementById(
-                    "codigoProduto"
-                );
-
-            let codigo =
-    String(
-        campoCodigo.value ||
-        ""
-    )
-    .trim()
-    .toUpperCase();
-
-// QR CODE - CONSIDERAR SOMENTE OS 8 PRIMEIROS CARACTERES
-codigo =
-    codigo
-        .substring(0, 8)
+        return String(
+            campo
+                ? campo.value
+                : ""
+        )
         .trim();
 
-campoCodigo.value =
-    codigo;
+    }
 
-            if (codigo === "") {
-                mostrarMensagem(
-                    "Digite o código do produto.",
-                    "erro"
-                );
 
-                campoCodigo.focus();
-                return;
-            }
+    function obterNumeroPedidoSeparacao() {
 
-            if (!window.supabaseClient) {
-                mostrarMensagem(
-                    "A conexão com o banco online não foi carregada.",
-                    "erro"
-                );
-
-                return;
-            }
-
-            const { data, error } =
-                await window.supabaseClient
-                    .from("produtos")
-                    .select(
-                        "id,codigo,descricao,quantidade,endereco,valor_total"
-                    )
-                    .eq(
-                        "codigo",
-                        codigo
-                    )
-                    .gt(
-                        "quantidade",
-                        0
-                    )
-                    .order(
-                        "endereco",
-                        {
-                            ascending: true
-                        }
-                    );
-
-            if (error) {
-                console.error(
-                    "Erro ao buscar produto:",
-                    error
-                );
-
-                mostrarMensagem(
-                    "Não foi possível consultar o produto.",
-                    "erro"
-                );
-
-                return;
-            }
-
-            if (
-                !Array.isArray(data) ||
-                data.length === 0
-            ) {
-                produtosEncontrados = [];
-                produtoSelecionado = null;
-
-                preencherProdutoSelecionado();
-
-                const select =
-                    document.getElementById(
-                        "posicaoProduto"
-                    );
-
-                select.innerHTML =
-                    '<option value="">-</option>';
-
-                select.disabled = true;
-
-                mostrarMensagem(
-                    "Produto não encontrado ou sem estoque.",
-                    "erro"
-                );
-
-                return;
-            }
-
-            produtosEncontrados =
-                data;
-
-            const select =
-                document.getElementById(
-                    "posicaoProduto"
-                );
-
-            select.innerHTML = "";
-
-            data.forEach(
-                function (produto) {
-                    const opcao =
-                        document.createElement(
-                            "option"
-                        );
-
-                    opcao.value =
-                        produto.id;
-
-                    opcao.textContent =
-                        (
-                            produto.endereco ||
-                            "Sem posição"
-                        ) +
-                        " — " +
-                        formatarQuantidadeSeparacao(
-                            produto.quantidade
-                        ) +
-                        " un.";
-
-                    select.appendChild(
-                        opcao
-                    );
-                }
+        const campo =
+            document.getElementById(
+                "numeroPedido"
             );
 
-            select.disabled =
-                data.length <= 1;
+        return String(
+            campo
+                ? campo.value
+                : ""
+        )
+        .trim();
 
-            produtoSelecionado =
-                data[0];
+    }
 
-            preencherProdutoSelecionado();
+
+    function validarCabecalhoPedidoSeparacao() {
+
+        const cliente =
+            obterClientePedidoSeparacao();
+
+        const numeroPedido =
+            obterNumeroPedidoSeparacao();
+
+
+        if (cliente === "") {
+
+            mostrarMensagem(
+                "Informe o nome do cliente antes de separar.",
+                "erro"
+            );
 
             document
                 .getElementById(
-                    "quantidadeSeparar"
+                    "clientePedido"
                 )
                 .focus();
+
+            return false;
+
         }
 
 
-        // =====================================================
-        // QUANTIDADE MÁXIMA
-        // =====================================================
+        if (numeroPedido === "") {
 
-        function usarQuantidadeMaximaSeparacao() {
-            if (!produtoSelecionado) {
-                mostrarMensagem(
-                    "Busque um produto antes de usar a quantidade máxima.",
-                    "erro"
-                );
-                return;
-            }
+            mostrarMensagem(
+                "Informe o número do pedido ou uma referência.",
+                "erro"
+            );
 
-            const campo =
-                document.getElementById(
-                    "quantidadeSeparar"
-                );
+            document
+                .getElementById(
+                    "numeroPedido"
+                )
+                .focus();
 
-            campo.value =
-                converterNumeroSeparacao(
-                    produtoSelecionado.quantidade
-                );
+            return false;
 
-            atualizarPreviewSeparacao();
-            campo.focus();
         }
 
 
-        // =====================================================
-        // CONFIRMAR SEPARAÇÃO
-        // =====================================================
+        return true;
 
-        async function confirmarSeparacao() {
-            limparMensagem();
+    }
 
-            if (!produtoSelecionado) {
-                mostrarMensagem(
-                    "Busque um produto antes de separar.",
-                    "erro"
-                );
 
-                return;
-            }
+    function iniciarPedidoAtualSeparacao() {
 
-            const campoQuantidade =
-                document.getElementById(
-                    "quantidadeSeparar"
-                );
+        if (
+            pedidoAtualSeparacao
+        ) {
 
-            const quantidadeSeparar =
+            return true;
+
+        }
+
+
+        if (
+            !validarCabecalhoPedidoSeparacao()
+        ) {
+
+            return false;
+
+        }
+
+
+        const cliente =
+            obterClientePedidoSeparacao();
+
+        const numeroPedido =
+            obterNumeroPedidoSeparacao();
+
+        const operador =
+            obterUsuarioLogadoSeparacao();
+
+
+        pedidoAtualSeparacao = {
+
+            id:
+                gerarIdPedidoSeparacao(),
+
+            cliente:
+                cliente,
+
+            numeroPedido:
+                numeroPedido,
+
+            referencia:
+                numeroPedido,
+
+            usuarioSeparacao:
+                operador,
+
+            dataInicio:
+                obterDataHoraSeparacao(),
+
+            dataFinalizacao:
+                "",
+
+            status:
+                "EM_SEPARACAO",
+
+            itens:
+                []
+
+        };
+
+
+        bloquearCabecalhoPedidoSeparacao();
+
+        atualizarInfoPedidoSeparacao();
+
+        atualizarBotaoFinalizarPedido();
+
+        atualizarResumoSeparacao();
+
+
+        return true;
+
+    }
+
+
+    function bloquearCabecalhoPedidoSeparacao() {
+
+        const cliente =
+            document.getElementById(
+                "clientePedido"
+            );
+
+        const numeroPedido =
+            document.getElementById(
+                "numeroPedido"
+            );
+
+
+        if (cliente) {
+
+            cliente.readOnly =
+                true;
+
+            cliente.classList.add(
+                "bloqueado-pedido"
+            );
+
+        }
+
+
+        if (numeroPedido) {
+
+            numeroPedido.readOnly =
+                true;
+
+            numeroPedido.classList.add(
+                "bloqueado-pedido"
+            );
+
+        }
+
+    }
+
+
+    function liberarCabecalhoPedidoSeparacao() {
+
+        const cliente =
+            document.getElementById(
+                "clientePedido"
+            );
+
+        const numeroPedido =
+            document.getElementById(
+                "numeroPedido"
+            );
+
+
+        if (cliente) {
+
+            cliente.readOnly =
+                false;
+
+            cliente.classList.remove(
+                "bloqueado-pedido"
+            );
+
+        }
+
+
+        if (numeroPedido) {
+
+            numeroPedido.readOnly =
+                false;
+
+            numeroPedido.classList.remove(
+                "bloqueado-pedido"
+            );
+
+        }
+
+    }
+
+
+    function atualizarInfoPedidoSeparacao() {
+
+        const caixa =
+            document.getElementById(
+                "pedidoInfoAtiva"
+            );
+
+
+        if (!caixa) {
+
+            return;
+
+        }
+
+
+        if (
+            !pedidoAtualSeparacao
+        ) {
+
+            caixa.className =
+                "pedido-info-ativa";
+
+            caixa.innerHTML =
+                "";
+
+            return;
+
+        }
+
+
+        const quantidadeItens =
+            Array.isArray(
+                pedidoAtualSeparacao.itens
+            )
+                ? pedidoAtualSeparacao.itens.length
+                : 0;
+
+
+        caixa.className =
+            "pedido-info-ativa ativo";
+
+
+        caixa.innerHTML =
+            "<strong>Pedido em separação:</strong> " +
+            escaparHTMLSeparacao(
+                pedidoAtualSeparacao.cliente
+            ) +
+            " • " +
+            escaparHTMLSeparacao(
+                pedidoAtualSeparacao.numeroPedido
+            ) +
+            " • " +
+            quantidadeItens +
+            (
+                quantidadeItens === 1
+                    ? " item separado"
+                    : " itens separados"
+            );
+
+    }
+
+
+    function atualizarBotaoFinalizarPedido() {
+
+        const botao =
+            document.getElementById(
+                "btnFinalizarPedido"
+            );
+
+
+        if (!botao) {
+
+            return;
+
+        }
+
+
+        const possuiItens =
+            (
+                pedidoAtualSeparacao &&
+                Array.isArray(
+                    pedidoAtualSeparacao.itens
+                ) &&
+                pedidoAtualSeparacao.itens.length > 0
+            );
+
+
+        botao.disabled =
+            !possuiItens;
+
+    }
+
+
+    function registrarItemNoPedidoAtual(
+        produto,
+        quantidade
+    ) {
+
+        if (
+            !pedidoAtualSeparacao
+        ) {
+
+            return;
+
+        }
+
+
+        const codigo =
+            String(
+                produto.codigo ||
+                ""
+            )
+            .trim();
+
+        const endereco =
+            String(
+                produto.endereco ||
+                "-"
+            )
+            .trim();
+
+
+        const itemExistente =
+            pedidoAtualSeparacao.itens.find(
+                function (item) {
+
+                    return (
+                        String(
+                            item.codigo ||
+                            ""
+                        ) === codigo &&
+                        String(
+                            item.endereco ||
+                            "-"
+                        ) === endereco
+                    );
+
+                }
+            );
+
+
+        if (itemExistente) {
+
+            itemExistente.quantidadeSeparada =
                 converterNumeroSeparacao(
-                    campoQuantidade.value
-                );
-
-            const quantidadeAtual =
+                    itemExistente.quantidadeSeparada
+                ) +
                 converterNumeroSeparacao(
-                    produtoSelecionado.quantidade
+                    quantidade
                 );
 
-            if (quantidadeSeparar <= 0) {
-                mostrarMensagem(
-                    "Informe uma quantidade válida.",
-                    "erro"
+            itemExistente.data =
+                obterDataHoraSeparacao();
+
+
+        } else {
+
+            pedidoAtualSeparacao.itens.push(
+                {
+
+                    codigo:
+                        codigo,
+
+                    descricao:
+                        produto.descricao ||
+                        "Sem descrição",
+
+                    endereco:
+                        endereco,
+
+                    quantidadeSeparada:
+                        converterNumeroSeparacao(
+                            quantidade
+                        ),
+
+                    quantidadeConferida:
+                        0,
+
+                    statusConferencia:
+                        "PENDENTE",
+
+                    usuarioSeparacao:
+                        obterUsuarioLogadoSeparacao(),
+
+                    usuarioConferencia:
+                        "",
+
+                    data:
+                        obterDataHoraSeparacao()
+
+                }
+            );
+
+        }
+
+
+        salvarPedidoAtualTemporarioSeparacao();
+
+        atualizarInfoPedidoSeparacao();
+
+        atualizarBotaoFinalizarPedido();
+
+    }
+
+
+    function salvarPedidoAtualTemporarioSeparacao() {
+
+        if (
+            !pedidoAtualSeparacao
+        ) {
+
+            localStorage.removeItem(
+                "pedidoAtualSeparacao"
+            );
+
+            return;
+
+        }
+
+
+        localStorage.setItem(
+            "pedidoAtualSeparacao",
+            JSON.stringify(
+                pedidoAtualSeparacao
+            )
+        );
+
+    }
+
+
+    function carregarPedidoAtualTemporarioSeparacao() {
+
+        try {
+
+            const dados =
+                JSON.parse(
+                    localStorage.getItem(
+                        "pedidoAtualSeparacao"
+                    ) ||
+                    "null"
                 );
 
-                campoQuantidade.focus();
-                return;
-            }
 
             if (
-                quantidadeSeparar >
-                quantidadeAtual
+                dados &&
+                typeof dados ===
+                "object" &&
+                Array.isArray(
+                    dados.itens
+                ) &&
+                String(
+                    dados.status ||
+                    ""
+                ).toUpperCase() ===
+                "EM_SEPARACAO"
             ) {
-                mostrarMensagem(
-                    "Quantidade maior que o estoque disponível.",
-                    "erro"
-                );
 
-                campoQuantidade.focus();
-                return;
+                pedidoAtualSeparacao =
+                    dados;
+
+
+                const cliente =
+                    document.getElementById(
+                        "clientePedido"
+                    );
+
+                const numeroPedido =
+                    document.getElementById(
+                        "numeroPedido"
+                    );
+
+
+                if (cliente) {
+
+                    cliente.value =
+                        pedidoAtualSeparacao.cliente ||
+                        "";
+
+                }
+
+
+                if (numeroPedido) {
+
+                    numeroPedido.value =
+                        pedidoAtualSeparacao.numeroPedido ||
+                        pedidoAtualSeparacao.referencia ||
+                        "";
+
+                }
+
+
+                bloquearCabecalhoPedidoSeparacao();
+
+                atualizarInfoPedidoSeparacao();
+
+                atualizarBotaoFinalizarPedido();
+
+                atualizarResumoSeparacao();
+
             }
 
-            const novaQuantidade =
-                quantidadeAtual -
-                quantidadeSeparar;
 
-            const valorTotalAtual =
-                converterNumeroSeparacao(
-                    produtoSelecionado.valor_total
-                );
+        } catch (erro) {
 
-            const valorUnitario =
-                quantidadeAtual > 0
-                    ? valorTotalAtual /
-                      quantidadeAtual
-                    : 0;
+            console.error(
+                "Erro ao recuperar pedido em separação:",
+                erro
+            );
 
-            const novoValorTotal =
-                Math.max(
-                    0,
-                    valorTotalAtual -
-                    (
-                        quantidadeSeparar *
-                        valorUnitario
-                    )
-                );
+        }
 
-            const confirmou =
-                confirm(
-                    "Confirmar separação?\n\n" +
-                    "Produto: " +
-                    (produtoSelecionado.descricao || produtoSelecionado.codigo) +
-                    "\nPosição: " +
-                    (produtoSelecionado.endereco || "-") +
-                    "\nQuantidade: " +
-                    formatarQuantidadeSeparacao(quantidadeSeparar) +
-                    "\nSaldo após separação: " +
-                    formatarQuantidadeSeparacao(novaQuantidade)
-                );
+    }
 
-            if (!confirmou) {
-                return;
+
+    /*
+    =====================================================
+    REGISTRAR MOVIMENTAÇÃO
+    =====================================================
+    */
+
+    function registrarMovimentacaoSeparacao(
+        produto,
+        quantidade
+    ) {
+
+        const endereco =
+            produto.endereco ||
+            "-";
+
+
+        const operador =
+            obterUsuarioLogadoSeparacao();
+
+
+        const cliente =
+            pedidoAtualSeparacao
+                ? pedidoAtualSeparacao.cliente
+                : obterClientePedidoSeparacao();
+
+
+        const numeroPedido =
+            pedidoAtualSeparacao
+                ? pedidoAtualSeparacao.numeroPedido
+                : obterNumeroPedidoSeparacao();
+
+
+        const movimentacao = {
+
+            tipo:
+                "SAIDA",
+
+            codigo:
+                produto.codigo ||
+                "",
+
+            descricao:
+                produto.descricao ||
+                "Sem descrição",
+
+            quantidade:
+                quantidade,
+
+            origem:
+                endereco,
+
+            endereco:
+                endereco,
+
+            destino:
+                "Venda",
+
+            requisitante:
+                "VENDA",
+
+            cliente:
+                cliente,
+
+            pedido:
+                numeroPedido,
+
+            numeroPedido:
+                numeroPedido,
+
+            referencia:
+                numeroPedido,
+
+            data:
+                obterDataHoraSeparacao(),
+
+            operador:
+                operador
+
+        };
+
+
+        const saidas =
+            carregarListaSeparacao(
+                "saidas"
+            );
+
+
+        saidas.unshift(
+            movimentacao
+        );
+
+
+        salvarListaSeparacao(
+            "saidas",
+            saidas
+        );
+
+
+        const movimentacoes =
+            carregarListaSeparacao(
+                "movimentacoes"
+            );
+
+
+        movimentacoes.unshift(
+            movimentacao
+        );
+
+
+        salvarListaSeparacao(
+            "movimentacoes",
+            movimentacoes
+        );
+
+
+        atualizarUltimasSeparacoes();
+
+    }
+
+
+    /*
+    =====================================================
+    MENSAGENS
+    =====================================================
+    */
+
+    function mostrarMensagem(
+        texto,
+        tipo
+    ) {
+
+        const mensagem =
+            document.getElementById(
+                "mensagemSeparacao"
+            );
+
+
+        if (!mensagem) {
+
+            return;
+
+        }
+
+
+        mensagem.textContent =
+            texto;
+
+
+        mensagem.className =
+            "mensagem " +
+            tipo;
+
+    }
+
+
+    function limparMensagem() {
+
+        const mensagem =
+            document.getElementById(
+                "mensagemSeparacao"
+            );
+
+
+        if (!mensagem) {
+
+            return;
+
+        }
+
+
+        mensagem.textContent =
+            "";
+
+
+        mensagem.className =
+            "mensagem";
+
+    }
+
+
+    /*
+    =====================================================
+    NÚMEROS
+    =====================================================
+    */
+
+    function converterNumeroSeparacao(
+        valor
+    ) {
+
+        if (
+            valor === undefined ||
+            valor === null ||
+            String(
+                valor
+            ).trim() === ""
+        ) {
+
+            return 0;
+
+        }
+
+
+        const numero =
+            Number(
+                String(
+                    valor
+                )
+                .replace(
+                    ",",
+                    "."
+                )
+            );
+
+
+        return Number.isFinite(
+            numero
+        )
+            ? numero
+            : 0;
+
+    }
+
+
+    function formatarQuantidadeSeparacao(
+        valor
+    ) {
+
+        return converterNumeroSeparacao(
+            valor
+        )
+        .toLocaleString(
+            "pt-BR",
+            {
+                maximumFractionDigits:
+                    3
             }
+        );
 
-            const { data, error } =
-                await window.supabaseClient
-                    .from("produtos")
-                    .update(
-                        {
-                            quantidade:
-                                novaQuantidade,
+    }
 
-                            valor_total:
-                                novoValorTotal
-                        }
-                    )
-                    .eq(
-                        "id",
-                        produtoSelecionado.id
-                    )
-                    .eq(
-                        "quantidade",
-                        quantidadeAtual
-                    )
-                    .select(
-                        "id,codigo,descricao,quantidade,endereco,valor_total"
-                    )
-                    .maybeSingle();
+        /*
+    =====================================================
+    INTERFACE / RESUMO
+    =====================================================
+    */
 
-            if (error) {
-                console.error(
-                    "Erro na separação:",
-                    error
-                );
+    function preencherProdutoSelecionado() {
 
-                mostrarMensagem(
-                    "Não foi possível registrar a separação.",
-                    "erro"
-                );
+        const descricao =
+            document.getElementById(
+                "descricaoProduto"
+            );
 
-                return;
-            }
+        const quantidade =
+            document.getElementById(
+                "quantidadeDisponivel"
+            );
 
-            if (!data) {
-                mostrarMensagem(
-                    "O saldo mudou enquanto você fazia a separação. Busque o produto novamente.",
-                    "erro"
-                );
+        const botao =
+            document.getElementById(
+                "btnConfirmarSeparacao"
+            );
 
-                return;
-            }
 
-            registrarMovimentacaoSeparacao(
-                produtoSelecionado,
+        if (!produtoSelecionado) {
+
+            descricao.value =
+                "";
+
+            quantidade.value =
+                "";
+
+            botao.disabled =
+                true;
+
+            atualizarPreviewSeparacao();
+
+            atualizarResumoSeparacao();
+
+            return;
+
+        }
+
+
+        descricao.value =
+            produtoSelecionado.descricao ||
+            "";
+
+
+        quantidade.value =
+            formatarQuantidadeSeparacao(
+                produtoSelecionado.quantidade
+            );
+
+
+        botao.disabled =
+            false;
+
+
+        atualizarPreviewSeparacao();
+
+        atualizarResumoSeparacao();
+
+    }
+
+
+    function atualizarPreviewSeparacao() {
+
+        const quantidadeEstoque =
+            produtoSelecionado
+                ? converterNumeroSeparacao(
+                    produtoSelecionado.quantidade
+                )
+                : 0;
+
+
+        const quantidadeSeparar =
+            converterNumeroSeparacao(
+                document.getElementById(
+                    "quantidadeSeparar"
+                ).value
+            );
+
+
+        const saldoDepois =
+            Math.max(
+                0,
+                quantidadeEstoque -
                 quantidadeSeparar
             );
 
-            mostrarMensagem(
-                "Separação registrada com sucesso.",
-                "sucesso"
+
+        document.getElementById(
+            "saldoDisponivelPreview"
+        ).textContent =
+            formatarQuantidadeSeparacao(
+                quantidadeEstoque
             );
 
-            limparCamposDepoisDaSeparacao();
+
+        document.getElementById(
+            "saldoDepoisPreview"
+        ).textContent =
+            formatarQuantidadeSeparacao(
+                saldoDepois
+            );
+
+
+        atualizarResumoSeparacao();
+
+    }
+
+
+    function atualizarResumoSeparacao() {
+
+        const quantidadeSeparar =
+            converterNumeroSeparacao(
+                document.getElementById(
+                    "quantidadeSeparar"
+                ).value
+            );
+
+
+        const quantidadeEstoque =
+            produtoSelecionado
+                ? converterNumeroSeparacao(
+                    produtoSelecionado.quantidade
+                )
+                : 0;
+
+
+        const saldoDepois =
+            Math.max(
+                0,
+                quantidadeEstoque -
+                quantidadeSeparar
+            );
+
+
+        const cliente =
+            pedidoAtualSeparacao
+                ? pedidoAtualSeparacao.cliente
+                : obterClientePedidoSeparacao();
+
+
+        const numeroPedido =
+            pedidoAtualSeparacao
+                ? pedidoAtualSeparacao.numeroPedido
+                : obterNumeroPedidoSeparacao();
+
+
+        document.getElementById(
+            "resumoClienteSeparacao"
+        ).textContent =
+            cliente ||
+            "-";
+
+
+        document.getElementById(
+            "resumoPedidoSeparacao"
+        ).textContent =
+            numeroPedido ||
+            "-";
+
+
+        document.getElementById(
+            "resumoProdutoSeparacao"
+        ).textContent =
+            produtoSelecionado
+                ? (
+                    produtoSelecionado.descricao ||
+                    produtoSelecionado.codigo ||
+                    "-"
+                )
+                : "-";
+
+
+        document.getElementById(
+            "resumoPosicaoSeparacao"
+        ).textContent =
+            produtoSelecionado
+                ? (
+                    produtoSelecionado.endereco ||
+                    "-"
+                )
+                : "-";
+
+
+        document.getElementById(
+            "resumoEstoqueSeparacao"
+        ).textContent =
+            formatarQuantidadeSeparacao(
+                quantidadeEstoque
+            ) +
+            " unidades";
+
+
+        document.getElementById(
+            "resumoQuantidadeSeparar"
+        ).textContent =
+            quantidadeSeparar > 0
+                ? formatarQuantidadeSeparacao(
+                    quantidadeSeparar
+                ) +
+                " unidades"
+                : "-";
+
+
+        document.getElementById(
+            "resumoAposSeparacao"
+        ).textContent =
+            quantidadeSeparar > 0
+                ? formatarQuantidadeSeparacao(
+                    saldoDepois
+                ) +
+                " unidades"
+                : "-";
+
+    }
+
+
+    /*
+    =====================================================
+    POSIÇÃO
+    =====================================================
+    */
+
+    function alterarPosicaoSeparacao() {
+
+        const select =
+            document.getElementById(
+                "posicaoProduto"
+            );
+
+
+        const id =
+            Number(
+                select.value
+            );
+
+
+        produtoSelecionado =
+            produtosEncontrados.find(
+                function (produto) {
+
+                    return (
+                        Number(
+                            produto.id
+                        ) === id
+                    );
+
+                }
+            ) || null;
+
+
+        preencherProdutoSelecionado();
+
+    }
+
+
+    /*
+    =====================================================
+    BUSCAR PRODUTO
+    =====================================================
+    */
+
+    async function buscarProdutoSeparacao() {
+
+        limparMensagem();
+
+
+        if (
+            !validarCabecalhoPedidoSeparacao()
+        ) {
+
+            return;
+
         }
 
 
-        // =====================================================
-        // LIMPEZA
-        // =====================================================
-
-        function limparCamposDepoisDaSeparacao() {
+        const campoCodigo =
             document.getElementById(
                 "codigoProduto"
-            ).value = "";
+            );
 
-            document.getElementById(
-                "descricaoProduto"
-            ).value = "";
 
-            document.getElementById(
-                "quantidadeDisponivel"
-            ).value = "";
+        let codigo =
+            String(
+                campoCodigo.value ||
+                ""
+            )
+            .trim()
+            .toUpperCase();
 
-            document.getElementById(
-                "quantidadeSeparar"
-            ).value = "";
 
-            const selectPosicao =
+        /*
+        QR CODE
+        CONSIDERA SOMENTE OS 8 PRIMEIROS CARACTERES
+        */
+
+        codigo =
+            codigo
+                .substring(
+                    0,
+                    8
+                )
+                .trim();
+
+
+        campoCodigo.value =
+            codigo;
+
+
+        if (
+            codigo === ""
+        ) {
+
+            mostrarMensagem(
+                "Digite o código do produto.",
+                "erro"
+            );
+
+            campoCodigo.focus();
+
+            return;
+
+        }
+
+
+        if (
+            !window.supabaseClient
+        ) {
+
+            mostrarMensagem(
+                "A conexão com o banco online não foi carregada.",
+                "erro"
+            );
+
+            return;
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await window.supabaseClient
+                .from(
+                    "produtos"
+                )
+                .select(
+                    "id,codigo,descricao,quantidade,endereco,valor_total"
+                )
+                .eq(
+                    "codigo",
+                    codigo
+                )
+                .gt(
+                    "quantidade",
+                    0
+                )
+                .order(
+                    "endereco",
+                    {
+                        ascending:
+                            true
+                    }
+                );
+
+
+        if (
+            error
+        ) {
+
+            console.error(
+                "Erro ao buscar produto:",
+                error
+            );
+
+
+            mostrarMensagem(
+                "Não foi possível consultar o produto.",
+                "erro"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !Array.isArray(
+                data
+            ) ||
+            data.length === 0
+        ) {
+
+            produtosEncontrados =
+                [];
+
+            produtoSelecionado =
+                null;
+
+
+            preencherProdutoSelecionado();
+
+
+            const select =
                 document.getElementById(
                     "posicaoProduto"
                 );
 
-            selectPosicao.innerHTML =
+
+            select.innerHTML =
                 '<option value="">-</option>';
 
-            selectPosicao.disabled = true;
 
+            select.disabled =
+                true;
+
+
+            mostrarMensagem(
+                "Produto não encontrado ou sem estoque.",
+                "erro"
+            );
+
+
+            return;
+
+        }
+
+
+        produtosEncontrados =
+            data;
+
+
+        const select =
             document.getElementById(
-                "btnConfirmarSeparacao"
-            ).disabled = true;
-
-            produtosEncontrados = [];
-            produtoSelecionado = null;
-
-            atualizarPreviewSeparacao();
-            atualizarResumoSeparacao();
-
-            document.getElementById(
-                "codigoProduto"
-            ).focus();
-        }
+                "posicaoProduto"
+            );
 
 
-        function limparTelaSeparacao() {
-            limparMensagem();
-            limparCamposDepoisDaSeparacao();
-        }
+        select.innerHTML =
+            "";
 
 
-        function focarCodigoSeparacao() {
-            const campo =
-                document.getElementById(
-                    "codigoProduto"
-                );
+        data.forEach(
+            function (produto) {
 
-            campo.focus();
-            campo.select();
-        }
-
-
-        // =====================================================
-        // ÚLTIMAS SEPARAÇÕES
-        // =====================================================
-
-        function atualizarUltimasSeparacoes() {
-            const lista =
-                document.getElementById(
-                    "listaUltimasSeparacoes"
-                );
-
-            if (!lista) {
-                return;
-            }
-
-            const saidas =
-                carregarListaSeparacao(
-                    "saidas"
-                )
-                .filter(
-                    function (saida) {
-                        return (
-                            String(
-                                saida.tipo ||
-                                "SAIDA"
-                            ).toUpperCase() ===
-                            "SAIDA"
-                        );
-                    }
-                )
-                .slice(0, 3);
-
-            if (saidas.length === 0) {
-                lista.innerHTML = `
-                    <div class="ultima-item">
-                        <div class="ultima-check">✓</div>
-                        <div class="ultima-hora">--:--</div>
-                        <div class="ultima-produto">
-                            <strong>Nenhuma separação recente</strong>
-                            <small>-</small>
-                        </div>
-                        <div class="ultima-qtd">-</div>
-                    </div>
-                `;
-
-                return;
-            }
-
-            lista.innerHTML = "";
-
-            saidas.forEach(
-                function (saida) {
-                    const item =
-                        document.createElement(
-                            "div"
-                        );
-
-                    item.className =
-                        "ultima-item";
-
-                    const data =
-                        String(
-                            saida.data ||
-                            ""
-                        );
-
-                    const horaEncontrada =
-                        data.match(
-                            /(\d{2}:\d{2})/
-                        );
-
-                    const hora =
-                        horaEncontrada
-                            ? horaEncontrada[1]
-                            : "--:--";
-
-                    item.innerHTML = `
-                        <div class="ultima-check">✓</div>
-
-                        <div class="ultima-hora">
-                            ${hora}
-                        </div>
-
-                        <div class="ultima-produto">
-                            <strong>
-                                ${escaparHTMLSeparacao(
-                                    saida.descricao ||
-                                    saida.codigo ||
-                                    "Produto"
-                                )}
-                            </strong>
-
-                            <small>
-                                ${escaparHTMLSeparacao(
-                                    saida.endereco ||
-                                    saida.origem ||
-                                    "-"
-                                )}
-                            </small>
-                        </div>
-
-                        <div class="ultima-qtd">
-                            ${formatarQuantidadeSeparacao(
-                                saida.quantidade
-                            )} unid.
-                        </div>
-                    `;
-
-                    lista.appendChild(
-                        item
+                const opcao =
+                    document.createElement(
+                        "option"
                     );
-                }
-            );
-        }
 
 
-        function escaparHTMLSeparacao(
-            valor
-        ) {
-            return String(
-                valor ||
-                ""
-            )
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-        }
+                opcao.value =
+                    produto.id;
 
 
-        function rolarParaUltimasSeparacoes() {
-            document.getElementById(
-                "ultimasSeparacoesCard"
-            ).scrollIntoView(
-                {
-                    behavior: "smooth",
-                    block: "start"
-                }
-            );
-        }
+                opcao.textContent =
+                    (
+                        produto.endereco ||
+                        "Sem posição"
+                    ) +
+                    " — " +
+                    formatarQuantidadeSeparacao(
+                        produto.quantidade
+                    ) +
+                    " un.";
 
 
-        // =====================================================
-        // EVENTOS
-        // =====================================================
+                select.appendChild(
+                    opcao
+                );
 
-        document
-            .getElementById(
-                "codigoProduto"
-            )
-            .addEventListener(
-                "keydown",
-                function (evento) {
-                    if (
-                        evento.key ===
-                        "Enter"
-                    ) {
-                        evento.preventDefault();
-                        buscarProdutoSeparacao();
-                    }
-                }
-            );
-
-
-        document
-            .getElementById(
-                "quantidadeSeparar"
-            )
-            .addEventListener(
-                "input",
-                atualizarPreviewSeparacao
-            );
-
-
-        document
-            .getElementById(
-                "quantidadeSeparar"
-            )
-            .addEventListener(
-                "keydown",
-                function (evento) {
-                    if (
-                        evento.key ===
-                        "Enter"
-                    ) {
-                        evento.preventDefault();
-
-                        if (
-                            !document.getElementById(
-                                "btnConfirmarSeparacao"
-                            ).disabled
-                        ) {
-                            confirmarSeparacao();
-                        }
-                    }
-                }
-            );
-
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            function () {
-                atualizarUltimasSeparacoes();
-                atualizarPreviewSeparacao();
-                atualizarResumoSeparacao();
-                focarCodigoSeparacao();
             }
         );
-    </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
 
-            if (typeof lucide !== "undefined") {
-                lucide.createIcons();
+        select.disabled =
+            data.length <= 1;
+
+
+        produtoSelecionado =
+            data[0];
+
+
+        preencherProdutoSelecionado();
+
+
+        document
+            .getElementById(
+                "quantidadeSeparar"
+            )
+            .focus();
+
+    }
+
+
+    /*
+    =====================================================
+    QUANTIDADE MÁXIMA
+    =====================================================
+    */
+
+    function usarQuantidadeMaximaSeparacao() {
+
+        if (
+            !produtoSelecionado
+        ) {
+
+            mostrarMensagem(
+                "Busque um produto antes de usar a quantidade máxima.",
+                "erro"
+            );
+
+            return;
+
+        }
+
+
+        const campo =
+            document.getElementById(
+                "quantidadeSeparar"
+            );
+
+
+        campo.value =
+            converterNumeroSeparacao(
+                produtoSelecionado.quantidade
+            );
+
+
+        atualizarPreviewSeparacao();
+
+        campo.focus();
+
+    }
+
+
+    /*
+    =====================================================
+    CONFIRMAR SEPARAÇÃO DO ITEM
+    =====================================================
+    */
+
+    async function confirmarSeparacao() {
+
+        limparMensagem();
+
+
+        if (
+            !validarCabecalhoPedidoSeparacao()
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            !produtoSelecionado
+        ) {
+
+            mostrarMensagem(
+                "Busque um produto antes de separar.",
+                "erro"
+            );
+
+            return;
+
+        }
+
+
+        const campoQuantidade =
+            document.getElementById(
+                "quantidadeSeparar"
+            );
+
+
+        const quantidadeSeparar =
+            converterNumeroSeparacao(
+                campoQuantidade.value
+            );
+
+
+        const quantidadeAtual =
+            converterNumeroSeparacao(
+                produtoSelecionado.quantidade
+            );
+
+
+        if (
+            quantidadeSeparar <= 0
+        ) {
+
+            mostrarMensagem(
+                "Informe uma quantidade válida.",
+                "erro"
+            );
+
+            campoQuantidade.focus();
+
+            return;
+
+        }
+
+
+        if (
+            quantidadeSeparar >
+            quantidadeAtual
+        ) {
+
+            mostrarMensagem(
+                "Quantidade maior que o estoque disponível.",
+                "erro"
+            );
+
+            campoQuantidade.focus();
+
+            return;
+
+        }
+
+
+        /*
+        O PEDIDO É INICIADO
+        NO PRIMEIRO ITEM CONFIRMADO
+        */
+
+        const pedidoIniciado =
+            iniciarPedidoAtualSeparacao();
+
+
+        if (
+            !pedidoIniciado
+        ) {
+
+            return;
+
+        }
+
+
+        const novaQuantidade =
+            quantidadeAtual -
+            quantidadeSeparar;
+
+
+        const valorTotalAtual =
+            converterNumeroSeparacao(
+                produtoSelecionado.valor_total
+            );
+
+
+        const valorUnitario =
+            quantidadeAtual > 0
+                ? valorTotalAtual /
+                  quantidadeAtual
+                : 0;
+
+
+        const novoValorTotal =
+            Math.max(
+                0,
+                valorTotalAtual -
+                (
+                    quantidadeSeparar *
+                    valorUnitario
+                )
+            );
+
+
+        const confirmou =
+            confirm(
+                "Confirmar separação?\n\n" +
+
+                "Cliente: " +
+                pedidoAtualSeparacao.cliente +
+
+                "\nPedido / Referência: " +
+                pedidoAtualSeparacao.numeroPedido +
+
+                "\n\nProduto: " +
+                (
+                    produtoSelecionado.descricao ||
+                    produtoSelecionado.codigo
+                ) +
+
+                "\nPosição: " +
+                (
+                    produtoSelecionado.endereco ||
+                    "-"
+                ) +
+
+                "\nQuantidade: " +
+                formatarQuantidadeSeparacao(
+                    quantidadeSeparar
+                ) +
+
+                "\nSaldo após separação: " +
+                formatarQuantidadeSeparacao(
+                    novaQuantidade
+                )
+            );
+
+
+        if (
+            !confirmou
+        ) {
+
+            return;
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await window.supabaseClient
+                .from(
+                    "produtos"
+                )
+                .update(
+                    {
+                        quantidade:
+                            novaQuantidade,
+
+                        valor_total:
+                            novoValorTotal
+                    }
+                )
+                .eq(
+                    "id",
+                    produtoSelecionado.id
+                )
+                .eq(
+                    "quantidade",
+                    quantidadeAtual
+                )
+                .select(
+                    "id,codigo,descricao,quantidade,endereco,valor_total"
+                )
+                .maybeSingle();
+
+
+        if (
+            error
+        ) {
+
+            console.error(
+                "Erro na separação:",
+                error
+            );
+
+
+            mostrarMensagem(
+                "Não foi possível registrar a separação.",
+                "erro"
+            );
+
+
+            return;
+
+        }
+
+
+        if (
+            !data
+        ) {
+
+            mostrarMensagem(
+                "O saldo mudou enquanto você fazia a separação. Busque o produto novamente.",
+                "erro"
+            );
+
+            return;
+
+        }
+
+
+        /*
+        REGISTRA NA MOVIMENTAÇÃO
+        */
+
+        registrarMovimentacaoSeparacao(
+            produtoSelecionado,
+            quantidadeSeparar
+        );
+
+
+        /*
+        VINCULA O ITEM AO PEDIDO ATUAL
+        */
+
+        registrarItemNoPedidoAtual(
+            produtoSelecionado,
+            quantidadeSeparar
+        );
+
+
+        mostrarMensagem(
+            "Item incluído no pedido com sucesso.",
+            "sucesso"
+        );
+
+
+        limparCamposDepoisDaSeparacao();
+
+    }
+
+
+    /*
+    =====================================================
+    FINALIZAR PEDIDO
+    ENVIA PARA A CONFERÊNCIA
+    =====================================================
+    */
+
+    function finalizarPedidoSeparacao() {
+
+        limparMensagem();
+
+
+        if (
+            !pedidoAtualSeparacao
+        ) {
+
+            mostrarMensagem(
+                "Nenhum pedido está em separação.",
+                "erro"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !Array.isArray(
+                pedidoAtualSeparacao.itens
+            ) ||
+            pedidoAtualSeparacao.itens.length === 0
+        ) {
+
+            mostrarMensagem(
+                "Adicione pelo menos um item antes de finalizar o pedido.",
+                "erro"
+            );
+
+            return;
+
+        }
+
+
+        const confirmou =
+            confirm(
+                "Finalizar este pedido?\n\n" +
+
+                "Cliente: " +
+                pedidoAtualSeparacao.cliente +
+
+                "\nPedido / Referência: " +
+                pedidoAtualSeparacao.numeroPedido +
+
+                "\nItens: " +
+                pedidoAtualSeparacao.itens.length +
+
+                "\n\nApós finalizar, o pedido será enviado para a Conferência."
+            );
+
+
+        if (
+            !confirmou
+        ) {
+
+            return;
+
+        }
+
+
+        pedidoAtualSeparacao.status =
+            "AGUARDANDO_CONFERENCIA";
+
+
+        pedidoAtualSeparacao.dataFinalizacao =
+            obterDataHoraSeparacao();
+
+
+        pedidoAtualSeparacao.usuarioSeparacao =
+            pedidoAtualSeparacao.usuarioSeparacao ||
+            obterUsuarioLogadoSeparacao();
+
+
+        /*
+        BUSCA FILA ATUAL DA CONFERÊNCIA
+        */
+
+        const pedidosConferencia =
+            carregarListaSeparacao(
+                "pedidosConferencia"
+            );
+
+
+        /*
+        GARANTE QUE NÃO ENTRE DUPLICADO
+        PELO ID DO PEDIDO
+        */
+
+        const jaExiste =
+            pedidosConferencia.some(
+                function (pedido) {
+
+                    return (
+                        String(
+                            pedido.id ||
+                            ""
+                        ) ===
+                        String(
+                            pedidoAtualSeparacao.id ||
+                            ""
+                        )
+                    );
+
+                }
+            );
+
+
+        if (
+            !jaExiste
+        ) {
+
+            pedidosConferencia.unshift(
+                pedidoAtualSeparacao
+            );
+
+        }
+
+
+        salvarListaSeparacao(
+            "pedidosConferencia",
+            pedidosConferencia
+        );
+
+
+        /*
+        HISTÓRICO DE PEDIDOS FINALIZADOS
+        */
+
+        const historicoPedidos =
+            carregarListaSeparacao(
+                "pedidosSeparados"
+            );
+
+
+        historicoPedidos.unshift(
+            pedidoAtualSeparacao
+        );
+
+
+        salvarListaSeparacao(
+            "pedidosSeparados",
+            historicoPedidos
+        );
+
+
+        /*
+        REMOVE PEDIDO TEMPORÁRIO
+        */
+
+        localStorage.removeItem(
+            "pedidoAtualSeparacao"
+        );
+
+
+        const clienteFinalizado =
+            pedidoAtualSeparacao.cliente;
+
+
+        const pedidoFinalizado =
+            pedidoAtualSeparacao.numeroPedido;
+
+
+        pedidoAtualSeparacao =
+            null;
+
+
+        /*
+        LIBERA OS CAMPOS PARA O PRÓXIMO PEDIDO
+        */
+
+        liberarCabecalhoPedidoSeparacao();
+
+
+        document.getElementById(
+            "clientePedido"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "numeroPedido"
+        ).value =
+            "";
+
+
+        atualizarInfoPedidoSeparacao();
+
+        atualizarBotaoFinalizarPedido();
+
+        atualizarResumoSeparacao();
+
+
+        mostrarMensagem(
+            "Pedido " +
+            pedidoFinalizado +
+            " - " +
+            clienteFinalizado +
+            " finalizado e enviado para Conferência.",
+            "sucesso"
+        );
+
+
+        document
+            .getElementById(
+                "clientePedido"
+            )
+            .focus();
+
+    }
+
+        /*
+    =====================================================
+    LIMPEZA DOS CAMPOS DO PRODUTO
+    =====================================================
+    */
+
+    function limparCamposDepoisDaSeparacao() {
+
+        document.getElementById(
+            "codigoProduto"
+        ).value = "";
+
+
+        document.getElementById(
+            "descricaoProduto"
+        ).value = "";
+
+
+        document.getElementById(
+            "quantidadeDisponivel"
+        ).value = "";
+
+
+        document.getElementById(
+            "quantidadeSeparar"
+        ).value = "";
+
+
+        const selectPosicao =
+            document.getElementById(
+                "posicaoProduto"
+            );
+
+
+        selectPosicao.innerHTML =
+            '<option value="">-</option>';
+
+
+        selectPosicao.disabled =
+            true;
+
+
+        document.getElementById(
+            "btnConfirmarSeparacao"
+        ).disabled =
+            true;
+
+
+        produtosEncontrados =
+            [];
+
+
+        produtoSelecionado =
+            null;
+
+
+        atualizarPreviewSeparacao();
+
+        atualizarResumoSeparacao();
+
+        atualizarBotaoFinalizarPedido();
+
+
+        document
+            .getElementById(
+                "codigoProduto"
+            )
+            .focus();
+
+    }
+
+
+    /*
+    =====================================================
+    LIMPAR TELA
+    =====================================================
+    */
+
+    function limparTelaSeparacao() {
+
+        limparMensagem();
+
+
+        if (
+            pedidoAtualSeparacao &&
+            Array.isArray(
+                pedidoAtualSeparacao.itens
+            ) &&
+            pedidoAtualSeparacao.itens.length > 0
+        ) {
+
+            const confirmou =
+                confirm(
+                    "Existe um pedido em separação.\n\n" +
+                    "Cliente: " +
+                    pedidoAtualSeparacao.cliente +
+                    "\nPedido / Referência: " +
+                    pedidoAtualSeparacao.numeroPedido +
+                    "\nItens separados: " +
+                    pedidoAtualSeparacao.itens.length +
+                    "\n\nDeseja realmente cancelar este pedido?"
+                );
+
+
+            if (
+                !confirmou
+            ) {
+
+                return;
+
             }
+
+        }
+
+
+        pedidoAtualSeparacao =
+            null;
+
+
+        localStorage.removeItem(
+            "pedidoAtualSeparacao"
+        );
+
+
+        liberarCabecalhoPedidoSeparacao();
+
+
+        document.getElementById(
+            "clientePedido"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "numeroPedido"
+        ).value =
+            "";
+
+
+        limparCamposDepoisDaSeparacao();
+
+
+        atualizarInfoPedidoSeparacao();
+
+        atualizarBotaoFinalizarPedido();
+
+        atualizarResumoSeparacao();
+
+
+        mostrarMensagem(
+            "Tela de separação limpa.",
+            "sucesso"
+        );
+
+
+        document
+            .getElementById(
+                "clientePedido"
+            )
+            .focus();
+
+    }
+
+
+    /*
+    =====================================================
+    FOCO NO CÓDIGO
+    =====================================================
+    */
+
+    function focarCodigoSeparacao() {
+
+        const campo =
+            document.getElementById(
+                "codigoProduto"
+            );
+
+
+        campo.focus();
+
+        campo.select();
+
+    }
+
+
+    /*
+    =====================================================
+    ÚLTIMAS SEPARAÇÕES
+    =====================================================
+    */
+
+    function atualizarUltimasSeparacoes() {
+
+        const lista =
+            document.getElementById(
+                "listaUltimasSeparacoes"
+            );
+
+
+        if (
+            !lista
+        ) {
+
+            return;
+
+        }
+
+
+        const saidas =
+            carregarListaSeparacao(
+                "saidas"
+            )
+            .filter(
+                function (saida) {
+
+                    return (
+                        String(
+                            saida.tipo ||
+                            "SAIDA"
+                        ).toUpperCase() ===
+                        "SAIDA"
+                    );
+
+                }
+            )
+            .slice(
+                0,
+                3
+            );
+
+
+        if (
+            saidas.length === 0
+        ) {
+
+            lista.innerHTML = `
+
+                <div class="ultima-item">
+
+                    <div class="ultima-check">
+                        ✓
+                    </div>
+
+                    <div class="ultima-hora">
+                        --:--
+                    </div>
+
+                    <div class="ultima-produto">
+
+                        <strong>
+                            Nenhuma separação recente
+                        </strong>
+
+                        <small>
+                            -
+                        </small>
+
+                    </div>
+
+                    <div class="ultima-qtd">
+                        -
+                    </div>
+
+                </div>
+            `;
+
+
+            return;
+
+        }
+
+
+        lista.innerHTML =
+            "";
+
+
+        saidas.forEach(
+            function (saida) {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "ultima-item";
+
+
+                const data =
+                    String(
+                        saida.data ||
+                        ""
+                    );
+
+
+                const horaEncontrada =
+                    data.match(
+                        /(\d{2}:\d{2})/
+                    );
+
+
+                const hora =
+                    horaEncontrada
+                        ? horaEncontrada[1]
+                        : "--:--";
+
+
+                const pedido =
+                    saida.numeroPedido ||
+                    saida.pedido ||
+                    saida.referencia ||
+                    "-";
+
+
+                item.innerHTML = `
+
+                    <div class="ultima-check">
+                        ✓
+                    </div>
+
+
+                    <div class="ultima-hora">
+
+                        ${escaparHTMLSeparacao(
+                            hora
+                        )}
+
+                    </div>
+
+
+                    <div class="ultima-produto">
+
+                        <strong>
+
+                            ${escaparHTMLSeparacao(
+                                saida.descricao ||
+                                saida.codigo ||
+                                "Produto"
+                            )}
+
+                        </strong>
+
+
+                        <small>
+
+                            ${escaparHTMLSeparacao(
+                                saida.cliente ||
+                                "Sem cliente"
+                            )}
+
+                            •
+
+                            ${escaparHTMLSeparacao(
+                                pedido
+                            )}
+
+                            •
+
+                            ${escaparHTMLSeparacao(
+                                saida.endereco ||
+                                saida.origem ||
+                                "-"
+                            )}
+
+                        </small>
+
+                    </div>
+
+
+                    <div class="ultima-qtd">
+
+                        ${formatarQuantidadeSeparacao(
+                            saida.quantidade
+                        )}
+                        unid.
+
+                    </div>
+
+                `;
+
+
+                lista.appendChild(
+                    item
+                );
+
+            }
+        );
+
+    }
+
+
+    /*
+    =====================================================
+    SEGURANÇA HTML
+    =====================================================
+    */
+
+    function escaparHTMLSeparacao(
+        valor
+    ) {
+
+        return String(
+            valor ||
+            ""
+        )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+    }
+
+
+    /*
+    =====================================================
+    ROLAR PARA HISTÓRICO
+    =====================================================
+    */
+
+    function rolarParaUltimasSeparacoes() {
+
+        document.getElementById(
+            "ultimasSeparacoesCard"
+        )
+        .scrollIntoView(
+            {
+                behavior:
+                    "smooth",
+
+                block:
+                    "start"
+            }
+        );
+
+    }
+
+
+    /*
+    =====================================================
+    EVENTOS - CLIENTE
+    =====================================================
+    */
+
+    document
+        .getElementById(
+            "clientePedido"
+        )
+        .addEventListener(
+            "input",
+            function () {
+
+                atualizarResumoSeparacao();
+
+            }
+        );
+
+
+    /*
+    =====================================================
+    EVENTOS - PEDIDO / REFERÊNCIA
+    =====================================================
+    */
+
+    document
+        .getElementById(
+            "numeroPedido"
+        )
+        .addEventListener(
+            "input",
+            function () {
+
+                atualizarResumoSeparacao();
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "numeroPedido"
+        )
+        .addEventListener(
+            "keydown",
+            function (evento) {
+
+                if (
+                    evento.key ===
+                    "Enter"
+                ) {
+
+                    evento.preventDefault();
+
+
+                    document
+                        .getElementById(
+                            "codigoProduto"
+                        )
+                        .focus();
+
+                }
+
+            }
+        );
+
+
+    /*
+    =====================================================
+    EVENTO - CÓDIGO
+    =====================================================
+    */
+
+    document
+        .getElementById(
+            "codigoProduto"
+        )
+        .addEventListener(
+            "keydown",
+            function (evento) {
+
+                if (
+                    evento.key ===
+                    "Enter"
+                ) {
+
+                    evento.preventDefault();
+
+                    buscarProdutoSeparacao();
+
+                }
+
+            }
+        );
+
+
+    /*
+    =====================================================
+    EVENTO - QUANTIDADE
+    =====================================================
+    */
+
+    document
+        .getElementById(
+            "quantidadeSeparar"
+        )
+        .addEventListener(
+            "input",
+            atualizarPreviewSeparacao
+        );
+
+
+    document
+        .getElementById(
+            "quantidadeSeparar"
+        )
+        .addEventListener(
+            "keydown",
+            function (evento) {
+
+                if (
+                    evento.key ===
+                    "Enter"
+                ) {
+
+                    evento.preventDefault();
+
+
+                    const botao =
+                        document.getElementById(
+                            "btnConfirmarSeparacao"
+                        );
+
+
+                    if (
+                        !botao.disabled
+                    ) {
+
+                        confirmarSeparacao();
+
+                    }
+
+                }
+
+            }
+        );
+
+
+    /*
+    =====================================================
+    CARREGAMENTO DA TELA
+    =====================================================
+    */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            carregarPedidoAtualTemporarioSeparacao();
+
+            atualizarUltimasSeparacoes();
+
+            atualizarPreviewSeparacao();
+
+            atualizarResumoSeparacao();
+
+            atualizarInfoPedidoSeparacao();
+
+            atualizarBotaoFinalizarPedido();
+
+
+            if (
+                pedidoAtualSeparacao
+            ) {
+
+                focarCodigoSeparacao();
+
+            } else {
+
+                document
+                    .getElementById(
+                        "clientePedido"
+                    )
+                    .focus();
+
+            }
+
+        }
+    );
+
+</script>
+
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+
+            if (
+                typeof lucide !==
+                "undefined"
+            ) {
+
+                lucide.createIcons();
+
+            }
+
 
             let paginaAtual =
                 window.location.pathname
-                    .split("/")
+                    .split(
+                        "/"
+                    )
                     .pop();
 
-            if (!paginaAtual) {
-                paginaAtual = "dashboard.html";
+
+            if (
+                !paginaAtual
+            ) {
+
+                paginaAtual =
+                    "dashboard.html";
+
             }
 
+
             document
-                .querySelectorAll(".sidebar-wms-novo .menu-item")
-                .forEach(function (item) {
+                .querySelectorAll(
+                    ".sidebar-wms-novo .menu-item"
+                )
+                .forEach(
+                    function (item) {
 
-                    const pagina =
-                        item.getAttribute("data-page");
 
-                    item.classList.toggle(
-                        "active",
-                        pagina === paginaAtual
-                    );
+                        const pagina =
+                            item.getAttribute(
+                                "data-page"
+                            );
 
-                });
 
-        });
-    </script>
+                        item.classList.toggle(
+                            "active",
+                            pagina ===
+                            paginaAtual
+                        );
+
+
+                    }
+                );
+
+        }
+    );
+
+</script>
+
 
 </body>
+
 </html>

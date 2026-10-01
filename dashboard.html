@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
 
 <meta charset="UTF-8">
@@ -10,399 +9,913 @@
 
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
 
+<script src="https://unpkg.com/lucide@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
 <style>
+
     /* Evita duplicidade do seletor de idioma no Dashboard */
+
     .dashboard-novo .topbar .usuario {
+
         display: flex;
+
         align-items: center;
+
         justify-content: flex-end;
+
         gap: 14px;
+
         flex-wrap: nowrap;
+
         white-space: nowrap;
+
     }
+
 
     .dashboard-novo #language-placeholder {
+
         display: flex;
+
         align-items: center;
+
         flex: 0 0 auto;
+
     }
 
+
     .dashboard-novo #language-placeholder #wms-language-switcher {
+
         position: static !important;
+
         top: auto !important;
+
         right: auto !important;
+
         left: auto !important;
+
         bottom: auto !important;
+
         margin: 0 !important;
+
         padding: 0 !important;
+
         z-index: auto !important;
+
         background: transparent !important;
+
         box-shadow: none !important;
+
     }
+
 </style>
 
 
 <style>
+
 /* =====================================================
    AJUSTE VISUAL DOS 5 CARDS DO DASHBOARD
    NÃO ALTERA O CARD "OCUPAÇÃO DO ESTOQUE"
 ===================================================== */
 
 .dashboard-novo .dashboard-cards-principais {
+
     display: grid;
+
     grid-template-columns: repeat(6, minmax(0, 1fr));
+
     gap: 10px;
+
     align-items: stretch;
+
 }
 
+
 /* Base dos 5 cards */
+
 .dashboard-novo .kpi-produtos,
 .dashboard-novo .kpi-quantidade,
 .dashboard-novo .kpi-posicoes,
 .dashboard-novo .kpi-minimo,
 .dashboard-novo .kpi-sem-estoque {
+
     position: relative;
+
     display: flex;
+
     align-items: flex-start;
+
     gap: 11px;
+
     min-width: 0;
+
     padding: 14px 12px;
+
     overflow: hidden;
+
     background: #fff;
+
     border: 1px solid #e3eaf2;
+
     border-radius: 11px;
+
     box-shadow: 0 4px 15px rgba(20,47,84,.055);
+
 }
 
+
 /* Ícones */
+
 .dashboard-novo .kpi-produtos .icone-card-novo,
 .dashboard-novo .kpi-quantidade .icone-card-novo,
 .dashboard-novo .kpi-posicoes .icone-card-novo,
 .dashboard-novo .kpi-minimo .icone-card-novo,
 .dashboard-novo .kpi-sem-estoque .icone-card-novo {
+
     width: 43px;
+
     height: 43px;
+
     min-width: 43px;
+
     min-height: 43px;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     border-radius: 50%;
+
     color: #fff;
+
     font-size: 0;
+
     box-shadow: none;
+
 }
+
 
 .dashboard-novo .kpi-produtos .icone-card-novo svg,
 .dashboard-novo .kpi-quantidade .icone-card-novo svg,
 .dashboard-novo .kpi-posicoes .icone-card-novo svg,
 .dashboard-novo .kpi-minimo .icone-card-novo svg,
 .dashboard-novo .kpi-sem-estoque .icone-card-novo svg {
+
     width: 20px;
+
     height: 20px;
+
     stroke-width: 2.5;
+
 }
 
-.dashboard-novo .kpi-produtos .icone-card-novo { background: #2176f3 !important; }
-.dashboard-novo .kpi-quantidade .icone-card-novo { background: #18b665 !important; }
-.dashboard-novo .kpi-posicoes .icone-card-novo { background: #8751e8 !important; }
-.dashboard-novo .kpi-minimo .icone-card-novo { background: #ff9800 !important; }
-.dashboard-novo .kpi-sem-estoque .icone-card-novo { background: #f1263b !important; }
+
+.dashboard-novo .kpi-produtos .icone-card-novo {
+    background: #2176f3 !important;
+}
+
+.dashboard-novo .kpi-quantidade .icone-card-novo {
+    background: #18b665 !important;
+}
+
+.dashboard-novo .kpi-posicoes .icone-card-novo {
+    background: #8751e8 !important;
+}
+
+.dashboard-novo .kpi-minimo .icone-card-novo {
+    background: #ff9800 !important;
+}
+
+.dashboard-novo .kpi-sem-estoque .icone-card-novo {
+    background: #f1263b !important;
+}
+
 
 /* Tipografia */
+
 .dashboard-novo .kpi-produtos .card-info-novo,
 .dashboard-novo .kpi-quantidade .card-info-novo,
 .dashboard-novo .kpi-posicoes .card-info-novo,
 .dashboard-novo .kpi-minimo .card-info-novo,
 .dashboard-novo .kpi-sem-estoque .card-info-novo {
+
     min-width: 0;
+
     flex: 1;
+
     display: flex;
+
     flex-direction: column;
+
     padding-top: 1px;
+
 }
+
 
 .dashboard-novo .kpi-produtos .card-titulo-novo,
 .dashboard-novo .kpi-quantidade .card-titulo-novo,
 .dashboard-novo .kpi-posicoes .card-titulo-novo,
 .dashboard-novo .kpi-minimo .card-titulo-novo,
 .dashboard-novo .kpi-sem-estoque .card-titulo-novo {
+
     margin: 0 0 3px;
+
     color: #092d63;
+
     font-size: 10px;
+
     line-height: 1.2;
+
     font-weight: 800;
+
     white-space: nowrap;
+
 }
+
 
 .dashboard-novo .kpi-produtos .card-info-novo > strong,
 .dashboard-novo .kpi-quantidade .card-info-novo > strong,
 .dashboard-novo .kpi-posicoes .card-info-novo > strong,
 .dashboard-novo .kpi-minimo .card-info-novo > strong,
 .dashboard-novo .kpi-sem-estoque .card-info-novo > strong {
+
     margin: 0;
+
     color: #061e46;
+
     font-size: 25px;
+
     line-height: 1;
+
     font-weight: 900;
+
     letter-spacing: -.4px;
+
 }
+
 
 .dashboard-novo .kpi-produtos .card-info-novo small,
 .dashboard-novo .kpi-quantidade .card-info-novo small,
 .dashboard-novo .kpi-posicoes .card-info-novo small,
 .dashboard-novo .kpi-minimo .card-info-novo small,
 .dashboard-novo .kpi-sem-estoque .card-info-novo small {
+
     margin-top: 3px;
+
     color: #718096;
+
     font-size: 9px;
+
     line-height: 1.15;
+
 }
+
 
 /* Tendências */
+
 .dashboard-novo .kpi-tendencia {
+
     display: block;
+
     margin-top: 5px;
+
     font-size: 10px;
+
     line-height: 1;
+
     font-weight: 800;
+
 }
-.dashboard-novo .kpi-tendencia.positiva { color: #15a856; }
-.dashboard-novo .kpi-tendencia.alerta { color: #ef3340; }
-.dashboard-novo .kpi-tendencia.neutra { color: #718096; }
+
+
+.dashboard-novo .kpi-tendencia.positiva {
+    color: #15a856;
+}
+
+.dashboard-novo .kpi-tendencia.alerta {
+    color: #ef3340;
+}
+
+.dashboard-novo .kpi-tendencia.neutra {
+    color: #718096;
+}
+
 
 /* Barras de posições */
+
 .dashboard-novo .kpi-posicoes .kpi-progresso-linha {
+
     width: 100%;
+
     display: flex;
+
     align-items: center;
+
     gap: 8px;
+
     margin-top: 10px;
+
 }
+
+
 .dashboard-novo .kpi-posicoes .novo-progresso {
+
     flex: 1;
+
     max-width: none;
+
     height: 6px;
+
     margin: 0;
+
     overflow: hidden;
+
     background: #e6ebf2;
+
     border-radius: 999px;
+
 }
+
+
 .dashboard-novo .kpi-posicoes .progresso-roxo {
+
     height: 100%;
+
     background: #8751e8 !important;
+
     border-radius: 999px;
+
 }
+
+
 .dashboard-novo .kpi-posicoes #percentualPosicoesCard {
+
     flex: 0 0 auto;
+
     color: #082d62;
+
     font-size: 8px;
+
     line-height: 1;
+
     font-weight: 800;
+
 }
+
 
 /* Mini barras decorativas */
+
 .dashboard-novo .spark-bars {
+
     position: absolute;
+
     right: 10px;
+
     bottom: 10px;
+
     width: 70px;
+
     height: 28px;
+
     display: flex;
+
     align-items: flex-end;
+
     justify-content: flex-end;
+
     gap: 4px;
+
     pointer-events: none;
+
 }
+
+
 .dashboard-novo .spark-bars span {
+
     width: 5px;
+
     min-height: 3px;
+
     border-radius: 2px 2px 0 0;
+
 }
-.dashboard-novo .spark-azul span { background: #a8c9ff; }
-.dashboard-novo .spark-verde span { background: #93e5bc; }
-.dashboard-novo .spark-laranja span { background: #ffc078; }
-.dashboard-novo .spark-vermelho span { background: #ffb7c0; }
+
+
+.dashboard-novo .spark-azul span {
+    background: #a8c9ff;
+}
+
+.dashboard-novo .spark-verde span {
+    background: #93e5bc;
+}
+
+.dashboard-novo .spark-laranja span {
+    background: #ffc078;
+}
+
+.dashboard-novo .spark-vermelho span {
+    background: #ffb7c0;
+}
+
 
 /* Mantém os canvases existentes para o JS, porém invisíveis */
+
 .dashboard-novo .mini-grafico-dados {
+
     position: absolute !important;
+
     width: 1px !important;
+
     height: 1px !important;
+
     overflow: hidden !important;
+
     opacity: 0 !important;
+
     pointer-events: none !important;
+
 }
 
+
 /* Responsividade */
+
 @media (max-width: 1300px) {
+
     .dashboard-novo .dashboard-cards-principais {
+
         grid-template-columns: repeat(3, minmax(0, 1fr));
+
     }
+
 }
+
 </style>
 
 </head>
 
+
 <body>
 
 
-    <!-- MENU LATERAL - NOVO PADRÃO SMI WMS -->
-    <aside class="sidebar sidebar-wms-novo">
+<!-- =====================================================
+     MENU LATERAL - NOVO PADRÃO SMI WMS
+===================================================== -->
 
-        <div class="sidebar-topo">
+<aside class="sidebar sidebar-wms-novo">
 
-            <img
-                src="img/logo.png"
-                alt="SMI do Brasil"
-                class="sidebar-logo"
-            >
 
-            <h2>SMI WMS</h2>
+    <div class="sidebar-topo">
 
-            <p>GESTÃO QUE MOVIMENTA</p>
+
+        <img
+            src="img/logo.png"
+            alt="SMI do Brasil"
+            class="sidebar-logo"
+        >
+
+
+        <h2>
+            SMI WMS
+        </h2>
+
+
+        <p>
+            GESTÃO QUE MOVIMENTA
+        </p>
+
+
+    </div>
+
+
+    <nav
+        class="sidebar-nav"
+        aria-label="Menu principal"
+    >
+
+
+        <!-- =================================================
+             PRINCIPAL
+        ================================================== -->
+
+        <div class="menu-titulo">
+
+            <span>
+                PRINCIPAL
+            </span>
 
         </div>
 
-        <nav class="sidebar-nav" aria-label="Menu principal">
 
-            <div class="menu-titulo">
-                <span>PRINCIPAL</span>
-            </div>
+        <a
+            href="dashboard.html"
+            class="menu-item"
+            data-page="dashboard.html"
+        >
 
-            <a href="dashboard.html" class="menu-item" data-page="dashboard.html">
-                <span class="menu-icon icone-dashboard">
-                    <i data-lucide="house"></i>
-                </span>
-                <span class="menu-texto">Dashboard</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
+            <span class="menu-icon icone-dashboard">
 
-            <a href="produtos.html" class="menu-item" data-page="produtos.html">
-                <span class="menu-icon icone-produtos">
-                    <i data-lucide="package"></i>
-                </span>
-                <span class="menu-texto">Produtos</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
+                <i data-lucide="house"></i>
 
-            <div class="menu-titulo">
-                <span>OPERAÇÕES</span>
-            </div>
+            </span>
 
-            <a href="entradas.html" class="menu-item" data-page="entradas.html">
-                <span class="menu-icon icone-entradas">
-                    <i data-lucide="download"></i>
-                </span>
-                <span class="menu-texto">Entradas</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
+            <span class="menu-texto">
+                Dashboard
+            </span>
 
-            <a href="saidas.html" class="menu-item" data-page="saidas.html">
-                <span class="menu-icon icone-saidas">
-                    <i data-lucide="upload"></i>
-                </span>
-                <span class="menu-texto">Saídas</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
 
-            <a href="separacao.html" class="menu-item" data-page="separacao.html">
-                <span class="menu-icon icone-separacao">
-                    <i data-lucide="shopping-cart"></i>
-                </span>
-                <span class="menu-texto">Separação</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
+        </a>
 
-            <a href="transferencias.html" class="menu-item" data-page="transferencias.html">
-                <span class="menu-icon icone-transferencia">
-                    <i data-lucide="arrow-left-right"></i>
-                </span>
-                <span class="menu-texto">Transferências</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
 
-            <a href="transferencia-mobile.html" class="menu-item" data-page="transferencia-mobile.html">
-                <span class="menu-icon icone-mobile">
-                    <i data-lucide="smartphone"></i>
-                </span>
-                <span class="menu-texto">Transf. Mobile</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
+        <a
+            href="produtos.html"
+            class="menu-item"
+            data-page="produtos.html"
+        >
 
-            <a href="posicoes.html" class="menu-item" data-page="posicoes.html">
-                <span class="menu-icon icone-posicoes">
-                    <i data-lucide="map-pin"></i>
-                </span>
-                <span class="menu-texto">Posições</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
+            <span class="menu-icon icone-produtos">
 
-            <a href="inventario.html" class="menu-item" data-page="inventario.html">
-                <span class="menu-icon icone-inventario">
-                    <i data-lucide="clipboard-list"></i>
-                </span>
-                <span class="menu-texto">Inventário</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
+                <i data-lucide="package"></i>
 
-            <a href="inventario-mobile.html" class="menu-item" data-page="inventario-mobile.html">
-                <span class="menu-icon icone-invmobile">
-                    <i data-lucide="scan-line"></i>
-                </span>
-                <span class="menu-texto">Inv. Mobile</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
+            </span>
 
-            <div class="menu-titulo">
-                <span>SISTEMA</span>
-            </div>
+            <span class="menu-texto">
+                Produtos
+            </span>
 
-            <a href="relatorios.html" class="menu-item" data-page="relatorios.html">
-                <span class="menu-icon icone-relatorios">
-                    <i data-lucide="chart-no-axes-column"></i>
-                </span>
-                <span class="menu-texto">Relatórios</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
 
-            <a href="etiquetagem.html" class="menu-item" data-page="etiquetagem.html">
-                <span class="menu-icon icone-etiqueta">
-                    <i data-lucide="tag"></i>
-                </span>
-                <span class="menu-texto">Etiquetagem</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
+        </a>
 
-            <a href="requisicao.html" class="menu-item" data-page="requisicao.html">
-                <span class="menu-icon icone-requisicao">
-                    <i data-lucide="file-text"></i>
-                </span>
-                <span class="menu-texto">Requisição</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
 
-            <a href="configuracoes.html" class="menu-item" data-page="configuracoes.html">
-                <span class="menu-icon icone-config">
-                    <i data-lucide="settings"></i>
-                </span>
-                <span class="menu-texto">Configurações</span>
-                <i data-lucide="chevron-right" class="menu-seta"></i>
-            </a>
+        <!-- =================================================
+             OPERAÇÕES
+        ================================================== -->
 
-        </nav>
+        <div class="menu-titulo">
 
-        <div class="sidebar-rodape">
-            <span>LOGÍSTICA MAIS INTELIGENTE</span>
-            <small>v1.0.0</small>
+            <span>
+                OPERAÇÕES
+            </span>
+
         </div>
 
-    </aside>
+
+        <a
+            href="entradas.html"
+            class="menu-item"
+            data-page="entradas.html"
+        >
+
+            <span class="menu-icon icone-entradas">
+
+                <i data-lucide="download"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Entradas
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="saidas.html"
+            class="menu-item"
+            data-page="saidas.html"
+        >
+
+            <span class="menu-icon icone-saidas">
+
+                <i data-lucide="upload"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Saídas
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="separacao.html"
+            class="menu-item"
+            data-page="separacao.html"
+        >
+
+            <span class="menu-icon icone-separacao">
+
+                <i data-lucide="shopping-cart"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Separação
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <!-- =================================================
+             CONFERÊNCIA - NOVO
+        ================================================== -->
+
+        <a
+            href="conferencia.html"
+            class="menu-item"
+            data-page="conferencia.html"
+        >
+
+            <span class="menu-icon icone-conferencia">
+
+                <i data-lucide="clipboard-check"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Conferência
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="transferencias.html"
+            class="menu-item"
+            data-page="transferencias.html"
+        >
+
+            <span class="menu-icon icone-transferencia">
+
+                <i data-lucide="arrow-left-right"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Transferências
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="transferencia-mobile.html"
+            class="menu-item"
+            data-page="transferencia-mobile.html"
+        >
+
+            <span class="menu-icon icone-mobile">
+
+                <i data-lucide="smartphone"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Transf. Mobile
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="posicoes.html"
+            class="menu-item"
+            data-page="posicoes.html"
+        >
+
+            <span class="menu-icon icone-posicoes">
+
+                <i data-lucide="map-pin"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Posições
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="inventario.html"
+            class="menu-item"
+            data-page="inventario.html"
+        >
+
+            <span class="menu-icon icone-inventario">
+
+                <i data-lucide="clipboard-list"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Inventário
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="inventario-mobile.html"
+            class="menu-item"
+            data-page="inventario-mobile.html"
+        >
+
+            <span class="menu-icon icone-invmobile">
+
+                <i data-lucide="scan-line"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Inv. Mobile
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <!-- =================================================
+             SISTEMA
+        ================================================== -->
+
+        <div class="menu-titulo">
+
+            <span>
+                SISTEMA
+            </span>
+
+        </div>
+
+
+        <a
+            href="relatorios.html"
+            class="menu-item"
+            data-page="relatorios.html"
+        >
+
+            <span class="menu-icon icone-relatorios">
+
+                <i data-lucide="chart-no-axes-column"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Relatórios
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="etiquetagem.html"
+            class="menu-item"
+            data-page="etiquetagem.html"
+        >
+
+            <span class="menu-icon icone-etiqueta">
+
+                <i data-lucide="tag"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Etiquetagem
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="requisicao.html"
+            class="menu-item"
+            data-page="requisicao.html"
+        >
+
+            <span class="menu-icon icone-requisicao">
+
+                <i data-lucide="file-text"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Requisição
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+        <a
+            href="configuracoes.html"
+            class="menu-item"
+            data-page="configuracoes.html"
+        >
+
+            <span class="menu-icon icone-config">
+
+                <i data-lucide="settings"></i>
+
+            </span>
+
+            <span class="menu-texto">
+                Configurações
+            </span>
+
+            <i
+                data-lucide="chevron-right"
+                class="menu-seta"
+            ></i>
+
+        </a>
+
+
+    </nav>
+
+
+    <div class="sidebar-rodape">
+
+        <span>
+            LOGÍSTICA MAIS INTELIGENTE
+        </span>
+
+        <small>
+            v1.0.0
+        </small>
+
+    </div>
+
+
+</aside>
 
 
 <!-- =====================================================
@@ -411,13 +924,19 @@
 
 <div class="conteudo dashboard-novo">
 
-    <!-- TOPO -->
+
+    <!-- =================================================
+         TOPO
+    ================================================== -->
 
     <div class="topbar">
 
+
         <div class="titulo-pagina">
 
-            <h1>Dashboard</h1>
+            <h1>
+                Dashboard
+            </h1>
 
             <small>
                 Visão Geral do Estoque
@@ -425,22 +944,34 @@
 
         </div>
 
-       <div class="usuario">
+
+        <div class="usuario">
+
 
             <!-- BRASIL / ITÁLIA -->
+
             <div id="language-placeholder"></div>
+
 
             <span id="relogio"></span>
 
+
             <span id="nomeUsuario"></span>
 
+
             <button onclick="sairSistema()">
+
                 Sair
+
             </button>
+
 
         </div>
 
+
     </div>
+
+
     <!-- =====================================================
          CARDS SUPERIORES
     ===================================================== -->
@@ -448,146 +979,244 @@
     <div class="dashboard-cards-principais">
 
 
-        <!-- PRODUTOS -->
+        <!-- =================================================
+             PRODUTOS
+        ================================================== -->
 
         <div
             class="card-dashboard-novo kpi-produtos"
             onclick="location.href='produtos.html'"
         >
 
+
             <div class="icone-card-novo azul">
+
                 <i data-lucide="package"></i>
+
             </div>
+
 
             <div class="card-info-novo">
 
+
                 <span class="card-titulo-novo">
+
                     Produtos
+
                 </span>
 
+
                 <strong id="cardProdutos">
+
                     —
+
                 </strong>
+
 
                 <span
                     id="tendenciaProdutosTexto"
                     class="kpi-tendencia positiva"
                 >
+
                     ↑ 0,0%
+
                 </span>
 
+
                 <small>
+
                     Últimos 7 dias
+
                 </small>
 
+
             </div>
 
-            <div class="spark-bars spark-azul" aria-hidden="true">
+
+            <div
+                class="spark-bars spark-azul"
+                aria-hidden="true"
+            >
+
                 <span style="height:22%"></span>
+
                 <span style="height:30%"></span>
+
                 <span style="height:40%"></span>
+
                 <span style="height:52%"></span>
+
                 <span style="height:66%"></span>
+
                 <span style="height:82%"></span>
+
                 <span style="height:100%"></span>
+
             </div>
+
 
             <div class="mini-grafico-dados">
+
                 <canvas id="tendenciaProdutos"></canvas>
+
             </div>
+
 
         </div>
 
 
-        <!-- QUANTIDADE TOTAL -->
+        <!-- =================================================
+             QUANTIDADE TOTAL
+        ================================================== -->
 
         <div class="card-dashboard-novo kpi-quantidade">
 
+
             <div class="icone-card-novo verde">
+
                 <i data-lucide="database"></i>
+
             </div>
+
 
             <div class="card-info-novo">
 
+
                 <span class="card-titulo-novo">
+
                     Quantidade Total
+
                 </span>
 
+
                 <strong id="cardQuantidade">
+
                     0
+
                 </strong>
+
 
                 <span
                     id="tendenciaQuantidadeTexto"
                     class="kpi-tendencia positiva"
                 >
+
                     ↑ 0,0%
+
                 </span>
 
+
                 <small>
+
                     Últimos 7 dias
+
                 </small>
 
+
             </div>
 
-            <div class="spark-bars spark-verde" aria-hidden="true">
+
+            <div
+                class="spark-bars spark-verde"
+                aria-hidden="true"
+            >
+
                 <span style="height:20%"></span>
+
                 <span style="height:29%"></span>
+
                 <span style="height:38%"></span>
+
                 <span style="height:50%"></span>
+
                 <span style="height:65%"></span>
+
                 <span style="height:81%"></span>
+
                 <span style="height:100%"></span>
+
             </div>
+
 
             <div class="mini-grafico-dados">
+
                 <canvas id="tendenciaQuantidade"></canvas>
+
             </div>
+
 
         </div>
 
 
-        <!-- POSIÇÕES UTILIZADAS -->
+        <!-- =================================================
+             POSIÇÕES UTILIZADAS
+        ================================================== -->
 
         <div
             class="card-dashboard-novo kpi-posicoes"
             onclick="location.href='posicoes.html'"
         >
 
+
             <div class="icone-card-novo roxo">
+
                 <i data-lucide="map-pin"></i>
+
             </div>
+
 
             <div class="card-info-novo">
 
+
                 <span class="card-titulo-novo">
+
                     Posições Utilizadas
+
                 </span>
 
+
                 <strong id="cardPosicoes">
+
                     0
+
                 </strong>
 
+
                 <small>
+
                     de 460 posições
+
                 </small>
+
 
                 <div class="kpi-progresso-linha">
 
+
                     <div class="progresso-card novo-progresso">
+
+
                         <div
                             id="progressoPosicoes"
-                            class="progresso-card-preenchimento progresso-roxo">
+                            class="progresso-card-preenchimento progresso-roxo"
+                        >
                         </div>
+
+
                     </div>
 
+
                     <strong id="percentualPosicoesCard">
+
                         0%
+
                     </strong>
+
 
                 </div>
 
+
             </div>
+
 
         </div>
 
@@ -599,127 +1228,206 @@
 
         <div class="card-dashboard-novo card-velocimetro">
 
+
             <div class="velocimetro-cabecalho">
-                 Ocupação do estoque
+
+                Ocupação do estoque
+
             </div>
+
 
             <div class="velocimetro-container">
 
+
                 <canvas id="velocimetroOcupacao"></canvas>
+
 
                 <div class="velocimetro-info">
 
+
                     <strong id="cardNiveis">
+
                         0%
+
                     </strong>
 
+
                     <span>
+
                         OCUPADO
+
                     </span>
 
+
                     <small id="posicoesLivresVelocimetro">
+
                         0 posições livres
+
                     </small>
+
 
                 </div>
 
+
             </div>
+
 
         </div>
 
 
-        <!-- ABAIXO DO MÍNIMO -->
+        <!-- =================================================
+             ABAIXO DO MÍNIMO
+        ================================================== -->
 
         <div class="card-dashboard-novo kpi-minimo">
 
+
             <div class="icone-card-novo amarelo">
+
                 <i data-lucide="triangle-alert"></i>
+
             </div>
+
 
             <div class="card-info-novo">
 
+
                 <span class="card-titulo-novo">
+
                     Abaixo do mínimo
+
                 </span>
 
+
                 <strong id="cardAbaixoMinimo">
+
                     —
+
                 </strong>
+
 
                 <span
                     id="tendenciaAbaixoMinimoTexto"
                     class="kpi-tendencia alerta"
                 >
+
                     → 0
+
                 </span>
 
+
                 <small>
+
                     Produtos críticos
+
                 </small>
 
+
             </div>
 
-            <div class="spark-bars spark-laranja" aria-hidden="true">
+
+            <div
+                class="spark-bars spark-laranja"
+                aria-hidden="true"
+            >
+
                 <span style="height:18%"></span>
+
                 <span style="height:27%"></span>
+
                 <span style="height:37%"></span>
+
                 <span style="height:48%"></span>
+
                 <span style="height:61%"></span>
+
                 <span style="height:77%"></span>
+
                 <span style="height:100%"></span>
+
             </div>
+
 
         </div>
 
 
-        <!-- SEM ESTOQUE -->
+        <!-- =================================================
+             SEM ESTOQUE
+        ================================================== -->
 
         <div class="card-dashboard-novo kpi-sem-estoque">
 
+
             <div class="icone-card-novo vermelho">
+
                 <i data-lucide="x"></i>
+
             </div>
+
 
             <div class="card-info-novo">
 
+
                 <span class="card-titulo-novo">
+
                     Sem estoque
+
                 </span>
 
+
                 <strong id="cardSemEstoque">
+
                     —
+
                 </strong>
+
 
                 <span
                     id="tendenciaSemEstoqueTexto"
                     class="kpi-tendencia positiva"
                 >
+
                     → 0
+
                 </span>
 
+
                 <small>
+
                     Produtos zerados
+
                 </small>
 
+
             </div>
 
-            <div class="spark-bars spark-vermelho" aria-hidden="true">
+
+            <div
+                class="spark-bars spark-vermelho"
+                aria-hidden="true"
+            >
+
                 <span style="height:18%"></span>
+
                 <span style="height:25%"></span>
+
                 <span style="height:34%"></span>
+
                 <span style="height:46%"></span>
+
                 <span style="height:59%"></span>
+
                 <span style="height:76%"></span>
+
                 <span style="height:100%"></span>
+
             </div>
+
 
         </div>
 
 
     </div>
-
-
-
 
 
     <!-- =====================================================
@@ -728,73 +1436,127 @@
 
     <div class="dashboard-faixa-alertas">
 
+
         <div class="alerta-principal">
 
+
             <div class="alerta-icone-grande">
+
                 !
+
             </div>
+
+
+            <div>
+
+
+                <strong>
+
+                    ATENÇÃO DO ESTOQUE
+
+                </strong>
+
+
+                <small>
+
+                    Situação atual do seu estoque
+
+                </small>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="alerta-indicador">
+
+
+            <span class="bolinha vermelho-fundo"></span>
+
 
             <div>
 
                 <strong>
-                    ATENÇÃO DO ESTOQUE
+                    —
                 </strong>
 
                 <small>
-                    Situação atual do seu estoque
+                    Produtos abaixo do mínimo
                 </small>
 
             </div>
 
-        </div>
-
-
-        <div class="alerta-indicador">
-
-            <span class="bolinha vermelho-fundo"></span>
-
-            <div>
-                <strong>—</strong>
-                <small>Produtos abaixo do mínimo</small>
-            </div>
 
         </div>
 
 
         <div class="alerta-indicador">
+
 
             <span class="bolinha escuro-fundo"></span>
 
+
             <div>
-                <strong>—</strong>
-                <small>Produtos sem estoque</small>
+
+                <strong>
+                    —
+                </strong>
+
+                <small>
+                    Produtos sem estoque
+                </small>
+
             </div>
+
 
         </div>
 
 
         <div class="alerta-indicador">
+
 
             <span class="bolinha amarelo-fundo"></span>
 
+
             <div>
-                <strong>—</strong>
-                <small>Divergências de inventário</small>
+
+                <strong>
+                    —
+                </strong>
+
+                <small>
+                    Divergências de inventário
+                </small>
+
             </div>
+
 
         </div>
 
 
         <div class="alerta-indicador">
 
+
             <span class="bolinha azul-fundo"></span>
 
+
             <div>
-                <strong>—</strong>
-                <small>Posições disponíveis</small>
+
+                <strong>
+                    —
+                </strong>
+
+                <small>
+                    Posições disponíveis
+                </small>
+
             </div>
 
+
         </div>
+
 
     </div>
 
@@ -806,60 +1568,86 @@
     <div class="graficos dashboard-graficos-novos">
 
 
-        <!-- ENTRADAS X SAÍDAS -->
+        <!-- =================================================
+             ENTRADAS X SAÍDAS
+        ================================================== -->
 
         <div class="grafico-card dashboard-grafico-card">
 
+
             <div class="dashboard-cabecalho-grafico">
 
+
                 <h2>
+
                     Entradas x Saídas
+
                 </h2>
 
+
                 <span class="filtro-grafico">
+
                     Últimos 7 dias
+
                 </span>
+
 
             </div>
 
+
             <canvas id="graficoMovimentacoes"></canvas>
 
+
         </div>
 
-
-        <!-- OCUPAÇÃO -->
 
         <!-- =====================================================
-     TOP 5 OCUPAÇÃO DAS POSIÇÕES
-===================================================== -->
+             TOP 5 OCUPAÇÃO DAS POSIÇÕES
+        ===================================================== -->
 
-<div class="grafico-card dashboard-grafico-card">
+        <div class="grafico-card dashboard-grafico-card">
 
-    <div class="dashboard-cabecalho-grafico">
 
-        <h2>
-            Top 5 Ocupação das Posições
-        </h2>
+            <div class="dashboard-cabecalho-grafico">
 
-        <span class="filtro-grafico">
-            Ocupação
-        </span>
 
-    </div>
+                <h2>
 
-    <div
-        id="topOcupacaoPosicoes"
-        class="top-ocupacao-posicoes">
+                    Top 5 Ocupação das Posições
 
-        <div class="dashboard-vazio">
-            Carregando posições...
+                </h2>
+
+
+                <span class="filtro-grafico">
+
+                    Ocupação
+
+                </span>
+
+
+            </div>
+
+
+            <div
+                id="topOcupacaoPosicoes"
+                class="top-ocupacao-posicoes"
+            >
+
+
+                <div class="dashboard-vazio">
+
+                    Carregando posições...
+
+                </div>
+
+
+            </div>
+
+
         </div>
 
+
     </div>
-
-</div>
-
-</div>
 
 
     <!-- =====================================================
@@ -869,114 +1657,182 @@
     <div class="dashboard-grid-quatro">
 
 
-        <!-- TOP PRODUTOS -->
+        <!-- =================================================
+             TOP PRODUTOS
+        ================================================== -->
 
         <div class="painel dashboard-painel dashboard-painel-compacto">
 
+
             <div class="dashboard-titulo-painel">
+
 
                 <div>
 
+
                     <h2>
+
                         🏆 Top 5 Produtos
+
                     </h2>
 
+
                     <small>
+
                         Produtos com maior quantidade em estoque
+
                     </small>
+
 
                 </div>
 
+
                 <span class="dashboard-badge">
+
                     Estoque
+
                 </span>
 
+
             </div>
+
 
             <div
                 id="topProdutos"
-                class="dashboard-ranking">
+                class="dashboard-ranking"
+            >
+
 
                 <div class="dashboard-vazio">
+
                     Nenhum produto cadastrado.
+
                 </div>
 
+
             </div>
+
 
         </div>
 
 
-        <!-- ESTOQUE CRÍTICO -->
+        <!-- =================================================
+             ESTOQUE CRÍTICO
+        ================================================== -->
 
         <div class="painel dashboard-painel dashboard-painel-compacto">
 
+
             <div class="dashboard-titulo-painel">
+
 
                 <div>
 
+
                     <h2>
-                         ⚠ Top 5 Estoque Crítico
+
+                        ⚠ Top 5 Estoque Crítico
+
                     </h2>
 
+
                     <small>
+
                         Produtos abaixo da quantidade mínima
+
                     </small>
 
+
                 </div>
+
 
                 <span class="dashboard-badge badge-amarelo">
+
                     Abaixo do mínimo
+
                 </span>
+
 
             </div>
 
-         <div
-    id="estoqueCriticoDashboard"
-    class="dashboard-ranking">
 
-    <div class="dashboard-vazio">
-        Carregando estoque crítico...
-    </div>
-
-</div>
-
-        </div>
+            <div
+                id="estoqueCriticoDashboard"
+                class="dashboard-ranking"
+            >
 
 
-        <!-- TOP 5 DIVERGÊNCIAS -->
+                <div class="dashboard-vazio">
 
-        <div class="painel dashboard-painel dashboard-painel-compacto">
-
-            <div class="dashboard-titulo-painel">
-
-                <div>
-
-                    <h2>
-                        🔎 Top 5 Divergências
-                    </h2>
-
-                    <small>
-                        Maiores diferenças entre sistema e contado
-                    </small>
+                    Carregando estoque crítico...
 
                 </div>
 
-                <span class="dashboard-badge badge-roxo">
-                    Inventário
-                </span>
 
             </div>
-<div
-    id="topDivergencias"
-    class="dashboard-ranking">
 
-    <div class="dashboard-vazio">
-        Carregando divergências...
-    </div>
-
-</div>
 
         </div>
+
+
+        <!-- =================================================
+             TOP 5 DIVERGÊNCIAS
+        ================================================== -->
+
+        <div class="painel dashboard-painel dashboard-painel-compacto">
+
+
+            <div class="dashboard-titulo-painel">
+
+
+                <div>
+
+
+                    <h2>
+
+                        🔎 Top 5 Divergências
+
+                    </h2>
+
+
+                    <small>
+
+                        Maiores diferenças entre sistema e contado
+
+                    </small>
+
+
+                </div>
+
+
+                <span class="dashboard-badge badge-roxo">
+
+                    Inventário
+
+                </span>
+
+
+            </div>
+
+
+            <div
+                id="topDivergencias"
+                class="dashboard-ranking"
+            >
+
+
+                <div class="dashboard-vazio">
+
+                    Carregando divergências...
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
 
     </div>
 
@@ -988,23 +1844,36 @@
 
     <div class="painel dashboard-painel dashboard-resumo-existente">
 
+
         <div class="dashboard-titulo-painel">
+
 
             <div>
 
+
                 <h2>
+
                     Resumo das Movimentações
+
                 </h2>
 
+
                 <small>
+
                     Informações operacionais registradas hoje
+
                 </small>
+
 
             </div>
 
+
             <span class="dashboard-badge">
+
                 Hoje
+
             </span>
+
 
         </div>
 
@@ -1014,80 +1883,130 @@
 
             <div class="resumo-movimento-item entrada">
 
+
                 <div class="resumo-movimento-icone">
+
                     📥
+
                 </div>
+
 
                 <div>
 
-                    <span>Entradas</span>
+
+                    <span>
+                        Entradas
+                    </span>
+
 
                     <strong id="resumoEntradas">
+
                         0
+
                     </strong>
 
+
                 </div>
+
 
             </div>
 
 
             <div class="resumo-movimento-item saida">
 
+
                 <div class="resumo-movimento-icone">
+
                     📤
+
                 </div>
+
 
                 <div>
 
-                    <span>Saídas</span>
+
+                    <span>
+                        Saídas
+                    </span>
+
 
                     <strong id="resumoSaidas">
+
                         0
+
                     </strong>
 
+
                 </div>
+
 
             </div>
 
 
             <div class="resumo-movimento-item transferencia">
 
+
                 <div class="resumo-movimento-icone">
+
                     🔄
+
                 </div>
+
 
                 <div>
 
-                    <span>Transferências</span>
+
+                    <span>
+                        Transferências
+                    </span>
+
 
                     <strong id="resumoTransferencias">
+
                         0
+
                     </strong>
 
+
                 </div>
+
 
             </div>
 
 
             <div class="resumo-movimento-item saldo">
 
+
                 <div class="resumo-movimento-icone">
+
                     📊
+
                 </div>
+
 
                 <div>
 
-                    <span>Saldo do Dia</span>
+
+                    <span>
+                        Saldo do Dia
+                    </span>
+
 
                     <strong id="resumoSaldo">
+
                         0
+
                     </strong>
+
 
                 </div>
 
+
             </div>
 
+
         </div>
+
 
     </div>
 
@@ -1098,79 +2017,129 @@
 
     <div class="painel dashboard-painel dashboard-movimentacoes-existentes">
 
+
         <div class="dashboard-titulo-painel">
+
 
             <div>
 
+
                 <h2>
+
                     Últimas Movimentações
+
                 </h2>
 
+
                 <small>
+
                     Entradas, saídas e transferências recentes
+
                 </small>
 
+
             </div>
+
 
             <button
                 type="button"
                 class="btn-dashboard-relatorio"
-                onclick="location.href='relatorios.html'">
+                onclick="location.href='relatorios.html'"
+            >
 
                 Ver Relatório
 
             </button>
+
 
         </div>
 
 
         <div class="dashboard-tabela-container">
 
+
             <table class="tabela dashboard-tabela">
+
 
                 <thead>
 
+
                     <tr>
 
-                        <th>Tipo</th>
 
-                        <th>Código</th>
+                        <th>
+                            Tipo
+                        </th>
 
-                        <th>Descrição</th>
 
-                        <th>Quantidade</th>
+                        <th>
+                            Código
+                        </th>
 
-                        <th>Origem</th>
 
-                        <th>Destino</th>
+                        <th>
+                            Descrição
+                        </th>
 
-                        <th>Data</th>
 
-                        <th>Operador</th>
+                        <th>
+                            Quantidade
+                        </th>
+
+
+                        <th>
+                            Origem
+                        </th>
+
+
+                        <th>
+                            Destino
+                        </th>
+
+
+                        <th>
+                            Data
+                        </th>
+
+
+                        <th>
+                            Operador
+                        </th>
+
 
                     </tr>
 
+
                 </thead>
+
 
                 <tbody id="ultimasMovimentacoes">
 
+
                     <tr>
+
 
                         <td
                             colspan="8"
-                            class="dashboard-sem-registro">
+                            class="dashboard-sem-registro"
+                        >
 
                             Nenhuma movimentação registrada.
 
                         </td>
 
+
                     </tr>
+
 
                 </tbody>
 
+
             </table>
 
+
         </div>
+
 
     </div>
 
@@ -1181,15 +2150,23 @@
 
     <footer class="dashboard-rodape">
 
-        <span>
-            SMI DO BRASIL — Sistema de Gerenciamento de Estoque
-        </span>
 
         <span>
-            WMS versão 2.0
+
+            SMI DO BRASIL — Sistema de Gerenciamento de Estoque
+
         </span>
+
+
+        <span>
+
+            WMS versão 2.0
+
+        </span>
+
 
     </footer>
+
 
 </div>
 
@@ -1210,47 +2187,91 @@
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
 
-    if (typeof lucide !== "undefined") {
-        lucide.createIcons();
-    }
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    const languagePlaceholder =
-        document.getElementById("language-placeholder");
 
-    const languageSwitcher =
-        document.getElementById("wms-language-switcher");
+        if (
+            typeof lucide !==
+            "undefined"
+        ) {
 
-    if (languagePlaceholder && languageSwitcher) {
-        languagePlaceholder.appendChild(languageSwitcher);
-    }
+            lucide.createIcons();
 
-    let paginaAtual =
-        window.location.pathname
-            .split("/")
-            .pop();
+        }
 
-    if (!paginaAtual) {
-        paginaAtual = "dashboard.html";
-    }
 
-    document
-        .querySelectorAll(".sidebar-wms-novo .menu-item")
-        .forEach(function (item) {
-
-            const pagina =
-                item.getAttribute("data-page");
-
-            item.classList.toggle(
-                "active",
-                pagina === paginaAtual
+        const languagePlaceholder =
+            document.getElementById(
+                "language-placeholder"
             );
 
-        });
 
-});
+        const languageSwitcher =
+            document.getElementById(
+                "wms-language-switcher"
+            );
+
+
+        if (
+            languagePlaceholder &&
+            languageSwitcher
+        ) {
+
+            languagePlaceholder.appendChild(
+                languageSwitcher
+            );
+
+        }
+
+
+        let paginaAtual =
+            window.location.pathname
+                .split("/")
+                .pop();
+
+
+        if (
+            !paginaAtual
+        ) {
+
+            paginaAtual =
+                "dashboard.html";
+
+        }
+
+
+        document
+            .querySelectorAll(
+                ".sidebar-wms-novo .menu-item"
+            )
+            .forEach(
+                function (item) {
+
+
+                    const pagina =
+                        item.getAttribute(
+                            "data-page"
+                        );
+
+
+                    item.classList.toggle(
+                        "active",
+                        pagina === paginaAtual
+                    );
+
+
+                }
+            );
+
+
+    }
+);
+
 </script>
+
 
 </body>
 
