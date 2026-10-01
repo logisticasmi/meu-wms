@@ -30,7 +30,9 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-html { scroll-behavior: smooth; }
+html {
+    scroll-behavior: smooth;
+}
 
 body {
     min-height: 100vh;
@@ -38,488 +40,1850 @@ body {
     color: var(--texto);
 }
 
-button, input, select { font: inherit; }
-button { transition: .2s ease; }
-button:hover { transform: translateY(-1px); }
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    transition: .2s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
 
 /* =====================================================
    LOGIN
 ===================================================== */
+
 .login-container {
     width: 100%;
     min-height: 100vh;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 24px;
-   background:
-    linear-gradient(
-        rgba(3, 45, 99, 0.68),
-        rgba(13, 90, 161, 0.68)
-    ),
-    url("img/operacao-login.png");
 
-background-size: cover;
-background-position: center;
-background-repeat: no-repeat;
+    padding: 24px;
+
+    background:
+        linear-gradient(
+            rgba(3, 45, 99, 0.68),
+            rgba(13, 90, 161, 0.68)
+        ),
+        url("img/operacao-login.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .login-box {
     width: min(430px, 100%);
+
     padding: 42px;
+
     text-align: center;
+
     background: var(--branco);
+
     border-radius: 20px;
-    box-shadow: 0 24px 55px rgba(0,0,0,.22);
+
+    box-shadow:
+        0 24px 55px rgba(0, 0, 0, .22);
 }
 
-.logo-login { margin-bottom: 20px; }
-.logo-login img { width: 220px; max-width: 100%; }
-.login-box h1 { color: var(--azul-700); margin-bottom: 8px; }
-.login-box p { color: var(--texto-suave); margin-bottom: 26px; }
+.logo-login {
+    margin-bottom: 20px;
+}
+
+.logo-login img {
+    width: 220px;
+    max-width: 100%;
+}
+
+.login-box h1 {
+    color: var(--azul-700);
+    margin-bottom: 8px;
+}
+
+.login-box p {
+    color: var(--texto-suave);
+    margin-bottom: 26px;
+}
+
 .login-box input {
     width: 100%;
+
     padding: 14px;
+
     margin-bottom: 15px;
-    border: 1px solid var(--borda);
+
+    border:
+        1px solid var(--borda);
+
     border-radius: 10px;
+
     outline: none;
 }
-.login-box input:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px rgba(18,100,232,.12); }
+
+.login-box input:focus {
+    border-color:
+        var(--azul-600);
+
+    box-shadow:
+        0 0 0 3px rgba(18, 100, 232, .12);
+}
+
 .login-box button {
     width: 100%;
+
     padding: 14px;
+
     color: #fff;
-    background: var(--azul-700);
+
+    background:
+        var(--azul-700);
+
     border: 0;
+
     border-radius: 10px;
+
     cursor: pointer;
+
     font-weight: 700;
 }
-#erro { display: block; margin-top: 14px; color: var(--vermelho); font-weight: 700; }
+
+#erro {
+    display: block;
+
+    margin-top: 14px;
+
+    color:
+        var(--vermelho);
+
+    font-weight: 700;
+}
+
 
 /* =====================================================
    MENU LATERAL
 ===================================================== */
+
 .sidebar {
     position: fixed;
-    inset: 0 auto 0 0;
+
+    inset:
+        0 auto 0 0;
+
     width: 245px;
+
     height: 100vh;
+
     overflow-y: auto;
+
     color: #fff;
-    background: linear-gradient(180deg, var(--azul-900), var(--azul-800) 55%, #003266);
-    box-shadow: 5px 0 24px rgba(0,30,69,.17);
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--azul-900),
+            var(--azul-800) 55%,
+            #003266
+        );
+
+    box-shadow:
+        5px 0 24px rgba(0, 30, 69, .17);
+
     z-index: 100;
 }
 
-.logo { padding: 25px 18px 10px; text-align: center; }
-.logo img { width: 195px; max-width: 100%; }
-.sidebar h2 { margin: 5px 0 24px; text-align: center; font-size: 27px; }
-.sidebar ul { list-style: none; padding: 8px 13px 20px; }
-.sidebar li, .sidebar a {
+.logo {
+    padding:
+        25px 18px 10px;
+
+    text-align: center;
+}
+
+.logo img {
+    width: 195px;
+
+    max-width: 100%;
+}
+
+.sidebar h2 {
+    margin:
+        5px 0 24px;
+
+    text-align: center;
+
+    font-size: 27px;
+}
+
+.sidebar ul {
+    list-style: none;
+
+    padding:
+        8px 13px 20px;
+}
+
+.sidebar li,
+.sidebar a {
     display: block;
+
     padding: 14px;
+
     margin-bottom: 7px;
+
     color: #fff;
+
     text-decoration: none;
+
     border-radius: 9px;
+
     cursor: pointer;
+
     font-size: 15px;
+
     font-weight: 500;
 }
-.sidebar li:hover, .sidebar a:hover { background: rgba(255,255,255,.10); }
+
+.sidebar li:hover,
+.sidebar a:hover {
+    background:
+        rgba(255, 255, 255, .10);
+}
+
 .sidebar .ativo {
     color: #fff;
-    background: linear-gradient(135deg, var(--azul-600), var(--azul-500));
-    box-shadow: 0 8px 18px rgba(18,100,232,.30);
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--azul-600),
+            var(--azul-500)
+        );
+
+    box-shadow:
+        0 8px 18px rgba(18, 100, 232, .30);
+
     font-weight: 700;
 }
+
 .sidebar > button {
-    margin: 12px 18px 25px;
-    width: calc(100% - 36px);
+    margin:
+        12px 18px 25px;
+
+    width:
+        calc(100% - 36px);
+
     padding: 11px;
+
     border: 0;
+
     border-radius: 8px;
+
     color: #fff;
-    background: rgba(255,255,255,.12);
+
+    background:
+        rgba(255, 255, 255, .12);
+
     cursor: pointer;
 }
+
 
 /* =====================================================
    ÁREA PRINCIPAL E TOPO
 ===================================================== */
+
 .conteudo {
     min-height: 100vh;
+
     margin-left: 245px;
-    padding: 28px 24px 40px;
-    background: var(--fundo);
+
+    padding:
+        28px 24px 40px;
+
+    background:
+        var(--fundo);
 }
 
-.topbar, .conteudo > header {
+.topbar,
+.conteudo > header {
     display: flex;
-    justify-content: space-between;
+
+    justify-content:
+        space-between;
+
     align-items: center;
+
     gap: 20px;
+
     margin-bottom: 28px;
 }
 
-.titulo-pagina h1, .conteudo > header h1, .conteudo > h1 {
+.titulo-pagina h1,
+.conteudo > header h1,
+.conteudo > h1 {
     color: #062b60;
+
     font-size: 34px;
+
     margin-bottom: 5px;
 }
-.titulo-pagina small { color: #3d5c7e; font-size: 15px; }
-.usuario { display: flex; align-items: center; gap: 14px; color: #445160; }
-.usuario button, .conteudo > header button {
-    padding: 10px 17px;
+
+.titulo-pagina small {
+    color: #3d5c7e;
+
+    font-size: 15px;
+}
+
+.usuario {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    color: #445160;
+}
+
+.usuario button,
+.conteudo > header button {
+    padding:
+        10px 17px;
+
     border: 0;
+
     border-radius: 8px;
+
     color: #fff;
+
     background: #c81424;
+
     cursor: pointer;
+
     font-weight: 700;
 }
+
 
 /* =====================================================
    CARDS DO DASHBOARD
 ===================================================== */
+
 .cards-dashboard {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    grid-template-columns:
+        repeat(
+            5,
+            minmax(
+                0,
+                1fr
+            )
+        );
+
     gap: 16px;
+
     width: 100%;
-    margin: 22px auto 24px;
+
+    margin:
+        22px auto 24px;
 }
+
 .card-dashboard {
     position: relative;
+
     display: flex;
+
     align-items: center;
+
     gap: 16px;
+
     width: 100%;
+
     min-width: 0;
+
     height: 160px;
+
     padding: 20px;
+
     overflow: hidden;
+
     background: #fff;
-    border: 1px solid var(--borda);
+
+    border:
+        1px solid var(--borda);
+
     border-radius: 14px;
-    box-shadow: var(--sombra);
+
+    box-shadow:
+        var(--sombra);
 }
-.card-dashboard:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,30,69,.12); }
+
+.card-dashboard:hover {
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 10px 24px rgba(0, 30, 69, .12);
+}
+
 .icone-card {
     width: 58px;
+
     height: 58px;
+
     min-width: 58px;
+
     display: flex;
+
     justify-content: center;
+
     align-items: center;
+
     border-radius: 50%;
+
     color: #fff;
+
     font-size: 27px;
 }
-.icone-card.azul, .azul { background: linear-gradient(135deg, var(--azul-600), var(--azul-500)); }
-.icone-card.verde, .verde { background: linear-gradient(135deg, #0ba84f, #2bc66a); }
-.icone-card.amarelo, .amarelo { background: linear-gradient(135deg, #ff9200, #ffb11b); }
-.icone-card.vermelho, .vermelho { background: linear-gradient(135deg, #e31e2f, #ff4251); }
-.icone-card.roxo { background: linear-gradient(135deg, #6635d8, #8159e9); }
-.icone-card.turquesa { background: linear-gradient(135deg, #009daf, #19bdc9); }
+
+.icone-card.azul,
+.azul {
+    background:
+        linear-gradient(
+            135deg,
+            var(--azul-600),
+            var(--azul-500)
+        );
+}
+
+.icone-card.verde,
+.verde {
+    background:
+        linear-gradient(
+            135deg,
+            #0ba84f,
+            #2bc66a
+        );
+}
+
+.icone-card.amarelo,
+.amarelo {
+    background:
+        linear-gradient(
+            135deg,
+            #ff9200,
+            #ffb11b
+        );
+}
+
+.icone-card.vermelho,
+.vermelho {
+    background:
+        linear-gradient(
+            135deg,
+            #e31e2f,
+            #ff4251
+        );
+}
+
+.icone-card.roxo {
+    background:
+        linear-gradient(
+            135deg,
+            #6635d8,
+            #8159e9
+        );
+}
+
+.icone-card.turquesa {
+    background:
+        linear-gradient(
+            135deg,
+            #009daf,
+            #19bdc9
+        );
+}
+
 .card-dashboard-conteudo {
     min-width: 0;
+
     flex: 1;
+
     height: 100%;
+
     display: flex;
+
     flex-direction: column;
+
     justify-content: center;
+
     align-items: flex-start;
+
     position: relative;
+
     z-index: 2;
 }
-.card-dashboard h3 { margin: 0 0 7px; color: #0b2f5b; font-size: 14px; line-height: 1.2; }
-.card-dashboard h1 { margin: 0; color: #061c40; font-size: 27px; line-height: 1.1; white-space: nowrap; }
-.card-valor h1 { font-size: 21px; }
-.card-tendencia { margin-top: 7px; color: #6f7f92; font-size: 12px; line-height: 1.2; white-space: nowrap; }
-.tendencia-positiva { color: #18a957; font-weight: 600; }
+
+.card-dashboard h3 {
+    margin:
+        0 0 7px;
+
+    color: #0b2f5b;
+
+    font-size: 14px;
+
+    line-height: 1.2;
+}
+
+.card-dashboard h1 {
+    margin: 0;
+
+    color: #061c40;
+
+    font-size: 27px;
+
+    line-height: 1.1;
+
+    white-space: nowrap;
+}
+
+.card-valor h1 {
+    font-size: 21px;
+}
+
+.card-tendencia {
+    margin-top: 7px;
+
+    color: #6f7f92;
+
+    font-size: 12px;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+}
+
+.tendencia-positiva {
+    color: #18a957;
+
+    font-weight: 600;
+}
+
 .card-produtos .card-dashboard-conteudo,
 .card-quantidade .card-dashboard-conteudo,
-.card-valor .card-dashboard-conteudo { padding-bottom: 32px; }
-.mini-grafico { position: absolute; right: 12px; bottom: 10px; width: 94px; height: 40px; }
-.mini-grafico canvas { display: block; width: 94px !important; height: 40px !important; }
-.progresso-card { width: 100%; max-width: 145px; height: 7px; margin-top: 12px; overflow: hidden; background: #e9eef5; border-radius: 20px; }
-.progresso-card-preenchimento { height: 100%; border-radius: 20px; transition: width .6s ease; }
-.progresso-roxo { background: linear-gradient(90deg, #6635d8, #8159e9); }
-.progresso-turquesa { background: linear-gradient(90deg, #009daf, #19bdc9); }
+.card-valor .card-dashboard-conteudo {
+    padding-bottom: 32px;
+}
+
+.mini-grafico {
+    position: absolute;
+
+    right: 12px;
+
+    bottom: 10px;
+
+    width: 94px;
+
+    height: 40px;
+}
+
+.mini-grafico canvas {
+    display: block;
+
+    width:
+        94px !important;
+
+    height:
+        40px !important;
+}
+
+.progresso-card {
+    width: 100%;
+
+    max-width: 145px;
+
+    height: 7px;
+
+    margin-top: 12px;
+
+    overflow: hidden;
+
+    background: #e9eef5;
+
+    border-radius: 20px;
+}
+
+.progresso-card-preenchimento {
+    height: 100%;
+
+    border-radius: 20px;
+
+    transition:
+        width .6s ease;
+}
+
+.progresso-roxo {
+    background:
+        linear-gradient(
+            90deg,
+            #6635d8,
+            #8159e9
+        );
+}
+
+.progresso-turquesa {
+    background:
+        linear-gradient(
+            90deg,
+            #009daf,
+            #19bdc9
+        );
+}
+
 
 /* =====================================================
    GRÁFICOS E PAINÉIS
 ===================================================== */
-.graficos { display: grid; grid-template-columns: 1.15fr 1fr; gap: 14px; margin: 0 0 18px; }
-.grafico-card, .painel, .card {
-    background: #fff;
-    border: 1px solid var(--borda);
-    border-radius: 14px;
-    box-shadow: var(--sombra);
+
+.graficos {
+    display: grid;
+
+    grid-template-columns:
+        1.15fr 1fr;
+
+    gap: 14px;
+
+    margin:
+        0 0 18px;
 }
-.grafico-card { min-height: 340px; padding: 22px; }
-.grafico-card h2, .painel h2, .card h2 { color: #062b60; font-size: 18px; margin-bottom: 18px; }
-.grafico-card canvas { width: 100% !important; height: 290px !important; }
-.painel, .card { padding: 24px; margin-top: 22px; }
-.dashboard-grid-secundario { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 22px; }
-.dashboard-painel { margin-top: 0; }
-.dashboard-titulo-painel { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
-.dashboard-titulo-painel small { color: #8994a1; }
-.dashboard-badge { padding: 7px 12px; border-radius: 20px; background: #e8f1ff; color: var(--azul-600); font-size: 12px; font-weight: 700; }
-.dashboard-ranking { display: flex; flex-direction: column; gap: 18px; }
-.dashboard-ranking-cabecalho { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }
-.dashboard-ranking-identificacao { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.dashboard-ranking-numero { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #edf4ff; color: var(--azul-600); font-weight: 700; }
-.dashboard-ranking-identificacao strong, .dashboard-ranking-identificacao small { display: block; }
-.dashboard-ranking-identificacao small { color: #8b96a2; margin-top: 4px; font-size: 12px; }
-.dashboard-barra { width: 100%; height: 7px; overflow: hidden; background: #e9eef5; border-radius: 20px; }
-.dashboard-barra-preenchimento { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--azul-600), var(--azul-500)); }
-.dashboard-vazio, .dashboard-sem-registro { padding: 28px !important; text-align: center; color: #8a96a3; }
 
-.resumo-movimentacoes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-.resumo-movimento-item { display: flex; align-items: center; gap: 15px; padding: 18px; border-radius: 14px; }
-.resumo-movimento-icone { width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: 14px; font-size: 23px; }
-.resumo-movimento-item span { display: block; margin-bottom: 5px; color: #687585; font-size: 13px; }
-.resumo-movimento-item strong { font-size: 25px; color: #253444; }
-.resumo-movimento-item.entrada { background: #effbf3; }.resumo-movimento-item.entrada .resumo-movimento-icone{background:#d7f7e2}
-.resumo-movimento-item.saida { background: #fff2f2; }.resumo-movimento-item.saida .resumo-movimento-icone{background:#ffdede}
-.resumo-movimento-item.transferencia { background: #f5f1ff; }.resumo-movimento-item.transferencia .resumo-movimento-icone{background:#e8ddff}
-.resumo-movimento-item.saldo { background: #eef7ff; }.resumo-movimento-item.saldo .resumo-movimento-icone{background:#dcecff}
+.grafico-card,
+.painel,
+.card {
+    background: #fff;
 
-.btn-dashboard-relatorio, .btn, .btnImportar {
-    padding: 11px 18px;
-    color: #fff;
-    background: var(--azul-700);
-    border: 0;
-    border-radius: 8px;
-    cursor: pointer;
+    border:
+        1px solid var(--borda);
+
+    border-radius: 14px;
+
+    box-shadow:
+        var(--sombra);
+}
+
+.grafico-card {
+    min-height: 340px;
+
+    padding: 22px;
+}
+
+.grafico-card h2,
+.painel h2,
+.card h2 {
+    color: #062b60;
+
+    font-size: 18px;
+
+    margin-bottom: 18px;
+}
+
+.grafico-card canvas {
+    width:
+        100% !important;
+
+    height:
+        290px !important;
+}
+
+.painel,
+.card {
+    padding: 24px;
+
+    margin-top: 22px;
+}
+
+.dashboard-grid-secundario {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 20px;
+
+    margin-bottom: 22px;
+}
+
+.dashboard-painel {
+    margin-top: 0;
+}
+
+.dashboard-titulo-painel {
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        flex-start;
+
+    gap: 14px;
+
+    margin-bottom: 20px;
+}
+
+.dashboard-titulo-painel small {
+    color: #8994a1;
+}
+
+.dashboard-badge {
+    padding:
+        7px 12px;
+
+    border-radius: 20px;
+
+    background: #e8f1ff;
+
+    color:
+        var(--azul-600);
+
+    font-size: 12px;
+
     font-weight: 700;
 }
-.btn-verde { background: var(--verde); }
-.btn-vermelho { background: var(--vermelho); }
-.btn-amarelo { background: var(--amarelo); }
-.dashboard-rodape { display: flex; justify-content: space-between; gap: 15px; padding: 24px 5px 5px; color: #8b96a2; font-size: 12px; }
+
+.dashboard-ranking {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+.dashboard-ranking-cabecalho {
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 8px;
+}
+
+.dashboard-ranking-identificacao {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 0;
+}
+
+.dashboard-ranking-numero {
+    width: 32px;
+
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #edf4ff;
+
+    color:
+        var(--azul-600);
+
+    font-weight: 700;
+}
+
+.dashboard-ranking-identificacao strong,
+.dashboard-ranking-identificacao small {
+    display: block;
+}
+
+.dashboard-ranking-identificacao small {
+    color: #8b96a2;
+
+    margin-top: 4px;
+
+    font-size: 12px;
+}
+
+.dashboard-barra {
+    width: 100%;
+
+    height: 7px;
+
+    overflow: hidden;
+
+    background: #e9eef5;
+
+    border-radius: 20px;
+}
+
+.dashboard-barra-preenchimento {
+    height: 100%;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--azul-600),
+            var(--azul-500)
+        );
+}
+
+.dashboard-vazio,
+.dashboard-sem-registro {
+    padding:
+        28px !important;
+
+    text-align: center;
+
+    color: #8a96a3;
+}
+
+.resumo-movimentacoes {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 18px;
+}
+
+.resumo-movimento-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 18px;
+
+    border-radius: 14px;
+}
+
+.resumo-movimento-icone {
+    width: 48px;
+
+    height: 48px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 14px;
+
+    font-size: 23px;
+}
+
+.resumo-movimento-item span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #687585;
+
+    font-size: 13px;
+}
+
+.resumo-movimento-item strong {
+    font-size: 25px;
+
+    color: #253444;
+}
+
+.resumo-movimento-item.entrada {
+    background: #effbf3;
+}
+
+.resumo-movimento-item.entrada .resumo-movimento-icone {
+    background: #d7f7e2;
+}
+
+.resumo-movimento-item.saida {
+    background: #fff2f2;
+}
+
+.resumo-movimento-item.saida .resumo-movimento-icone {
+    background: #ffdede;
+}
+
+.resumo-movimento-item.transferencia {
+    background: #f5f1ff;
+}
+
+.resumo-movimento-item.transferencia .resumo-movimento-icone {
+    background: #e8ddff;
+}
+
+.resumo-movimento-item.saldo {
+    background: #eef7ff;
+}
+
+.resumo-movimento-item.saldo .resumo-movimento-icone {
+    background: #dcecff;
+}
+
+.btn-dashboard-relatorio,
+.btn,
+.btnImportar {
+    padding:
+        11px 18px;
+
+    color: #fff;
+
+    background:
+        var(--azul-700);
+
+    border: 0;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: 700;
+}
+
+.btn-verde {
+    background:
+        var(--verde);
+}
+
+.btn-vermelho {
+    background:
+        var(--vermelho);
+}
+
+.btn-amarelo {
+    background:
+        var(--amarelo);
+}
+
+.dashboard-rodape {
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    gap: 15px;
+
+    padding:
+        24px 5px 5px;
+
+    color: #8b96a2;
+
+    font-size: 12px;
+}
+
 
 /* =====================================================
    PRODUTOS E IMPORTAÇÃO
 ===================================================== */
+
 .importarExcel {
-    width: min(1000px, 100%);
-    margin: 20px auto 28px;
-    padding: 22px 25px;
+    width:
+        min(1000px, 100%);
+
+    margin:
+        20px auto 28px;
+
+    padding:
+        22px 25px;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     flex-wrap: wrap;
+
     gap: 22px;
+
     background: #fff;
-    border: 1px solid var(--borda);
+
+    border:
+        1px solid var(--borda);
+
     border-radius: 15px;
-    box-shadow: var(--sombra);
+
+    box-shadow:
+        var(--sombra);
 }
-.tituloExcel { display: flex; align-items: center; gap: 13px; color: #062b60; font-size: 18px; font-weight: 700; }
+
+.tituloExcel {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    color: #062b60;
+
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
 .icone-excel {
     width: 48px;
+
     height: 48px;
+
     min-width: 48px;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     color: #fff;
+
     background: #107c41;
+
     border-radius: 10px;
+
     font-size: 27px;
+
     font-weight: 700;
-    box-shadow: 0 5px 12px rgba(16,124,65,.22);
+
+    box-shadow:
+        0 5px 12px rgba(16, 124, 65, .22);
 }
-.importarExcel input { padding: 10px; border: 1px solid #ccd5df; border-radius: 8px; background: #fff; }
-.btnImportar { background: #063b73; }
-.btnImportar:hover { background: var(--azul-600); }
-.cliente-produto { display: inline-flex; justify-content: center; min-width: 58px; padding: 6px 12px; border-radius: 20px; background: #e8f1ff; color: var(--azul-600); font-size: 12px; font-weight: 700; }
-.endereco-produto { display: inline-flex; justify-content: center; min-width: 52px; padding: 6px 10px; border-radius: 8px; background: #f1f5f9; color: #16375b; font-weight: 700; }
-.acoes-produto, .acoes { display: flex; justify-content: center; align-items: center; gap: 7px; }
-.btn-acao, .acoes button {
-    width: 34px;
-    height: 34px;
-    padding: 0;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
+
+.importarExcel input {
+    padding: 10px;
+
+    border:
+        1px solid #ccd5df;
+
     border-radius: 8px;
+
+    background: #fff;
+}
+
+.btnImportar {
+    background: #063b73;
+}
+
+.btnImportar:hover {
+    background:
+        var(--azul-600);
+}
+
+.cliente-produto {
+    display: inline-flex;
+
+    justify-content: center;
+
+    min-width: 58px;
+
+    padding:
+        6px 12px;
+
+    border-radius: 20px;
+
+    background: #e8f1ff;
+
+    color:
+        var(--azul-600);
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+.endereco-produto {
+    display: inline-flex;
+
+    justify-content: center;
+
+    min-width: 52px;
+
+    padding:
+        6px 10px;
+
+    border-radius: 8px;
+
+    background: #f1f5f9;
+
+    color: #16375b;
+
+    font-weight: 700;
+}
+
+.acoes-produto,
+.acoes {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+.btn-acao,
+.acoes button {
+    width: 34px;
+
+    height: 34px;
+
+    padding: 0;
+
+    display: inline-flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 8px;
+
     cursor: pointer;
+
     font-size: 15px;
 }
-.btn-editar-produto { background: #fff7e6; border: 1px solid #ffd591; }
-.btn-excluir-produto { background: #fff1f0; border: 1px solid #ffa39e; }
+
+.btn-editar-produto {
+    background: #fff7e6;
+
+    border:
+        1px solid #ffd591;
+}
+
+.btn-excluir-produto {
+    background: #fff1f0;
+
+    border:
+        1px solid #ffa39e;
+}
+
 
 /* =====================================================
    TABELAS
 ===================================================== */
-.tabela, table { width: 100%; border-collapse: collapse; background: #fff; }
-.tabela { overflow: hidden; border: 1px solid var(--borda); border-radius: 12px; box-shadow: var(--sombra); }
-.tabela thead, table thead { background: #f7f9fc; color: #082653; }
-.tabela th, table th { padding: 14px; text-align: center; font-size: 13px; font-weight: 700; border-bottom: 1px solid #dbe4ee; }
-.tabela td, table td { padding: 14px; text-align: center; font-size: 13px; color: #1c3555; border-bottom: 1px solid #edf1f5; }
-.tabela tbody tr:hover, table tbody tr:hover { background: #f8fafc; }
-.dashboard-tabela-container { width: 100%; overflow-x: auto; }
-.dashboard-tabela { min-width: 950px; }
-.movimentacao-status { display: inline-flex; min-width: 92px; justify-content: center; padding: 7px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-.movimentacao-entrada { color:#15803d; background:#dcfce7; }
-.movimentacao-saida { color:#b91c1c; background:#fee2e2; }
-.movimentacao-transferencia { color:#6d28d9; background:#ede9fe; }
-.movimentacao-outros { color:#475569; background:#e2e8f0; }
+
+.tabela,
+table {
+    width: 100%;
+
+    border-collapse:
+        collapse;
+
+    background: #fff;
+}
+
+.tabela {
+    overflow: hidden;
+
+    border:
+        1px solid var(--borda);
+
+    border-radius: 12px;
+
+    box-shadow:
+        var(--sombra);
+}
+
+.tabela thead,
+table thead {
+    background: #f7f9fc;
+
+    color: #082653;
+}
+
+.tabela th,
+table th {
+    padding: 14px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    border-bottom:
+        1px solid #dbe4ee;
+}
+
+.tabela td,
+table td {
+    padding: 14px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    color: #1c3555;
+
+    border-bottom:
+        1px solid #edf1f5;
+}
+
+.tabela tbody tr:hover,
+table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.dashboard-tabela-container {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.dashboard-tabela {
+    min-width: 950px;
+}
+
+.movimentacao-status {
+    display: inline-flex;
+
+    min-width: 92px;
+
+    justify-content: center;
+
+    padding:
+        7px 10px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.movimentacao-entrada {
+    color: #15803d;
+
+    background: #dcfce7;
+}
+
+.movimentacao-saida {
+    color: #b91c1c;
+
+    background: #fee2e2;
+}
+
+.movimentacao-transferencia {
+    color: #6d28d9;
+
+    background: #ede9fe;
+}
+
+.movimentacao-outros {
+    color: #475569;
+
+    background: #e2e8f0;
+}
+
 
 /* =====================================================
    FORMULÁRIOS
 ===================================================== */
-input, select {
-    padding: 12px 14px;
-    border: 1px solid #d8e0e8;
+
+input,
+select {
+    padding:
+        12px 14px;
+
+    border:
+        1px solid #d8e0e8;
+
     border-radius: 8px;
+
     outline: none;
+
     background: #fff;
 }
-input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px rgba(18,100,232,.12); }
-.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
-.form-grid input, .form-grid select { width: 100%; }
-.form-acoes { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+
+input:focus,
+select:focus {
+    border-color:
+        var(--azul-600);
+
+    box-shadow:
+        0 0 0 3px rgba(18, 100, 232, .12);
+}
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                220px,
+                1fr
+            )
+        );
+
+    gap: 18px;
+}
+
+.form-grid input,
+.form-grid select {
+    width: 100%;
+}
+
+.form-acoes {
+    display: flex;
+
+    justify-content:
+        flex-end;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-top: 20px;
+}
+
 
 /* =====================================================
    POSIÇÕES E MODAL
 ===================================================== */
-#mapaEstoque, .mapa-estoque { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; margin-top: 20px; }
-.coluna-mapa { padding: 15px; background: #fff; border-radius: 14px; box-shadow: var(--sombra); }
-.coluna-mapa h3, .tituloRua { margin-bottom: 14px; padding-bottom: 8px; color: var(--azul-700); text-align: center; border-bottom: 2px solid #edf2f7; }
-.linhaPosicoes { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-bottom: 20px; }
-.posicao { padding: 12px; text-align: center; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 700; transition: .2s; }
-.posicao:hover { transform: scale(1.03); }
-.livre { background:#dcfce7; border:2px solid #22c55e; color:#166534; }
-.ocupada { background:#fee2e2; border:2px solid #ef4444; color:#991b1b; }
-.parcial { background:#fef3c7; border:2px solid #f59e0b; color:#92400e; }
-.modalPosicao { position: fixed; inset: 0; display: none; justify-content: center; align-items: center; padding: 20px; background: rgba(0,0,0,.45); z-index: 9999; }
-.modalConteudo { width: min(900px, 95%); max-height: 90vh; overflow: auto; padding: 25px; background: #fff; border-radius: 18px; box-shadow: 0 15px 40px rgba(0,0,0,.25); }
-.modalCabecalho { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-.modalCabecalho h2 { color: var(--azul-700); }
-.modalCabecalho button { width: 42px; height: 42px; border: 0; border-radius: 50%; color: #fff; background: var(--vermelho); cursor: pointer; }
-.tabelaPosicao { width: 100%; border-collapse: collapse; }
-.totalSku { margin-top: 18px; text-align: right; color: var(--azul-700); font-size: 18px; font-weight: 700; }
+
+#mapaEstoque,
+.mapa-estoque {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                210px,
+                1fr
+            )
+        );
+
+    gap: 18px;
+
+    margin-top: 20px;
+}
+
+.coluna-mapa {
+    padding: 15px;
+
+    background: #fff;
+
+    border-radius: 14px;
+
+    box-shadow:
+        var(--sombra);
+}
+
+.coluna-mapa h3,
+.tituloRua {
+    margin-bottom: 14px;
+
+    padding-bottom: 8px;
+
+    color:
+        var(--azul-700);
+
+    text-align: center;
+
+    border-bottom:
+        2px solid #edf2f7;
+}
+
+.linhaPosicoes {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                100px,
+                1fr
+            )
+        );
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.posicao {
+    padding: 12px;
+
+    text-align: center;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    transition: .2s;
+}
+
+.posicao:hover {
+    transform:
+        scale(1.03);
+}
+
+.livre {
+    background: #dcfce7;
+
+    border:
+        2px solid #22c55e;
+
+    color: #166534;
+}
+
+.ocupada {
+    background: #fee2e2;
+
+    border:
+        2px solid #ef4444;
+
+    color: #991b1b;
+}
+
+.parcial {
+    background: #fef3c7;
+
+    border:
+        2px solid #f59e0b;
+
+    color: #92400e;
+}
+
+.modalPosicao {
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0, 0, 0, .45);
+
+    z-index: 9999;
+}
+
+.modalConteudo {
+    width:
+        min(
+            900px,
+            95%
+        );
+
+    max-height: 90vh;
+
+    overflow: auto;
+
+    padding: 25px;
+
+    background: #fff;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, .25);
+}
+
+.modalCabecalho {
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+.modalCabecalho h2 {
+    color:
+        var(--azul-700);
+}
+
+.modalCabecalho button {
+    width: 42px;
+
+    height: 42px;
+
+    border: 0;
+
+    border-radius: 50%;
+
+    color: #fff;
+
+    background:
+        var(--vermelho);
+
+    cursor: pointer;
+}
+
+.tabelaPosicao {
+    width: 100%;
+
+    border-collapse:
+        collapse;
+}
+
+.totalSku {
+    margin-top: 18px;
+
+    text-align: right;
+
+    color:
+        var(--azul-700);
+
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
 
 /* =====================================================
    RELATÓRIOS E CONFIGURAÇÕES
 ===================================================== */
-.cards { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; margin-bottom: 20px; }
-.cards .card { margin-top: 0; text-align: center; }
-.cards .card h3 { color: #607080; font-size: 14px; margin-bottom: 10px; }
-.cards .card span { color: #062b60; font-size: 28px; font-weight: 700; }
+
+.cards {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(
+                0,
+                1fr
+            )
+        );
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+}
+
+.cards .card {
+    margin-top: 0;
+
+    text-align: center;
+}
+
+.cards .card h3 {
+    color: #607080;
+
+    font-size: 14px;
+
+    margin-bottom: 10px;
+}
+
+.cards .card span {
+    color: #062b60;
+
+    font-size: 28px;
+
+    font-weight: 700;
+}
+
 
 /* =====================================================
    UTILITÁRIOS
 ===================================================== */
-.text-center { text-align: center; }
-.text-right { text-align: right; }
-.hidden { display: none !important; }
-.w-100 { width: 100%; }
-.mt-10 { margin-top: 10px; }.mt-20 { margin-top: 20px; }.mt-30 { margin-top: 30px; }.mb-20 { margin-bottom: 20px; }
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: #edf2f7; }
-::-webkit-scrollbar-thumb { background: var(--azul-700); border-radius: 10px; }
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.hidden {
+    display:
+        none !important;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mt-30 {
+    margin-top: 30px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #edf2f7;
+}
+
+::-webkit-scrollbar-thumb {
+    background:
+        var(--azul-700);
+
+    border-radius: 10px;
+}
+
 
 /* =====================================================
    RESPONSIVIDADE
 ===================================================== */
+
 @media (max-width: 1500px) {
-    .cards-dashboard { grid-template-columns: repeat(3, minmax(220px,1fr)); }
+
+    .cards-dashboard {
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(
+                    220px,
+                    1fr
+                )
+            );
+    }
+
 }
+
+
 @media (max-width: 1100px) {
-    .cards-dashboard { grid-template-columns: repeat(2, minmax(220px,1fr)); }
-    .graficos, .dashboard-grid-secundario { grid-template-columns: 1fr; }
-    .resumo-movimentacoes, .cards { grid-template-columns: repeat(2, 1fr); }
+
+    .cards-dashboard {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(
+                    220px,
+                    1fr
+                )
+            );
+    }
+
+
+    .graficos,
+    .dashboard-grid-secundario {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .resumo-movimentacoes,
+    .cards {
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+    }
+
 }
+
+
 @media (max-width: 768px) {
-    .sidebar { position: relative; width: 100%; height: auto; }
-    .conteudo { margin-left: 0; padding: 20px 15px; }
-    .topbar, .conteudo > header { flex-direction: column; align-items: flex-start; }
-    .usuario { width: 100%; flex-wrap: wrap; }
-    .cards-dashboard, .resumo-movimentacoes, .cards { grid-template-columns: 1fr; }
-    .card-dashboard { height: 150px; }
-    .importarExcel { flex-direction: column; align-items: stretch; }
-    .tituloExcel { justify-content: center; }
-    .importarExcel input, .btnImportar { width: 100%; }
-    .tabela { display: block; overflow-x: auto; white-space: nowrap; }
-    .dashboard-rodape { flex-direction: column; align-items: flex-start; }
+
+    .sidebar {
+        position: relative;
+
+        width: 100%;
+
+        height: auto;
+    }
+
+
+    .conteudo {
+        margin-left: 0;
+
+        padding:
+            20px 15px;
+    }
+
+
+    .topbar,
+    .conteudo > header {
+        flex-direction: column;
+
+        align-items:
+            flex-start;
+    }
+
+
+    .usuario {
+        width: 100%;
+
+        flex-wrap: wrap;
+    }
+
+
+    .cards-dashboard,
+    .resumo-movimentacoes,
+    .cards {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .card-dashboard {
+        height: 150px;
+    }
+
+
+    .importarExcel {
+        flex-direction: column;
+
+        align-items:
+            stretch;
+    }
+
+
+    .tituloExcel {
+        justify-content:
+            center;
+    }
+
+
+    .importarExcel input,
+    .btnImportar {
+        width: 100%;
+    }
+
+
+    .tabela {
+        display: block;
+
+        overflow-x: auto;
+
+        white-space: nowrap;
+    }
+
+
+    .dashboard-rodape {
+        flex-direction: column;
+
+        align-items:
+            flex-start;
+    }
+
 }
+
 
 /* =======================================
    ÍCONE DO EXCEL
 ======================================= */
 
-.icone-excel{
+.icone-excel {
 
-    width:70px;
+    width: 70px;
 
-    height:70px;
+    height: 70px;
 
-    background:#107C41;
+    background: #107C41;
 
-    border-radius:16px;
+    border-radius: 16px;
 
-    display:flex;
+    display: flex;
 
-    justify-content:center;
+    justify-content: center;
 
-    align-items:center;
+    align-items: center;
 
-    box-shadow:0 8px 18px rgba(16,124,65,.30);
-
-}
-
-.icone-excel{
-
-    width:70px;
-
-    height:70px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    background:#107C41;
-
-    border-radius:16px;
-
-    overflow:hidden;
-
-    box-shadow:0 8px 20px rgba(16,124,65,.30);
+    box-shadow:
+        0 8px 18px rgba(16, 124, 65, .30);
 
 }
 
-.icone-excel{
 
-    width:70px;
-    height:70px;
+.icone-excel {
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    width: 70px;
 
-    background:#107C41;
+    height: 70px;
 
-    border-radius:16px;
+    display: flex;
 
-    overflow:hidden;
+    justify-content: center;
 
-    box-shadow:0 8px 18px rgba(16,124,65,.30);
+    align-items: center;
+
+    background: #107C41;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 20px rgba(16, 124, 65, .30);
 
 }
 
-.icone-excel{
 
-    width:70px;
+.icone-excel {
+
+    width: 70px;
+
+    height: 70px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: #107C41;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 18px rgba(16, 124, 65, .30);
+
+}
+
+
+.icone-excel {
+
+        width:70px;
     height:70px;
 
     display:flex;
@@ -621,6 +1985,7 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
 
 }
 
+
 /* =====================================================
    DASHBOARD NOVO - VISUAL MODELO
    Somente estilos do dashboard
@@ -630,11 +1995,13 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
     background: #f4f7fb;
 }
 
+
 /* TOPO */
 
 .dashboard-novo .topbar {
     margin-bottom: 20px;
 }
+
 
 /* =====================================================
    CARDS SUPERIORES
@@ -757,6 +2124,7 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
     margin-top: 12px;
 }
 
+
 /* =====================================================
    FAIXA DE ALERTAS
 ===================================================== */
@@ -848,6 +2216,7 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
     background: #287cff;
 }
 
+
 /* =====================================================
    GRÁFICOS
 ===================================================== */
@@ -889,6 +2258,7 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
     border-radius: 6px;
     font-size: 10px;
 }
+
 
 /* =====================================================
    QUATRO PAINÉIS INFERIORES
@@ -989,6 +2359,7 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
     font-size: 10px;
 }
 
+
 /* =====================================================
    RESUMO E MOVIMENTAÇÕES
 ===================================================== */
@@ -997,6 +2368,7 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
 .dashboard-movimentacoes-existentes {
     border-radius: 15px;
 }
+
 
 /* =====================================================
    RESPONSIVIDADE
@@ -1047,6 +2419,7 @@ input:focus, select:focus { border-color: var(--azul-600); box-shadow: 0 0 0 3px
     }
 
 }
+
 
 /* =====================================================
    AJUSTE FINAL DO DASHBOARD - REFERÊNCIA 21/08/2026
@@ -1154,6 +2527,7 @@ body:has(.dashboard-novo) .sidebar li {
     padding: 14px;
 }
 
+
 /* A referência escolhida termina nos quatro painéis.
    Estes blocos antigos continuam no HTML e no JS, apenas ficam ocultos no dashboard. */
 
@@ -1165,8 +2539,11 @@ body:has(.dashboard-novo) .sidebar li {
     border-radius: 12px;
 }
 
+
 /* Responsividade sem afetar o desktop da referência */
+
 @media (max-width: 1250px) {
+
     .dashboard-novo .dashboard-cards-principais {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
@@ -1174,9 +2551,11 @@ body:has(.dashboard-novo) .sidebar li {
     .dashboard-novo .dashboard-grid-quatro {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
 }
 
 @media (max-width: 900px) {
+
     body:has(.dashboard-novo) .sidebar {
         position: relative;
         width: 100%;
@@ -1190,15 +2569,19 @@ body:has(.dashboard-novo) .sidebar li {
     .dashboard-novo .dashboard-graficos-novos {
         grid-template-columns: 1fr;
     }
+
 }
 
 @media (max-width: 700px) {
+
     .dashboard-novo .dashboard-cards-principais,
     .dashboard-novo .dashboard-grid-quatro,
     .dashboard-novo .dashboard-faixa-alertas {
         grid-template-columns: 1fr;
     }
+
 }
+
 
 /* =====================================================
    TOP 5 DIVERGÊNCIAS - VISUAL FINAL
@@ -1306,11 +2689,13 @@ body:has(.dashboard-novo) .sidebar li {
     padding-left: 8px;
 }
 
+
 /* =====================================================
    MENU LATERAL - TAMANHO MAIOR
 ===================================================== */
 
 /* Itens do menu */
+
 .sidebar a,
 .sidebar nav a,
 .menu-lateral a,
@@ -1324,6 +2709,7 @@ body:has(.dashboard-novo) .sidebar li {
 }
 
 /* Qualquer texto dentro dos itens */
+
 .sidebar a span,
 .sidebar nav a span,
 .menu-lateral a span,
@@ -1333,6 +2719,7 @@ body:has(.dashboard-novo) .sidebar li {
 }
 
 /* Ícones */
+
 .sidebar a i,
 .sidebar nav a i,
 .sidebar a .icone,
@@ -1341,12 +2728,15 @@ body:has(.dashboard-novo) .sidebar li {
 }
 
 /* SMI WMS */
+
 .sidebar h1,
 .sidebar h2,
 .sidebar .titulo {
     font-size: 26px !important;
     font-weight: 700 !important;
 }
+
+
 /* =====================================================
    MENU LATERAL - AJUSTE DEFINITIVO
 ===================================================== */
@@ -1367,6 +2757,8 @@ body:has(.dashboard-novo) .sidebar li {
 body:has(.dashboard-novo) .sidebar h2 {
     font-size: 26px !important;
 }
+
+
 /* =====================================================
    MENU LATERAL - ALINHAMENTO ÍCONE + TEXTO
 ===================================================== */
@@ -1381,32 +2773,38 @@ body:has(.dashboard-novo) .sidebar li a {
 }
 
 /* Ícone sempre alinhado */
+
 body:has(.dashboard-novo) .sidebar li > span:first-child,
 body:has(.dashboard-novo) .sidebar li a > span:first-child {
     flex: 0 0 auto !important;
 }
 
 /* Texto não quebra para outra linha */
+
 body:has(.dashboard-novo) .sidebar li,
 body:has(.dashboard-novo) .sidebar li a {
     white-space: nowrap !important;
 }
+
 
 /* =====================================================
    MENU LATERAL PADRÃO - TODAS AS TELAS DO WMS
 ===================================================== */
 
 /* largura igual em todas as páginas */
+
 .sidebar {
     width: 185px !important;
 }
 
 /* conteúdo acompanha a largura do menu */
+
 .conteudo {
     margin-left: 185px !important;
 }
 
 /* logo */
+
 .logo {
     padding: 20px 12px 8px !important;
 }
@@ -1416,6 +2814,7 @@ body:has(.dashboard-novo) .sidebar li a {
 }
 
 /* SMI WMS */
+
 .sidebar h2 {
     margin: 4px 0 18px !important;
     font-size: 24px !important;
@@ -1423,11 +2822,13 @@ body:has(.dashboard-novo) .sidebar li a {
 }
 
 /* área dos itens */
+
 .sidebar ul {
     padding: 6px 12px 18px !important;
 }
 
 /* todos os itens */
+
 .sidebar li {
     display: flex !important;
     align-items: center !important;
@@ -1447,11 +2848,13 @@ body:has(.dashboard-novo) .sidebar li a {
 }
 
 /* caso alguma página use links no menu */
+
 .sidebar a {
     font-size: 17px !important;
     font-weight: 600 !important;
     white-space: nowrap !important;
 }
+
 
 /* =====================================================
    VELOCÍMETRO - OCUPAÇÃO DO ARMAZÉM
@@ -1520,6 +2923,8 @@ body:has(.dashboard-novo) .sidebar li a {
     color: #64748b;
     white-space: nowrap;
 }
+
+
 /* =====================================================
    TOP 5 OCUPAÇÃO DAS POSIÇÕES
 ===================================================== */
@@ -1587,6 +2992,8 @@ body:has(.dashboard-novo) .sidebar li a {
     font-weight: 700;
     color: #0f2747;
 }
+
+
 /* =====================================================
    DASHBOARD - 3 PAINÉIS INFERIORES LADO A LADO
 ===================================================== */
@@ -1598,34 +3005,41 @@ body:has(.dashboard-novo) .sidebar li a {
     width: 100% !important;
 }
 
+
 /* =====================================================
    DASHBOARD - TEXTOS DOS 3 PAINÉIS INFERIORES
 ===================================================== */
 
 /* Títulos dos cards */
+
 .dashboard-novo .dashboard-grid-quatro .dashboard-titulo-painel h2 {
     font-size: 16px !important;
 }
 
 /* Subtítulos */
+
 .dashboard-novo .dashboard-grid-quatro .dashboard-titulo-painel small {
     font-size: 11px !important;
 }
 
 /* Nome dos produtos */
+
 .dashboard-novo .dashboard-grid-quatro .dashboard-ranking strong {
     font-size: 12px !important;
 }
 
 /* Informações menores: código, estoque atual, mínimo etc. */
+
 .dashboard-novo .dashboard-grid-quatro .dashboard-ranking small {
     font-size: 10px !important;
 }
 
 /* Valores principais */
+
 .dashboard-novo .dashboard-grid-quatro .dashboard-ranking-valor {
     font-size: 12px !important;
 }
+
 
 /* =====================================================
    TOP 5 DIVERGÊNCIAS - TEXTO MAIOR
@@ -1634,6 +3048,8 @@ body:has(.dashboard-novo) .sidebar li a {
 .dashboard-novo .dashboard-divergencia-item
 .divergencia-produto-info strong {
     font-size: 12px !important;
+}
+
 }
 
 .dashboard-novo .dashboard-divergencia-item
@@ -1654,6 +3070,8 @@ body:has(.dashboard-novo) .sidebar li a {
 .dashboard-novo .divergencia-ranking-numero {
     font-size: 13px !important;
 }
+
+
 /* =====================================================
    TELA DE ENTRADAS - VISUAL MODELO
    Não altera as outras telas
@@ -1677,13 +3095,11 @@ body:has(.dashboard-novo) .sidebar li a {
     margin-bottom: 18px;
 }
 
-
 .pagina-entradas .topbar h1 {
     font-size: 32px;
     color: #062b60;
     margin-bottom: 4px;
 }
-
 
 .pagina-entradas .topbar small {
     font-size: 13px;
@@ -1702,7 +3118,6 @@ body:has(.dashboard-novo) .sidebar li a {
     margin-top: 18px;
 }
 
-
 .pagina-entradas .painel h2 {
     font-size: 18px;
     color: #062b60;
@@ -1717,7 +3132,6 @@ body:has(.dashboard-novo) .sidebar li a {
     padding: 20px 24px 22px;
 }
 
-
 .pagina-entradas .entrada-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1725,20 +3139,17 @@ body:has(.dashboard-novo) .sidebar li a {
     margin-top: 14px;
 }
 
-
 .pagina-entradas .entrada-coluna {
     display: flex;
     flex-direction: column;
     gap: 7px;
 }
 
-
 .pagina-entradas .entrada-coluna label {
     font-size: 13px;
     font-weight: 700;
     color: #183759;
 }
-
 
 .pagina-entradas .entrada-coluna input {
     width: 100%;
@@ -1750,7 +3161,6 @@ body:has(.dashboard-novo) .sidebar li a {
     color: #102d54;
     background: #ffffff;
 }
-
 
 .pagina-entradas .entrada-coluna input:focus {
     border-color: #0d4b8f;
@@ -1766,11 +3176,9 @@ body:has(.dashboard-novo) .sidebar li a {
     position: relative;
 }
 
-
 .pagina-entradas .campo-com-icone input {
     padding-right: 42px;
 }
-
 
 .pagina-entradas .icone-campo {
     position: absolute;
@@ -1799,13 +3207,11 @@ body:has(.dashboard-novo) .sidebar li a {
     gap: 12px;
 }
 
-
 .pagina-entradas .produto-entrada-info {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-
 
 .pagina-entradas .produto-entrada-icone {
     width: 34px;
@@ -1816,13 +3222,11 @@ body:has(.dashboard-novo) .sidebar li a {
     font-size: 20px;
 }
 
-
 .pagina-entradas .produto-entrada-info strong {
     display: block;
     font-size: 13px;
     color: #123d73;
 }
-
 
 .pagina-entradas .produto-entrada-info small {
     display: block;
@@ -1831,19 +3235,16 @@ body:has(.dashboard-novo) .sidebar li a {
     color: #63758a;
 }
 
-
 .pagina-entradas .produto-estoque-atual {
     min-width: 100px;
     text-align: right;
 }
-
 
 .pagina-entradas .produto-estoque-atual small {
     display: block;
     font-size: 11px;
     color: #60738b;
 }
-
 
 .pagina-entradas .produto-estoque-atual strong {
     font-size: 24px;
@@ -1870,7 +3271,6 @@ body:has(.dashboard-novo) .sidebar li a {
     background: linear-gradient(90deg, #effbf3, #f7fdf9);
 }
 
-
 .pagina-entradas .novo-saldo-icone {
     width: 26px;
     height: 26px;
@@ -1886,13 +3286,11 @@ body:has(.dashboard-novo) .sidebar li a {
     font-weight: 700;
 }
 
-
 .pagina-entradas .card-novo-saldo small {
     display: block;
     font-size: 11px;
     color: #34704c;
 }
-
 
 .pagina-entradas .card-novo-saldo strong {
     display: inline-block;
@@ -1935,7 +3333,6 @@ body:has(.dashboard-novo) .sidebar li a {
     justify-content: flex-end;
 }
 
-
 .pagina-entradas .btn-registrar-entrada-novo {
     width: 100%;
     min-height: 64px;
@@ -1958,7 +3355,6 @@ body:has(.dashboard-novo) .sidebar li a {
     cursor: pointer;
 }
 
-
 .pagina-entradas .btn-registrar-entrada-novo:hover {
     box-shadow: 0 7px 17px rgba(5, 58, 112, 0.18);
 }
@@ -1977,7 +3373,6 @@ body:has(.dashboard-novo) .sidebar li a {
     min-height: 92px;
 }
 
-
 .pagina-entradas .resumo-entrada-titulo {
     display: flex;
     align-items: center;
@@ -1986,7 +3381,6 @@ body:has(.dashboard-novo) .sidebar li a {
     font-size: 14px;
     color: #123d73;
 }
-
 
 .pagina-entradas .resumo-item {
     min-height: 62px;
@@ -1999,7 +3393,6 @@ body:has(.dashboard-novo) .sidebar li a {
 
     border-left: 1px solid #dde5ef;
 }
-
 
 .pagina-entradas .resumo-icone {
     width: 42px;
@@ -2017,13 +3410,11 @@ body:has(.dashboard-novo) .sidebar li a {
     font-size: 18px;
 }
 
-
 .pagina-entradas .resumo-item small {
     display: block;
     font-size: 11px;
     color: #405974;
 }
-
 
 .pagina-entradas .resumo-item strong {
     display: block;
@@ -2032,7 +3423,6 @@ body:has(.dashboard-novo) .sidebar li a {
     font-size: 22px;
     color: #123d73;
 }
-
 
 .pagina-entradas .resumo-item span {
     display: block;
@@ -2055,7 +3445,6 @@ body:has(.dashboard-novo) .sidebar li a {
     margin: 14px 0 12px;
 }
 
-
 .pagina-entradas .busca-historico-entrada {
     width: 480px;
     max-width: 100%;
@@ -2072,7 +3461,6 @@ body:has(.dashboard-novo) .sidebar li a {
     background: #ffffff;
 }
 
-
 .pagina-entradas .busca-historico-entrada input {
     flex: 1;
     height: 38px;
@@ -2083,7 +3471,6 @@ body:has(.dashboard-novo) .sidebar li a {
     font-size: 13px;
 }
 
-
 .pagina-entradas .periodo-historico-entrada {
     display: flex;
     align-items: center;
@@ -2092,7 +3479,6 @@ body:has(.dashboard-novo) .sidebar li a {
     font-size: 13px;
     color: #263e59;
 }
-
 
 .pagina-entradas .periodo-historico-entrada select {
     min-width: 150px;
@@ -2114,12 +3500,10 @@ body:has(.dashboard-novo) .sidebar li a {
     box-shadow: none;
 }
 
-
 .pagina-entradas .tabela th {
     padding: 11px 10px;
     font-size: 12px;
 }
-
 
 .pagina-entradas .tabela td {
     padding: 11px 10px;
@@ -2140,7 +3524,6 @@ body:has(.dashboard-novo) .sidebar li a {
     color: #60738a;
 }
 
-
 .pagina-entradas .btn-exportar-entrada {
     padding: 9px 14px;
 
@@ -2154,6 +3537,611 @@ body:has(.dashboard-novo) .sidebar li a {
     font-weight: 700;
 
     cursor: pointer;
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.pagina-entradas .toast-entrada {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+
+    transform: translate(-50%, 25px);
+
+    opacity: 0;
+    pointer-events: none;
+
+    min-width: 360px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 18px;
+
+    border: 1px solid #b9dfc4;
+    border-radius: 8px;
+
+    background: #edf9f0;
+
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.12);
+
+    color: #206e3d;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    z-index: 9999;
+
+    transition: 0.3s;
+}
+
+.pagina-entradas .toast-entrada.mostrar {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+
+/* =====================================================
+   AUXILIAR
+===================================================== */
+
+.pagina-entradas .oculto {
+    display: none !important;
+}
+
+
+/* =====================================================
+   RESPONSIVO
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .pagina-entradas .entrada-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pagina-entradas .resumo-entrada-dia {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .pagina-entradas .resumo-item {
+        border-left: 0;
+        padding-left: 0;
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .pagina-entradas .resumo-entrada-dia {
+        grid-template-columns: 1fr;
+    }
+
+    .pagina-entradas .historico-entrada-filtros {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pagina-entradas .busca-historico-entrada {
+        width: 100%;
+    }
+
+}
+
+
+/* style.css - PARTE 2 DE 2 */
+
+
+/* =====================================================
+   ENTRADAS - CORES DO RESUMO DO DIA
+===================================================== */
+
+/* ENTRADAS HOJE - AZUL */
+
+.pagina-entradas .resumo-item:nth-child(2) .resumo-icone {
+    background: #2f80ed !important;
+    color: #ffffff !important;
+}
+
+
+/* UNIDADES RECEBIDAS - TURQUESA */
+
+.pagina-entradas .resumo-item:nth-child(3) .resumo-icone {
+    background: #20b7bd !important;
+    color: #ffffff !important;
+}
+
+
+/* ÚLTIMA ENTRADA - ROXO */
+
+.pagina-entradas .resumo-item:nth-child(4) .resumo-icone {
+    background: #6528c8 !important;
+    color: #ffffff !important;
+}
+
+
+/* OPERADOR - VERDE */
+
+.pagina-entradas .resumo-item:nth-child(5) .resumo-icone {
+    background: #35a85b !important;
+    color: #ffffff !important;
+}
+
+
+/* =====================================================
+   STATUS DA CONTAGEM - PRODUTOS
+===================================================== */
+
+.status-contagem-produto {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-contagem-produto.contado {
+    color: #15803d;
+    background: #dcfce7;
+}
+
+.status-contagem-produto.pendente {
+    color: #b45309;
+    background: #fef3c7;
+}
+
+.status-contagem-produto.sem-posicao {
+    color: #64748b;
+    background: #f1f5f9;
+}
+
+
+/* =====================================================
+   MENU LATERAL NOVO - PADRÃO OFICIAL SMI WMS
+   Esta seção fica no FINAL do style.css para sobrescrever
+   os estilos antigos do menu sem afetar as demais telas.
+===================================================== */
+
+.sidebar.sidebar-wms-novo {
+    position: fixed !important;
+    inset: 0 auto 0 0 !important;
+    width: 190px !important;
+    height: 100vh !important;
+    padding: 12px 9px 10px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    color: #ffffff !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            #062c5b 0%,
+            #04264e 52%,
+            #031f41 100%
+        ) !important;
+
+    box-shadow:
+        5px 0 18px rgba(0, 30, 69, .15) !important;
+
+    z-index: 1000 !important;
+
+    scrollbar-width: thin;
+    scrollbar-color: #1680e8 transparent;
+}
+
+.sidebar.sidebar-wms-novo::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar.sidebar-wms-novo::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar.sidebar-wms-novo::-webkit-scrollbar-thumb {
+    background: #1680e8;
+    border-radius: 20px;
+}
+
+
+/* TOPO */
+
+.sidebar.sidebar-wms-novo .sidebar-topo {
+    padding: 2px 6px 8px !important;
+    text-align: center !important;
+}
+
+.sidebar.sidebar-wms-novo .sidebar-logo {
+    display: block !important;
+    width: 145px !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 auto 9px !important;
+    object-fit: contain !important;
+}
+
+.sidebar.sidebar-wms-novo .sidebar-topo h2 {
+    margin: 0 !important;
+    color: #ffffff !important;
+    font-size: 23px !important;
+    line-height: 1.1 !important;
+    font-weight: 800 !important;
+    letter-spacing: .2px !important;
+    text-align: center !important;
+}
+
+.sidebar.sidebar-wms-novo .sidebar-topo p {
+    margin: 6px 0 0 !important;
+    color: #8fb9e5 !important;
+    font-size: 7px !important;
+    line-height: 1.3 !important;
+    font-weight: 700 !important;
+    letter-spacing: 2.2px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+
+/* NAVEGAÇÃO */
+
+.sidebar.sidebar-wms-novo .sidebar-nav {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.sidebar.sidebar-wms-novo .menu-titulo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 12px 7px 5px !important;
+    padding: 0 !important;
+}
+
+.sidebar.sidebar-wms-novo .menu-titulo span {
+    color: #9bc0e8 !important;
+    font-size: 8px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    letter-spacing: 1.7px !important;
+    white-space: nowrap !important;
+}
+
+.sidebar.sidebar-wms-novo .menu-titulo::after {
+    content: "" !important;
+    display: block !important;
+    height: 1px !important;
+    flex: 1 !important;
+    background: rgba(135, 190, 239, .28) !important;
+}
+
+
+/* ITEM */
+
+.sidebar.sidebar-wms-novo a.menu-item {
+    all: unset;
+
+    position: relative !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+        31px minmax(0, 1fr) 13px !important;
+
+    align-items: center !important;
+
+    gap: 7px !important;
+
+    min-height: 37px !important;
+
+    width: 100% !important;
+
+    padding: 3px 7px !important;
+
+    margin: 1px 0 !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 9px !important;
+
+    color: #ffffff !important;
+
+    text-decoration: none !important;
+
+    cursor: pointer !important;
+
+    transition:
+        background .18s ease,
+        transform .18s ease,
+        box-shadow .18s ease !important;
+}
+
+.sidebar.sidebar-wms-novo a.menu-item:hover {
+    background:
+        rgba(255, 255, 255, .07) !important;
+
+    transform:
+        translateX(1px) !important;
+}
+
+
+/* ÍCONES */
+
+.sidebar.sidebar-wms-novo .menu-icon {
+    width: 30px !important;
+    height: 30px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 8px !important;
+
+    background:
+        rgba(255, 255, 255, .075) !important;
+
+    flex: none !important;
+}
+
+.sidebar.sidebar-wms-novo .menu-icon svg {
+    width: 17px !important;
+    height: 17px !important;
+    stroke-width: 2.1 !important;
+}
+
+
+/* TEXTO */
+
+.sidebar.sidebar-wms-novo .menu-texto {
+    display: block !important;
+
+    min-width: 0 !important;
+
+    color: #f7f9fd !important;
+
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+
+    white-space: nowrap !important;
+}
+
+.sidebar.sidebar-wms-novo .menu-seta {
+    width: 13px !important;
+    height: 13px !important;
+
+    color: #86b8e8 !important;
+
+    stroke-width: 2.2 !important;
+
+    transition: .18s ease !important;
+}
+
+.sidebar.sidebar-wms-novo a.menu-item:hover .menu-seta {
+    color: #ffffff !important;
+
+    transform:
+        translateX(1px) !important;
+}
+
+
+/* CORES DOS ÍCONES */
+
+.sidebar.sidebar-wms-novo .icone-dashboard {
+    color: #ffffff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-produtos {
+    color: #c8def5 !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-entradas {
+    color: #22ddd8 !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-saidas {
+    color: #39a9ff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-separacao {
+    color: #bfdcff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-transferencia {
+    color: #16c4ff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-mobile {
+    color: #2198ff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-posicoes {
+    color: #ff5265 !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-inventario {
+    color: #52edad !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-invmobile {
+    color: #00d8ff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-relatorios {
+    color: #8a6cff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-etiqueta {
+    color: #ffc62a !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-requisicao {
+    color: #ff9d26 !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-config {
+    color: #c8e2fc !important;
+}
+
+
+/* ITEM ATIVO */
+
+.sidebar.sidebar-wms-novo a.menu-item.active {
+    background:
+        linear-gradient(
+            90deg,
+            #0879ef 0%,
+            #095bc7 100%
+        ) !important;
+
+    box-shadow:
+        0 6px 15px rgba(0, 103, 232, .24) !important;
+
+    transform: none !important;
+}
+
+.sidebar.sidebar-wms-novo a.menu-item.active::before {
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: -9px !important;
+
+    width: 4px !important;
+
+    height: 29px !important;
+
+    border-radius:
+        0 4px 4px 0 !important;
+
+    background:
+        #18ddff !important;
+
+    box-shadow:
+        0 0 9px rgba(24, 221, 255, .75) !important;
+}
+
+.sidebar.sidebar-wms-novo a.menu-item.active .menu-icon {
+    background:
+        rgba(255, 255, 255, .14) !important;
+
+    color:
+        #ffffff !important;
+}
+
+.sidebar.sidebar-wms-novo a.menu-item.active .menu-seta {
+    color:
+        #ffffff !important;
+}
+
+
+/* RODAPÉ */
+
+.sidebar.sidebar-wms-novo .sidebar-rodape {
+    margin:
+        15px 7px 2px !important;
+
+    color:
+        #7ca9d7 !important;
+
+    text-align:
+        center !important;
+}
+
+.sidebar.sidebar-wms-novo .sidebar-rodape::before {
+    content: "" !important;
+
+    display: block !important;
+
+    height: 1px !important;
+
+    margin-bottom:
+        12px !important;
+
+    background:
+        rgba(123, 180, 235, .28) !important;
+}
+
+.sidebar.sidebar-wms-novo .sidebar-rodape span {
+    display: block !important;
+
+    margin-bottom:
+        5px !important;
+
+    color:
+        #86b2df !important;
+
+    font-size:
+        6.5px !important;
+
+    font-weight:
+        600 !important;
+
+    line-height:
+        1.3 !important;
+
+    letter-spacing:
+        1.5px !important;
+
+    white-space:
+        nowrap !important;
+}
+
+.sidebar.sidebar-wms-novo .sidebar-rodape small {
+    display: block !important;
+
+    color:
+        #91bae4 !important;
+
+    font-size:
+        8px !important;
+
+    line-height:
+        1.2 !important;
+}
+
+
+/* CONTEÚDO DAS PÁGINAS */
+
+body:has(.sidebar-wms-novo) .conteudo {
+    margin-left:
+        190px !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .sidebar.sidebar-wms-novo {
+        position: relative !important;
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    body:has(.sidebar-wms-novo) .conteudo {
+        margin-left: 0 !important;
+    }
+
+}
+
+
+/* =========================================================
+   BRASIL / ITÁLIA - TOPO DO WMS
+   Versão segura: bandeiras feitas somente com CSS
+========================================================= */
+
 }
 
 
@@ -2256,12 +4244,16 @@ body:has(.dashboard-novo) .sidebar li a {
 
 }
 
+
 /* style.css - PARTE 2 DE 2 */
+
+
 /* =====================================================
    ENTRADAS - CORES DO RESUMO DO DIA
 ===================================================== */
 
 /* ENTRADAS HOJE - AZUL */
+
 .pagina-entradas .resumo-item:nth-child(2) .resumo-icone {
     background: #2f80ed !important;
     color: #ffffff !important;
@@ -2269,6 +4261,7 @@ body:has(.dashboard-novo) .sidebar li a {
 
 
 /* UNIDADES RECEBIDAS - TURQUESA */
+
 .pagina-entradas .resumo-item:nth-child(3) .resumo-icone {
     background: #20b7bd !important;
     color: #ffffff !important;
@@ -2276,6 +4269,7 @@ body:has(.dashboard-novo) .sidebar li a {
 
 
 /* ÚLTIMA ENTRADA - ROXO */
+
 .pagina-entradas .resumo-item:nth-child(4) .resumo-icone {
     background: #6528c8 !important;
     color: #ffffff !important;
@@ -2283,10 +4277,12 @@ body:has(.dashboard-novo) .sidebar li a {
 
 
 /* OPERADOR - VERDE */
+
 .pagina-entradas .resumo-item:nth-child(5) .resumo-icone {
     background: #35a85b !important;
     color: #ffffff !important;
 }
+
 
 /* =====================================================
    STATUS DA CONTAGEM - PRODUTOS
@@ -2336,6 +4332,7 @@ body:has(.dashboard-novo) .sidebar li a {
     overflow-x: hidden !important;
 
     color: #ffffff !important;
+
     background:
         linear-gradient(
             180deg,
@@ -2344,7 +4341,9 @@ body:has(.dashboard-novo) .sidebar li a {
             #031f41 100%
         ) !important;
 
-    box-shadow: 5px 0 18px rgba(0, 30, 69, .15) !important;
+    box-shadow:
+        5px 0 18px rgba(0, 30, 69, .15) !important;
+
     z-index: 1000 !important;
 
     scrollbar-width: thin;
@@ -2445,21 +4444,32 @@ body:has(.dashboard-novo) .sidebar li a {
     all: unset;
 
     position: relative !important;
+
     display: grid !important;
-    grid-template-columns: 31px minmax(0, 1fr) 13px !important;
+
+    grid-template-columns:
+        31px minmax(0, 1fr) 13px !important;
+
     align-items: center !important;
+
     gap: 7px !important;
 
     min-height: 37px !important;
+
     width: 100% !important;
+
     padding: 3px 7px !important;
+
     margin: 1px 0 !important;
 
     box-sizing: border-box !important;
+
     border-radius: 9px !important;
 
     color: #ffffff !important;
+
     text-decoration: none !important;
+
     cursor: pointer !important;
 
     transition:
@@ -2469,8 +4479,11 @@ body:has(.dashboard-novo) .sidebar li a {
 }
 
 .sidebar.sidebar-wms-novo a.menu-item:hover {
-    background: rgba(255, 255, 255, .07) !important;
-    transform: translateX(1px) !important;
+    background:
+        rgba(255, 255, 255, .07) !important;
+
+    transform:
+        translateX(1px) !important;
 }
 
 
@@ -2485,7 +4498,9 @@ body:has(.dashboard-novo) .sidebar li a {
     justify-content: center !important;
 
     border-radius: 8px !important;
-    background: rgba(255, 255, 255, .075) !important;
+
+    background:
+        rgba(255, 255, 255, .075) !important;
 
     flex: none !important;
 }
@@ -2516,33 +4531,79 @@ body:has(.dashboard-novo) .sidebar li a {
 .sidebar.sidebar-wms-novo .menu-seta {
     width: 13px !important;
     height: 13px !important;
+
     color: #86b8e8 !important;
+
     stroke-width: 2.2 !important;
+
     transition: .18s ease !important;
 }
 
 .sidebar.sidebar-wms-novo a.menu-item:hover .menu-seta {
     color: #ffffff !important;
-    transform: translateX(1px) !important;
+
+    transform:
+        translateX(1px) !important;
 }
 
 
 /* CORES DOS ÍCONES */
 
-.sidebar.sidebar-wms-novo .icone-dashboard { color: #ffffff !important; }
-.sidebar.sidebar-wms-novo .icone-produtos { color: #c8def5 !important; }
-.sidebar.sidebar-wms-novo .icone-entradas { color: #22ddd8 !important; }
-.sidebar.sidebar-wms-novo .icone-saidas { color: #39a9ff !important; }
-.sidebar.sidebar-wms-novo .icone-separacao { color: #bfdcff !important; }
-.sidebar.sidebar-wms-novo .icone-transferencia { color: #16c4ff !important; }
-.sidebar.sidebar-wms-novo .icone-mobile { color: #2198ff !important; }
-.sidebar.sidebar-wms-novo .icone-posicoes { color: #ff5265 !important; }
-.sidebar.sidebar-wms-novo .icone-inventario { color: #52edad !important; }
-.sidebar.sidebar-wms-novo .icone-invmobile { color: #00d8ff !important; }
-.sidebar.sidebar-wms-novo .icone-relatorios { color: #8a6cff !important; }
-.sidebar.sidebar-wms-novo .icone-etiqueta { color: #ffc62a !important; }
-.sidebar.sidebar-wms-novo .icone-requisicao { color: #ff9d26 !important; }
-.sidebar.sidebar-wms-novo .icone-config { color: #c8e2fc !important; }
+.sidebar.sidebar-wms-novo .icone-dashboard {
+    color: #ffffff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-produtos {
+    color: #c8def5 !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-entradas {
+    color: #22ddd8 !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-saidas {
+    color: #39a9ff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-separacao {
+    color: #bfdcff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-transferencia {
+    color: #16c4ff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-mobile {
+    color: #2198ff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-posicoes {
+    color: #ff5265 !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-inventario {
+    color: #52edad !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-invmobile {
+    color: #00d8ff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-relatorios {
+    color: #8a6cff !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-etiqueta {
+    color: #ffc62a !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-requisicao {
+    color: #ff9d26 !important;
+}
+
+.sidebar.sidebar-wms-novo .icone-config {
+    color: #c8e2fc !important;
+}
 
 
 /* ITEM ATIVO */
@@ -2565,76 +4626,108 @@ body:has(.dashboard-novo) .sidebar li a {
     content: "" !important;
 
     position: absolute !important;
+
     left: -9px !important;
 
     width: 4px !important;
+
     height: 29px !important;
 
-    border-radius: 0 4px 4px 0 !important;
+    border-radius:
+        0 4px 4px 0 !important;
 
-    background: #18ddff !important;
+    background:
+        #18ddff !important;
 
     box-shadow:
         0 0 9px rgba(24, 221, 255, .75) !important;
 }
 
 .sidebar.sidebar-wms-novo a.menu-item.active .menu-icon {
-    background: rgba(255, 255, 255, .14) !important;
-    color: #ffffff !important;
+    background:
+        rgba(255, 255, 255, .14) !important;
+
+    color:
+        #ffffff !important;
 }
 
 .sidebar.sidebar-wms-novo a.menu-item.active .menu-seta {
-    color: #ffffff !important;
+    color:
+        #ffffff !important;
 }
 
 
 /* RODAPÉ */
 
 .sidebar.sidebar-wms-novo .sidebar-rodape {
-    margin: 15px 7px 2px !important;
-    color: #7ca9d7 !important;
-    text-align: center !important;
+    margin:
+        15px 7px 2px !important;
+
+    color:
+        #7ca9d7 !important;
+
+    text-align:
+        center !important;
 }
 
 .sidebar.sidebar-wms-novo .sidebar-rodape::before {
     content: "" !important;
+
     display: block !important;
 
     height: 1px !important;
-    margin-bottom: 12px !important;
 
-    background: rgba(123, 180, 235, .28) !important;
+    margin-bottom:
+        12px !important;
+
+    background:
+        rgba(123, 180, 235, .28) !important;
 }
 
 .sidebar.sidebar-wms-novo .sidebar-rodape span {
     display: block !important;
 
-    margin-bottom: 5px !important;
+    margin-bottom:
+        5px !important;
 
-    color: #86b2df !important;
+    color:
+        #86b2df !important;
 
-    font-size: 6.5px !important;
-    font-weight: 600 !important;
-    line-height: 1.3 !important;
-    letter-spacing: 1.5px !important;
+    font-size:
+        6.5px !important;
 
-    white-space: nowrap !important;
+    font-weight:
+        600 !important;
+
+    line-height:
+        1.3 !important;
+
+    letter-spacing:
+        1.5px !important;
+
+    white-space:
+        nowrap !important;
 }
 
 .sidebar.sidebar-wms-novo .sidebar-rodape small {
     display: block !important;
 
-    color: #91bae4 !important;
+    color:
+        #91bae4 !important;
 
-    font-size: 8px !important;
-    line-height: 1.2 !important;
+    font-size:
+        8px !important;
+
+    line-height:
+        1.2 !important;
 }
 
 
 /* CONTEÚDO DAS PÁGINAS */
 
 body:has(.sidebar-wms-novo) .conteudo {
-    margin-left: 190px !important;
+    margin-left:
+        190px !important;
 }
 
 
@@ -2653,6 +4746,7 @@ body:has(.sidebar-wms-novo) .conteudo {
     }
 
 }
+
 
 /* =========================================================
    BRASIL / ITÁLIA - TOPO DO WMS
@@ -2674,7 +4768,8 @@ body:has(.sidebar-wms-novo) .conteudo {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    flex: 0 0 auto;
+
+        flex: 0 0 auto;
 
     color: #334155;
     font-size: 12px;
@@ -2763,6 +4858,7 @@ body:has(.sidebar-wms-novo) .conteudo {
 
 /* Mobile */
 @media (max-width: 700px) {
+
     .dashboard-novo .usuario {
         flex-wrap: wrap;
         white-space: normal;
@@ -2778,7 +4874,9 @@ body:has(.sidebar-wms-novo) .conteudo {
         height: 14px;
         min-width: 21px;
     }
+
 }
+
 
 /* =====================================================
    SELETOR GLOBAL DE IDIOMA
@@ -2858,8 +4956,10 @@ body:has(.sidebar-wms-novo) .conteudo {
     background: #d7dce3;
 }
 
+
 /* =====================================================
-   DASHBOARD - AJUSTE VISUAL DO TOPO (SEM ALTERAR VELOCÍMETRO)
+   DASHBOARD - AJUSTE VISUAL DO TOPO
+   (SEM ALTERAR VELOCÍMETRO)
    Mantém o velocímetro original do WMS.
 ===================================================== */
 
@@ -2968,16 +5068,20 @@ body:has(.sidebar-wms-novo) .conteudo {
 }
 
 @media (max-width: 1250px) {
+
     .dashboard-novo .dashboard-cards-principais {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+
 }
+
 
 /* =====================================================
    SMI WMS - AJUSTE VISUAL DOS 5 CARDS
    NÃO ALTERA O CARD "OCUPAÇÃO DO ESTOQUE"
    Cole este bloco no FINAL do style.css
 ===================================================== */
+
 
 /* =====================================================
    1. BASE DOS 5 CARDS
@@ -3050,7 +5154,6 @@ body:has(.sidebar-wms-novo) .conteudo {
     box-shadow: none;
 }
 
-
 .dashboard-novo .kpi-produtos .icone-card-novo svg,
 .dashboard-novo .kpi-quantidade .icone-card-novo svg,
 .dashboard-novo .kpi-posicoes .icone-card-novo svg,
@@ -3103,7 +5206,6 @@ body:has(.sidebar-wms-novo) .conteudo {
     padding-top: 1px;
 }
 
-
 .dashboard-novo .kpi-produtos .card-titulo-novo,
 .dashboard-novo .kpi-quantidade .card-titulo-novo,
 .dashboard-novo .kpi-posicoes .card-titulo-novo,
@@ -3120,7 +5222,6 @@ body:has(.sidebar-wms-novo) .conteudo {
     white-space: nowrap;
 }
 
-
 .dashboard-novo .kpi-produtos .card-info-novo > strong,
 .dashboard-novo .kpi-quantidade .card-info-novo > strong,
 .dashboard-novo .kpi-posicoes .card-info-novo > strong,
@@ -3136,7 +5237,6 @@ body:has(.sidebar-wms-novo) .conteudo {
 
     letter-spacing: -0.4px;
 }
-
 
 .dashboard-novo .kpi-produtos .card-info-novo small,
 .dashboard-novo .kpi-quantidade .card-info-novo small,
@@ -3169,20 +5269,17 @@ body:has(.sidebar-wms-novo) .conteudo {
     font-weight: 800;
 }
 
-
 .dashboard-novo .kpi-produtos .kpi-tendencia.positiva,
 .dashboard-novo .kpi-quantidade .kpi-tendencia.positiva,
 .dashboard-novo .kpi-sem-estoque .kpi-tendencia.positiva {
     color: #15a856;
 }
 
-
 .dashboard-novo .kpi-produtos .kpi-tendencia.negativa,
 .dashboard-novo .kpi-quantidade .kpi-tendencia.negativa,
 .dashboard-novo .kpi-sem-estoque .kpi-tendencia.negativa {
     color: #ef3340;
 }
-
 
 .dashboard-novo .kpi-minimo .kpi-tendencia {
     color: #ef3340;
@@ -3194,6 +5291,7 @@ body:has(.sidebar-wms-novo) .conteudo {
 ===================================================== */
 
 .dashboard-novo .kpi-produtos .mini-grafico-novo,
+
 .dashboard-novo .kpi-quantidade .mini-grafico-novo {
     position: absolute;
 
@@ -3205,7 +5303,6 @@ body:has(.sidebar-wms-novo) .conteudo {
 
     pointer-events: none;
 }
-
 
 .dashboard-novo .kpi-produtos .mini-grafico-novo canvas,
 .dashboard-novo .kpi-quantidade .mini-grafico-novo canvas {
@@ -3230,7 +5327,6 @@ body:has(.sidebar-wms-novo) .conteudo {
     margin-top: 10px;
 }
 
-
 .dashboard-novo .kpi-posicoes .novo-progresso {
     flex: 1;
 
@@ -3246,7 +5342,6 @@ body:has(.sidebar-wms-novo) .conteudo {
     border-radius: 999px;
 }
 
-
 .dashboard-novo .kpi-posicoes .progresso-roxo {
     height: 100%;
 
@@ -3254,7 +5349,6 @@ body:has(.sidebar-wms-novo) .conteudo {
 
     border-radius: 999px;
 }
-
 
 .dashboard-novo .kpi-posicoes #percentualPosicoesCard {
     flex: 0 0 auto;
@@ -3290,7 +5384,6 @@ body:has(.sidebar-wms-novo) .conteudo {
     pointer-events: none;
 }
 
-
 .dashboard-novo .kpi-minimo .spark-bars span,
 .dashboard-novo .kpi-sem-estoque .spark-bars span {
     width: 5px;
@@ -3325,6 +5418,7 @@ body:has(.sidebar-wms-novo) .conteudo {
 
    Portanto o card OCUPAÇÃO DO ESTOQUE permanece como está.
 ===================================================== */
+
 
 /* =====================================================
    PÁGINA POSIÇÕES - NOVO MAPA DO ESTOQUE
@@ -3843,8 +5937,11 @@ body:has(.sidebar-wms-novo) .conteudo {
 }
 
 @media (max-width: 1350px) {
+
     .pagina-posicoes .mapa-controles {
-        grid-template-columns: minmax(280px, 1.8fr) repeat(3, minmax(135px, .8fr));
+        grid-template-columns:
+            minmax(280px, 1.8fr)
+            repeat(3, minmax(135px, .8fr));
     }
 
     .pagina-posicoes .btn-recarregar-mapa,
@@ -3853,16 +5950,19 @@ body:has(.sidebar-wms-novo) .conteudo {
     }
 
     .pagina-posicoes .mapa-cards-resumo {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
     .pagina-posicoes .mapa-barra-legenda {
         align-items: flex-start;
         flex-direction: column;
     }
+
 }
 
 @media (max-width: 900px) {
+
     .pagina-posicoes .mapa-controles {
         grid-template-columns: 1fr 1fr;
     }
@@ -3883,5 +5983,3015 @@ body:has(.sidebar-wms-novo) .conteudo {
     .pagina-posicoes .mapa-ir-corredor {
         justify-content: flex-end;
     }
+
 }
 
+
+/* =====================================================
+   SMI WMS - TEMA ESCURO GLOBAL
+   Adicionado no final do style.css
+   Não altera o modo claro.
+===================================================== */
+
+html[data-theme="escuro"] {
+    --fundo: #0b1420;
+    --branco: #152131;
+    --texto: #e7edf5;
+    --texto-suave: #9fb0c3;
+    --borda: #2b3d52;
+    --sombra: 0 6px 20px rgba(0, 0, 0, .24);
+    color-scheme: dark;
+}
+
+
+/* FUNDO GERAL */
+
+html[data-theme="escuro"] body,
+html[data-theme="escuro"] .conteudo,
+html[data-theme="escuro"] .dashboard-novo {
+    background: #0b1420 !important;
+    color: #e7edf5 !important;
+}
+
+
+/* TOPO / TÍTULOS / TEXTOS */
+
+html[data-theme="escuro"] .titulo-pagina h1,
+html[data-theme="escuro"] .conteudo > header h1,
+html[data-theme="escuro"] .conteudo > h1,
+html[data-theme="escuro"] .grafico-card h2,
+html[data-theme="escuro"] .painel h2,
+html[data-theme="escuro"] .card h2,
+html[data-theme="escuro"] .dashboard-titulo-painel h2,
+html[data-theme="escuro"] .card-titulo-novo,
+html[data-theme="escuro"] .velocimetro-cabecalho,
+html[data-theme="escuro"] .top-ocupacao-posicao strong,
+html[data-theme="escuro"] .top-ocupacao-valor,
+html[data-theme="escuro"] .divergencia-produto-info strong,
+html[data-theme="escuro"] .divergencia-dado strong {
+    color: #f5f8fc !important;
+}
+
+html[data-theme="escuro"] .titulo-pagina small,
+html[data-theme="escuro"] .usuario,
+html[data-theme="escuro"] .dashboard-titulo-painel small,
+html[data-theme="escuro"] .card-info-novo small,
+html[data-theme="escuro"] .alerta-principal small,
+html[data-theme="escuro"] .alerta-indicador small,
+html[data-theme="escuro"] .top-ocupacao-posicao small,
+html[data-theme="escuro"] .divergencia-produto-info small,
+html[data-theme="escuro"] .divergencia-dado span,
+html[data-theme="escuro"] .dashboard-placeholder,
+html[data-theme="escuro"] .dashboard-placeholder small,
+html[data-theme="escuro"] .dashboard-rodape {
+    color: #9fb0c3 !important;
+}
+
+
+/* CARDS / PAINÉIS */
+
+html[data-theme="escuro"] .card-dashboard,
+html[data-theme="escuro"] .card-dashboard-novo,
+html[data-theme="escuro"] .grafico-card,
+html[data-theme="escuro"] .painel,
+html[data-theme="escuro"] .card,
+html[data-theme="escuro"] .dashboard-grafico-card,
+html[data-theme="escuro"] .dashboard-painel-compacto,
+html[data-theme="escuro"] .dashboard-faixa-alertas,
+html[data-theme="escuro"] .dashboard-rodape,
+html[data-theme="escuro"] .importarExcel,
+html[data-theme="escuro"] .coluna-mapa,
+html[data-theme="escuro"] .modalConteudo {
+    background: #152131 !important;
+    border-color: #2b3d52 !important;
+    color: #e7edf5 !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .24) !important;
+}
+
+html[data-theme="escuro"] .card-dashboard h3,
+html[data-theme="escuro"] .card-dashboard h1,
+html[data-theme="escuro"] .card-info-novo > strong,
+html[data-theme="escuro"] .cards .card span,
+html[data-theme="escuro"] .tituloExcel,
+html[data-theme="escuro"] .modalCabecalho h2,
+html[data-theme="escuro"] .totalSku {
+    color: #f5f8fc !important;
+}
+
+
+/* DASHBOARD - FAIXA DE ALERTAS */
+
+html[data-theme="escuro"] .alerta-indicador {
+    border-left-color: #2b3d52 !important;
+}
+
+html[data-theme="escuro"] .alerta-indicador strong {
+    color: #f5f8fc !important;
+}
+
+
+/* DASHBOARD - PAINÉIS INTERNOS */
+
+html[data-theme="escuro"] .dashboard-divergencia-item {
+    background: #111e2d !important;
+    border-color: #2b3d52 !important;
+}
+
+html[data-theme="escuro"] .divergencia-diferenca {
+    border-left-color: #2b3d52 !important;
+}
+
+html[data-theme="escuro"] .divergencia-produto-icone {
+    background: #1b3557 !important;
+}
+
+html[data-theme="escuro"] .divergencia-ranking-numero {
+    background: #2a2050 !important;
+    color: #bba7ff !important;
+}
+
+html[data-theme="escuro"] .dashboard-badge {
+    background: #17385c !important;
+    color: #72b4ff !important;
+}
+
+html[data-theme="escuro"] .dashboard-ranking-numero,
+html[data-theme="escuro"] .top-ocupacao-ranking {
+    background: #1b3557 !important;
+    color: #72b4ff !important;
+}
+
+html[data-theme="escuro"] .dashboard-barra,
+html[data-theme="escuro"] .top-ocupacao-barra,
+html[data-theme="escuro"] .progresso-card {
+    background: #2a394c !important;
+}
+
+
+/* RESUMO DE MOVIMENTAÇÕES */
+
+html[data-theme="escuro"] .resumo-movimento-item.entrada,
+html[data-theme="escuro"] .resumo-movimento-item.saida,
+html[data-theme="escuro"] .resumo-movimento-item.transferencia,
+html[data-theme="escuro"] .resumo-movimento-item.saldo {
+    background: #111e2d !important;
+    border: 1px solid #2b3d52 !important;
+}
+
+html[data-theme="escuro"] .resumo-movimento-item span {
+    color: #9fb0c3 !important;
+}
+
+html[data-theme="escuro"] .resumo-movimento-item strong {
+    color: #f5f8fc !important;
+}
+
+html[data-theme="escuro"] .resumo-movimento-item.entrada .resumo-movimento-icone {
+    background: #123a2a !important;
+}
+
+html[data-theme="escuro"] .resumo-movimento-item.saida .resumo-movimento-icone {
+    background: #4b2026 !important;
+}
+
+html[data-theme="escuro"] .resumo-movimento-item.transferencia .resumo-movimento-icone {
+    background: #302452 !important;
+}
+
+html[data-theme="escuro"] .resumo-movimento-item.saldo .resumo-movimento-icone {
+    background: #17385c !important;
+}
+
+
+/* =====================================================
+   TABELAS
+===================================================== */
+
+html[data-theme="escuro"] .tabela,
+html[data-theme="escuro"] table {
+    background: #152131 !important;
+    color: #e7edf5 !important;
+}
+
+html[data-theme="escuro"] .tabela thead,
+html[data-theme="escuro"] table thead,
+html[data-theme="escuro"] .tabela th,
+html[data-theme="escuro"] table th {
+    background: #1c2b3e !important;
+    color: #f5f8fc !important;
+    border-color: #33475f !important;
+}
+
+html[data-theme="escuro"] .tabela td,
+html[data-theme="escuro"] table td {
+    color: #dce6f1 !important;
+    border-color: #26384d !important;
+}
+
+html[data-theme="escuro"] .tabela tbody tr:hover,
+html[data-theme="escuro"] table tbody tr:hover {
+    background: #1a293b !important;
+}
+
+
+/* =====================================================
+   FORMULÁRIOS
+===================================================== */
+
+html[data-theme="escuro"] input,
+html[data-theme="escuro"] select,
+html[data-theme="escuro"] textarea {
+    background: #1b293a !important;
+    color: #f5f8fc !important;
+    border-color: #33475f !important;
+}
+
+html[data-theme="escuro"] input::placeholder,
+html[data-theme="escuro"] textarea::placeholder {
+    color: #8294a9 !important;
+}
+
+html[data-theme="escuro"] input:focus,
+html[data-theme="escuro"] select:focus,
+html[data-theme="escuro"] textarea:focus {
+    border-color: #3b8cff !important;
+    box-shadow: 0 0 0 3px rgba(59, 140, 255, .14) !important;
+}
+
+html[data-theme="escuro"] option {
+    background: #1b293a;
+    color: #f5f8fc;
+}
+
+
+/* =====================================================
+   PRODUTOS
+===================================================== */
+
+html[data-theme="escuro"] .cliente-produto {
+    background: #17385c !important;
+    color: #72b4ff !important;
+}
+
+html[data-theme="escuro"] .endereco-produto {
+    background: #233449 !important;
+    color: #dce9f7 !important;
+}
+
+html[data-theme="escuro"] .btn-editar-produto {
+    background: #493719 !important;
+    border-color: #725829 !important;
+}
+
+html[data-theme="escuro"] .btn-excluir-produto {
+    background: #4a2226 !important;
+    border-color: #7a353b !important;
+}
+
+
+/* =====================================================
+   POSIÇÕES / MAPA
+===================================================== */
+
+html[data-theme="escuro"] .pagina-posicoes .mapa-corredor,
+html[data-theme="escuro"] .pagina-posicoes .mapa-vazio {
+    background: #111e2d !important;
+    border-color: #2b3d52 !important;
+    color: #9fb0c3 !important;
+}
+
+html[data-theme="escuro"] .pagina-posicoes .mapa-corredor-cabecalho {
+    background: #1c2b3e !important;
+    color: #e8f0f8 !important;
+}
+
+html[data-theme="escuro"] .pagina-posicoes .mapa-corredor-cabecalho small {
+    color: #9fb0c3 !important;
+}
+
+html[data-theme="escuro"] .pagina-posicoes .mapa-rodape {
+    background: #152131 !important;
+    border-color: #2b3d52 !important;
+}
+
+html[data-theme="escuro"] .pagina-posicoes .btn-corredor-mapa {
+    background: #1b293a !important;
+    border-color: #33475f !important;
+    color: #dce6f1 !important;
+}
+
+html[data-theme="escuro"] .pagina-posicoes .btn-corredor-mapa.ativo {
+    background: #1264e8 !important;
+    border-color: #1264e8 !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .pagina-posicoes .mapa-ir-corredor label {
+    color: #aebdce !important;
+}
+
+
+/* =====================================================
+   CARDS DE POSIÇÃO
+===================================================== */
+
+html[data-theme="escuro"] .livre {
+    background: #163526 !important;
+    border-color: #22c55e !important;
+    color: #8ee9ad !important;
+}
+
+html[data-theme="escuro"] .ocupada {
+    background: #462329 !important;
+    border-color: #ef5968 !important;
+    color: #ffadb5 !important;
+}
+
+html[data-theme="escuro"] .parcial {
+    background: #493719 !important;
+    border-color: #f59e0b !important;
+    color: #ffd47d !important;
+}
+
+
+/* =====================================================
+   CONFIGURAÇÕES / CARDS GENÉRICOS
+===================================================== */
+
+html[data-theme="escuro"] .cards .card h3 {
+    color: #aebdce !important;
+}
+
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+html[data-theme="escuro"] ::-webkit-scrollbar-track {
+    background: #0f1a28;
+}
+
+html[data-theme="escuro"] ::-webkit-scrollbar-thumb {
+    background: #35506f;
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+html[data-theme="escuro"] .login-box {
+    background: #152131 !important;
+    color: #e7edf5 !important;
+}
+
+html[data-theme="escuro"] .login-box h1 {
+    color: #f5f8fc !important;
+}
+
+html[data-theme="escuro"] .login-box p {
+    color: #9fb0c3 !important;
+}
+
+/* =====================================================
+   SMI WMS - MODO ESCURO PREMIUM
+   Visual baseado no modelo aprovado
+===================================================== */
+
+html[data-theme="escuro"] {
+    --fundo: #07111f;
+    --branco: #102034;
+    --texto: #f3f7fb;
+    --texto-suave: #8fa6bd;
+    --borda: #274360;
+    --sombra: 0 8px 24px rgba(0, 0, 0, .28);
+    color-scheme: dark;
+}
+
+
+/* =====================================================
+   FUNDO GERAL
+===================================================== */
+
+html[data-theme="escuro"] body,
+html[data-theme="escuro"] .conteudo,
+html[data-theme="escuro"] .dashboard-novo,
+html[data-theme="escuro"] .pagina-produtos,
+html[data-theme="escuro"] .pagina-entradas,
+html[data-theme="escuro"] .pagina-saidas,
+html[data-theme="escuro"] .pagina-posicoes {
+    background:
+        linear-gradient(
+            180deg,
+            #07111f 0%,
+            #091827 100%
+        ) !important;
+
+    color: #f3f7fb !important;
+}
+
+
+/* =====================================================
+   TOPO / TÍTULOS
+===================================================== */
+
+html[data-theme="escuro"] .titulo-pagina h1,
+html[data-theme="escuro"] .conteudo > header h1,
+html[data-theme="escuro"] .conteudo > h1,
+html[data-theme="escuro"] .topbar h1 {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .titulo-pagina small,
+html[data-theme="escuro"] .topbar small,
+html[data-theme="escuro"] .usuario {
+    color: #8fb5d9 !important;
+}
+
+
+/* =====================================================
+   CARDS PRINCIPAIS
+===================================================== */
+
+html[data-theme="escuro"] .card-dashboard,
+html[data-theme="escuro"] .card-dashboard-novo,
+html[data-theme="escuro"] .dashboard-faixa-alertas,
+html[data-theme="escuro"] .painel,
+html[data-theme="escuro"] .card,
+html[data-theme="escuro"] .grafico-card,
+html[data-theme="escuro"] .dashboard-grafico-card,
+html[data-theme="escuro"] .dashboard-painel-compacto,
+html[data-theme="escuro"] .importarExcel,
+html[data-theme="escuro"] .modalConteudo {
+    background:
+        linear-gradient(
+            180deg,
+            #102034 0%,
+            #0d1b2b 100%
+        ) !important;
+
+    border:
+        1px solid #284765 !important;
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, .24) !important;
+
+    color:
+        #f3f7fb !important;
+}
+
+
+/* =====================================================
+   CARDS KPI - PRODUTOS
+===================================================== */
+
+html[data-theme="escuro"]
+.dashboard-novo .dashboard-kpis-premium > .kpi-produtos,
+
+html[data-theme="escuro"]
+.dashboard-novo .dashboard-kpis-premium > .kpi-quantidade,
+
+html[data-theme="escuro"]
+.dashboard-novo .dashboard-kpis-premium > .kpi-posicoes,
+
+html[data-theme="escuro"]
+.dashboard-novo .dashboard-kpis-premium > .kpi-minimo,
+
+html[data-theme="escuro"]
+.dashboard-novo .dashboard-kpis-premium > .kpi-sem-estoque {
+
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1928
+        ) !important;
+
+    border:
+        1px solid #2a4e70 !important;
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.25) !important;
+}
+
+
+/* textos KPI */
+
+html[data-theme="escuro"] .card-titulo-novo,
+html[data-theme="escuro"] .card-info-novo > strong,
+html[data-theme="escuro"] .dashboard-novo .kpi-produtos .card-titulo-novo,
+html[data-theme="escuro"] .dashboard-novo .kpi-quantidade .card-titulo-novo,
+html[data-theme="escuro"] .dashboard-novo .kpi-posicoes .card-titulo-novo,
+html[data-theme="escuro"] .dashboard-novo .kpi-minimo .card-titulo-novo,
+html[data-theme="escuro"] .dashboard-novo .kpi-sem-estoque .card-titulo-novo {
+    color: #f4f8fc !important;
+}
+
+html[data-theme="escuro"] .card-info-novo small {
+    color: #87a0b8 !important;
+}
+
+
+/* =====================================================
+   IMPORTAÇÃO EXCEL
+===================================================== */
+
+html[data-theme="escuro"] .importarExcel {
+    background:
+        linear-gradient(
+            180deg,
+            #102238,
+            #0c1928
+        ) !important;
+
+    border:
+        1px solid #284765 !important;
+}
+
+html[data-theme="escuro"] .tituloExcel {
+    color: #22c9b3 !important;
+}
+
+html[data-theme="escuro"] .importarExcel input[type="file"] {
+    background: #12243a !important;
+    color: #dce8f3 !important;
+    border: 1px solid #31526f !important;
+}
+
+
+/* =====================================================
+   BOTÕES
+===================================================== */
+
+html[data-theme="escuro"] .btnImportar,
+html[data-theme="escuro"] .btn-dashboard-relatorio,
+html[data-theme="escuro"] .btn,
+html[data-theme="escuro"] button.btn-primary {
+    background:
+        linear-gradient(
+            135deg,
+            #0879ef,
+            #1264e8
+        ) !important;
+
+    color:
+        #ffffff !important;
+
+    border:
+        1px solid #238aff !important;
+
+    box-shadow:
+        0 5px 14px rgba(18,100,232,.25) !important;
+}
+
+html[data-theme="escuro"] .btnImportar:hover,
+html[data-theme="escuro"] .btn-dashboard-relatorio:hover,
+html[data-theme="escuro"] .btn:hover {
+    filter:
+        brightness(1.08);
+}
+
+
+/* Exportar */
+
+html[data-theme="escuro"] .btn-exportar,
+html[data-theme="escuro"] .btn-exportar-entrada {
+    background:
+        #0d1e30 !important;
+
+    color:
+        #dfeeff !important;
+
+    border:
+        1px solid #1776d2 !important;
+}
+
+
+/* excluir / limpar */
+
+html[data-theme="escuro"] .btn-vermelho,
+html[data-theme="escuro"] .btn-excluir-produto {
+    background:
+        #31171e !important;
+
+    color:
+        #ff5266 !important;
+
+    border:
+        1px solid #db3d50 !important;
+}
+
+
+/* =====================================================
+   CAMPOS DE BUSCA / SELECTS
+===================================================== */
+
+html[data-theme="escuro"] input,
+html[data-theme="escuro"] select,
+html[data-theme="escuro"] textarea {
+    background:
+        #15283d !important;
+
+    color:
+        #f3f7fb !important;
+
+    border:
+        1px solid #34516e !important;
+}
+
+html[data-theme="escuro"] input::placeholder,
+html[data-theme="escuro"] textarea::placeholder {
+    color:
+        #8099b3 !important;
+}
+
+html[data-theme="escuro"] input:focus,
+html[data-theme="escuro"] select:focus,
+html[data-theme="escuro"] textarea:focus {
+    border-color:
+        #2d8cff !important;
+
+    box-shadow:
+        0 0 0 3px rgba(45, 140, 255, .14) !important;
+}
+
+html[data-theme="escuro"] option {
+    background:
+        #15283d !important;
+
+    color:
+        #ffffff !important;
+}
+
+
+/* =====================================================
+   TABELA PRODUTOS
+===================================================== */
+
+html[data-theme="escuro"] .tabela,
+html[data-theme="escuro"] table {
+    background:
+        #0d1b2b !important;
+
+    color:
+        #eaf3fb !important;
+
+    border-color:
+        #29445f !important;
+}
+
+html[data-theme="escuro"] .tabela thead,
+html[data-theme="escuro"] table thead {
+    background:
+        #17324d !important;
+}
+
+html[data-theme="escuro"] .tabela th,
+html[data-theme="escuro"] table th {
+    background:
+        #17324d !important;
+
+    color:
+        #ffffff !important;
+
+    border-bottom:
+        1px solid #36536f !important;
+}
+
+html[data-theme="escuro"] .tabela td,
+html[data-theme="escuro"] table td {
+    background:
+        #0f2032 !important;
+
+    color:
+        #e8f2fb !important;
+
+    border-bottom:
+        1px solid #2a4157 !important;
+}
+
+html[data-theme="escuro"] .tabela tbody tr:nth-child(even) td,
+html[data-theme="escuro"] table tbody tr:nth-child(even) td {
+    background:
+        #102438 !important;
+}
+
+html[data-theme="escuro"] .tabela tbody tr:hover td,
+html[data-theme="escuro"] table tbody tr:hover td {
+    background:
+        #17324b !important;
+}
+
+
+/* =====================================================
+   STATUS PRODUTOS
+===================================================== */
+
+html[data-theme="escuro"] .movimentacao-entrada,
+html[data-theme="escuro"] .status-normal,
+html[data-theme="escuro"] .badge-normal {
+    background:
+        linear-gradient(
+            135deg,
+            #0f8451,
+            #15a967
+        ) !important;
+
+    color:
+        #ffffff !important;
+
+    border:
+        1px solid #22c779 !important;
+}
+
+html[data-theme="escuro"] .status-contagem-produto.contado {
+    color:
+        #ffffff !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f8451,
+            #15a967
+        ) !important;
+}
+
+html[data-theme="escuro"] .status-contagem-produto.sem-posicao {
+    color:
+        #d7e7f6 !important;
+
+    background:
+        #315575 !important;
+
+    border:
+        1px solid #487396 !important;
+}
+
+html[data-theme="escuro"] .status-contagem-produto.pendente {
+    color:
+        #ffd277 !important;
+
+    background:
+        #4b3515 !important;
+
+    border:
+        1px solid #8b651e !important;
+}
+
+
+/* =====================================================
+   PRODUTOS - CLIENTE / ENDEREÇO
+===================================================== */
+
+html[data-theme="escuro"] .cliente-produto {
+    background:
+        #173e68 !important;
+
+    color:
+        #72baff !important;
+}
+
+html[data-theme="escuro"] .endereco-produto {
+    background:
+        #253b52 !important;
+
+    color:
+        #d9e9f8 !important;
+}
+
+
+/* =====================================================
+   DASHBOARD - PAINÉIS
+===================================================== */
+
+html[data-theme="escuro"] .dashboard-badge {
+    background:
+        #173c63 !important;
+
+    color:
+        #78bbff !important;
+}
+
+html[data-theme="escuro"] .dashboard-ranking-numero {
+    background:
+        #183a5e !important;
+
+    color:
+        #79baff !important;
+}
+
+html[data-theme="escuro"] .dashboard-barra,
+html[data-theme="escuro"] .top-ocupacao-barra,
+html[data-theme="escuro"] .progresso-card {
+    background:
+        #263d54 !important;
+}
+
+
+/* =====================================================
+   FAIXA DE ALERTAS
+===================================================== */
+
+html[data-theme="escuro"] .dashboard-faixa-alertas {
+    background:
+        linear-gradient(
+            180deg,
+            #10243a,
+            #0d1b2b
+        ) !important;
+}
+
+html[data-theme="escuro"] .alerta-indicador {
+    border-left-color:
+        #2b4965 !important;
+}
+
+html[data-theme="escuro"] .alerta-indicador strong {
+    color:
+        #ffffff !important;
+}
+
+html[data-theme="escuro"] .alerta-principal small,
+html[data-theme="escuro"] .alerta-indicador small {
+    color:
+        #86a1ba !important;
+}
+
+
+/* =====================================================
+   RESUMO DE MOVIMENTAÇÕES
+===================================================== */
+
+html[data-theme="escuro"] .resumo-movimento-item {
+    border:
+        1px solid #29445f !important;
+}
+
+html[data-theme="escuro"] .resumo-movimento-item.entrada,
+html[data-theme="escuro"] .resumo-movimento-item.saida,
+html[data-theme="escuro"] .resumo-movimento-item.transferencia,
+html[data-theme="escuro"] .resumo-movimento-item.saldo {
+    background:
+        #102238 !important;
+}
+
+html[data-theme="escuro"] .resumo-movimento-item span {
+    color:
+        #8fa6bd !important;
+}
+
+html[data-theme="escuro"] .resumo-movimento-item strong {
+    color:
+        #ffffff !important;
+}
+
+
+/* =====================================================
+   POSIÇÕES
+===================================================== */
+
+html[data-theme="escuro"] .pagina-posicoes .mapa-controles,
+html[data-theme="escuro"] .pagina-posicoes .mapa-cards-resumo,
+html[data-theme="escuro"] .pagina-posicoes .mapa-barra-legenda,
+html[data-theme="escuro"] .pagina-posicoes .mapa-area-scroll,
+html[data-theme="escuro"] .pagina-posicoes .mapa-rodape {
+    background:
+        #0f2032 !important;
+
+    border-color:
+        #29445f !important;
+}
+
+html[data-theme="escuro"] .pagina-posicoes .mapa-corredor {
+    background:
+        #0d1b2b !important;
+
+    border-color:
+        #28445e !important;
+}
+
+html[data-theme="escuro"] .pagina-posicoes .mapa-corredor-cabecalho {
+    background:
+        #163149 !important;
+
+    color:
+        #ffffff !important;
+}
+
+html[data-theme="escuro"] .pagina-posicoes .mapa-corredor-cabecalho small {
+    color:
+        #8da4b9 !important;
+}
+
+html[data-theme="escuro"] .pagina-posicoes .btn-corredor-mapa {
+    background:
+        #162a3d !important;
+
+    color:
+        #dfeeff !important;
+
+    border-color:
+        #35546e !important;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+html[data-theme="escuro"] .modalConteudo {
+    background:
+        #102034 !important;
+
+    color:
+        #f3f7fb !important;
+}
+
+html[data-theme="escuro"] .modalCabecalho h2 {
+    color:
+        #ffffff !important;
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+html[data-theme="escuro"] .login-box {
+    background:
+        linear-gradient(
+            180deg,
+            #102034,
+            #0d1a2b
+        ) !important;
+
+    color:
+        #ffffff !important;
+}
+
+html[data-theme="escuro"] .login-box h1 {
+    color:
+        #ffffff !important;
+}
+
+html[data-theme="escuro"] .login-box p {
+    color:
+        #92a9c0 !important;
+}
+
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+html[data-theme="escuro"] ::-webkit-scrollbar-track {
+    background:
+        #07111f !important;
+}
+
+html[data-theme="escuro"] ::-webkit-scrollbar-thumb {
+    background:
+        #315777 !important;
+
+    border-radius:
+        10px !important;
+}
+
+
+/* =====================================================
+   SELETOR DE IDIOMA
+===================================================== */
+
+html[data-theme="escuro"] #wms-language-switcher .wms-lang-item {
+    color:
+        #a9bdd1 !important;
+}
+
+html[data-theme="escuro"] #wms-language-switcher .wms-lang-item.active {
+    color:
+        #42a5ff !important;
+}
+
+html[data-theme="escuro"] #wms-language-switcher .wms-lang-separator {
+    background:
+        #3a4e62 !important;
+}
+
+/* =====================================================
+   AJUSTE FINAL - PRODUTOS MODO ESCURO
+   Deixa a tela igual ao modelo aprovado
+===================================================== */
+
+
+/* =====================================================
+   1. CARDS SUPERIORES
+===================================================== */
+
+html[data-theme="escuro"] .produtos-resumo-card,
+html[data-theme="escuro"] .produto-resumo-card,
+html[data-theme="escuro"] .card-resumo-produto,
+html[data-theme="escuro"] .cards-produtos .card,
+html[data-theme="escuro"] .cards-produtos > div,
+html[data-theme="escuro"] .resumo-produtos .card,
+html[data-theme="escuro"] .resumo-produtos > div {
+    background:
+        linear-gradient(
+            145deg,
+            #10243a 0%,
+            #0c1b2b 100%
+        ) !important;
+
+    border: 1px solid #294d6d !important;
+
+    box-shadow:
+        0 7px 20px rgba(0, 0, 0, .24) !important;
+
+    color: #ffffff !important;
+}
+
+
+/* textos dos cards */
+
+html[data-theme="escuro"] .produtos-resumo-card h1,
+html[data-theme="escuro"] .produtos-resumo-card h2,
+html[data-theme="escuro"] .produtos-resumo-card h3,
+html[data-theme="escuro"] .produtos-resumo-card strong,
+html[data-theme="escuro"] .produto-resumo-card strong,
+html[data-theme="escuro"] .card-resumo-produto strong,
+html[data-theme="escuro"] .cards-produtos strong,
+html[data-theme="escuro"] .resumo-produtos strong {
+    color: #ffffff !important;
+}
+
+
+html[data-theme="escuro"] .produtos-resumo-card small,
+html[data-theme="escuro"] .produto-resumo-card small,
+html[data-theme="escuro"] .card-resumo-produto small,
+html[data-theme="escuro"] .cards-produtos small,
+html[data-theme="escuro"] .resumo-produtos small {
+    color: #8faac2 !important;
+}
+
+
+/* =====================================================
+   2. ÁREA BRANCA DOS FILTROS
+===================================================== */
+
+html[data-theme="escuro"] .filtros-produtos,
+html[data-theme="escuro"] .produtos-filtros,
+html[data-theme="escuro"] .barra-filtros,
+html[data-theme="escuro"] .painel-filtros,
+html[data-theme="escuro"] .area-filtros-produtos {
+    background: #0e1e30 !important;
+
+    border-color: #294760 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =====================================================
+   3. CONTAINER DA TABELA
+===================================================== */
+
+html[data-theme="escuro"] .tabela-produtos-container,
+html[data-theme="escuro"] .produtos-tabela-container,
+html[data-theme="escuro"] .tabela-container,
+html[data-theme="escuro"] .table-container {
+    background: #0d1b2b !important;
+
+    border-color: #294760 !important;
+}
+
+
+/* =====================================================
+   4. IMPORTAÇÃO
+===================================================== */
+
+html[data-theme="escuro"] .importarExcel {
+    background:
+        linear-gradient(
+            180deg,
+            #10243a,
+            #0d1c2c
+        ) !important;
+
+    border: 1px solid #294d6d !important;
+}
+
+
+html[data-theme="escuro"] .tituloExcel {
+    color: #28d3c2 !important;
+}
+
+
+/* arquivo */
+
+html[data-theme="escuro"] .importarExcel input[type="file"] {
+    background: #13283d !important;
+    color: #dce8f3 !important;
+
+    border: 1px solid #365a78 !important;
+}
+
+
+/* =====================================================
+   5. BUSCA
+===================================================== */
+
+html[data-theme="escuro"] input[type="search"],
+html[data-theme="escuro"] #buscaProduto,
+html[data-theme="escuro"] .busca-produto {
+    background: #152a40 !important;
+
+    border-color: #315572 !important;
+
+    color: #ffffff !important;
+}
+
+
+/* =====================================================
+   6. SELECTS
+===================================================== */
+
+html[data-theme="escuro"] select {
+    background: #152a40 !important;
+
+    color: #ffffff !important;
+
+    border-color: #315572 !important;
+}
+
+
+/* =====================================================
+   7. STATUS NORMAL
+===================================================== */
+
+html[data-theme="escuro"] .status-normal,
+html[data-theme="escuro"] .badge-normal,
+html[data-theme="escuro"] .status-produto-normal {
+    background:
+        linear-gradient(
+            135deg,
+            #07874f,
+            #10a862
+        ) !important;
+
+    color: #ffffff !important;
+
+    border: 1px solid #29c97a !important;
+}
+
+
+/* =====================================================
+   8. SEM POSIÇÃO
+===================================================== */
+
+html[data-theme="escuro"] .status-contagem-produto.sem-posicao {
+    background:
+        linear-gradient(
+            135deg,
+            #284c6a,
+            #315d7d
+        ) !important;
+
+    color: #e5f2ff !important;
+
+    border: 1px solid #497896 !important;
+}
+
+
+/* =====================================================
+   9. CABEÇALHO DA TABELA
+===================================================== */
+
+html[data-theme="escuro"] table thead,
+html[data-theme="escuro"] .tabela thead {
+    background: #173652 !important;
+}
+
+
+html[data-theme="escuro"] table th,
+html[data-theme="escuro"] .tabela th {
+    background: #173652 !important;
+
+    color: #ffffff !important;
+
+    border-color: #385773 !important;
+}
+
+
+/* =====================================================
+   10. LINHAS
+===================================================== */
+
+html[data-theme="escuro"] table td,
+html[data-theme="escuro"] .tabela td {
+    background: #102438 !important;
+
+    color: #edf6ff !important;
+
+    border-color: #29465f !important;
+}
+
+
+html[data-theme="escuro"] table tbody tr:nth-child(even) td,
+html[data-theme="escuro"] .tabela tbody tr:nth-child(even) td {
+    background: #0e2133 !important;
+}
+
+
+html[data-theme="escuro"] table tbody tr:hover td,
+html[data-theme="escuro"] .tabela tbody tr:hover td {
+    background: #17344d !important;
+}
+
+/* =====================================================
+   PRODUTOS - MODO ESCURO DEFINITIVO
+   Usa as classes REAIS da tela Produtos
+===================================================== */
+
+/* =====================================================
+   FUNDO DA TELA
+===================================================== */
+
+html[data-theme="escuro"] body,
+html[data-theme="escuro"] .conteudo {
+    background: #07111f !important;
+    color: #eef6ff !important;
+}
+
+
+/* =====================================================
+   4 CARDS SUPERIORES
+===================================================== */
+
+html[data-theme="escuro"] .prod-kpis {
+    background: transparent !important;
+}
+
+html[data-theme="escuro"] .prod-kpi {
+    background:
+        linear-gradient(
+            145deg,
+            #10243a 0%,
+            #0c1b2b 100%
+        ) !important;
+
+    border: 1px solid #294d6d !important;
+
+    box-shadow:
+        0 7px 20px rgba(0, 0, 0, .24) !important;
+
+    color: #ffffff !important;
+}
+
+
+/* textos */
+
+html[data-theme="escuro"] .prod-kpi small {
+    color: #a9bdd1 !important;
+}
+
+html[data-theme="escuro"] .prod-kpi strong {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .prod-kpi .subtexto {
+    color: #7890a7 !important;
+}
+
+
+/* mantém cores dos números principais */
+
+html[data-theme="escuro"] .prod-kpi.com-estoque strong {
+    color: #23d978 !important;
+}
+
+html[data-theme="escuro"] .prod-kpi.sem-estoque strong {
+    color: #ff9d2e !important;
+}
+
+html[data-theme="escuro"] .prod-kpi.abaixo-minimo strong {
+    color: #ff4658 !important;
+}
+
+
+/* =====================================================
+   ÍCONES DOS 4 CARDS
+===================================================== */
+
+html[data-theme="escuro"] .prod-kpi-icone {
+    border: 1px solid rgba(255,255,255,.05) !important;
+}
+
+html[data-theme="escuro"] .prod-kpi.total .prod-kpi-icone {
+    background: #14365a !important;
+}
+
+html[data-theme="escuro"] .prod-kpi.com-estoque .prod-kpi-icone {
+    background: #103c2c !important;
+}
+
+html[data-theme="escuro"] .prod-kpi.sem-estoque .prod-kpi-icone {
+    background: #47311d !important;
+}
+
+html[data-theme="escuro"] .prod-kpi.abaixo-minimo .prod-kpi-icone {
+    background: #46232b !important;
+}
+
+
+/* =====================================================
+   IMPORTAÇÃO EXCEL
+===================================================== */
+
+html[data-theme="escuro"] .importarExcel {
+    background:
+        linear-gradient(
+            180deg,
+            #102238,
+            #0c1928
+        ) !important;
+
+    border: 1px solid #284765 !important;
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.20) !important;
+}
+
+html[data-theme="escuro"] .importarExcel #tituloImportacao {
+    color: #22cdb8 !important;
+}
+
+
+/* campo escolher arquivo */
+
+html[data-theme="escuro"] #arquivoExcel {
+    background: #12243a !important;
+    color: #dce8f3 !important;
+    border: 1px solid #31526f !important;
+}
+
+
+/* =====================================================
+   BOTÕES DA IMPORTAÇÃO
+===================================================== */
+
+html[data-theme="escuro"] #btnImportarProdutos {
+    background:
+        linear-gradient(
+            135deg,
+            #0879ef,
+            #1264e8
+        ) !important;
+
+    color: #ffffff !important;
+
+    border: 1px solid #238aff !important;
+}
+
+html[data-theme="escuro"] #btnExportarEstoque {
+    background: #0f2032 !important;
+
+    color: #dcecff !important;
+
+    border: 1px solid #238aff !important;
+}
+
+html[data-theme="escuro"] #btnLimparProdutos {
+    background: #29151b !important;
+
+    color: #ff586a !important;
+
+    border: 1px solid #e34053 !important;
+}
+
+
+/* =====================================================
+   ÁREA DE BUSCA E FILTROS
+===================================================== */
+
+html[data-theme="escuro"] .prod-ferramentas {
+    background:
+        linear-gradient(
+            180deg,
+            #102034,
+            #0d1b2b
+        ) !important;
+
+    border: 1px solid #294760 !important;
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.20) !important;
+}
+
+
+/* campo busca */
+
+html[data-theme="escuro"] .prod-busca {
+    background: #14283d !important;
+
+    border: 1px solid #315572 !important;
+}
+
+html[data-theme="escuro"] .prod-busca input {
+    background: transparent !important;
+
+    color: #eef7ff !important;
+
+    border: 0 !important;
+
+    box-shadow: none !important;
+}
+
+html[data-theme="escuro"] .prod-busca input::placeholder {
+    color: #7f9ab5 !important;
+}
+
+
+/* selects */
+
+html[data-theme="escuro"] #filtroClienteProdutos,
+html[data-theme="escuro"] #filtroStatusProdutos {
+    background: #14283d !important;
+
+    color: #ffffff !important;
+
+    border: 1px solid #315572 !important;
+}
+
+
+/* =====================================================
+   CONTAINER DA TABELA
+===================================================== */
+
+html[data-theme="escuro"] .produtos-tabela-container {
+    background: #0d1b2b !important;
+
+    border: 1px solid #294760 !important;
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.20) !important;
+}
+
+html[data-theme="escuro"] .produtos-scroll {
+    background: #0d1b2b !important;
+}
+
+
+/* =====================================================
+   TABELA
+===================================================== */
+
+html[data-theme="escuro"] .tabela-produtos {
+    background: #0d1b2b !important;
+}
+
+html[data-theme="escuro"] .tabela-produtos thead {
+    background: #173652 !important;
+}
+
+html[data-theme="escuro"] .tabela-produtos th {
+    background: #173652 !important;
+
+    color: #ffffff !important;
+
+    border-color: #385773 !important;
+}
+
+html[data-theme="escuro"] .tabela-produtos td {
+    background: #102438 !important;
+
+    color: #edf6ff !important;
+
+    border-color: #29465f !important;
+}
+
+html[data-theme="escuro"] .tabela-produtos tbody tr:nth-child(even) td {
+    background: #0e2133 !important;
+}
+
+html[data-theme="escuro"] .tabela-produtos tbody tr:hover td {
+    background: #17344d !important;
+}
+
+
+/* =====================================================
+   RODAPÉ DA TABELA
+===================================================== */
+
+html[data-theme="escuro"] .prod-rodape {
+    background: #0f2032 !important;
+
+    color: #8fa6bd !important;
+
+    border-color: #294760 !important;
+}
+
+html[data-theme="escuro"] .prod-contador {
+    color: #8fa6bd !important;
+}
+
+
+/* =====================================================
+   STATUS / CONTAGEM
+===================================================== */
+
+html[data-theme="escuro"] .status-contagem-produto.contado {
+    background: #0f8451 !important;
+
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .status-contagem-produto.sem-posicao {
+    background: #315575 !important;
+
+    color: #e7f3ff !important;
+
+    border: 1px solid #487396 !important;
+}
+
+html[data-theme="escuro"] .status-contagem-produto.pendente {
+    background: #4b3515 !important;
+
+    color: #ffd277 !important;
+
+    border: 1px solid #8b651e !important;
+}
+
+
+/* =====================================================
+   FORÇA O CARD NORMAL DE STATUS A FICAR VERDE ESCURO
+===================================================== */
+
+html[data-theme="escuro"] .status-normal,
+html[data-theme="escuro"] .normal,
+html[data-theme="escuro"] td .normal {
+    background: #0f8451 !important;
+
+    color: #ffffff !important;
+
+    border-color: #22c779 !important;
+}
+
+/* ==========================================================
+   SMI WMS - TEMA ESCURO GLOBAL DEFINITIVO
+   PADRÃO: DASHBOARD + PRODUTOS
+
+   Este bloco é SOMENTE para o modo escuro.
+   O modo claro permanece exatamente como está.
+========================================================== */
+
+
+/* ==========================================================
+   1. CORES GLOBAIS
+========================================================== */
+
+html[data-theme="escuro"] {
+    --wms-dark-bg: #07111f;
+    --wms-dark-bg-2: #091827;
+
+    --wms-dark-card: #10243a;
+    --wms-dark-card-2: #0c1b2b;
+
+    --wms-dark-area: #0f2032;
+    --wms-dark-area-2: #102438;
+
+    --wms-dark-header: #173652;
+
+    --wms-dark-border: #294d6d;
+    --wms-dark-border-soft: #29465f;
+
+    --wms-dark-text: #edf6ff;
+    --wms-dark-muted: #8fa6bd;
+
+    --wms-dark-input: #14283d;
+
+    color-scheme: dark;
+}
+
+
+/* ==========================================================
+   2. FUNDO DE TODAS AS TELAS
+========================================================== */
+
+html[data-theme="escuro"] body,
+html[data-theme="escuro"] .conteudo,
+html[data-theme="escuro"] main {
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--wms-dark-bg) 0%,
+            var(--wms-dark-bg-2) 100%
+        ) !important;
+
+    color:
+        var(--wms-dark-text) !important;
+}
+
+
+/* ==========================================================
+   3. CABEÇALHO DAS PÁGINAS
+========================================================== */
+
+html[data-theme="escuro"] .titulo-pagina h1,
+html[data-theme="escuro"] .topbar h1,
+html[data-theme="escuro"] .conteudo > h1,
+html[data-theme="escuro"] .conteudo > header h1 {
+
+    color:
+        #ffffff !important;
+}
+
+html[data-theme="escuro"] .titulo-pagina small,
+html[data-theme="escuro"] .topbar small,
+html[data-theme="escuro"] .usuario {
+
+    color:
+        #8fb5d9 !important;
+}
+
+
+/* ==========================================================
+   4. PAINÉIS PRINCIPAIS
+========================================================== */
+
+html[data-theme="escuro"] .painel,
+html[data-theme="escuro"] .card,
+html[data-theme="escuro"] .grafico-card,
+html[data-theme="escuro"] .modalConteudo {
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--wms-dark-card) 0%,
+            var(--wms-dark-card-2) 100%
+        ) !important;
+
+    border:
+        1px solid var(--wms-dark-border) !important;
+
+    color:
+        var(--wms-dark-text) !important;
+
+    box-shadow:
+        0 7px 20px rgba(0, 0, 0, .22) !important;
+}
+
+
+/* títulos dos painéis */
+
+html[data-theme="escuro"] .painel h1,
+html[data-theme="escuro"] .painel h2,
+html[data-theme="escuro"] .painel h3,
+html[data-theme="escuro"] .card h1,
+html[data-theme="escuro"] .card h2,
+html[data-theme="escuro"] .card h3,
+html[data-theme="escuro"] .grafico-card h1,
+html[data-theme="escuro"] .grafico-card h2,
+html[data-theme="escuro"] .grafico-card h3 {
+
+    color:
+        #ffffff !important;
+}
+
+
+/* textos auxiliares */
+
+html[data-theme="escuro"] .painel small,
+html[data-theme="escuro"] .card small,
+html[data-theme="escuro"] .grafico-card small {
+
+    color:
+        var(--wms-dark-muted) !important;
+}
+
+
+/* ==========================================================
+   5. CARDS DE RESUMO GENÉRICOS
+========================================================== */
+
+html[data-theme="escuro"] .cards .card,
+html[data-theme="escuro"] .card-dashboard,
+html[data-theme="escuro"] .card-dashboard-novo {
+
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1b2b
+        ) !important;
+
+    border:
+        1px solid #294d6d !important;
+
+    color:
+        #ffffff !important;
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.22) !important;
+}
+
+html[data-theme="escuro"] .cards .card h3 {
+
+    color:
+        #a9bdd1 !important;
+}
+
+html[data-theme="escuro"] .cards .card span {
+
+    color:
+        #ffffff !important;
+}
+
+
+/* ==========================================================
+   6. FORMULÁRIOS
+========================================================== */
+
+html[data-theme="escuro"] input,
+html[data-theme="escuro"] select,
+html[data-theme="escuro"] textarea {
+
+    background:
+        var(--wms-dark-input) !important;
+
+    color:
+        #ffffff !important;
+
+    border:
+        1px solid #315572 !important;
+
+    box-shadow:
+        none;
+}
+
+
+/* placeholder */
+
+html[data-theme="escuro"] input::placeholder,
+html[data-theme="escuro"] textarea::placeholder {
+
+    color:
+        #7f9ab5 !important;
+}
+
+
+/* foco */
+
+html[data-theme="escuro"] input:focus,
+html[data-theme="escuro"] select:focus,
+html[data-theme="escuro"] textarea:focus {
+
+    border-color:
+        #2d8cff !important;
+
+    box-shadow:
+        0 0 0 3px rgba(45, 140, 255, .14) !important;
+}
+
+
+/* options */
+
+html[data-theme="escuro"] option {
+
+    background:
+        #14283d !important;
+
+    color:
+        #ffffff !important;
+}
+
+
+/* labels */
+
+html[data-theme="escuro"] label {
+
+    color:
+        #b8c9da !important;
+}
+
+
+/* ==========================================================
+   7. TABELAS - TODAS AS TELAS
+========================================================== */
+
+html[data-theme="escuro"] table,
+html[data-theme="escuro"] .tabela {
+
+    background:
+        #0d1b2b !important;
+
+    color:
+        #edf6ff !important;
+
+    border-color:
+        #294760 !important;
+}
+
+
+/* cabeçalho */
+
+html[data-theme="escuro"] table thead,
+html[data-theme="escuro"] .tabela thead {
+
+    background:
+        #173652 !important;
+}
+
+html[data-theme="escuro"] table th,
+html[data-theme="escuro"] .tabela th {
+
+    background:
+        #173652 !important;
+
+    color:
+        #ffffff !important;
+
+    border-color:
+        #385773 !important;
+}
+
+
+/* células */
+
+html[data-theme="escuro"] table td,
+html[data-theme="escuro"] .tabela td {
+
+    background:
+        #102438 !important;
+
+    color:
+        #edf6ff !important;
+
+    border-color:
+        #29465f !important;
+}
+
+
+/* linhas alternadas */
+
+html[data-theme="escuro"] table tbody tr:nth-child(even) td,
+html[data-theme="escuro"] .tabela tbody tr:nth-child(even) td {
+
+    background:
+        #0e2133 !important;
+}
+
+
+/* hover */
+
+html[data-theme="escuro"] table tbody tr:hover td,
+html[data-theme="escuro"] .tabela tbody tr:hover td {
+
+    background:
+        #17344d !important;
+}
+
+
+/* ==========================================================
+   8. ENTRADAS
+========================================================== */
+
+html[data-theme="escuro"] .pagina-entradas {
+
+    background:
+        #07111f !important;
+}
+
+
+/* painel nova entrada */
+
+html[data-theme="escuro"]
+.pagina-entradas .painel-nova-entrada {
+
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1b2b
+        ) !important;
+
+    border:
+        1px solid #294d6d !important;
+}
+
+
+/* campos */
+
+html[data-theme="escuro"]
+.pagina-entradas .entrada-coluna label {
+
+    color:
+        #b8c9da !important;
+}
+
+html[data-theme="escuro"]
+.pagina-entradas .entrada-coluna input {
+
+    background:
+        #14283d !important;
+
+    color:
+        #ffffff !important;
+
+    border-color:
+        #315572 !important;
+}
+
+
+/* produto encontrado */
+
+html[data-theme="escuro"]
+.pagina-entradas .card-produto-entrada {
+
+    background:
+        linear-gradient(
+            135deg,
+            #102b45,
+            #0e2033
+        ) !important;
+
+    border-color:
+        #2f608d !important;
+}
+
+html[data-theme="escuro"]
+.pagina-entradas .produto-entrada-info strong {
+
+    color:
+        #ffffff !important;
+}
+
+html[data-theme="escuro"]
+.pagina-entradas .produto-entrada-info small {
+
+    color:
+        #8fa6bd !important;
+}
+
+
+/* estoque atual */
+
+html[data-theme="escuro"]
+.pagina-entradas .produto-estoque-atual small {
+
+    color:
+        #8fa6bd !important;
+}
+
+
+/* novo saldo */
+
+html[data-theme="escuro"]
+.pagina-entradas .card-novo-saldo {
+
+    background:
+        linear-gradient(
+            135deg,
+            #103326,
+            #0d261d
+        ) !important;
+
+    border-color:
+        #277751 !important;
+}
+
+html[data-theme="escuro"]
+.pagina-entradas .card-novo-saldo small {
+
+    color:
+        #93c8aa !important;
+}
+
+
+/* resumo entrada */
+
+html[data-theme="escuro"]
+.pagina-entradas .resumo-entrada-dia {
+
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1b2b
+        ) !important;
+
+    border-color:
+        #294d6d !important;
+}
+
+html[data-theme="escuro"]
+.pagina-entradas .resumo-item {
+
+    border-color:
+        #29465f !important;
+}
+
+html[data-theme="escuro"]
+.pagina-entradas .resumo-item small,
+html[data-theme="escuro"]
+.pagina-entradas .resumo-item span {
+
+    color:
+        #8fa6bd !important;
+}
+
+html[data-theme="escuro"]
+.pagina-entradas .resumo-item strong {
+
+    color:
+        #ffffff !important;
+}
+
+
+/* busca histórico */
+
+html[data-theme="escuro"]
+.pagina-entradas .busca-historico-entrada {
+
+    background:
+        #14283d !important;
+
+    border-color:
+        #315572 !important;
+}
+
+
+/* ==========================================================
+   9. SAÍDAS
+========================================================== */
+
+html[data-theme="escuro"] .pagina-saidas {
+
+    background:
+        #07111f !important;
+}
+
+
+/* ==========================================================
+   10. POSIÇÕES
+========================================================== */
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-controles,
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-cards-resumo,
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-barra-legenda,
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-area-scroll,
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-rodape {
+
+    background:
+        #0f2032 !important;
+
+    border-color:
+        #29445f !important;
+}
+
+
+/* cards do resumo */
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-card {
+
+    border:
+        1px solid #294d6d !important;
+}
+
+
+/* verde */
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-card-verde {
+
+    background:
+        linear-gradient(
+            145deg,
+            #103326,
+            #0d261d
+        ) !important;
+}
+
+
+/* cinza */
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-card-cinza {
+
+    background:
+        linear-gradient(
+            145deg,
+            #19293a,
+            #111f2d
+        ) !important;
+}
+
+
+/* azul */
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-card-azul {
+
+    background:
+        linear-gradient(
+            145deg,
+            #102b45,
+            #0e2033
+        ) !important;
+}
+
+
+/* roxo */
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-card-roxo {
+
+    background:
+        linear-gradient(
+            145deg,
+            #28203e,
+            #1b1830
+        ) !important;
+}
+
+
+/* texto cards */
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-card-texto span {
+
+    color:
+        #a9bdd1 !important;
+}
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-card-texto strong {
+
+    color:
+        #ffffff !important;
+}
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-card-texto small {
+
+    color:
+        #8fa6bd !important;
+}
+
+
+/* corredor */
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-corredor {
+
+    background:
+        #0d1b2b !important;
+
+    border-color:
+        #28445e !important;
+}
+
+html[data-theme="escuro"]
+.pagina-posicoes .mapa-corredor-cabecalho {
+
+    background:
+        #163149 !important;
+
+    color:
+        #ffffff !important;
+}
+
+
+/* ==========================================================
+   11. MODAIS
+========================================================== */
+
+html[data-theme="escuro"] .modalPosicao {
+
+    background:
+        rgba(0, 0, 0, .72) !important;
+}
+
+html[data-theme="escuro"] .modalConteudo {
+
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1b2b
+        ) !important;
+
+    border:
+        1px solid #294d6d !important;
+
+    color:
+        #ffffff !important;
+}
+
+html[data-theme="escuro"] .modalCabecalho h2 {
+
+    color:
+        #ffffff !important;
+}
+
+
+/* ==========================================================
+   12. RESUMOS / INDICADORES
+========================================================== */
+
+html[data-theme="escuro"] .resumo-movimento-item {
+
+    border:
+        1px solid #29445f !important;
+}
+
+html[data-theme="escuro"] .resumo-movimento-item.entrada,
+html[data-theme="escuro"] .resumo-movimento-item.saida,
+html[data-theme="escuro"] .resumo-movimento-item.transferencia,
+html[data-theme="escuro"] .resumo-movimento-item.saldo {
+
+    background:
+        #102238 !important;
+}
+
+html[data-theme="escuro"] .resumo-movimento-item span {
+
+    color:
+        #8fa6bd !important;
+}
+
+html[data-theme="escuro"] .resumo-movimento-item strong {
+
+    color:
+        #ffffff !important;
+}
+
+
+/* ==========================================================
+   13. STATUS
+========================================================== */
+
+html[data-theme="escuro"] .movimentacao-entrada {
+
+    background:
+        #0f8451 !important;
+
+    color:
+        #ffffff !important;
+}
+
+html[data-theme="escuro"] .movimentacao-saida {
+
+    background:
+        #7f2633 !important;
+
+    color:
+        #ffffff !important;
+}
+
+html[data-theme="escuro"] .movimentacao-transferencia {
+
+    background:
+        #51399b !important;
+
+    color:
+        #ffffff !important;
+}
+
+html[data-theme="escuro"] .movimentacao-outros {
+
+    background:
+        #315575 !important;
+
+    color:
+        #e7f3ff !important;
+}
+
+
+/* ==========================================================
+   14. BOTÕES
+========================================================== */
+
+html[data-theme="escuro"] .btn,
+html[data-theme="escuro"] .btnImportar,
+html[data-theme="escuro"] .btn-dashboard-relatorio {
+
+    background:
+        linear-gradient(
+            135deg,
+            #0879ef,
+            #1264e8
+        ) !important;
+
+    color:
+        #ffffff !important;
+
+    border-color:
+        #238aff !important;
+}
+
+
+/* verde */
+
+html[data-theme="escuro"] .btn-verde {
+
+    background:
+        #0f8451 !important;
+
+    color:
+        #ffffff !important;
+}
+
+
+/* amarelo */
+
+html[data-theme="escuro"] .btn-amarelo {
+
+    background:
+        #9a630a !important;
+
+    color:
+        #ffffff !important;
+}
+
+
+/* vermelho */
+
+html[data-theme="escuro"] .btn-vermelho {
+
+    background:
+        #7f2633 !important;
+
+    color:
+        #ffffff !important;
+}
+
+
+/* ==========================================================
+   15. RELATÓRIOS / CONFIGURAÇÕES
+========================================================== */
+
+html[data-theme="escuro"] .cards {
+
+    background:
+        transparent !important;
+}
+
+html[data-theme="escuro"] .cards .card {
+
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1b2b
+        ) !important;
+
+    border:
+        1px solid #294d6d !important;
+}
+
+
+/* ==========================================================
+   16. DIVISORES / BORDAS
+========================================================== */
+
+html[data-theme="escuro"] hr {
+
+    border-color:
+        #29465f !important;
+}
+
+
+/* ==========================================================
+   17. LINKS
+========================================================== */
+
+html[data-theme="escuro"] .conteudo a {
+
+    color:
+        #66b3ff;
+}
+
+
+/* ==========================================================
+   18. SCROLLBAR
+========================================================== */
+
+html[data-theme="escuro"] ::-webkit-scrollbar-track {
+
+    background:
+        #07111f !important;
+}
+
+html[data-theme="escuro"] ::-webkit-scrollbar-thumb {
+
+    background:
+        #315777 !important;
+
+    border-radius:
+        10px !important;
+}
+
+/* ==========================================================
+   SMI WMS - AJUSTES ESCUROS DAS TELAS ESPECÍFICAS
+   Padrão visual: Dashboard + Produtos
+========================================================== */
+
+
+/* ==========================================================
+   TRANSFERÊNCIAS
+========================================================== */
+
+html[data-theme="escuro"] .painel-transferencia {
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1b2b
+        ) !important;
+
+    border: 1px solid #294d6d !important;
+    color: #edf6ff !important;
+    box-shadow: 0 7px 20px rgba(0,0,0,.22) !important;
+}
+
+html[data-theme="escuro"] .painel-transferencia h2,
+html[data-theme="escuro"] .cabecalho-historico-transferencia h2 {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .painel-transferencia label {
+    color: #a9bdd1 !important;
+}
+
+html[data-theme="escuro"] .resumo-transferencia,
+html[data-theme="escuro"] .estoque-transferencia,
+html[data-theme="escuro"] .saldo-transferencia {
+    background: #0f2032 !important;
+    border-color: #294d6d !important;
+    color: #edf6ff !important;
+}
+
+html[data-theme="escuro"] .pesquisa-transferencia,
+html[data-theme="escuro"] .filtros-transferencia {
+    background: #102438 !important;
+    border-color: #315572 !important;
+}
+
+html[data-theme="escuro"] .btn-secundario-transferencia,
+html[data-theme="escuro"] .btn-filtro-transferencia {
+    background: #102438 !important;
+    color: #dcecff !important;
+    border-color: #315572 !important;
+}
+
+html[data-theme="escuro"] .btn-transferir-principal {
+    background: linear-gradient(135deg,#0879ef,#1264e8) !important;
+    color: #ffffff !important;
+    border-color: #238aff !important;
+}
+
+
+/* ==========================================================
+   CONFERÊNCIA
+========================================================== */
+
+html[data-theme="escuro"] .card-conferencia,
+html[data-theme="escuro"] .card-conferencia-pedido,
+html[data-theme="escuro"] .card-conteudo {
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1b2b
+        ) !important;
+
+    border: 1px solid #294d6d !important;
+    color: #edf6ff !important;
+}
+
+html[data-theme="escuro"] .card-conferencia-pedido h2,
+html[data-theme="escuro"] .cabecalho-conferencia-pedido h2 {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .resumo-pedido,
+html[data-theme="escuro"] .resumo-pedido-item {
+    background: #0f2032 !important;
+    border-color: #29465f !important;
+}
+
+html[data-theme="escuro"] .resumo-pedido-item small {
+    color: #8fa6bd !important;
+}
+
+html[data-theme="escuro"] .resumo-pedido-item strong {
+    color: #ffffff !important;
+}
+
+
+/* CARDS SUPERIORES DA CONFERÊNCIA */
+
+html[data-theme="escuro"] .conferencia-kpi,
+html[data-theme="escuro"] .card-kpi-conferencia,
+html[data-theme="escuro"] .resumo-conferencia > div {
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1b2b
+        ) !important;
+
+    border: 1px solid #294d6d !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .conferencia-kpi small,
+html[data-theme="escuro"] .card-kpi-conferencia small {
+    color: #8fa6bd !important;
+}
+
+
+/* ==========================================================
+   INVENTÁRIO
+========================================================== */
+
+html[data-theme="escuro"] .painel-indicadores-inventario {
+    background: transparent !important;
+}
+
+html[data-theme="escuro"] .indicador-inventario,
+html[data-theme="escuro"] .grafico-inventario-card {
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1b2b
+        ) !important;
+
+    border: 1px solid #294d6d !important;
+    color: #edf6ff !important;
+    box-shadow: 0 7px 20px rgba(0,0,0,.22) !important;
+}
+
+html[data-theme="escuro"] .indicador-inventario h3,
+html[data-theme="escuro"] .grafico-inventario-card h3 {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .indicador-valor {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .indicador-detalhes {
+    border-color: #29465f !important;
+}
+
+html[data-theme="escuro"] .indicador-linha span {
+    color: #8fa6bd !important;
+}
+
+html[data-theme="escuro"] .indicador-linha strong {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .inventario-busca input {
+    background: #14283d !important;
+    color: #ffffff !important;
+    border-color: #315572 !important;
+}
+
+html[data-theme="escuro"] .inventario-tabela-container,
+html[data-theme="escuro"] .top5-divergencias-wrap {
+    background: #0d1b2b !important;
+    border-color: #294760 !important;
+}
+
+html[data-theme="escuro"] .inventario-tabela,
+html[data-theme="escuro"] .top5-divergencias {
+    background: #0d1b2b !important;
+}
+
+html[data-theme="escuro"] .inventario-tabela th,
+html[data-theme="escuro"] .top5-divergencias th {
+    background: #173652 !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .inventario-tabela td,
+html[data-theme="escuro"] .top5-divergencias td {
+    background: #102438 !important;
+    color: #edf6ff !important;
+    border-color: #29465f !important;
+}
+
+
+/* velocímetro inventário */
+
+html[data-theme="escuro"] .velocimetro-arco::after {
+    background: #10243a !important;
+}
+
+html[data-theme="escuro"] .velocimetro-centro strong,
+html[data-theme="escuro"] .velocimetro-centro span {
+    color: #edf6ff !important;
+}
+
+
+/* ==========================================================
+   RELATÓRIOS
+========================================================== */
+
+html[data-theme="escuro"] .rel-kpi,
+html[data-theme="escuro"] .rel-filtros,
+html[data-theme="escuro"] .rel-grafico-card,
+html[data-theme="escuro"] .rel-detalhamento,
+html[data-theme="escuro"] .rel-card {
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1b2b
+        ) !important;
+
+    border: 1px solid #294d6d !important;
+    color: #edf6ff !important;
+    box-shadow: 0 7px 20px rgba(0,0,0,.22) !important;
+}
+
+html[data-theme="escuro"] .rel-kpi small,
+html[data-theme="escuro"] .rel-kpi .subtexto {
+    color: #8fa6bd !important;
+}
+
+html[data-theme="escuro"] .rel-kpi strong {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .rel-grafico-card h3,
+html[data-theme="escuro"] .rel-filtros h2,
+html[data-theme="escuro"] .rel-detalhamento h2 {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .rel-campo label {
+    color: #a9bdd1 !important;
+}
+
+html[data-theme="escuro"] .rel-btn.secundario {
+    background: #102438 !important;
+    color: #dcecff !important;
+    border-color: #315572 !important;
+}
+
+
+/* ==========================================================
+   REQUISIÇÃO
+========================================================== */
+
+html[data-theme="escuro"] .requisicao-container {
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1b2b
+        ) !important;
+
+    border: 1px solid #294d6d !important;
+    color: #edf6ff !important;
+}
+
+html[data-theme="escuro"] .titulo-pagina-requisicao h2 {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .ficha-requisicao {
+    background: #0f2032 !important;
+    color: #edf6ff !important;
+    border-color: #385773 !important;
+}
+
+html[data-theme="escuro"] .cabecalho-ficha,
+html[data-theme="escuro"] .dados-gerais,
+html[data-theme="escuro"] .campo-ficha,
+html[data-theme="escuro"] .titulo-ficha,
+html[data-theme="escuro"] .numero-ficha {
+    background: #102438 !important;
+    color: #edf6ff !important;
+    border-color: #385773 !important;
+}
+
+html[data-theme="escuro"] .titulo-ficha h2,
+html[data-theme="escuro"] .titulo-ficha span {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .campo-ficha label,
+html[data-theme="escuro"] .numero-ficha label {
+    color: #8fa6bd !important;
+}
+
+html[data-theme="escuro"] .ficha-requisicao input {
+    background: #14283d !important;
+    color: #ffffff !important;
+    border-color: #315572 !important;
+}
+
+html[data-theme="escuro"] .btn-requisicao {
+    background: #0f4f8d !important;
+    color: #ffffff !important;
+    border-color: #238aff !important;
+}
+
+
+/* ==========================================================
+   CARDS BRANCOS REMANESCENTES
+========================================================== */
+
+html[data-theme="escuro"] .resumo-card,
+html[data-theme="escuro"] .kpi-card,
+html[data-theme="escuro"] .indicador-card,
+html[data-theme="escuro"] .painel-card,
+html[data-theme="escuro"] .conteudo-card {
+    background:
+        linear-gradient(
+            145deg,
+            #10243a,
+            #0c1b2b
+        ) !important;
+
+    border: 1px solid #294d6d !important;
+    color: #edf6ff !important;
+}
+
+
+/* ==========================================================
+   BOTÕES BRANCOS REMANESCENTES
+========================================================== */
+
+html[data-theme="escuro"] button:not(.menu-item):not(.btn-vermelho):not([onclick*="sairSistema"]) {
+    border-color: #315572;
+}
+
+html[data-theme="escuro"] .btn-secundario,
+html[data-theme="escuro"] .btn-outline,
+html[data-theme="escuro"] .botao-secundario {
+    background: #102438 !important;
+    color: #dcecff !important;
+    border-color: #315572 !important;
+}
+
+/* ==========================================================
+   SMI WMS - ACABAMENTO FINAL DO MODO ESCURO
+   Relatórios + Conferência + Inventário + Requisição
+========================================================== */
+
+
+/* ==========================================================
+   RELATÓRIOS
+========================================================== */
+
+html[data-theme="escuro"] .rel-painel {
+    background:
+        linear-gradient(
+            145deg,
+            #10243a 0%,
+            #0c1b2b 100%
+        ) !important;
+
+    border:
+        1px solid #294d6d !important;
+
+    color:
+        #edf6ff !important;
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.22) !important;
+}
+
+html[data-theme="escuro"] .rel-titulo-linha h2 {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .rel-titulo-linha span {
+    color: #6db7ff !important;
+}
+
+html[data-theme="escuro"] .rel-filtros {
+    background: transparent !important;
+}
+
+html[data-theme="escuro"] .rel-detalhes-topo {
+    background: transparent !important;
+}
+
+html[data-theme="escuro"] .rel-busca {
+    background: #14283d !important;
+    border-color: #315572 !important;
+}
+
+html[data-theme="escuro"] .rel-busca input {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .rel-filtro-mini {
+    background: #102438 !important;
+    color: #dcecff !important;
+    border-color: #315572 !important;
+}
+
+html[data-theme="escuro"] .rel-select-ordem {
+    background: #14283d !important;
+    color: #ffffff !important;
+    border-color: #315572 !important;
+}
+
+
+/* ==========================================================
+   CONFERÊNCIA - 4 CARDS SUPERIORES
+========================================================== */
+
+html[data-theme="escuro"] .cards-indicadores {
+    background: transparent !important;
+}
+
+html[data-theme="escuro"] .card-indicador {
+    background:
+        linear-gradient(
+            145deg,
+            #10243a 0%,
+            #0c1b2b 100%
+        ) !important;
+
+    border:
+        1px solid #294d6d !important;
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.22) !important;
+
+    color:
+        #ffffff !important;
+}
+
+html[data-theme="escuro"] .card-indicador-info small {
+    color: #a9bdd1 !important;
+}
+
+html[data-theme="escuro"] .card-indicador-info strong {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .card-indicador-info span {
+    color: #7f9ab5 !important;
+}
+
+
+/* ícones */
+
+html[data-theme="escuro"] .indicador-azul .card-indicador-icone {
+    background: #14365a !important;
+    color: #69b5ff !important;
+}
+
+html[data-theme="escuro"] .indicador-verde .card-indicador-icone {
+    background: #103c2c !important;
+    color: #32dc85 !important;
+}
+
+html[data-theme="escuro"] .indicador-amarelo .card-indicador-icone {
+    background: #493719 !important;
+    color: #ffbd4a !important;
+}
+
+html[data-theme="escuro"] .indicador-vermelho .card-indicador-icone {
+    background: #46232b !important;
+    color: #ff6675 !important;
+}
+
+
+/* título conferência */
+
+html[data-theme="escuro"] .topo-conferencia h1 {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .topo-conferencia p {
+    color: #8fb5d9 !important;
+}
+
+
+/* ==========================================================
+   INVENTÁRIO - CONTAINER EXTERNO
+========================================================== */
+
+html[data-theme="escuro"] .inventario-container {
+    background:
+        linear-gradient(
+            145deg,
+            #10243a 0%,
+            #0c1b2b 100%
+        ) !important;
+
+    border:
+        1px solid #294d6d !important;
+
+    color:
+        #edf6ff !important;
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.22) !important;
+}
+
+html[data-theme="escuro"] .inventario-cabecalho {
+    background: transparent !important;
+}
+
+html[data-theme="escuro"] .inventario-cabecalho h2 {
+    color: #ffffff !important;
+}
+
+html[data-theme="escuro"] .inventario-busca {
+    background: transparent !important;
+}
+
+html[data-theme="escuro"] .inventario-busca small {
+    color: #8fa6bd !important;
+}
+
+
+/* tabela inventário */
+
+html[data-theme="escuro"] .inventario-tabela-container {
+    background: #0d1b2b !important;
+    border-color: #294760 !important;
+}
+
+
+/* ==========================================================
+   REQUISIÇÃO - FAIXA BRANCA DO MEIO
+========================================================== */
+
+html[data-theme="escuro"] .ficha-requisicao > div,
+html[data-theme="escuro"] .ficha-requisicao section {
+    border-color: #385773 !important;
+}
+
+html[data-theme="escuro"] .titulo-itens,
+html[data-theme="escuro"] .titulo-materiais,
+html[data-theme="escuro"] .subtitulo-ficha,
+html[data-theme="escuro"] .cabecalho-itens {
+    background: #173652 !important;
+    color: #ffffff !important;
+    border-color: #385773 !important;
+}
+
+
+/* caso essa faixa não tenha classe específica */
+
+html[data-theme="escuro"] .ficha-requisicao div[style*="background"],
+html[data-theme="escuro"] .ficha-requisicao div[style*="background-color"] {
+    color: #ffffff !important;
+}
+
+
+/* ==========================================================
+   BOTÕES CLAROS REMANESCENTES
+========================================================== */
+
+html[data-theme="escuro"] .rel-btn.secundario,
+html[data-theme="escuro"] .btn-secundario-transferencia,
+html[data-theme="escuro"] .btn-filtro-transferencia,
+html[data-theme="escuro"] .rel-filtro-mini {
+    background: #102438 !important;
+    color: #dcecff !important;
+    border-color: #315572 !important;
+}
+
+
+/* ==========================================================
+   TEXTOS ESCUROS REMANESCENTES
+========================================================== */
+
+html[data-theme="escuro"] .rel-painel h1,
+html[data-theme="escuro"] .rel-painel h2,
+html[data-theme="escuro"] .rel-painel h3,
+html[data-theme="escuro"] .inventario-container h1,
+html[data-theme="escuro"] .inventario-container h2,
+html[data-theme="escuro"] .inventario-container h3,
+html[data-theme="escuro"] .requisicao-container h1,
+html[data-theme="escuro"] .requisicao-container h2,
+html[data-theme="escuro"] .requisicao-container h3 {
+    color: #ffffff !important;
+}

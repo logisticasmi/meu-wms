@@ -1,1082 +1,3105 @@
 <!DOCTYPE html>
 
+
+
 <html lang="pt-BR">
+
+
 
 <head>
 
+
+
 <meta charset="UTF-8">
+
+
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
+
 <title>SMI WMS - Configurações</title>
+
+
 
 <link rel="stylesheet" href="style.css">
 
+
+
 <script src="https://unpkg.com/lucide@latest"></script>
+
+
 
 <link rel="icon" type="image/png" href="img/favicon.png">
 
+
+
 <style>
 
+
+
 /* =====================================================
+
    IDIOMA DO SISTEMA
+
 ===================================================== */
 
+
+
 .card-idioma {
+
     background: #ffffff;
+
     border-radius: 16px;
+
     padding: 24px 28px;
+
     margin-bottom: 26px;
+
     box-shadow: 0 5px 18px rgba(0, 30, 69, 0.08);
+
 }
+
+
 
 .card-idioma h2 {
+
     margin: 0 0 10px 0;
+
     color: #062d63;
+
 }
+
+
 
 .idioma-descricao {
+
     margin: 0 0 10px;
+
     color: #334e68;
+
     font-size: 15px;
+
 }
+
+
 
 .idioma-atual {
+
     margin: 0 0 14px;
+
     color: #17375d;
+
     font-size: 15px;
+
 }
+
+
 
 .idioma-atual strong {
+
     color: #062d63;
+
 }
+
+
 
 .idioma-opcoes {
+
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     gap: 12px;
+
 }
+
+
 
 .idioma-opcao {
+
     min-height: 74px;
+
     display: flex;
+
     align-items: center;
+
     gap: 14px;
+
     padding: 14px 18px;
+
     border: 1px solid #cbd5e1;
+
     border-radius: 9px;
+
     background: #ffffff;
+
     cursor: pointer;
+
     transition: 0.2s ease;
+
     box-sizing: border-box;
+
 }
+
+
 
 .idioma-opcao:hover {
+
     border-color: #1683f3;
+
     background: #f8fbff;
+
 }
+
+
 
 .idioma-opcao.selecionado {
+
     border-color: #1683f3;
+
     background: #f0f7ff;
+
     box-shadow: 0 0 0 1px rgba(22, 131, 243, 0.08);
+
 }
+
+
 
 .idioma-opcao input {
+
     position: absolute;
+
     opacity: 0;
+
     pointer-events: none;
+
 }
+
+
 
 .idioma-radio {
+
     width: 19px;
+
     height: 19px;
+
     min-width: 19px;
+
     border: 2px solid #94a3b8;
+
     border-radius: 50%;
+
     position: relative;
+
     box-sizing: border-box;
+
 }
+
+
 
 .idioma-opcao.selecionado .idioma-radio {
+
     border-color: #1683f3;
+
 }
+
+
 
 .idioma-opcao.selecionado .idioma-radio::after {
+
     content: "";
+
     width: 9px;
+
     height: 9px;
+
     position: absolute;
+
     left: 50%;
+
     top: 50%;
+
     transform: translate(-50%, -50%);
+
     border-radius: 50%;
+
     background: #1683f3;
+
 }
+
+
 
 .idioma-bandeira {
+
     width: 44px;
+
     height: 29px;
+
     min-width: 44px;
+
     overflow: hidden;
+
     border-radius: 3px;
+
     box-shadow: 0 0 0 1px rgba(0,0,0,.10);
+
     position: relative;
+
 }
+
+
 
 .bandeira-br {
+
     background: #009b3a;
+
 }
+
+
 
 .bandeira-br::before {
+
     content: "";
+
     position: absolute;
+
     left: 8px;
+
     top: 4px;
+
     width: 28px;
+
     height: 21px;
+
     background: #ffdf00;
+
     clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+
 }
+
+
 
 .bandeira-br::after {
+
     content: "";
+
     position: absolute;
+
     left: 17px;
+
     top: 8px;
+
     width: 11px;
+
     height: 11px;
+
     border-radius: 50%;
+
     background: #002776;
+
 }
+
+
 
 .bandeira-it {
+
     background: linear-gradient(
+
         to right,
+
         #009246 0 33.333%,
+
         #ffffff 33.333% 66.666%,
+
         #ce2b37 66.666% 100%
+
     );
+
 }
+
+
 
 .idioma-info {
+
     display: flex;
+
     flex-direction: column;
+
     min-width: 0;
+
 }
+
+
 
 .idioma-info strong {
+
     color: #082f67;
+
     font-size: 16px;
+
 }
+
+
 
 .idioma-info small {
+
     margin-top: 3px;
+
     color: #64748b;
+
     font-size: 13px;
+
 }
+
+
 
 .idioma-rodape {
+
     margin-top: 14px;
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
+
     gap: 15px;
+
 }
+
+
 
 .idioma-aviso {
+
     color: #1769c2;
+
     font-size: 13px;
+
 }
+
+
 
 .btn-salvar-idioma {
+
     min-width: 180px;
+
     padding: 12px 22px;
+
     border: none;
+
     border-radius: 8px;
+
     background: #063f7d;
+
     color: #ffffff;
+
     font-size: 15px;
+
     font-weight: 700;
+
     cursor: pointer;
+
     transition: 0.2s ease;
+
 }
+
+
 
 .btn-salvar-idioma:hover {
+
     background: #052f5f;
+
 }
+
+
 
 .mensagem-idioma {
+
     display: none;
+
     margin-top: 12px;
+
     padding: 10px 12px;
+
     border-radius: 8px;
+
     background: #eaf8ee;
+
     border: 1px solid #bfe6ca;
+
     color: #17763a;
+
     font-size: 13px;
+
     font-weight: 700;
+
 }
 
+
+
 .mensagem-idioma.mostrar {
+
     display: block;
+
 }
+
+
 
 @media (max-width: 800px) {
 
+
+
     .idioma-opcoes {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+
+    .idioma-rodape {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+
+
+    .btn-salvar-idioma {
+
+        width: 100%;
+
+    }
+
+
+
+}
+
+
+
+
+/* =====================================================
+   APARÊNCIA DO SISTEMA
+===================================================== */
+
+.card-aparencia {
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 24px 28px;
+
+    margin-bottom: 26px;
+
+    box-shadow: 0 5px 18px rgba(0, 30, 69, 0.08);
+}
+
+
+.card-aparencia h2 {
+
+    margin: 0 0 10px 0;
+
+    color: #062d63;
+}
+
+
+.aparencia-descricao {
+
+    margin: 0 0 16px;
+
+    color: #334e68;
+
+    font-size: 15px;
+}
+
+
+.aparencia-opcoes {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+}
+
+
+.aparencia-opcao {
+
+    min-height: 90px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 16px 18px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    box-sizing: border-box;
+}
+
+
+.aparencia-opcao:hover {
+
+    border-color: #1683f3;
+
+    background: #f8fbff;
+}
+
+
+.aparencia-opcao.selecionado {
+
+    border-color: #1683f3;
+
+    background: #f0f7ff;
+
+    box-shadow: 0 0 0 1px rgba(22, 131, 243, 0.08);
+}
+
+
+.aparencia-opcao input {
+
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+.aparencia-icone {
+
+    width: 48px;
+
+    height: 48px;
+
+    min-width: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eef6ff;
+
+    color: #1769c2;
+}
+
+
+.aparencia-icone svg {
+
+    width: 24px;
+
+    height: 24px;
+}
+
+
+.aparencia-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+
+.aparencia-info strong {
+
+    color: #082f67;
+
+    font-size: 16px;
+}
+
+
+.aparencia-info small {
+
+    margin-top: 4px;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+
+.aparencia-radio {
+
+    width: 19px;
+
+    height: 19px;
+
+    min-width: 19px;
+
+    margin-left: auto;
+
+    border: 2px solid #94a3b8;
+
+    border-radius: 50%;
+
+    position: relative;
+
+    box-sizing: border-box;
+}
+
+
+.aparencia-opcao.selecionado .aparencia-radio {
+
+    border-color: #1683f3;
+}
+
+
+.aparencia-opcao.selecionado .aparencia-radio::after {
+
+    content: "";
+
+    width: 9px;
+
+    height: 9px;
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background: #1683f3;
+}
+
+
+.aparencia-rodape {
+
+    margin-top: 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+
+.aparencia-atual {
+
+    color: #1769c2;
+
+    font-size: 13px;
+}
+
+
+.btn-salvar-aparencia {
+
+    min-width: 180px;
+
+    padding: 12px 22px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #063f7d;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.btn-salvar-aparencia:hover {
+
+    background: #052f5f;
+}
+
+
+.mensagem-aparencia {
+
+    display: none;
+
+    margin-top: 12px;
+
+    padding: 10px 12px;
+
+    border-radius: 8px;
+
+    background: #eaf8ee;
+
+    border: 1px solid #bfe6ca;
+
+    color: #17763a;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.mensagem-aparencia.mostrar {
+
+    display: block;
+}
+
+
+@media (max-width: 800px) {
+
+    .aparencia-opcoes {
+
         grid-template-columns: 1fr;
     }
 
-    .idioma-rodape {
+
+    .aparencia-rodape {
+
         flex-direction: column;
+
         align-items: stretch;
     }
 
-    .btn-salvar-idioma {
+
+    .btn-salvar-aparencia {
+
         width: 100%;
     }
 
 }
 
+
+/* =====================================================
+   TEMA ESCURO - CONFIGURAÇÕES
+===================================================== */
+
+html[data-theme="escuro"] body {
+
+    background: #0b1420 !important;
+
+    color: #e6edf5;
+}
+
+
+html[data-theme="escuro"] .conteudo {
+
+    background: #0b1420 !important;
+}
+
+
+html[data-theme="escuro"] header h1,
+html[data-theme="escuro"] #nomeUsuario {
+
+    color: #f4f8fc;
+}
+
+
+html[data-theme="escuro"] .card,
+html[data-theme="escuro"] .card-idioma,
+html[data-theme="escuro"] .card-aparencia {
+
+    background: #152131;
+
+    color: #e6edf5;
+
+    border-color: #2d4057;
+
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.25);
+}
+
+
+html[data-theme="escuro"] .card h2,
+html[data-theme="escuro"] .card-idioma h2,
+html[data-theme="escuro"] .card-aparencia h2,
+html[data-theme="escuro"] .idioma-atual strong {
+
+    color: #f4f8fc;
+}
+
+html[data-theme="escuro"] .card p,
+html[data-theme="escuro"] .idioma-descricao,
+html[data-theme="escuro"] .idioma-atual,
+html[data-theme="escuro"] .aparencia-descricao {
+
+    color: #aebdce;
+}
+
+
+html[data-theme="escuro"] .idioma-opcao,
+html[data-theme="escuro"] .aparencia-opcao {
+
+    background: #1d2a3b;
+
+    border-color: #33465d;
+}
+
+
+html[data-theme="escuro"] .idioma-opcao:hover,
+html[data-theme="escuro"] .aparencia-opcao:hover {
+
+    background: #223248;
+
+    border-color: #1683f3;
+}
+
+
+html[data-theme="escuro"] .idioma-opcao.selecionado,
+html[data-theme="escuro"] .aparencia-opcao.selecionado {
+
+    background: #17385c;
+
+    border-color: #1683f3;
+}
+
+
+html[data-theme="escuro"] .idioma-info strong,
+html[data-theme="escuro"] .aparencia-info strong {
+
+    color: #ffffff;
+}
+
+
+html[data-theme="escuro"] .idioma-info small,
+html[data-theme="escuro"] .aparencia-info small {
+
+    color: #aebdce;
+}
+
+
+html[data-theme="escuro"] .aparencia-icone {
+
+    background: #22334a;
+
+    color: #65aef7;
+}
+
+
+html[data-theme="escuro"] .aparencia-atual {
+
+    color: #6ab2ff;
+}
+
+
+html[data-theme="escuro"] .mensagem-aparencia {
+
+    background: #173c2a;
+
+    border-color: #286a47;
+
+    color: #7ce0a4;
+}
+
+
 </style>
 
+
+
 </head>
+
+
+
 
 
 <body>
 
 
+
+
+
 <!-- =====================================================
+
      MENU LATERAL - NOVO PADRÃO SMI WMS
+
 ===================================================== -->
+
+
 
 <aside class="sidebar sidebar-wms-novo">
 
+
+
     <div class="sidebar-topo">
 
+
+
         <img
+
             src="img/logo.png"
+
             alt="SMI do Brasil"
+
             class="sidebar-logo"
+
         >
+
+
 
         <h2>SMI WMS</h2>
 
+
+
         <p>GESTÃO QUE MOVIMENTA</p>
 
+
+
     </div>
+
+
 
     <nav class="sidebar-nav" aria-label="Menu principal">
 
+
+
         <div class="menu-titulo">
+
             <span>PRINCIPAL</span>
+
         </div>
+
+
 
         <a href="dashboard.html" class="menu-item" data-page="dashboard.html">
+
             <span class="menu-icon icone-dashboard">
+
                 <i data-lucide="house"></i>
+
             </span>
+
             <span class="menu-texto">Dashboard</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
         <a href="produtos.html" class="menu-item" data-page="produtos.html">
+
             <span class="menu-icon icone-produtos">
+
                 <i data-lucide="package"></i>
+
             </span>
+
             <span class="menu-texto">Produtos</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
 
+
+
         <div class="menu-titulo">
+
             <span>OPERAÇÕES</span>
+
         </div>
+
+
 
         <a href="entradas.html" class="menu-item" data-page="entradas.html">
+
             <span class="menu-icon icone-entradas">
+
                 <i data-lucide="download"></i>
+
             </span>
+
             <span class="menu-texto">Entradas</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
         <a href="saidas.html" class="menu-item" data-page="saidas.html">
+
             <span class="menu-icon icone-saidas">
+
                 <i data-lucide="upload"></i>
+
             </span>
+
             <span class="menu-texto">Saídas</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
         <a href="separacao.html" class="menu-item" data-page="separacao.html">
+
             <span class="menu-icon icone-separacao">
+
                 <i data-lucide="shopping-cart"></i>
+
             </span>
+
             <span class="menu-texto">Separação</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
         <a href="conferencia.html" class="menu-item" data-page="conferencia.html">
+
             <span class="menu-icon icone-conferencia">
+
                 <i data-lucide="clipboard-check"></i>
+
             </span>
+
             <span class="menu-texto">Conferência</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
         <a href="transferencias.html" class="menu-item" data-page="transferencias.html">
+
             <span class="menu-icon icone-transferencia">
+
                 <i data-lucide="arrow-left-right"></i>
+
             </span>
+
             <span class="menu-texto">Transferências</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
         <a href="transferencia-mobile.html" class="menu-item" data-page="transferencia-mobile.html">
+
             <span class="menu-icon icone-mobile">
+
                 <i data-lucide="smartphone"></i>
+
             </span>
+
             <span class="menu-texto">Transf. Mobile</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
         <a href="posicoes.html" class="menu-item" data-page="posicoes.html">
+
             <span class="menu-icon icone-posicoes">
+
                 <i data-lucide="map-pin"></i>
+
             </span>
+
             <span class="menu-texto">Posições</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
         <a href="inventario.html" class="menu-item" data-page="inventario.html">
+
             <span class="menu-icon icone-inventario">
+
                 <i data-lucide="clipboard-list"></i>
+
             </span>
+
             <span class="menu-texto">Inventário</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
         <a href="inventario-mobile.html" class="menu-item" data-page="inventario-mobile.html">
+
             <span class="menu-icon icone-invmobile">
+
                 <i data-lucide="scan-line"></i>
+
             </span>
+
             <span class="menu-texto">Inv. Mobile</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
         <div class="menu-titulo">
+
             <span>SISTEMA</span>
+
         </div>
 
+
+
         <a href="relatorios.html" class="menu-item" data-page="relatorios.html">
+
             <span class="menu-icon icone-relatorios">
+
                 <i data-lucide="chart-no-axes-column"></i>
+
             </span>
+
             <span class="menu-texto">Relatórios</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
         <a href="etiquetagem.html" class="menu-item" data-page="etiquetagem.html">
+
             <span class="menu-icon icone-etiqueta">
+
                 <i data-lucide="tag"></i>
+
             </span>
+
             <span class="menu-texto">Etiquetagem</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
         <a href="requisicao.html" class="menu-item" data-page="requisicao.html">
+
             <span class="menu-icon icone-requisicao">
+
                 <i data-lucide="file-text"></i>
+
             </span>
+
             <span class="menu-texto">Requisição</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
 
+
+
         <a href="configuracoes.html" class="menu-item" data-page="configuracoes.html">
+
             <span class="menu-icon icone-config">
+
                 <i data-lucide="settings"></i>
+
             </span>
+
             <span class="menu-texto">Configurações</span>
+
             <i data-lucide="chevron-right" class="menu-seta"></i>
+
         </a>
+
+
 
     </nav>
 
+
+
     <div class="sidebar-rodape">
+
         <span>LOGÍSTICA MAIS INTELIGENTE</span>
+
         <small>v1.0.0</small>
+
     </div>
+
+
 
 </aside>
 
+
+
 <!-- CONTEÚDO -->
+
+
 
 <div class="conteudo">
 
 
+
+
+
 <header>
 
+
+
 <h1>
+
 ⚙️ Configurações do Sistema
+
 </h1>
 
+
+
 <div id="nomeUsuario"></div>
+
+
 
 </header>
 
 
+
+
+
 <!-- EMPRESA -->
+
+
 
 <div class="card">
 
+
+
 <h2>
+
 🏢 Dados da Empresa
+
 </h2>
 
+
+
 <p>
+
 <strong>Empresa:</strong>
+
 SMI DO BRASIL
+
 </p>
 
+
+
 <p>
+
 <strong>Sistema:</strong>
+
 SMI WMS
+
 </p>
 
+
+
 <p>
+
 <strong>Depósito:</strong>
+
 1 Unidade
+
 </p>
 
+
+
 <p>
+
 <strong>Capacidade:</strong>
+
 60 posições / 360 níveis
+
 </p>
+
+
 
 </div>
+
+
+
 
 
 <!-- USUÁRIO -->
 
+
+
 <div class="card">
 
+
+
 <h2>
+
 👤 Usuário Atual
+
 </h2>
 
+
+
 <p>
+
 Usuário conectado:
+
 <span id="usuarioConfig"></span>
+
 </p>
+
+
 
 </div>
 
 
+
+
+
 <!-- =====================================================
-     IDIOMA DO SISTEMA
+     APARÊNCIA DO SISTEMA
 ===================================================== -->
+
+<div class="card card-aparencia">
+
+    <h2>
+        🎨 Aparência do Sistema
+    </h2>
+
+    <p class="aparencia-descricao">
+        Escolha o tema visual padrão do SMI WMS.
+    </p>
+
+
+    <div class="aparencia-opcoes">
+
+
+        <!-- MODO CLARO -->
+
+        <label
+            class="aparencia-opcao selecionado"
+            id="opcaoTemaClaro"
+        >
+
+            <input
+                type="radio"
+                name="temaWms"
+                value="claro"
+                checked
+            >
+
+
+            <span class="aparencia-icone">
+
+                <i data-lucide="sun"></i>
+
+            </span>
+
+
+            <span class="aparencia-info">
+
+                <strong>
+                    Modo Claro
+                </strong>
+
+                <small>
+                    Visual padrão do sistema
+                </small>
+
+            </span>
+
+
+            <span class="aparencia-radio"></span>
+
+        </label>
+
+
+        <!-- MODO ESCURO -->
+
+        <label
+            class="aparencia-opcao"
+            id="opcaoTemaEscuro"
+        >
+
+            <input
+                type="radio"
+                name="temaWms"
+                value="escuro"
+            >
+
+
+            <span class="aparencia-icone">
+
+                <i data-lucide="moon"></i>
+
+            </span>
+
+
+            <span class="aparencia-info">
+
+                <strong>
+                    Modo Escuro
+                </strong>
+
+                <small>
+                    Reduz o brilho da interface
+                </small>
+
+            </span>
+
+
+            <span class="aparencia-radio"></span>
+
+        </label>
+
+
+    </div>
+
+
+    <div class="aparencia-rodape">
+
+        <span class="aparencia-atual">
+
+            Tema atual:
+
+            <strong id="temaAtualTexto">
+                Modo Claro
+            </strong>
+
+        </span>
+
+
+        <button
+            type="button"
+            class="btn-salvar-aparencia"
+            onclick="salvarTemaWMS()"
+        >
+            Salvar aparência
+        </button>
+
+    </div>
+
+
+    <div
+        id="mensagemAparencia"
+        class="mensagem-aparencia"
+    >
+        Aparência salva com sucesso.
+    </div>
+
+</div>
+
+
+
+
+
+<!-- =====================================================
+
+     IDIOMA DO SISTEMA
+
+===================================================== -->
+
+
 
 <div class="card card-idioma">
 
+
+
 <h2>
+
 🌐 Idioma do Sistema
+
 </h2>
+
+
 
 <p class="idioma-descricao">
 
+
+
 Defina o idioma padrão do WMS.
+
+
 
 A seleção também será refletida no seletor BR | IT do sistema.
 
+
+
 </p>
+
+
 
 <p class="idioma-atual">
 
+
+
 Idioma atual:
 
+
+
 <strong id="idiomaAtualTexto">
+
 Português (Brasil)
+
 </strong>
 
+
+
 </p>
+
+
+
 
 
 <div class="idioma-opcoes">
 
 
+
+
+
     <!-- PORTUGUÊS -->
 
+
+
     <label
+
         class="idioma-opcao selecionado"
+
         id="opcaoIdiomaBR"
+
     >
 
+
+
         <input
+
             type="radio"
+
             name="idiomaWms"
+
             value="pt-BR"
+
             checked
+
         >
 
+
+
         <span class="idioma-radio"></span>
+
+
 
         <span class="idioma-bandeira bandeira-br"></span>
 
+
+
         <span class="idioma-info">
+
             <strong>Português (Brasil)</strong>
+
             <small>Idioma padrão do sistema</small>
+
         </span>
+
+
 
     </label>
 
+        <!-- ITALIANO -->
 
-    <!-- ITALIANO -->
+
 
     <label
+
         class="idioma-opcao"
+
         id="opcaoIdiomaIT"
+
     >
 
+
+
         <input
+
             type="radio"
+
             name="idiomaWms"
+
             value="it-IT"
+
         >
+
+
 
         <span class="idioma-radio"></span>
 
+
+
         <span class="idioma-bandeira bandeira-it"></span>
 
+
+
         <span class="idioma-info">
+
             <strong>Italiano</strong>
+
             <small>Traduzione del sistema</small>
+
         </span>
+
+
 
     </label>
 
+
+
 </div>
+
+
+
 
 
 <div class="idioma-rodape">
 
+
+
     <span class="idioma-aviso">
+
         ⓘ A troca de idioma será aplicada em todo o WMS.
+
     </span>
 
+
+
     <button
+
         type="button"
+
         class="btn-salvar-idioma"
+
         onclick="salvarIdiomaWMS()"
+
     >
+
         Salvar idioma
+
     </button>
 
+
+
 </div>
+
+
+
 
 
 <div
+
     id="mensagemIdioma"
+
     class="mensagem-idioma"
+
 >
+
     Idioma salvo com sucesso.
-</div>
 
 </div>
+
+
+
+</div>
+
+
+
 
 
 <!-- BACKUP -->
 
+
+
 <div class="card">
 
+
+
 <h2>
+
 💾 Backup dos Dados
+
 </h2>
 
+
+
 <p>
+
 Faça uma cópia do estoque salvo no sistema.
+
 </p>
 
+
+
 <button
+
     class="btn"
+
     onclick="exportarEstoque()"
+
 >
+
 Exportar Backup
+
 </button>
 
+
+
 </div>
+
+
+
 
 
 <!-- LIMPEZA -->
 
+
+
 <div class="card">
 
+
+
 <h2>
+
 ⚠️ Administração
+
 </h2>
 
+
+
 <p>
+
 Remover todos os dados gravados no navegador.
+
 </p>
 
+
+
 <button
+
     class="btn btn-vermelho"
+
     onclick="limparSistema()"
+
 >
+
 Limpar Dados
+
 </button>
 
-</div>
 
 
 </div>
+
+
+
+
+
+</div>
+
+
+
 
 
 <script src="app.js"></script>
 
 
+
+
+
 <script>
 
 
+
+
+
 /* =====================================================
+
    CARREGAMENTO DA TELA
+
 ===================================================== */
 
+
+
 window.addEventListener(
+
     "load",
+
     function () {
 
+
+
         if (
+
             typeof verificarLogin ===
+
             "function"
+
         ) {
 
+
+
             verificarLogin();
+
+
 
         }
 
 
+
+
+
         const usuario =
+
             localStorage.getItem(
+
                 "usuario"
+
             );
+
+
+
 
 
         if (usuario) {
 
+
+
             const campoUsuario =
+
                 document.getElementById(
+
                     "usuarioConfig"
+
                 );
+
+
+
 
 
             if (campoUsuario) {
 
+
+
                 campoUsuario.textContent =
+
                     usuario;
 
+
+
             }
+
+
 
         }
 
 
+
+
+
         carregarIdiomaWMS();
 
+
+        carregarTemaWMS();
+
+
+
     }
+
 );
 
 
+
+
+
 /* =====================================================
+
    BACKUP
+
 ===================================================== */
+
+
 
 function exportarEstoque() {
 
+
+
     const dados =
+
         localStorage.getItem(
+
             "estoque"
+
         );
+
+
+
 
 
     if (!dados) {
 
+
+
         alert(
+
             "Nenhum estoque encontrado."
+
         );
 
+
+
         return;
+
     }
 
 
+
+
+
     const arquivo =
+
         new Blob(
+
             [dados],
+
             {
+
                 type: "application/json"
+
             }
+
         );
+
+
+
 
 
     const link =
+
         document.createElement(
+
             "a"
+
         );
+
+
+
 
 
     link.href =
+
         URL.createObjectURL(
+
             arquivo
+
         );
 
 
+
+
+
     link.download =
+
         "backup_estoque_smi.json";
+
+
+
 
 
     link.click();
 
 
+
+
+
     URL.revokeObjectURL(
+
         link.href
+
     );
+
+
 
 }
 
 
+
+
+
 /* =====================================================
+
    LIMPEZA
+
 ===================================================== */
+
+
 
 function limparSistema() {
 
+
+
     if (
+
         confirm(
+
             "Deseja apagar todos os dados do sistema?"
+
         )
+
     ) {
 
-        localStorage.removeItem(
-            "estoque"
-        );
+
 
         localStorage.removeItem(
-            "movimentacoes"
+
+            "estoque"
+
         );
+
+
+
+        localStorage.removeItem(
+
+            "movimentacoes"
+
+        );
+
+
 
         alert(
+
             "Dados removidos com sucesso."
+
         );
+
+
 
         location.reload();
 
+
+
     }
+
+
 
 }
 
 
+
+
+
 /* =====================================================
+
    IDIOMA - CARREGAR
+
 ===================================================== */
+
+
 
 function carregarIdiomaWMS() {
 
+
+
     const idiomaSalvo =
+
         localStorage.getItem(
+
             "wms_idioma"
+
         ) ||
+
         localStorage.getItem(
+
             "idiomaWMS"
+
         ) ||
+
         "pt-BR";
 
 
+
+
+
     const radio =
+
         document.querySelector(
+
             'input[name="idiomaWms"][value="' +
+
             idiomaSalvo +
+
             '"]'
+
         );
+
+
+
 
 
     if (radio) {
 
+
+
         radio.checked = true;
+
+
 
     }
 
 
+
+
+
     atualizarSelecaoIdioma();
 
+
+
     atualizarTextoIdioma(
+
         idiomaSalvo
+
     );
 
 
+
+
+
     document.documentElement.lang =
+
         idiomaSalvo;
+
+
 
 }
 
 
+
+
+
 /* =====================================================
+
    IDIOMA - VISUAL
+
 ===================================================== */
+
+
 
 function atualizarSelecaoIdioma() {
 
+
+
     const idiomaSelecionado =
+
         document.querySelector(
+
             'input[name="idiomaWms"]:checked'
+
         )?.value || "pt-BR";
 
 
+
+
+
     const opcaoBR =
+
         document.getElementById(
+
             "opcaoIdiomaBR"
+
         );
+
+
+
 
 
     const opcaoIT =
+
         document.getElementById(
+
             "opcaoIdiomaIT"
+
         );
+
+
+
 
 
     if (opcaoBR) {
 
+
+
         opcaoBR.classList.toggle(
+
             "selecionado",
+
             idiomaSelecionado ===
+
             "pt-BR"
+
         );
 
+
+
     }
+
+
+
 
 
     if (opcaoIT) {
 
+
+
         opcaoIT.classList.toggle(
+
             "selecionado",
+
             idiomaSelecionado ===
+
             "it-IT"
+
         );
 
+
+
     }
+
+
 
 }
 
 
+
+
+
 /* =====================================================
+
    IDIOMA - TEXTO ATUAL
+
 ===================================================== */
 
+
+
 function atualizarTextoIdioma(
+
     idioma
+
 ) {
 
+
+
     const elemento =
+
         document.getElementById(
+
             "idiomaAtualTexto"
+
         );
+
+
+
 
 
     if (!elemento) {
+
         return;
+
     }
 
 
+
+
+
     elemento.textContent =
+
         idioma === "it-IT"
+
             ? "Italiano"
+
             : "Português (Brasil)";
+
+
 
 }
 
 
+
+
+
 /* =====================================================
+
    IDIOMA - SALVAR
+
 ===================================================== */
+
+
 
 function salvarIdiomaWMS() {
 
+
+
     const idiomaSelecionado =
+
         document.querySelector(
+
             'input[name="idiomaWms"]:checked'
+
         )?.value;
+
+
+
 
 
     if (!idiomaSelecionado) {
 
+
+
         alert(
+
             "Selecione um idioma."
+
         );
 
+
+
         return;
+
     }
 
 
+
+
+
     /*
+
        Salva nas duas chaves para manter
+
        compatibilidade com o seletor BR | IT
+
        que já existe no WMS.
+
     */
 
+
+
     localStorage.setItem(
+
         "wms_idioma",
+
         idiomaSelecionado
+
     );
+
+
+
 
 
     localStorage.setItem(
+
         "idiomaWMS",
+
         idiomaSelecionado
+
     );
+
+
+
 
 
     document.documentElement.lang =
+
         idiomaSelecionado;
 
 
+
+
+
     atualizarTextoIdioma(
+
         idiomaSelecionado
+
     );
+
+
+
 
 
     atualizarSelecaoIdioma();
 
 
+
+
+
     sincronizarSeletorIdiomaTopo(
+
         idiomaSelecionado
+
     );
+
+
+
 
 
     window.dispatchEvent(
+
         new CustomEvent(
+
             "wmsIdiomaAlterado",
+
             {
+
                 detail: {
+
                     idioma:
+
                         idiomaSelecionado
+
                 }
+
             }
+
         )
+
     );
 
 
+
+
+
     const mensagem =
+
         document.getElementById(
+
             "mensagemIdioma"
+
         );
+
+
+
 
 
     if (mensagem) {
 
+
+
         mensagem.textContent =
+
             idiomaSelecionado ===
+
             "it-IT"
+
                 ? "Lingua salvata con successo."
+
                 : "Idioma salvo com sucesso.";
 
 
+
+
+
         mensagem.classList.add(
+
             "mostrar"
+
         );
+
+
+
 
 
         setTimeout(
+
             function () {
 
+
+
                 mensagem.classList.remove(
+
                     "mostrar"
+
                 );
 
+
+
             },
+
             2500
+
         );
+
+
 
     }
 
 
-    /*
-       Recarrega para que o app.js e as outras
-       rotinas do WMS leiam o idioma salvo.
-    */
+
+
 
     setTimeout(
+
         function () {
+
+
 
             location.reload();
 
+
+
         },
+
         700
+
     );
 
-}
 
+
+}
 
 /* =====================================================
    SINCRONIZAR COM SELETOR BR | IT DO TOPO
 ===================================================== */
 
 function sincronizarSeletorIdiomaTopo(
+
     idioma
+
 ) {
 
+
+
     const candidatos =
+
         document.querySelectorAll(
+
             "#wms-language-switcher " +
+
             "[data-lang], " +
+
             "#wms-language-switcher " +
+
             "[data-language], " +
+
             "#wms-language-switcher " +
+
             "[data-idioma]"
+
         );
 
 
+
+
+
     candidatos.forEach(
+
         function (item) {
 
+
+
             const valor =
+
                 item.dataset.lang ||
+
                 item.dataset.language ||
+
                 item.dataset.idioma ||
+
                 "";
 
 
+
+
+
             const ativo =
+
                 (
+
                     idioma === "pt-BR" &&
+
                     (
+
                         valor === "pt-BR" ||
+
                         valor === "pt" ||
+
                         valor === "BR"
+
                     )
+
                 ) ||
+
                 (
+
                     idioma === "it-IT" &&
+
                     (
+
                         valor === "it-IT" ||
+
                         valor === "it" ||
+
                         valor === "IT"
+
                     )
+
                 );
 
 
+
+
+
             item.classList.toggle(
+
                 "active",
+
                 ativo
+
             );
+
+
+
 
 
             item.classList.toggle(
+
                 "ativo",
+
                 ativo
+
             );
+
+
 
         }
+
     );
 
+
+
 }
+
+
+
+
+
+/* =====================================================
+   TEMA DO WMS - CARREGAR
+===================================================== */
+
+function carregarTemaWMS() {
+
+
+
+    const temaSalvo =
+
+        localStorage.getItem(
+
+            "wms_tema"
+
+        ) ||
+
+        "claro";
+
+
+
+
+
+    aplicarTemaWMS(
+
+        temaSalvo
+
+    );
+
+
+
+
+
+    const radio =
+
+        document.querySelector(
+
+            'input[name="temaWms"][value="' +
+
+            temaSalvo +
+
+            '"]'
+
+        );
+
+
+
+
+
+    if (radio) {
+
+
+
+        radio.checked =
+
+            true;
+
+
+
+    }
+
+
+
+
+
+    atualizarSelecaoTema();
+
+
+
+}
+
+
+
+
+
+/* =====================================================
+   TEMA DO WMS - APLICAR
+===================================================== */
+
+function aplicarTemaWMS(
+
+    tema
+
+) {
+
+
+
+    document.documentElement
+
+        .setAttribute(
+
+            "data-theme",
+
+            tema
+
+        );
+
+
+
+
+
+    const texto =
+
+        document.getElementById(
+
+            "temaAtualTexto"
+
+        );
+
+
+
+
+
+    if (texto) {
+
+
+
+        texto.textContent =
+
+            tema === "escuro"
+
+                ? "Modo Escuro"
+
+                : "Modo Claro";
+
+
+
+    }
+
+
+
+}
+
+
+
+
+
+/* =====================================================
+   TEMA DO WMS - VISUAL
+===================================================== */
+
+function atualizarSelecaoTema() {
+
+
+
+    const tema =
+
+        document.querySelector(
+
+            'input[name="temaWms"]:checked'
+
+        )?.value ||
+
+        "claro";
+
+
+
+
+
+    const opcaoClaro =
+
+        document.getElementById(
+
+            "opcaoTemaClaro"
+
+        );
+
+
+
+
+
+    const opcaoEscuro =
+
+        document.getElementById(
+
+            "opcaoTemaEscuro"
+
+        );
+
+
+
+
+
+    if (opcaoClaro) {
+
+
+
+        opcaoClaro.classList.toggle(
+
+            "selecionado",
+
+            tema === "claro"
+
+        );
+
+
+
+    }
+
+
+
+
+
+    if (opcaoEscuro) {
+
+
+
+        opcaoEscuro.classList.toggle(
+
+            "selecionado",
+
+            tema === "escuro"
+
+        );
+
+
+
+    }
+
+
+
+}
+
+
+
+
+
+/* =====================================================
+   TEMA DO WMS - SALVAR
+===================================================== */
+
+function salvarTemaWMS() {
+
+
+
+    const tema =
+
+        document.querySelector(
+
+            'input[name="temaWms"]:checked'
+
+        )?.value;
+
+
+
+
+
+    if (!tema) {
+
+
+
+        alert(
+
+            "Selecione um tema."
+
+        );
+
+
+
+        return;
+
+
+
+    }
+
+
+
+
+
+    localStorage.setItem(
+
+        "wms_tema",
+
+        tema
+
+    );
+
+
+
+
+
+    aplicarTemaWMS(
+
+        tema
+
+    );
+
+
+
+
+
+    atualizarSelecaoTema();
+
+
+
+
+
+    const mensagem =
+
+        document.getElementById(
+
+            "mensagemAparencia"
+
+        );
+
+
+
+
+
+    if (mensagem) {
+
+
+
+        mensagem.textContent =
+
+            tema === "escuro"
+
+                ? "Modo escuro salvo com sucesso."
+
+                : "Modo claro salvo com sucesso.";
+
+
+
+
+
+        mensagem.classList.add(
+
+            "mostrar"
+
+        );
+
+
+
+
+
+        setTimeout(
+
+            function () {
+
+
+
+                mensagem.classList.remove(
+
+                    "mostrar"
+
+                );
+
+
+
+            },
+
+            2500
+
+        );
+
+
+
+    }
+
+
+
+
+
+    window.dispatchEvent(
+
+        new CustomEvent(
+
+            "wmsTemaAlterado",
+
+            {
+
+                detail: {
+
+                    tema:
+
+                        tema
+
+                }
+
+            }
+
+        )
+
+    );
+
+
+
+}
+
+
+
 
 
 /* =====================================================
@@ -1084,72 +3107,233 @@ function sincronizarSeletorIdiomaTopo(
 ===================================================== */
 
 document.addEventListener(
+
     "DOMContentLoaded",
+
     function () {
 
+
+
         document
+
             .querySelectorAll(
+
                 'input[name="idiomaWms"]'
+
             )
+
             .forEach(
+
                 function (radio) {
 
+
+
                     radio.addEventListener(
+
                         "change",
+
                         atualizarSelecaoIdioma
+
                     );
 
+
+
                 }
+
             );
 
 
+
+
+
+        document
+
+            .querySelectorAll(
+
+                'input[name="temaWms"]'
+
+            )
+
+            .forEach(
+
+                function (radio) {
+
+
+
+                    radio.addEventListener(
+
+                        "change",
+
+                        function () {
+
+
+
+                            atualizarSelecaoTema();
+
+
+
+                            aplicarTemaWMS(
+
+                                this.value
+
+                            );
+
+
+
+                        }
+
+                    );
+
+
+
+                }
+
+            );
+
+
+
+
+
+        carregarTemaWMS();
+
+
+
+
+
         if (
+
             typeof lucide !==
+
             "undefined"
+
         ) {
 
+
+
             lucide.createIcons();
+
+
 
         }
 
 
+
+
+
         let paginaAtual =
+
             window.location.pathname
+
                 .split("/")
+
                 .pop();
+
+
+
 
 
         if (!paginaAtual) {
 
+
+
             paginaAtual =
+
                 "dashboard.html";
+
+
 
         }
 
 
+
+
+
         document
+
             .querySelectorAll(
+
                 ".sidebar-wms-novo .menu-item"
+
             )
+
             .forEach(
+
                 function (item) {
 
+
+
                     const pagina =
+
                         item.getAttribute(
+
                             "data-page"
+
                         );
 
 
+
+
+
                     item.classList.toggle(
+
                         "active",
+
                         pagina === paginaAtual
+
                     );
 
+
+
                 }
+
             );
 
+
+
     }
+
 );
+
+
+
+
+
+/* =====================================================
+   ATUALIZAÇÃO DO TEMA ENTRE ABAS
+===================================================== */
+
+window.addEventListener(
+
+    "storage",
+
+    function (evento) {
+
+
+
+        if (
+
+            evento.key ===
+
+            "wms_tema"
+
+        ) {
+
+
+
+            carregarTemaWMS();
+
+
+
+        }
+
+
+
+    }
+
+);
+
+
+
 
 
 /* =====================================================
@@ -1157,20 +3341,61 @@ document.addEventListener(
 ===================================================== */
 
 window.salvarIdiomaWMS =
+
     salvarIdiomaWMS;
 
 
+
+
+
+window.salvarTemaWMS =
+
+    salvarTemaWMS;
+
+
+
+
+
+window.carregarTemaWMS =
+
+    carregarTemaWMS;
+
+
+
+
+
+window.aplicarTemaWMS =
+
+    aplicarTemaWMS;
+
+
+
+
+
 window.exportarEstoque =
+
     exportarEstoque;
 
 
+
+
+
 window.limparSistema =
+
     limparSistema;
+
+
+
 
 
 </script>
 
 
+
+
+
 </body>
+
+
 
 </html>
