@@ -5099,3 +5099,204 @@ function criarMiniGrafico(
 }
 
 
+ // =====================================================
+ // SMI WMS - TOP 5 PRODUTOS
+ // CORREÇÃO: SALDOS REAIS DO SUPABASE
+ // =====================================================
+
+async function carregarTopProdutos() {
+
+    const container =
+        document.getElementById("topProdutos");
+
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="dashboard-vazio">
+            Atualizando produtos...
+        </div>
+    `;
+
+    try {
+
+        // Aguardar a conexão com Supabase
+        let tentativas = 0;
+
+        while (
+            !window.supabaseClient &&
+            tentativas < 30
+        ) {
+
+            await new Promise(
+                resolve => setTimeout(resolve, 200)
+            );
+
+            tentativas++;
+        }
+
+        if (!window.supabaseClient) {
+            throw new Error(
+                "Supabase não conectado."
+            );
+        }
+
+        // Buscar diretamente da mesma tabela
+        // utilizada na tela Produtos.
+        // Não utiliza estoque do localStorage.
+        // Não soma produtos com mesmo código.
+
+        const { data, error } =
+            await window.supabaseClient
+                .from("produtos")
+                .select(
+                    "codigo, descricao, quantidade"
+                )
+                .not("codigo", "is", null)
+                .neq("codigo", "")
+                .order("quantidade", {
+                    ascending: false,
+                    nullsFirst: false
+                })
+                .order("id", {
+                    ascending: true
+                })
+                .limit(5);
+
+        if (error) {
+            throw error;
+        }
+
+        const produtos =
+            Array.isArray(data) ? data : [];
+
+        if (produtos.length === 0) {
+
+            container.innerHTML = `
+                <div class="dashboard-vazio">
+                    Nenhum produto cadastrado.
+                </div>
+            `;
+
+            return;
+        }
+
+        const maiorQuantidade = Math.max(
+            0,
+            Number(produtos[0].quantidade) || 0
+        );
+
+        container.innerHTML = "";
+
+        produtos.forEach(
+            function (produto, indice) {
+
+                const quantidade =
+                    Number(produto.quantidade) || 0;
+
+                const percentual =
+                    maiorQuantidade > 0
+                        ? Math.max(
+                            0,
+                            Math.min(
+                                100,
+                                quantidade /
+                                maiorQuantidade * 100
+                            )
+                        )
+                        : 0;
+
+                const item =
+                    document.createElement("div");
+
+                item.className =
+                    "dashboard-ranking-item";
+
+                item.innerHTML = `
+
+                    <div class="dashboard-ranking-cabecalho">
+
+                        <div class="dashboard-ranking-identificacao">
+
+                            <span class="dashboard-ranking-numero">
+                                ${indice + 1}
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    ${escaparHTML(
+                                        produto.descricao ||
+                                        "Produto sem descrição"
+                                    )}
+                                </strong>
+
+                                <small>
+                                    Código:
+                                    ${escaparHTML(
+                                        produto.codigo || "-"
+                                    )}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <strong class="dashboard-ranking-valor">
+
+                            ${quantidade.toLocaleString(
+                                "pt-BR",
+                                {
+                                    maximumFractionDigits: 3
+                                }
+                            )}
+
+                        </strong>
+
+                    </div>
+
+                    <div class="dashboard-barra">
+
+                        <div
+                            class="dashboard-barra-preenchimento"
+                            style="width:${percentual}%">
+                        </div>
+
+                    </div>
+
+                `;
+
+                container.appendChild(item);
+
+            }
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao atualizar Top 5 Produtos:",
+            erro
+        );
+
+        container.innerHTML = `
+            <div class="dashboard-vazio">
+                Não foi possível consultar os produtos
+                no Supabase.
+            </div>
+        `;
+    }
+}
+
+
+// =====================================================
+// ATUALIZAR AO RETORNAR PARA O DASHBOARD
+// =====================================================
+
+window.addEventListener(
+    "focus",
+    function () {
+
+        carregarTopProdutos();
+
+    }
+);
+

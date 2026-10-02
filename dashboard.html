@@ -2282,10 +2282,7 @@ document.addEventListener(
 .dashboard-novo .sc7-card {
     min-width: 0;
     padding: 18px;
-    background: linear-gradient(180deg, #0e2847, #0a203a);
-    border: 1px solid #23517a;
     border-radius: 12px;
-    color: #f5faff;
     box-sizing: border-box;
 }
 
@@ -3132,7 +3129,33 @@ document.addEventListener(
 })();
 </script>
 
+<style>
 
+.dashboard-novo .sc7-card {
+    color: inherit !important;
+}
+
+/* Título: Separação e Conferência */
+.dashboard-novo .sc7-cabecalho h2 {
+    color: inherit !important;
+}
+
+/* Descrição dos indicadores */
+.dashboard-novo .sc7-descricao {
+    color: inherit !important;
+}
+
+/* Números: 17, 7, 10, 0 */
+.dashboard-novo .sc7-numeros strong {
+    color: inherit !important;
+}
+
+/* Percentuais */
+.dashboard-novo .sc7-numeros small {
+    color: inherit !important;
+    opacity: 0.75;
+}
+</style>
 </body>
 
 </html>
