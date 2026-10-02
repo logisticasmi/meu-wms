@@ -2273,6 +2273,866 @@ document.addEventListener(
 </script>
 
 
+<!-- =====================================================
+     SMI WMS - SEPARAÇÃO E CONFERÊNCIA
+     INDICADOR DOS ÚLTIMOS 7 DIAS
+===================================================== -->
+
+<style>
+.dashboard-novo .sc7-card {
+    min-width: 0;
+    padding: 18px;
+    background: linear-gradient(180deg, #0e2847, #0a203a);
+    border: 1px solid #23517a;
+    border-radius: 12px;
+    color: #f5faff;
+    box-sizing: border-box;
+}
+
+.dashboard-novo .sc7-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.dashboard-novo .sc7-cabecalho h2 {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 800;
+    margin: 0;
+}
+
+.dashboard-novo .sc7-periodo {
+    background: #143f70;
+    color: #cde4ff;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 7px;
+    white-space: nowrap;
+}
+
+.dashboard-novo .sc7-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard-novo .sc7-item {
+    display: grid;
+    grid-template-columns:
+        34px minmax(125px, 1fr)
+        minmax(70px, 1fr) 42px;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.dashboard-novo .sc7-icone {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #142e4c;
+}
+
+.dashboard-novo .sc7-icone svg {
+    width: 19px;
+    height: 19px;
+    stroke-width: 2.5;
+}
+
+.dashboard-novo .sc7-verde {
+    color: #11cd70;
+}
+
+.dashboard-novo .sc7-azul {
+    color: #1884ff;
+}
+
+.dashboard-novo .sc7-laranja {
+    color: #ff9d0b;
+}
+
+.dashboard-novo .sc7-vermelho {
+    color: #fd364b;
+}
+
+.dashboard-novo .sc7-descricao {
+    font-size: 11px;
+    color: #e4edf7;
+    line-height: 1.4;
+}
+
+.dashboard-novo .sc7-trilho {
+    height: 10px;
+    background: #29465f;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.dashboard-novo .sc7-preenchimento {
+    height: 100%;
+    width: 0;
+    border-radius: 30px;
+    transition: width .3s ease;
+}
+
+.dashboard-novo .sc7-preenchimento.sc7-verde {
+    background: #0bce76;
+}
+
+.dashboard-novo .sc7-preenchimento.sc7-azul {
+    background: #1686ff;
+}
+
+.dashboard-novo .sc7-preenchimento.sc7-laranja {
+    background: #ff9b07;
+}
+
+.dashboard-novo .sc7-preenchimento.sc7-vermelho {
+    background: #ff314b;
+}
+
+.dashboard-novo .sc7-numeros {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.dashboard-novo .sc7-numeros strong {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.dashboard-novo .sc7-numeros small {
+    color: #a9c9e7;
+    font-size: 11px;
+}
+
+@media (max-width: 700px) {
+    .dashboard-novo .sc7-item {
+        grid-template-columns: 30px 1fr 45px;
+        row-gap: 6px;
+    }
+
+    .dashboard-novo .sc7-descricao {
+        grid-column: 2;
+    }
+
+    .dashboard-novo .sc7-trilho {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .dashboard-novo .sc7-numeros {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+    }
+}
+</style>
+
+
+<script>
+(function () {
+
+    "use strict";
+
+    // =================================================
+    // CRIAR O INDICADOR
+    // =================================================
+
+    function criarIndicadorSeparacao() {
+
+        // Evita adicionar novamente caso já exista.
+        if (
+            document.querySelector(".sc7-card")
+        ) {
+            return;
+        }
+
+        const ocupacaoAntiga =
+            document.getElementById(
+                "topOcupacaoPosicoes"
+            );
+
+        if (!ocupacaoAntiga) {
+            return;
+        }
+
+        const cardAntigo =
+            ocupacaoAntiga.closest(
+                ".grafico-card"
+            );
+
+        if (!cardAntigo) {
+            return;
+        }
+
+        // Mantém o elemento antigo para o dashboard.js.
+        // Apenas oculta visualmente seu card.
+        cardAntigo.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        const novoCard =
+            document.createElement("section");
+
+        novoCard.className =
+            "grafico-card dashboard-grafico-card sc7-card";
+
+        novoCard.innerHTML = `
+
+            <div class="sc7-cabecalho">
+
+                <h2>
+                    Separação e Conferência
+                </h2>
+
+                <span class="sc7-periodo">
+                    Últimos 7 dias
+                </span>
+
+            </div>
+
+            <div class="sc7-lista">
+
+                <!-- PEDIDOS SEPARADOS -->
+
+                <div class="sc7-item">
+
+                    <span class="sc7-icone sc7-verde">
+                        <i data-lucide="shopping-cart"></i>
+                    </span>
+
+                    <span class="sc7-descricao">
+                        Pedidos separados - últimos 7 dias
+                    </span>
+
+                    <div class="sc7-trilho">
+                        <div
+                            id="sc7-barra-separados"
+                            class="sc7-preenchimento sc7-verde">
+                        </div>
+                    </div>
+
+                    <div class="sc7-numeros">
+                        <strong id="sc7-qtd-separados">—</strong>
+                        <small id="sc7-pct-separados">—</small>
+                    </div>
+
+                </div>
+
+
+                <!-- PEDIDOS CONFERIDOS -->
+
+                <div class="sc7-item">
+
+                    <span class="sc7-icone sc7-azul">
+                        <i data-lucide="clipboard-check"></i>
+                    </span>
+
+                    <span class="sc7-descricao">
+                        Pedidos conferidos - últimos 7 dias
+                    </span>
+
+                    <div class="sc7-trilho">
+                        <div
+                            id="sc7-barra-conferidos"
+                            class="sc7-preenchimento sc7-azul">
+                        </div>
+                    </div>
+
+                    <div class="sc7-numeros">
+                        <strong id="sc7-qtd-conferidos">—</strong>
+                        <small id="sc7-pct-conferidos">—</small>
+                    </div>
+
+                </div>
+
+
+                <!-- PENDENTES DE CONFERÊNCIA -->
+
+                <div class="sc7-item">
+
+                    <span class="sc7-icone sc7-laranja">
+                        <i data-lucide="clock-3"></i>
+                    </span>
+
+                    <span class="sc7-descricao">
+                        Pendentes de conferência - últimos 7 dias
+                    </span>
+
+                    <div class="sc7-trilho">
+                        <div
+                            id="sc7-barra-pendentes"
+                            class="sc7-preenchimento sc7-laranja">
+                        </div>
+                    </div>
+
+                    <div class="sc7-numeros">
+                        <strong id="sc7-qtd-pendentes">—</strong>
+                        <small id="sc7-pct-pendentes">—</small>
+                    </div>
+
+                </div>
+
+
+                <!-- PEDIDOS COM DIVERGÊNCIA -->
+
+                <div class="sc7-item">
+
+                    <span class="sc7-icone sc7-vermelho">
+                        <i data-lucide="x-circle"></i>
+                    </span>
+
+                    <span class="sc7-descricao">
+                        Pedidos com divergência - últimos 7 dias
+                    </span>
+
+                    <div class="sc7-trilho">
+                        <div
+                            id="sc7-barra-divergencias"
+                            class="sc7-preenchimento sc7-vermelho">
+                        </div>
+                    </div>
+
+                    <div class="sc7-numeros">
+                        <strong id="sc7-qtd-divergencias">—</strong>
+                        <small id="sc7-pct-divergencias">—</small>
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+
+        cardAntigo.insertAdjacentElement(
+            "afterend",
+            novoCard
+        );
+
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+        atualizarIndicador7Dias();
+    }
+
+
+    // =================================================
+    // ATUALIZAR NÚMEROS E BARRAS
+    // =================================================
+
+    function apresentarResumo(resumo) {
+
+        if (!resumo) {
+            return;
+        }
+
+        const indicadores = [
+            "separados",
+            "conferidos",
+            "pendentes",
+            "divergencias"
+        ];
+
+        const total = Math.max(
+            1,
+            Number(resumo.separados) || 0,
+            (Number(resumo.conferidos) || 0) +
+            (Number(resumo.pendentes) || 0),
+            Number(resumo.divergencias) || 0
+        );
+
+        indicadores.forEach(function (nome) {
+
+            const valor = Math.max(
+                0,
+                Number(resumo[nome]) || 0
+            );
+
+            const percentual = Math.min(
+                100,
+                (valor / total) * 100
+            );
+
+            const quantidade =
+                document.getElementById(
+                    "sc7-qtd-" + nome
+                );
+
+            const barra =
+                document.getElementById(
+                    "sc7-barra-" + nome
+                );
+
+            const porcentagem =
+                document.getElementById(
+                    "sc7-pct-" + nome
+                );
+
+            if (quantidade) {
+                quantidade.textContent =
+                    valor.toLocaleString("pt-BR");
+            }
+
+            if (barra) {
+                barra.style.width =
+                    percentual.toFixed(1) + "%";
+            }
+
+            if (porcentagem) {
+                porcentagem.textContent =
+                    percentual.toFixed(0) + "%";
+            }
+
+        });
+    }
+
+
+    // =================================================
+    // CONSULTAR REGISTROS LOCAIS
+    // =================================================
+
+    function buscarLista(chave) {
+
+        let texto;
+
+        try {
+            texto = localStorage.getItem(chave);
+        } catch (erro) {
+            console.warn(erro);
+            return null;
+        }
+
+        if (texto === null) {
+            return null;
+        }
+
+        try {
+
+            const dados = JSON.parse(texto);
+
+            if (Array.isArray(dados)) {
+                return dados;
+            }
+
+            if (dados && typeof dados === "object") {
+
+                if (Array.isArray(dados.pedidos)) {
+                    return dados.pedidos;
+                }
+
+                if (Array.isArray(dados.lista)) {
+                    return dados.lista;
+                }
+
+                if (Array.isArray(dados.dados)) {
+                    return dados.dados;
+                }
+
+                return Object.values(dados).filter(
+                    item => item &&
+                    typeof item === "object"
+                );
+            }
+
+        } catch (erro) {
+            console.warn(
+                "Erro ao ler pedidos:",
+                chave,
+                erro
+            );
+        }
+
+        return null;
+    }
+
+
+    // =================================================
+    // TRATAR DATAS
+    // =================================================
+
+    function converterData(valor) {
+
+        if (!valor) {
+            return null;
+        }
+
+        if (typeof valor === "number") {
+
+            const data = new Date(
+                valor < 1e11
+                    ? valor * 1000
+                    : valor
+            );
+
+            return isNaN(data.getTime())
+                ? null
+                : data;
+        }
+
+        const texto = String(valor).trim();
+
+        const br = texto.match(
+            /^(\d{2})\/(\d{2})\/(\d{4})(?:[ ,T]+(\d{2}):(\d{2})(?::(\d{2}))?)?/
+        );
+
+        let data;
+
+        if (br) {
+
+            data = new Date(
+                Number(br[3]),
+                Number(br[2]) - 1,
+                Number(br[1]),
+                Number(br[4] || 0),
+                Number(br[5] || 0),
+                Number(br[6] || 0)
+            );
+
+        } else {
+
+            data = new Date(texto);
+        }
+
+        return isNaN(data.getTime())
+            ? null
+            : data;
+    }
+
+
+    function localizarData(pedido, campos) {
+
+        for (const campo of campos) {
+
+            const data =
+                converterData(pedido[campo]);
+
+            if (data) {
+                return data;
+            }
+        }
+
+        return null;
+    }
+
+
+    function normalizarStatus(valor) {
+
+        return String(valor || "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toUpperCase()
+            .replace(/[^A-Z0-9]+/g, "_");
+    }
+
+
+    // =================================================
+    // IDENTIFICAÇÃO DO PEDIDO
+    // =================================================
+
+    function identificarPedido(pedido, indice, origem) {
+
+        const numero = String(
+            pedido.numero_pedido ??
+            pedido.numeroPedido ??
+            pedido.numero ??
+            pedido.pedido ??
+            pedido.referencia ??
+            ""
+        ).trim().toUpperCase();
+
+        const cliente = String(
+            pedido.cliente ?? ""
+        ).trim().toUpperCase();
+
+        if (numero) {
+            return cliente + ":" + numero;
+        }
+
+        if (
+            pedido.id !== undefined &&
+            pedido.id !== null &&
+            pedido.id !== ""
+        ) {
+            return "ID:" + pedido.id;
+        }
+
+        return origem + ":" + indice;
+    }
+
+
+    // =================================================
+    // CALCULAR ÚLTIMOS 7 DIAS
+    // =================================================
+
+    function atualizarIndicador7Dias() {
+
+        const separados =
+            buscarLista("pedidosSeparados");
+
+        const conferencia =
+            buscarLista("pedidosConferencia");
+
+        // Não apresenta zeros fictícios quando
+        // não existem registros acessíveis.
+        if (!separados && !conferencia) {
+            return;
+        }
+
+        const pedidos = new Map();
+
+        (separados || []).forEach(function (p, i) {
+
+            if (p && typeof p === "object") {
+
+                pedidos.set(
+                    identificarPedido(p, i, "S"),
+                    {
+                        ...p,
+                        __separado: true
+                    }
+                );
+            }
+        });
+
+        (conferencia || []).forEach(function (p, i) {
+
+            if (p && typeof p === "object") {
+
+                const chave =
+                    identificarPedido(p, i, "C");
+
+                const anterior =
+                    pedidos.get(chave) || {};
+
+                pedidos.set(chave, {
+                    ...anterior,
+                    ...p,
+                    __conferencia: true
+                });
+            }
+        });
+
+
+        const agora = new Date();
+
+        const inicio = new Date(
+            agora.getFullYear(),
+            agora.getMonth(),
+            agora.getDate() - 6
+        );
+
+
+        const resumo = {
+            separados: 0,
+            conferidos: 0,
+            pendentes: 0,
+            divergencias: 0
+        };
+
+        let registrosComData = 0;
+
+
+        pedidos.forEach(function (pedido) {
+
+            const dataSeparacao = localizarData(
+                pedido,
+                [
+                    "finalizado_em",
+                    "dataFinalizacao",
+                    "enviado_conferencia_em",
+                    "dataInicio",
+                    "created_at",
+                    "criado_em",
+                    "data"
+                ]
+            );
+
+            const dataConferencia = localizarData(
+                pedido,
+                [
+                    "conferido_em",
+                    "dataConferencia",
+                    "finalizado_conferencia_em",
+                    "dataConferenciaFinalizada"
+                ]
+            );
+
+            if (dataSeparacao || dataConferencia) {
+                registrosComData++;
+            }
+
+            const naSemana =
+                dataSeparacao &&
+                dataSeparacao >= inicio &&
+                dataSeparacao <= agora;
+
+            const status =
+                normalizarStatus(pedido.status);
+
+            const conferido =
+                status.includes("CONFERIDO") ||
+                status.includes("FINALIZADA") ||
+                status.includes("EXPEDIR") ||
+                status === "EXPEDIDO";
+
+            const pendente =
+                status.includes("AGUARDANDO_CONFERENCIA") ||
+                status.includes("EM_CONFERENCIA") ||
+                (!status &&
+                    pedido.__separado &&
+                    !pedido.__conferencia);
+
+
+            // Pedidos separados
+
+            if (naSemana) {
+                resumo.separados++;
+            }
+
+
+            // Pedidos conferidos
+
+            const dataEfetivaConferencia =
+                dataConferencia || dataSeparacao;
+
+            if (
+                conferido &&
+                dataEfetivaConferencia &&
+                dataEfetivaConferencia >= inicio &&
+                dataEfetivaConferencia <= agora
+            ) {
+                resumo.conferidos++;
+            }
+
+
+            // Pendentes de conferência
+
+            if (pendente && naSemana) {
+                resumo.pendentes++;
+            }
+
+
+            // Divergências
+
+            const itens = Array.isArray(pedido.itens)
+                ? pedido.itens
+                : [];
+
+            const divergente =
+                status.includes("DIVERGEN") ||
+                pedido.divergencia === true ||
+                pedido.temDivergencia === true ||
+                itens.some(function (item) {
+
+                    const statusItem =
+                        normalizarStatus(
+                            item.statusConferencia ??
+                            item.status_conferencia ??
+                            item.status
+                        );
+
+                    return (
+                        statusItem.includes("DIVERGEN") ||
+                        item.divergencia === true
+                    );
+                });
+
+            const dataDivergencia =
+                localizarData(
+                    pedido,
+                    ["atualizado_em", "updated_at"]
+                ) ||
+                dataConferencia ||
+                dataSeparacao;
+
+            if (
+                divergente &&
+                dataDivergencia &&
+                dataDivergencia >= inicio &&
+                dataDivergencia <= agora
+            ) {
+                resumo.divergencias++;
+            }
+
+        });
+
+
+        if (
+            pedidos.size > 0 &&
+            registrosComData === 0
+        ) {
+            return;
+        }
+
+        apresentarResumo(resumo);
+    }
+
+
+    // =================================================
+    // INICIALIZAÇÃO
+    // =================================================
+
+    window.atualizarSeparacaoConferencia7Dias =
+        apresentarResumo;
+
+
+    function iniciarIndicador() {
+
+        criarIndicadorSeparacao();
+
+        // Não duplica painel que já esteja instalado
+        // na versão completa ajustada.
+        if (document.querySelector(".sc7-card")) {
+            atualizarIndicador7Dias();
+        }
+    }
+
+
+    if (document.readyState === "loading") {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            iniciarIndicador,
+            { once: true }
+        );
+
+    } else {
+
+        iniciarIndicador();
+    }
+
+
+    window.addEventListener(
+        "storage",
+        atualizarIndicador7Dias
+    );
+
+    window.addEventListener(
+        "focus",
+        atualizarIndicador7Dias
+    );
+
+    setInterval(
+        atualizarIndicador7Dias,
+        5000
+    );
+
+})();
+</script>
+
+
 </body>
 
 </html>
