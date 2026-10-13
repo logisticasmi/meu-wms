@@ -1,47 +1,25 @@
 // =====================================================
-// SMI WMS - INVENTÁRIO COMPARTILHADO COM APROVAÇÃO
+// SMI WMS — INVENTÁRIO COM APROVAÇÃO E REABERTURA
 // =====================================================
 
 const NOME_TABELA_INVENTARIO = "inventario";
 const NOME_TABELA_PRODUTOS = "produtos";
-
-
-// =====================================================
-// VERIFICAR CONEXÃO
-// =====================================================
 
 function verificarConexaoInventarioSupabase() {
     if (
         !window.supabaseClient ||
         typeof window.supabaseClient.from !== "function"
     ) {
-        console.error(
-            "Supabase não foi carregado no Inventário."
-        );
-
-        alert(
-            "Não foi possível conectar o Inventário ao banco online."
-        );
-
+        alert("Não foi possível conectar o Inventário ao banco online.");
         return false;
     }
 
     return true;
 }
 
-
-// =====================================================
-// NORMALIZAR TEXTO
-// =====================================================
-
 function normalizarTextoInventario(valor) {
     return String(valor || "").trim();
 }
-
-
-// =====================================================
-// CONVERTER NÚMERO
-// =====================================================
 
 function converterNumeroInventarioSupabase(valor) {
     if (
@@ -52,37 +30,20 @@ function converterNumeroInventarioSupabase(valor) {
         return 0;
     }
 
-    let texto = String(valor)
-        .trim()
-        .replace(/\s/g, "");
+    let texto = String(valor).trim().replace(/\s/g, "");
 
-    if (
-        texto.includes(".") &&
-        texto.includes(",")
-    ) {
-        texto = texto
-            .replace(/\./g, "")
-            .replace(",", ".");
+    if (texto.includes(".") && texto.includes(",")) {
+        texto = texto.replace(/\./g, "").replace(",", ".");
     } else if (texto.includes(",")) {
         texto = texto.replace(",", ".");
     }
 
-    texto = texto.replace(
-        /[^0-9.-]/g,
-        ""
-    );
+    texto = texto.replace(/[^0-9.-]/g, "");
 
     const numero = Number(texto);
 
-    return Number.isFinite(numero)
-        ? numero
-        : 0;
+    return Number.isFinite(numero) ? numero : 0;
 }
-
-
-// =====================================================
-// OBTER USUÁRIO ATUAL
-// =====================================================
 
 function obterUsuarioAtualInventario() {
     return (
@@ -92,9 +53,28 @@ function obterUsuarioAtualInventario() {
     );
 }
 
+// Permissão da interface.
+// A autorização definitiva deve ser aplicada no banco.
+
+function podeReabrirInventario() {
+    return (
+        String(obterUsuarioAtualInventario())
+            .trim()
+            .toLowerCase() === "davi.smi"
+    );
+}
+
+function contagemReservadaDavi(registro) {
+    return (
+        String(registro?.observacao || "")
+            .includes("[REABERTO_DAVI]") &&
+        String(registro?.situacao_aprovacao || "")
+            .toUpperCase() !== "APROVADO"
+    );
+}
 
 // =====================================================
-// BUSCAR TODOS OS PRODUTOS PARA O INVENTÁRIO
+// BUSCAR PRODUTOS
 // =====================================================
 
 async function buscarProdutosInventarioSupabase() {
@@ -107,79 +87,44 @@ async function buscarProdutosInventarioSupabase() {
     let inicio = 0;
 
     while (true) {
-        const fim =
-            inicio +
-            quantidadePorBusca -
-            1;
-
-        const { data, error } =
-            await window.supabaseClient
-                .from(NOME_TABELA_PRODUTOS)
-                .select("*")
-                .order("id", {
-                    ascending: true
-                })
-                .range(
-                    inicio,
-                    fim
-                );
+        const { data, error } = await window.supabaseClient
+            .from(NOME_TABELA_PRODUTOS)
+            .select("*")
+            .order("id", { ascending: true })
+            .range(inicio, inicio + quantidadePorBusca - 1);
 
         if (error) {
-            console.error(
-                "Erro ao buscar produtos para o Inventário:",
-                error
-            );
-
+            console.error(error);
             alert(
-                "Não foi possível carregar os produtos atualizados para o Inventário.\n\n" +
+                "Não foi possível carregar os produtos.\n\n" +
                 error.message
             );
-
             return null;
         }
 
-        if (
-            !Array.isArray(data) ||
-            data.length === 0
-        ) {
+        if (!Array.isArray(data) || data.length === 0) {
             break;
         }
 
-        produtos.push(
-            ...data
-        );
+        produtos.push(...data);
 
-        if (
-            data.length <
-            quantidadePorBusca
-        ) {
+        if (data.length < quantidadePorBusca) {
             break;
         }
 
-        inicio +=
-            quantidadePorBusca;
+        inicio += quantidadePorBusca;
     }
 
-    /*
-       O Inventário considera somente produtos que possuem
-       posição/endereço, inclusive quando a quantidade é zero.
-    */
-    return produtos.filter(
-        function (produto) {
-            const posicao =
-                normalizarTextoInventario(
-                    produto.endereco ||
-                    produto.posicao
-                );
-
-            return posicao !== "";
-        }
-    );
+    // Inclui produtos zerados que possuem posição.
+    return produtos.filter(function (produto) {
+        return normalizarTextoInventario(
+            produto.endereco || produto.posicao
+        ) !== "";
+    });
 }
 
-
 // =====================================================
-// BUSCAR TODAS AS CONTAGENS
+// BUSCAR CONTAGENS
 // =====================================================
 
 async function buscarContagensInventarioSupabase() {
@@ -187,85 +132,49 @@ async function buscarContagensInventarioSupabase() {
         return [];
     }
 
-    const { data, error } =
-        await window.supabaseClient
-            .from(NOME_TABELA_INVENTARIO)
-            .select("*")
-            .order("posicao", {
-                ascending: true
-            })
-            .order("codigo", {
-                ascending: true
-            });
+    const { data, error } = await window.supabaseClient
+        .from(NOME_TABELA_INVENTARIO)
+        .select("*")
+        .order("posicao", { ascending: true })
+        .order("codigo", { ascending: true });
 
     if (error) {
-        console.error(
-            "Erro ao buscar o Inventário:",
-            error
-        );
-
+        console.error(error);
         alert(
             "Não foi possível carregar as contagens online.\n\n" +
             error.message
         );
-
         return [];
     }
 
-    return Array.isArray(data)
-        ? data
-        : [];
+    return Array.isArray(data) ? data : [];
 }
 
-
-// =====================================================
-// BUSCAR UMA CONTAGEM
-// =====================================================
-
-async function buscarContagemProdutoSupabase(
-    codigo,
-    posicao
-) {
+async function buscarContagemProdutoSupabase(codigo, posicao) {
     if (!verificarConexaoInventarioSupabase()) {
         return null;
     }
 
-    const codigoLimpo =
-        normalizarTextoInventario(codigo);
-
-    const posicaoLimpa =
-        normalizarTextoInventario(posicao);
-
-    const { data, error } =
-        await window.supabaseClient
-            .from(NOME_TABELA_INVENTARIO)
-            .select("*")
-            .eq("codigo", codigoLimpo)
-            .eq("posicao", posicaoLimpa)
-            .order("atualizado_em", {
-                ascending: false
-            })
-            .limit(1);
+    const { data, error } = await window.supabaseClient
+        .from(NOME_TABELA_INVENTARIO)
+        .select("*")
+        .eq("codigo", normalizarTextoInventario(codigo))
+        .eq("posicao", normalizarTextoInventario(posicao))
+        .order("atualizado_em", { ascending: false })
+        .limit(1);
 
     if (error) {
-        console.error(
-            "Erro ao buscar contagem do produto:",
-            error
-        );
-
+        console.error("Erro ao buscar contagem:", error);
         return null;
     }
 
-    return (
-        Array.isArray(data) &&
-        data.length > 0
-    )
+    return Array.isArray(data) && data.length > 0
         ? data[0]
         : null;
 }
 
 // =====================================================
-// SALVAR OU ATUALIZAR CONTAGEM
+// SALVAR CONTAGEM
 // =====================================================
 
 async function salvarContagemInventarioSupabase(
@@ -273,151 +182,103 @@ async function salvarContagemInventarioSupabase(
     quantidadeContada
 ) {
     if (!verificarConexaoInventarioSupabase()) {
-        return {
-            sucesso: false
-        };
+        return { sucesso: false };
     }
 
-    const codigo =
-        normalizarTextoInventario(
-            produto.codigo
-        );
-
-    const descricao =
-        normalizarTextoInventario(
-            produto.descricao
-        );
-
-    const posicao =
-        normalizarTextoInventario(
-            produto.endereco ||
-            produto.posicao
-        );
+    const codigo = normalizarTextoInventario(produto.codigo);
+    const descricao = normalizarTextoInventario(produto.descricao);
+    const posicao = normalizarTextoInventario(
+        produto.endereco || produto.posicao
+    );
 
     const quantidadeSistema =
-        converterNumeroInventarioSupabase(
-            produto.quantidade
-        );
+        converterNumeroInventarioSupabase(produto.quantidade);
 
     const quantidadeContadaNumero =
-        converterNumeroInventarioSupabase(
-            quantidadeContada
-        );
+        converterNumeroInventarioSupabase(quantidadeContada);
 
     if (codigo === "") {
-        alert(
-            "O produto não possui código para salvar a contagem."
-        );
-
-        return {
-            sucesso: false
-        };
+        alert("O produto não possui código para salvar a contagem.");
+        return { sucesso: false };
     }
 
     const registroExistente =
-        await buscarContagemProdutoSupabase(
-            codigo,
-            posicao
-        );
+        await buscarContagemProdutoSupabase(codigo, posicao);
 
     if (
         registroExistente &&
-        String(
-            registroExistente.situacao_aprovacao ||
-            ""
-        )
+        String(registroExistente.situacao_aprovacao || "")
             .trim()
             .toUpperCase() === "APROVADO"
     ) {
         alert(
-            "Este item já foi aprovado e não pode ser alterado."
+            "Este item já foi aprovado. " +
+            "Utilize Reabrir contagem antes de corrigir."
         );
+        return { sucesso: false };
+    }
 
-        return {
-            sucesso: false
-        };
+    if (
+        contagemReservadaDavi(registroExistente) &&
+        !podeReabrirInventario()
+    ) {
+        alert("Esta correção está reservada a davi.smi.");
+        return { sucesso: false };
     }
 
     const diferenca =
-        quantidadeContadaNumero -
-        quantidadeSistema;
+        quantidadeContadaNumero - quantidadeSistema;
 
-    const status =
-        diferenca === 0
-            ? "OK"
-            : "DIVERGENTE";
+    const observacao = contagemReservadaDavi(registroExistente)
+        ? [
+            registroExistente.observacao,
+            "Correção por " + obterUsuarioAtualInventario() +
+            " em " + new Date().toISOString() +
+            " | Quantidade de " +
+            registroExistente.quantidade_contada +
+            " para " + quantidadeContadaNumero
+        ].join("\n")
+        : registroExistente?.observacao || null;
 
     const dadosInventario = {
-        codigo: codigo,
-        descricao: descricao,
-        posicao: posicao,
-
-        quantidade_sistema:
-            quantidadeSistema,
-
-        quantidade_contada:
-            quantidadeContadaNumero,
-
-        diferenca: diferenca,
-        status: status,
-
-        usuario:
-            obterUsuarioAtualInventario(),
-
-        atualizado_em:
-            new Date().toISOString(),
-
-        situacao_aprovacao:
-            "PENDENTE",
-
+        codigo,
+        descricao,
+        posicao,
+        quantidade_sistema: quantidadeSistema,
+        quantidade_contada: quantidadeContadaNumero,
+        diferenca,
+        status: diferenca === 0 ? "OK" : "DIVERGENTE",
+        usuario: obterUsuarioAtualInventario(),
+        atualizado_em: new Date().toISOString(),
+        situacao_aprovacao: "PENDENTE",
         aprovado_por: null,
         aprovado_em: null,
-        observacao: null
+        observacao
     };
 
     let resposta;
 
-    if (
-        registroExistente &&
-        registroExistente.id
-    ) {
-        resposta =
-            await window.supabaseClient
-                .from(
-                    NOME_TABELA_INVENTARIO
-                )
-                .update(dadosInventario)
-                .eq(
-                    "id",
-                    registroExistente.id
-                )
-                .select()
-                .single();
-
+    if (registroExistente && registroExistente.id) {
+        resposta = await window.supabaseClient
+            .from(NOME_TABELA_INVENTARIO)
+            .update(dadosInventario)
+            .eq("id", registroExistente.id)
+            .select()
+            .single();
     } else {
-        resposta =
-            await window.supabaseClient
-                .from(
-                    NOME_TABELA_INVENTARIO
-                )
-                .insert([
-                    dadosInventario
-                ])
-                .select()
-                .single();
+        resposta = await window.supabaseClient
+            .from(NOME_TABELA_INVENTARIO)
+            .insert([dadosInventario])
+            .select()
+            .single();
     }
 
     if (resposta.error) {
-        console.error(
-            "Erro ao salvar a contagem:",
-            resposta.error
-        );
-
+        console.error(resposta.error);
         alert(
             "Não foi possível salvar a contagem online.\n\n" +
             resposta.error.message
         );
-
         return {
             sucesso: false,
             erro: resposta.error
@@ -430,158 +291,185 @@ async function salvarContagemInventarioSupabase(
     };
 }
 
-
 // =====================================================
-// LIMPAR TODAS AS CONTAGENS
+// REABRIR CONTAGEM — DAVI.SMI
 // =====================================================
 
-async function limparContagensInventarioSupabase() {
-    if (!verificarConexaoInventarioSupabase()) {
-        return false;
+async function reabrirContagemInventarioSupabase(
+    registro,
+    motivo
+) {
+    if (!podeReabrirInventario()) {
+        alert("Somente davi.smi pode reabrir uma contagem aprovada.");
+        return { sucesso: false };
     }
 
-    const { error } =
+    if (
+        !verificarConexaoInventarioSupabase() ||
+        !registro?.id
+    ) {
+        return { sucesso: false };
+    }
+
+    const { data: atual, error: erroBusca } =
         await window.supabaseClient
             .from(NOME_TABELA_INVENTARIO)
-            .update({
-                quantidade_contada: null,
-                diferenca: null,
-                status: "PENDENTE",
-                usuario: null,
-                atualizado_em:
-                    new Date().toISOString(),
-                situacao_aprovacao:
-                    "PENDENTE",
-                aprovado_por: null,
-                aprovado_em: null,
-                observacao: null
-            })
-            .or(
-                "situacao_aprovacao.is.null," +
-                "situacao_aprovacao.neq.__LIMPAR_TODOS__"
-            );
+            .select("*")
+            .eq("id", registro.id)
+            .single();
 
-    if (error) {
-        console.error(
-            "Erro ao limpar as contagens:",
-            error
-        );
-
+    if (
+        erroBusca ||
+        !atual ||
+        String(atual.situacao_aprovacao)
+            .toUpperCase() !== "APROVADO"
+    ) {
         alert(
-            "Não foi possível limpar as contagens online.\n\n" +
-            error.message
+            "Não foi possível reabrir. " +
+            "Atualize a tela e confira a situação do item."
         );
-
-        return false;
+        return { sucesso: false };
     }
 
-    return true;
+    if (!motivo?.trim()) {
+        return { sucesso: false };
+    }
+
+    const agora = new Date().toISOString();
+
+    const historico = [
+        atual.observacao,
+        "[REABERTO_DAVI] " + agora +
+        " | davi.smi" +
+        " | Motivo: " + motivo.trim() +
+        " | Contagem anterior: " + atual.quantidade_contada +
+        " | Aprovado por: " + (atual.aprovado_por || "—") +
+        " | Aprovado em: " + (atual.aprovado_em || "—")
+    ].filter(Boolean).join("\n");
+
+    let consulta = window.supabaseClient
+        .from(NOME_TABELA_INVENTARIO)
+        .update({
+            situacao_aprovacao: "PENDENTE",
+            aprovado_por: null,
+            aprovado_em: null,
+            atualizado_em: agora,
+            observacao: historico
+        })
+        .eq("id", atual.id)
+        .eq("situacao_aprovacao", atual.situacao_aprovacao);
+
+    // Evita reabrir se o registro mudou após a consulta.
+    if (atual.atualizado_em) {
+        consulta = consulta.eq(
+            "atualizado_em",
+            atual.atualizado_em
+        );
+    }
+
+    const { data, error } = await consulta
+        .select()
+        .single();
+
+    if (error || !data) {
+        alert(
+            "A reabertura não foi concluída. " +
+            "O item pode ter sido alterado; atualize a tela."
+        );
+        return { sucesso: false };
+    }
+
+    // O estoque não muda na reabertura.
+    // Só será alterado ao aprovar novamente.
+    return {
+        sucesso: true,
+        registro: data
+    };
 }
 
-
 // =====================================================
-// APROVAR CONTAGEM E AJUSTAR PRODUTO
+// APROVAR CONTAGEM E AJUSTAR ESTOQUE
 // =====================================================
 
 async function aprovarContagemInventarioSupabase(
     registroInventario
 ) {
     if (!verificarConexaoInventarioSupabase()) {
-        return {
-            sucesso: false
-        };
+        return { sucesso: false };
     }
 
-    if (
-        !registroInventario ||
-        !registroInventario.id
-    ) {
-        alert(
-            "Registro do inventário não encontrado."
-        );
-
-        return {
-            sucesso: false
-        };
+    if (!registroInventario || !registroInventario.id) {
+        alert("Registro do inventário não encontrado.");
+        return { sucesso: false };
     }
 
     if (
         registroInventario.quantidade_contada === null ||
         registroInventario.quantidade_contada === undefined
     ) {
-        alert(
-            "Digite a quantidade contada antes de aprovar."
+        alert("Digite a quantidade contada antes de aprovar.");
+        return { sucesso: false };
+    }
+
+    const registroAtual =
+        await buscarContagemProdutoSupabase(
+            registroInventario.codigo,
+            registroInventario.posicao
         );
 
-        return {
-            sucesso: false
-        };
+    if (
+        !registroAtual ||
+        registroAtual.id !== registroInventario.id
+    ) {
+        return { sucesso: false };
+    }
+
+    registroInventario = registroAtual;
+
+    if (
+        contagemReservadaDavi(registroInventario) &&
+        !podeReabrirInventario()
+    ) {
+        alert("Esta correção está reservada a davi.smi.");
+        return { sucesso: false };
     }
 
     const situacaoAtual =
-        String(
-            registroInventario.situacao_aprovacao ||
-            "PENDENTE"
-        )
+        String(registroInventario.situacao_aprovacao || "PENDENTE")
             .trim()
             .toUpperCase();
 
     if (situacaoAtual === "APROVADO") {
-        alert(
-            "Este item já foi aprovado."
-        );
-
-        return {
-            sucesso: false
-        };
+        alert("Este item já foi aprovado.");
+        return { sucesso: false };
     }
 
     const codigo =
-        normalizarTextoInventario(
-            registroInventario.codigo
-        );
+        normalizarTextoInventario(registroInventario.codigo);
 
     const posicao =
-        normalizarTextoInventario(
-            registroInventario.posicao
-        );
+        normalizarTextoInventario(registroInventario.posicao);
 
     const quantidadeNova =
         converterNumeroInventarioSupabase(
             registroInventario.quantidade_contada
         );
 
-    /*
-       Localiza o produto pelo código e posição.
-    */
-
-    const {
-        data: produtosEncontrados,
-        error: erroBuscaProduto
-    } =
+    const { data: produtosEncontrados, error: erroBuscaProduto } =
         await window.supabaseClient
-            .from("produtos")
-            .select(
-                "id, codigo, endereco, quantidade"
-            )
+            .from(NOME_TABELA_PRODUTOS)
+            .select("id, codigo, endereco, quantidade")
             .eq("codigo", codigo)
             .eq("endereco", posicao)
             .limit(1);
 
     if (erroBuscaProduto) {
-        console.error(
-            "Erro ao localizar produto:",
-            erroBuscaProduto
-        );
-
+        console.error(erroBuscaProduto);
         alert(
-            "Não foi possível localizar o produto no estoque.\n\n" +
+            "Não foi possível localizar o produto.\n\n" +
             erroBuscaProduto.message
         );
-
-        return {
-            sucesso: false
-        };
+        return { sucesso: false };
     }
 
     if (
@@ -590,169 +478,95 @@ async function aprovarContagemInventarioSupabase(
     ) {
         alert(
             "Produto não encontrado na tabela Produtos.\n\n" +
-            "Código: " +
-            codigo +
-            "\nPosição: " +
-            posicao
+            "Código: " + codigo +
+            "\nPosição: " + posicao
         );
-
-        return {
-            sucesso: false
-        };
+        return { sucesso: false };
     }
 
-    const produtoEncontrado =
-        produtosEncontrados[0];
+    const produtoEncontrado = produtosEncontrados[0];
 
     const quantidadeAnterior =
         converterNumeroInventarioSupabase(
             produtoEncontrado.quantidade
         );
 
-            /*
-       Atualiza a quantidade oficial do produto.
-    */
-
     const { error: erroAtualizacaoProduto } =
         await window.supabaseClient
-            .from("produtos")
-            .update({
-                quantidade:
-                    quantidadeNova
-            })
-            .eq(
-                "id",
-                produtoEncontrado.id
-            );
+            .from(NOME_TABELA_PRODUTOS)
+            .update({ quantidade: quantidadeNova })
+            .eq("id", produtoEncontrado.id);
 
     if (erroAtualizacaoProduto) {
-        console.error(
-            "Erro ao atualizar o produto:",
-            erroAtualizacaoProduto
-        );
-
+        console.error(erroAtualizacaoProduto);
         alert(
-            "Não foi possível ajustar o estoque do produto.\n\n" +
+            "Não foi possível ajustar o estoque.\n\n" +
             erroAtualizacaoProduto.message
         );
-
-        return {
-            sucesso: false
-        };
+        return { sucesso: false };
     }
 
-    const agora =
-        new Date().toISOString();
+    const agora = new Date().toISOString();
+    const usuarioAtual = obterUsuarioAtualInventario();
 
-    const usuarioAtual =
-        obterUsuarioAtualInventario();
-
-    /*
-       Marca o Inventário como aprovado.
-    */
-
-    const {
-        data: inventarioAtualizado,
-        error: erroInventario
-    } =
+    const { data: inventarioAtualizado, error: erroInventario } =
         await window.supabaseClient
             .from(NOME_TABELA_INVENTARIO)
             .update({
-                situacao_aprovacao:
-                    "APROVADO",
-
-                aprovado_por:
-                    usuarioAtual,
-
-                aprovado_em:
-                    agora,
-
+                situacao_aprovacao: "APROVADO",
+                aprovado_por: usuarioAtual,
+                aprovado_em: agora,
                 observacao:
+                    (
+                        registroInventario.observacao
+                            ? registroInventario.observacao + "\n"
+                            : ""
+                    ) +
                     "Estoque ajustado de " +
                     quantidadeAnterior +
                     " para " +
                     quantidadeNova,
-
-                /*
-                   Após a aprovação, a quantidade
-                   oficial passa a ser a contada.
-                */
-
-                quantidade_sistema:
-                    quantidadeNova,
-
+                quantidade_sistema: quantidadeNova,
                 diferenca: 0,
                 status: "OK"
             })
-            .eq(
-                "id",
-                registroInventario.id
-            )
+            .eq("id", registroInventario.id)
             .select()
             .single();
 
     if (erroInventario) {
-        console.error(
-            "Estoque ajustado, mas houve erro ao finalizar a aprovação:",
-            erroInventario
-        );
-
+        console.error(erroInventario);
         alert(
-            "O estoque foi atualizado, mas não foi possível finalizar a aprovação.\n\n" +
+            "O estoque foi atualizado, mas não foi possível " +
+            "finalizar a aprovação.\n\n" +
             erroInventario.message
         );
-
-        return {
-            sucesso: false
-        };
+        return { sucesso: false };
     }
-
-    /*
-       Atualiza também o estoque local
-       do navegador que aprovou.
-    */
 
     try {
         const estoqueLocal =
-            JSON.parse(
-                localStorage.getItem(
-                    "estoque"
-                )
-            ) || [];
+            JSON.parse(localStorage.getItem("estoque")) || [];
 
         if (Array.isArray(estoqueLocal)) {
-            const indiceProduto =
-                estoqueLocal.findIndex(
-                    function (produto) {
-                        return (
-                            String(
-                                produto.codigo ||
-                                ""
-                            ).trim() === codigo &&
-
-                            String(
-                                produto.endereco ||
-                                ""
-                            ).trim() === posicao
-                        );
-                    }
-                );
+            const indiceProduto = estoqueLocal.findIndex(
+                function (produto) {
+                    return (
+                        String(produto.codigo || "").trim() === codigo &&
+                        String(produto.endereco || "").trim() === posicao
+                    );
+                }
+            );
 
             if (indiceProduto >= 0) {
-                estoqueLocal[
-                    indiceProduto
-                ].quantidade =
-                    quantidadeNova;
+                estoqueLocal[indiceProduto].quantidade = quantidadeNova;
 
                 localStorage.setItem(
                     "estoque",
-                    JSON.stringify(
-                        estoqueLocal
-                    )
+                    JSON.stringify(estoqueLocal)
                 );
             }
         }
-
     } catch (erroLocal) {
         console.warn(
             "Não foi possível atualizar o estoque local:",
@@ -762,15 +576,11 @@ async function aprovarContagemInventarioSupabase(
 
     return {
         sucesso: true,
-        registro:
-            inventarioAtualizado,
-        quantidadeAnterior:
-            quantidadeAnterior,
-        quantidadeNova:
-            quantidadeNova
+        registro: inventarioAtualizado,
+        quantidadeAnterior,
+        quantidadeNova
     };
 }
-
 
 // =====================================================
 // REPROVAR CONTAGEM
@@ -781,70 +591,67 @@ async function reprovarContagemInventarioSupabase(
     observacao
 ) {
     if (!verificarConexaoInventarioSupabase()) {
-        return {
-            sucesso: false
-        };
+        return { sucesso: false };
     }
+
+    if (!registroInventario || !registroInventario.id) {
+        alert("Registro do inventário não encontrado.");
+        return { sucesso: false };
+    }
+
+    const atual = await buscarContagemProdutoSupabase(
+        registroInventario.codigo,
+        registroInventario.posicao
+    );
+
+    if (!atual || atual.id !== registroInventario.id) {
+        return { sucesso: false };
+    }
+
+    registroInventario = atual;
 
     if (
-        !registroInventario ||
-        !registroInventario.id
+        String(atual.situacao_aprovacao)
+            .toUpperCase() === "APROVADO" ||
+        (
+            contagemReservadaDavi(atual) &&
+            !podeReabrirInventario()
+        )
     ) {
         alert(
-            "Registro do inventário não encontrado."
+            "Item bloqueado. " +
+            "Somente davi.smi pode reabrir uma aprovação."
         );
-
-        return {
-            sucesso: false
-        };
+        return { sucesso: false };
     }
 
-    const usuarioAtual =
-        obterUsuarioAtualInventario();
-
-    const agora =
-        new Date().toISOString();
-
-    const {
-        data,
-        error
-    } =
-        await window.supabaseClient
-            .from(NOME_TABELA_INVENTARIO)
-            .update({
-                situacao_aprovacao:
-                    "REPROVADO",
-
-                aprovado_por:
-                    usuarioAtual,
-
-                aprovado_em:
-                    agora,
-
-                observacao:
-                    normalizarTextoInventario(
-                        observacao
-                    ) ||
+    const { data, error } = await window.supabaseClient
+        .from(NOME_TABELA_INVENTARIO)
+        .update({
+            situacao_aprovacao: "REPROVADO",
+            aprovado_por: obterUsuarioAtualInventario(),
+            aprovado_em: new Date().toISOString(),
+            observacao:
+                (
+                    registroInventario.observacao
+                        ? registroInventario.observacao + "\n"
+                        : ""
+                ) +
+                (
+                    normalizarTextoInventario(observacao) ||
                     "Contagem reprovada."
-            })
-            .eq(
-                "id",
-                registroInventario.id
-            )
-            .select()
-            .single();
+                )
+        })
+        .eq("id", registroInventario.id)
+        .select()
+        .single();
 
     if (error) {
-        console.error(
-            "Erro ao reprovar o inventário:",
-            error
-        );
-
+        console.error(error);
         alert(
             "Não foi possível reprovar a contagem.\n\n" +
             error.message
         );
-
         return {
             sucesso: false,
             erro: error
@@ -858,48 +665,72 @@ async function reprovarContagemInventarioSupabase(
 }
 
 // =====================================================
-// CRIAR MAPA DAS CONTAGENS
+// LIMPAR CONTAGENS — ROTINA ORIGINAL
 // =====================================================
 
-function criarMapaContagensInventario(
-    registros
-) {
+async function limparContagensInventarioSupabase() {
+    if (!verificarConexaoInventarioSupabase()) {
+        return false;
+    }
+
+    const { error } = await window.supabaseClient
+        .from(NOME_TABELA_INVENTARIO)
+        .update({
+            quantidade_contada: null,
+            diferenca: null,
+            status: "PENDENTE",
+            usuario: null,
+            atualizado_em: new Date().toISOString(),
+            situacao_aprovacao: "PENDENTE",
+            aprovado_por: null,
+            aprovado_em: null,
+            observacao: null
+        })
+        .or(
+            "situacao_aprovacao.is.null," +
+            "situacao_aprovacao.neq.__LIMPAR_TODOS__"
+        );
+
+    if (error) {
+        console.error(error);
+        alert(
+            "Não foi possível limpar as contagens.\n\n" +
+            error.message
+        );
+        return false;
+    }
+
+    return true;
+}
+
+// =====================================================
+// MAPA DAS CONTAGENS
+// =====================================================
+
+function criarMapaContagensInventario(registros) {
     const mapa = {};
 
     if (!Array.isArray(registros)) {
         return mapa;
     }
 
-    registros.forEach(
-        function (registro) {
-            const codigo =
-                normalizarTextoInventario(
-                    registro.codigo
-                )
-                    .toUpperCase();
+    registros.forEach(function (registro) {
+        const codigo =
+            normalizarTextoInventario(registro.codigo)
+                .toUpperCase();
 
-            const posicao =
-                normalizarTextoInventario(
-                    registro.posicao
-                )
-                    .toUpperCase();
+        const posicao =
+            normalizarTextoInventario(registro.posicao)
+                .toUpperCase();
 
-            const chave =
-                codigo +
-                "__" +
-                posicao;
-
-            mapa[chave] =
-                registro;
-        }
-    );
+        mapa[codigo + "__" + posicao] = registro;
+    });
 
     return mapa;
 }
 
-
 // =====================================================
-// DISPONIBILIZAR FUNÇÕES PARA O HTML
+// DISPONIBILIZAR FUNÇÕES PARA A TELA
 // =====================================================
 
 window.buscarProdutosInventarioSupabase =
@@ -923,6 +754,15 @@ window.aprovarContagemInventarioSupabase =
 window.reprovarContagemInventarioSupabase =
     reprovarContagemInventarioSupabase;
 
+window.podeReabrirInventario =
+    podeReabrirInventario;
+
+window.contagemReservadaDavi =
+    contagemReservadaDavi;
+
+window.reabrirContagemInventarioSupabase =
+    reabrirContagemInventarioSupabase;
+
 console.log(
-    "Módulo de Inventário Supabase com aprovação carregado."
+    "Inventário com aprovação e reabertura para davi.smi carregado."
 );
