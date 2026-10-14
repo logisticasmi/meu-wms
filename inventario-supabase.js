@@ -1,6 +1,5 @@
-// =====================================================
-// SMI WMS — INVENTÁRIO COM APROVAÇÃO E REABERTURA
-// =====================================================
+// SMI WMS — Inventário com aprovação e reabertura
+// Versão: 20261014-contagens-completas
 
 const NOME_TABELA_INVENTARIO = "inventario";
 const NOME_TABELA_PRODUTOS = "produtos";
@@ -41,7 +40,6 @@ function converterNumeroInventarioSupabase(valor) {
     texto = texto.replace(/[^0-9.-]/g, "");
 
     const numero = Number(texto);
-
     return Number.isFinite(numero) ? numero : 0;
 }
 
@@ -55,7 +53,6 @@ function obterUsuarioAtualInventario() {
 
 // Permissão da interface.
 // A autorização definitiva deve ser aplicada no banco.
-
 function podeReabrirInventario() {
     return (
         String(obterUsuarioAtualInventario())
@@ -66,16 +63,11 @@ function podeReabrirInventario() {
 
 function contagemReservadaDavi(registro) {
     return (
-        String(registro?.observacao || "")
-            .includes("[REABERTO_DAVI]") &&
-        String(registro?.situacao_aprovacao || "")
-            .toUpperCase() !== "APROVADO"
+        String(registro?.observacao || "").includes("[REABERTO_DAVI]") &&
+        String(registro?.situacao_aprovacao || "").toUpperCase() !==
+            "APROVADO"
     );
 }
-
-// =====================================================
-// BUSCAR PRODUTOS
-// =====================================================
 
 async function buscarProdutosInventarioSupabase() {
     if (!verificarConexaoInventarioSupabase()) {
@@ -95,10 +87,7 @@ async function buscarProdutosInventarioSupabase() {
 
         if (error) {
             console.error(error);
-            alert(
-                "Não foi possível carregar os produtos.\n\n" +
-                error.message
-            );
+            alert("Não foi possível carregar os produtos.\n\n" + error.message);
             return null;
         }
 
@@ -123,31 +112,47 @@ async function buscarProdutosInventarioSupabase() {
     });
 }
 
-// =====================================================
-// BUSCAR CONTAGENS
-// =====================================================
-
+// Busca todas as páginas, evitando exibir contagens existentes
+// como "Sem contagem".
 async function buscarContagensInventarioSupabase() {
     if (!verificarConexaoInventarioSupabase()) {
-        return [];
+        throw new Error("Inventário sem conexão com o banco online.");
     }
 
-    const { data, error } = await window.supabaseClient
-        .from(NOME_TABELA_INVENTARIO)
-        .select("*")
-        .order("posicao", { ascending: true })
-        .order("codigo", { ascending: true });
+    const registros = [];
+    const tamanhoPagina = 500;
+    let inicio = 0;
 
-    if (error) {
-        console.error(error);
-        alert(
-            "Não foi possível carregar as contagens online.\n\n" +
-            error.message
-        );
-        return [];
+    while (true) {
+        const { data, error } = await window.supabaseClient
+            .from(NOME_TABELA_INVENTARIO)
+            .select("*")
+            .order("id", { ascending: true })
+            .range(inicio, inicio + tamanhoPagina - 1);
+
+        if (error) {
+            console.error("Erro ao carregar contagens:", error);
+            throw new Error(
+                "Não foi possível carregar todas as contagens online: " +
+                error.message
+            );
+        }
+
+        if (!Array.isArray(data)) {
+            throw new Error(
+                "Resposta inválida ao carregar contagens online."
+            );
+        }
+
+        if (data.length === 0) {
+            break;
+        }
+
+        registros.push(...data);
+        inicio += data.length;
     }
 
-    return Array.isArray(data) ? data : [];
+    return registros;
 }
 
 async function buscarContagemProdutoSupabase(codigo, posicao) {
@@ -168,19 +173,10 @@ async function buscarContagemProdutoSupabase(codigo, posicao) {
         return null;
     }
 
-    return Array.isArray(data) && data.length > 0
-        ? data[0]
-        : null;
+    return Array.isArray(data) && data.length > 0 ? data[0] : null;
 }
 
-// =====================================================
-// SALVAR CONTAGEM
-// =====================================================
-
-async function salvarContagemInventarioSupabase(
-    produto,
-    quantidadeContada
-) {
+async function salvarContagemInventarioSupabase(produto, quantidadeContada) {
     if (!verificarConexaoInventarioSupabase()) {
         return { sucesso: false };
     }
@@ -226,8 +222,7 @@ async function salvarContagemInventarioSupabase(
         return { sucesso: false };
     }
 
-    const diferenca =
-        quantidadeContadaNumero - quantidadeSistema;
+    const diferenca = quantidadeContadaNumero - quantidadeSistema;
 
     const observacao = contagemReservadaDavi(registroExistente)
         ? [
@@ -279,6 +274,7 @@ async function salvarContagemInventarioSupabase(
             "Não foi possível salvar a contagem online.\n\n" +
             resposta.error.message
         );
+
         return {
             sucesso: false,
             erro: resposta.error
@@ -291,38 +287,26 @@ async function salvarContagemInventarioSupabase(
     };
 }
 
-// =====================================================
-// REABRIR CONTAGEM — DAVI.SMI
-// =====================================================
-
-async function reabrirContagemInventarioSupabase(
-    registro,
-    motivo
-) {
+async function reabrirContagemInventarioSupabase(registro, motivo) {
     if (!podeReabrirInventario()) {
         alert("Somente davi.smi pode reabrir uma contagem aprovada.");
         return { sucesso: false };
     }
 
-    if (
-        !verificarConexaoInventarioSupabase() ||
-        !registro?.id
-    ) {
+    if (!verificarConexaoInventarioSupabase() || !registro?.id) {
         return { sucesso: false };
     }
 
-    const { data: atual, error: erroBusca } =
-        await window.supabaseClient
-            .from(NOME_TABELA_INVENTARIO)
-            .select("*")
-            .eq("id", registro.id)
-            .single();
+    const { data: atual, error: erroBusca } = await window.supabaseClient
+        .from(NOME_TABELA_INVENTARIO)
+        .select("*")
+        .eq("id", registro.id)
+        .single();
 
     if (
         erroBusca ||
         !atual ||
-        String(atual.situacao_aprovacao)
-            .toUpperCase() !== "APROVADO"
+        String(atual.situacao_aprovacao).toUpperCase() !== "APROVADO"
     ) {
         alert(
             "Não foi possível reabrir. " +
@@ -361,15 +345,10 @@ async function reabrirContagemInventarioSupabase(
 
     // Evita reabrir se o registro mudou após a consulta.
     if (atual.atualizado_em) {
-        consulta = consulta.eq(
-            "atualizado_em",
-            atual.atualizado_em
-        );
+        consulta = consulta.eq("atualizado_em", atual.atualizado_em);
     }
 
-    const { data, error } = await consulta
-        .select()
-        .single();
+    const { data, error } = await consulta.select().single();
 
     if (error || !data) {
         alert(
@@ -379,21 +358,14 @@ async function reabrirContagemInventarioSupabase(
         return { sucesso: false };
     }
 
-    // O estoque não muda na reabertura.
-    // Só será alterado ao aprovar novamente.
+    // O estoque só muda quando a contagem for aprovada novamente.
     return {
         sucesso: true,
         registro: data
     };
 }
 
-// =====================================================
-// APROVAR CONTAGEM E AJUSTAR ESTOQUE
-// =====================================================
-
-async function aprovarContagemInventarioSupabase(
-    registroInventario
-) {
+async function aprovarContagemInventarioSupabase(registroInventario) {
     if (!verificarConexaoInventarioSupabase()) {
         return { sucesso: false };
     }
@@ -411,16 +383,12 @@ async function aprovarContagemInventarioSupabase(
         return { sucesso: false };
     }
 
-    const registroAtual =
-        await buscarContagemProdutoSupabase(
-            registroInventario.codigo,
-            registroInventario.posicao
-        );
+    const registroAtual = await buscarContagemProdutoSupabase(
+        registroInventario.codigo,
+        registroInventario.posicao
+    );
 
-    if (
-        !registroAtual ||
-        registroAtual.id !== registroInventario.id
-    ) {
+    if (!registroAtual || registroAtual.id !== registroInventario.id) {
         return { sucesso: false };
     }
 
@@ -434,26 +402,21 @@ async function aprovarContagemInventarioSupabase(
         return { sucesso: false };
     }
 
-    const situacaoAtual =
-        String(registroInventario.situacao_aprovacao || "PENDENTE")
-            .trim()
-            .toUpperCase();
+    const situacaoAtual = String(
+        registroInventario.situacao_aprovacao || "PENDENTE"
+    ).trim().toUpperCase();
 
     if (situacaoAtual === "APROVADO") {
         alert("Este item já foi aprovado.");
         return { sucesso: false };
     }
 
-    const codigo =
-        normalizarTextoInventario(registroInventario.codigo);
+    const codigo = normalizarTextoInventario(registroInventario.codigo);
+    const posicao = normalizarTextoInventario(registroInventario.posicao);
 
-    const posicao =
-        normalizarTextoInventario(registroInventario.posicao);
-
-    const quantidadeNova =
-        converterNumeroInventarioSupabase(
-            registroInventario.quantidade_contada
-        );
+    const quantidadeNova = converterNumeroInventarioSupabase(
+        registroInventario.quantidade_contada
+    );
 
     const { data: produtosEncontrados, error: erroBuscaProduto } =
         await window.supabaseClient
@@ -486,16 +449,14 @@ async function aprovarContagemInventarioSupabase(
 
     const produtoEncontrado = produtosEncontrados[0];
 
-    const quantidadeAnterior =
-        converterNumeroInventarioSupabase(
-            produtoEncontrado.quantidade
-        );
+    const quantidadeAnterior = converterNumeroInventarioSupabase(
+        produtoEncontrado.quantidade
+    );
 
-    const { error: erroAtualizacaoProduto } =
-        await window.supabaseClient
-            .from(NOME_TABELA_PRODUTOS)
-            .update({ quantidade: quantidadeNova })
-            .eq("id", produtoEncontrado.id);
+    const { error: erroAtualizacaoProduto } = await window.supabaseClient
+        .from(NOME_TABELA_PRODUTOS)
+        .update({ quantidade: quantidadeNova })
+        .eq("id", produtoEncontrado.id);
 
     if (erroAtualizacaoProduto) {
         console.error(erroAtualizacaoProduto);
@@ -545,26 +506,19 @@ async function aprovarContagemInventarioSupabase(
     }
 
     try {
-        const estoqueLocal =
-            JSON.parse(localStorage.getItem("estoque")) || [];
+        const estoqueLocal = JSON.parse(localStorage.getItem("estoque")) || [];
 
         if (Array.isArray(estoqueLocal)) {
-            const indiceProduto = estoqueLocal.findIndex(
-                function (produto) {
-                    return (
-                        String(produto.codigo || "").trim() === codigo &&
-                        String(produto.endereco || "").trim() === posicao
-                    );
-                }
-            );
+            const indiceProduto = estoqueLocal.findIndex(function (produto) {
+                return (
+                    String(produto.codigo || "").trim() === codigo &&
+                    String(produto.endereco || "").trim() === posicao
+                );
+            });
 
             if (indiceProduto >= 0) {
                 estoqueLocal[indiceProduto].quantidade = quantidadeNova;
-
-                localStorage.setItem(
-                    "estoque",
-                    JSON.stringify(estoqueLocal)
-                );
+                localStorage.setItem("estoque", JSON.stringify(estoqueLocal));
             }
         }
     } catch (erroLocal) {
@@ -581,10 +535,6 @@ async function aprovarContagemInventarioSupabase(
         quantidadeNova
     };
 }
-
-// =====================================================
-// REPROVAR CONTAGEM
-// =====================================================
 
 async function reprovarContagemInventarioSupabase(
     registroInventario,
@@ -611,12 +561,8 @@ async function reprovarContagemInventarioSupabase(
     registroInventario = atual;
 
     if (
-        String(atual.situacao_aprovacao)
-            .toUpperCase() === "APROVADO" ||
-        (
-            contagemReservadaDavi(atual) &&
-            !podeReabrirInventario()
-        )
+        String(atual.situacao_aprovacao).toUpperCase() === "APROVADO" ||
+        (contagemReservadaDavi(atual) && !podeReabrirInventario())
     ) {
         alert(
             "Item bloqueado. " +
@@ -648,10 +594,7 @@ async function reprovarContagemInventarioSupabase(
 
     if (error) {
         console.error(error);
-        alert(
-            "Não foi possível reprovar a contagem.\n\n" +
-            error.message
-        );
+        alert("Não foi possível reprovar a contagem.\n\n" + error.message);
         return {
             sucesso: false,
             erro: error
@@ -663,10 +606,6 @@ async function reprovarContagemInventarioSupabase(
         registro: data
     };
 }
-
-// =====================================================
-// LIMPAR CONTAGENS — ROTINA ORIGINAL
-// =====================================================
 
 async function limparContagensInventarioSupabase() {
     if (!verificarConexaoInventarioSupabase()) {
@@ -693,19 +632,12 @@ async function limparContagensInventarioSupabase() {
 
     if (error) {
         console.error(error);
-        alert(
-            "Não foi possível limpar as contagens.\n\n" +
-            error.message
-        );
+        alert("Não foi possível limpar as contagens.\n\n" + error.message);
         return false;
     }
 
     return true;
 }
-
-// =====================================================
-// MAPA DAS CONTAGENS
-// =====================================================
 
 function criarMapaContagensInventario(registros) {
     const mapa = {};
@@ -716,53 +648,45 @@ function criarMapaContagensInventario(registros) {
 
     registros.forEach(function (registro) {
         const codigo =
-            normalizarTextoInventario(registro.codigo)
-                .toUpperCase();
+            normalizarTextoInventario(registro.codigo).toUpperCase();
 
         const posicao =
-            normalizarTextoInventario(registro.posicao)
-                .toUpperCase();
+            normalizarTextoInventario(registro.posicao).toUpperCase();
 
-        mapa[codigo + "__" + posicao] = registro;
+        const chave = codigo + "__" + posicao;
+        const anterior = mapa[chave];
+
+        const dataAtual = Date.parse(registro.atualizado_em || "") || 0;
+        const dataAnterior = Date.parse(anterior?.atualizado_em || "") || 0;
+
+        if (
+            !anterior ||
+            dataAtual > dataAnterior ||
+            (
+                dataAtual === dataAnterior &&
+                String(registro.id).localeCompare(
+                    String(anterior.id),
+                    undefined,
+                    { numeric: true }
+                ) > 0
+            )
+        ) {
+            mapa[chave] = registro;
+        }
     });
 
     return mapa;
 }
 
-// =====================================================
-// DISPONIBILIZAR FUNÇÕES PARA A TELA
-// =====================================================
+window.buscarProdutosInventarioSupabase = buscarProdutosInventarioSupabase;
+window.buscarContagensInventarioSupabase = buscarContagensInventarioSupabase;
+window.salvarContagemInventarioSupabase = salvarContagemInventarioSupabase;
+window.limparContagensInventarioSupabase = limparContagensInventarioSupabase;
+window.criarMapaContagensInventario = criarMapaContagensInventario;
+window.aprovarContagemInventarioSupabase = aprovarContagemInventarioSupabase;
+window.reprovarContagemInventarioSupabase = reprovarContagemInventarioSupabase;
+window.podeReabrirInventario = podeReabrirInventario;
+window.contagemReservadaDavi = contagemReservadaDavi;
+window.reabrirContagemInventarioSupabase = reabrirContagemInventarioSupabase;
 
-window.buscarProdutosInventarioSupabase =
-    buscarProdutosInventarioSupabase;
-
-window.buscarContagensInventarioSupabase =
-    buscarContagensInventarioSupabase;
-
-window.salvarContagemInventarioSupabase =
-    salvarContagemInventarioSupabase;
-
-window.limparContagensInventarioSupabase =
-    limparContagensInventarioSupabase;
-
-window.criarMapaContagensInventario =
-    criarMapaContagensInventario;
-
-window.aprovarContagemInventarioSupabase =
-    aprovarContagemInventarioSupabase;
-
-window.reprovarContagemInventarioSupabase =
-    reprovarContagemInventarioSupabase;
-
-window.podeReabrirInventario =
-    podeReabrirInventario;
-
-window.contagemReservadaDavi =
-    contagemReservadaDavi;
-
-window.reabrirContagemInventarioSupabase =
-    reabrirContagemInventarioSupabase;
-
-console.log(
-    "Inventário com aprovação e reabertura para davi.smi carregado."
-);
+console.log("Inventário com aprovação e reabertura para davi.smi carregado.");
