@@ -1,3 +1,5 @@
+// Nova tentativa de publicação — 14/10/2026
+
 // SMI WMS — Inventário com aprovação e reabertura
 // Versão: 20261014-contagens-completas
 
