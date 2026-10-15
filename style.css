@@ -8995,3 +8995,394 @@ html[data-theme="escuro"] .requisicao-container h2,
 html[data-theme="escuro"] .requisicao-container h3 {
     color: #ffffff !important;
 }
+
+/* =====================================================
+   SMI WMS — UNIFICAÇÃO DO TEMA CLARO E ESCURO
+   Somente cores da interface.
+===================================================== */
+
+@media screen {
+
+    html[data-theme="claro"] {
+        color-scheme: light;
+
+        --wms-fundo: #f5f8fc;
+        --wms-superficie: #ffffff;
+        --wms-superficie-suave: #f0f5fb;
+        --wms-texto: #18283b;
+        --wms-titulo: #062d63;
+        --wms-secundario: #526780;
+        --wms-borda: #dce5ef;
+        --wms-grade: #e1e8f0;
+        --wms-anel-pendente: #d6e2ef;
+        --wms-linha: #007fa8;
+        --wms-linha-fundo: rgba(0, 127, 168, 0.10);
+        --wms-sombra: 0 6px 20px rgba(0, 30, 69, 0.08);
+    }
+
+    html[data-theme="escuro"] {
+        color-scheme: dark;
+
+        --wms-fundo: #07111f;
+        --wms-superficie: #0d2032;
+        --wms-superficie-suave: #142d44;
+        --wms-texto: #e7f0ff;
+        --wms-titulo: #f1f5ff;
+        --wms-secundario: #afc3dc;
+        --wms-borda: #294b66;
+        --wms-grade: #294156;
+        --wms-anel-pendente: #41658a;
+        --wms-linha: #00cfff;
+        --wms-linha-fundo: rgba(0, 190, 255, 0.13);
+        --wms-sombra: 0 6px 20px rgba(0, 0, 0, 0.22);
+    }
+
+    /* Compatibilidade com as variáveis antigas. */
+
+    html[data-theme][data-theme][data-theme] {
+        --fundo: var(--wms-fundo);
+        --branco: var(--wms-superficie);
+        --texto: var(--wms-texto);
+        --texto-suave: var(--wms-secundario);
+        --borda: var(--wms-borda);
+        --sombra: var(--wms-sombra);
+    }
+
+    /* Fundo das páginas. */
+
+    html[data-theme][data-theme][data-theme] body,
+    html[data-theme][data-theme][data-theme] .conteudo,
+    html[data-theme][data-theme][data-theme] .dashboard-novo {
+        background: var(--wms-fundo) !important;
+        color: var(--wms-texto) !important;
+    }
+
+    /* Cards, painéis, formulários, resumos e janelas. */
+
+    html[data-theme][data-theme][data-theme] :is(
+        .topbar,
+        .card,
+        .painel,
+        .card-dashboard,
+        .card-dashboard-novo,
+        .grafico-card,
+        .dashboard-painel,
+        .dashboard-grafico-card,
+        .dashboard-painel-compacto,
+        .dashboard-faixa-alertas,
+        .dashboard-rodape,
+        .dashboard-divergencia-item,
+        .card-velocimetro,
+        .importarExcel,
+        .coluna-mapa,
+        .modalConteudo,
+        .modal-conteudo,
+        .modal-content,
+        .login-box,
+        .inventario-container,
+        .indicador-inventario,
+        .grafico-inventario-card,
+        .resumo-card,
+        .resumo-movimento-item,
+        .kpi-card,
+        .indicador-card,
+        .painel-card,
+        .conteudo-card,
+        .rel-painel,
+        .rel-kpi,
+        .rel-filtros,
+        .rel-grafico-card,
+        .rel-detalhamento,
+        .rel-card,
+        .requisicao-container,
+        .ficha-requisicao,
+        .card-indicador,
+        .card-produto-entrada,
+        .card-novo-saldo,
+        .resumo-entrada-dia,
+        .mapa-controles,
+        .mapa-cards-resumo,
+        .mapa-card,
+        .mapa-barra-legenda,
+        .mapa-area-scroll,
+        .mapa-corredor,
+        .mapa-vazio,
+        .mapa-rodape,
+        dialog
+    ) {
+        background: var(--wms-superficie) !important;
+        color: var(--wms-texto) !important;
+        border-color: var(--wms-borda) !important;
+        box-shadow: var(--wms-sombra) !important;
+    }
+
+    /* Títulos dos componentes. */
+
+    html[data-theme][data-theme][data-theme] :is(
+        .titulo-pagina,
+        .topbar,
+        .card,
+        .painel,
+        .card-dashboard,
+        .grafico-card,
+        .dashboard-grafico-card,
+        .dashboard-titulo-painel,
+        .inventario-container,
+        .rel-painel,
+        .rel-filtros,
+        .rel-detalhamento,
+        .requisicao-container,
+        .modalConteudo,
+        .modal-conteudo,
+        dialog
+    ) :is(h1, h2, h3, h4) {
+        color: var(--wms-titulo) !important;
+    }
+
+    html[data-theme][data-theme][data-theme] :is(
+        .indicador-valor,
+        .indicador-linha strong,
+        .card-info-novo > strong,
+        .card-titulo-novo,
+        .card-indicador-info strong,
+        .rel-kpi strong,
+        .velocimetro-info strong,
+        .velocimetro-centro strong,
+        .velocimetro-cabecalho,
+        .top-ocupacao-posicao strong,
+        .top-ocupacao-valor,
+        .dashboard-ranking-identificacao strong,
+        .dashboard-ranking-valor,
+        .divergencia-produto-info strong,
+        .divergencia-dado strong,
+        .produto-entrada-info strong,
+        .produto-estoque-atual strong,
+        .card-novo-saldo strong,
+        .resumo-item strong,
+        .resumo-movimento-item strong,
+        .mapa-card-texto strong,
+        .smi-anel-centro strong,
+        .smi-legenda strong,
+        .tituloExcel,
+        .totalSku
+    ) {
+        color: var(--wms-titulo) !important;
+    }
+
+    /* Textos auxiliares. */
+
+    html[data-theme][data-theme][data-theme] :is(
+        .titulo-pagina small,
+        .usuario,
+        .card-info-novo small,
+        .card-indicador-info small,
+        .card-indicador-info span,
+        .dashboard-titulo-painel small,
+        .dashboard-ranking-identificacao small,
+        .dashboard-placeholder,
+        .dashboard-placeholder small,
+        .alerta-principal small,
+        .alerta-indicador small,
+        .top-ocupacao-posicao small,
+        .divergencia-produto-info small,
+        .divergencia-dado span,
+        .indicador-linha span,
+        .inventario-busca small,
+        .detalhe-aprovacao,
+        .rel-kpi small,
+        .rel-kpi .subtexto,
+        .rel-campo label,
+        .rel-titulo-linha span,
+        .produto-entrada-info small,
+        .produto-estoque-atual small,
+        .card-novo-saldo small,
+        .resumo-item small,
+        .resumo-item span,
+        .resumo-movimento-item span,
+        .mapa-card-texto span,
+        .mapa-card-texto small,
+        .smi-legenda small,
+        .smi-nota,
+        .smi-anel-centro span,
+        .velocimetro-info small,
+        .velocimetro-info span,
+        .velocimetro-centro span,
+        .inventario-vazio
+    ) {
+        color: var(--wms-secundario) !important;
+    }
+
+    /* Campos de preenchimento e seleção. */
+
+    html[data-theme][data-theme][data-theme] :is(
+        input:not([type="button"]):not([type="submit"])
+             :not([type="reset"]):not([type="checkbox"])
+             :not([type="radio"]):not([type="range"])
+             :not([type="color"]),
+        select,
+        textarea,
+        option
+    ) {
+        background: var(--wms-superficie) !important;
+        color: var(--wms-texto) !important;
+        border-color: var(--wms-borda) !important;
+    }
+
+    html[data-theme][data-theme][data-theme] input::placeholder,
+    html[data-theme][data-theme][data-theme] textarea::placeholder {
+        color: var(--wms-secundario) !important;
+        opacity: 1;
+    }
+
+    html[data-theme][data-theme][data-theme] :is(
+        input,
+        select,
+        textarea
+    ):disabled {
+        color: var(--wms-secundario) !important;
+        border-color: var(--wms-borda) !important;
+    }
+
+    /* Tabelas. Não interfere nas cores dos status. */
+
+    html[data-theme][data-theme][data-theme] :is(
+        table,
+        .tabela,
+        .inventario-tabela,
+        .top5-divergencias,
+        .tabelaPosicao
+    ) {
+        background: var(--wms-superficie) !important;
+        color: var(--wms-texto) !important;
+        border-color: var(--wms-borda) !important;
+    }
+
+    html[data-theme][data-theme][data-theme] :is(thead, th) {
+        background: var(--wms-superficie-suave) !important;
+        color: var(--wms-titulo) !important;
+        border-color: var(--wms-borda) !important;
+    }
+
+    html[data-theme][data-theme][data-theme] :is(tbody, tr, td) {
+        background-color: transparent !important;
+        border-color: var(--wms-borda) !important;
+    }
+
+    html[data-theme][data-theme][data-theme] tbody tr:hover {
+        background-color: var(--wms-superficie-suave) !important;
+    }
+
+    /* Separadores e áreas secundárias. */
+
+    html[data-theme][data-theme][data-theme] :is(
+        .indicador-detalhes,
+        .smi-total,
+        .resumo-item,
+        .modalCabecalho,
+        .cabecalho-ficha,
+        .dados-gerais,
+        .campo-ficha,
+        .numero-ficha
+    ) {
+        border-color: var(--wms-borda) !important;
+    }
+
+    html[data-theme][data-theme][data-theme] :is(
+        .inventario-tabela-container,
+        .top5-divergencias-wrap,
+        .painel-indicadores-inventario,
+        .graficos-inventario
+    ) {
+        background: transparent !important;
+    }
+
+    html[data-theme][data-theme][data-theme] :is(
+        .mapa-busca,
+        .mapa-corredor-cabecalho,
+        .busca-historico-entrada,
+        .rel-busca,
+        .rel-filtro-mini,
+        .rel-select-ordem,
+        .filtro-grafico,
+        .titulo-ficha,
+        .titulo-itens,
+        .titulo-materiais,
+        .subtitulo-ficha,
+        .cabecalho-itens
+    ) {
+        background: var(--wms-superficie-suave) !important;
+        color: var(--wms-texto) !important;
+        border-color: var(--wms-borda) !important;
+    }
+
+    /* Centro e faixa pendente do anel. */
+
+    html[data-theme][data-theme][data-theme] .smi-anel {
+        background: conic-gradient(
+            #00cfa5 0% var(--wms-cobertura, 0%),
+            var(--wms-anel-pendente)
+                var(--wms-cobertura, 0%) 100%
+        ) !important;
+    }
+
+    html[data-theme][data-theme][data-theme] .smi-anel::before,
+    html[data-theme][data-theme][data-theme] .velocimetro-arco::after {
+        background: var(--wms-superficie) !important;
+    }
+
+    html[data-theme][data-theme][data-theme]
+    .smi-legenda > div:nth-child(2) .smi-ponto {
+        background: var(--wms-anel-pendente) !important;
+    }
+
+    /* Menu lateral também acompanha o tema. */
+
+    html[data-theme][data-theme][data-theme] .sidebar {
+        background: var(--wms-superficie) !important;
+        color: var(--wms-texto) !important;
+        border-color: var(--wms-borda) !important;
+    }
+
+    html[data-theme][data-theme][data-theme] .sidebar :is(
+        h1, h2, .titulo, .menu-texto
+    ) {
+        color: var(--wms-titulo) !important;
+    }
+
+    html[data-theme][data-theme][data-theme] .sidebar :is(
+        a, li, .menu-titulo, .menu-titulo span,
+        .sidebar-topo p, .sidebar-rodape span,
+        .sidebar-rodape small, .menu-seta
+    ) {
+        color: var(--wms-secundario) !important;
+    }
+
+    html[data-theme][data-theme][data-theme]
+    .sidebar a.menu-item:not(.active):hover {
+        background: var(--wms-superficie-suave) !important;
+    }
+
+    html[data-theme][data-theme][data-theme]
+    .sidebar :is(a.active, a.ativo) {
+        background: #1264e8 !important;
+        color: #ffffff !important;
+    }
+
+    html[data-theme][data-theme][data-theme]
+    .sidebar :is(a.active, a.ativo) :is(
+        .menu-texto, .menu-seta, .menu-icon
+    ) {
+        color: #ffffff !important;
+    }
+
+    html[data-theme][data-theme][data-theme]
+    #wms-language-switcher {
+        background: transparent !important;
+        color: var(--wms-texto) !important;
+    }
+
+    html[data-theme][data-theme][data-theme]
+    #wms-language-switcher .wms-lang-item {
+        color: var(--wms-titulo) !important;
+    }
+}

@@ -15527,3 +15527,295 @@ window.sincronizarSeletorIdiomaGlobalWMS =
 window.sincronizarConfiguracaoIdiomaWMS =
     sincronizarConfiguracaoIdiomaWMS;
 
+// =====================================================
+// SMI WMS — CORES DOS GRÁFICOS CONFORME O TEMA
+// Não altera dados, cálculos ou operações.
+// =====================================================
+
+(function () {
+    "use strict";
+
+    if (window.wmsCoresTemaInstaladas) {
+        return;
+    }
+
+    window.wmsCoresTemaInstaladas = true;
+
+    let chartRegistrado = null;
+    let atualizacaoAgendada = false;
+
+    function obterCoresTema() {
+        const escuro =
+            document.documentElement.getAttribute(
+                "data-theme"
+            ) === "escuro";
+
+        return {
+            texto: escuro ? "#afc3dc" : "#526780",
+            titulo: escuro ? "#f1f5ff" : "#062d63",
+            grade: escuro ? "#294156" : "#e1e8f0",
+            superficie: escuro ? "#0d2032" : "#ffffff",
+            borda: escuro ? "#294b66" : "#dce5ef",
+            linha: escuro ? "#00cfff" : "#007fa8",
+            preenchimento: escuro
+                ? "rgba(0,190,255,0.13)"
+                : "rgba(0,127,168,0.10)"
+        };
+    }
+
+    function aplicarCoresGrafico(grafico) {
+        const cores = obterCoresTema();
+
+        // Altera apenas a configuração visual do gráfico.
+        const opcoes = grafico.config.options ||
+            (grafico.config.options = {});
+
+        opcoes.color = cores.texto;
+
+        const plugins = opcoes.plugins;
+
+        if (plugins && plugins !== false) {
+            if (
+                plugins.legend &&
+                plugins.legend !== false
+            ) {
+                plugins.legend.labels =
+                    plugins.legend.labels || {};
+
+                plugins.legend.labels.color = cores.texto;
+
+                if (
+                    plugins.legend.title &&
+                    plugins.legend.title !== false
+                ) {
+                    plugins.legend.title.color = cores.titulo;
+                }
+            }
+
+            for (const nome of ["title", "subtitle"]) {
+                if (
+                    plugins[nome] &&
+                    plugins[nome] !== false
+                ) {
+                    plugins[nome].color = cores.titulo;
+                }
+            }
+
+            if (
+                plugins.tooltip &&
+                plugins.tooltip !== false
+            ) {
+                plugins.tooltip.backgroundColor =
+                    cores.superficie;
+
+                plugins.tooltip.titleColor = cores.titulo;
+                plugins.tooltip.bodyColor = cores.texto;
+                plugins.tooltip.footerColor = cores.texto;
+                plugins.tooltip.borderColor = cores.borda;
+                plugins.tooltip.borderWidth = 1;
+            }
+        }
+
+        const escalas = opcoes.scales || {};
+
+        for (const escala of Object.values(escalas)) {
+            if (!escala || escala === false) {
+                continue;
+            }
+
+            if (escala.ticks !== false) {
+                escala.ticks = escala.ticks || {};
+                escala.ticks.color = cores.texto;
+
+                // Evita fundos claros em rótulos de gráficos radiais.
+                escala.ticks.backdropColor =
+                    cores.superficie;
+            }
+
+            if (escala.grid !== false) {
+                escala.grid = escala.grid || {};
+                escala.grid.color = cores.grade;
+            }
+
+            if (escala.border !== false) {
+                escala.border = escala.border || {};
+                escala.border.color = cores.grade;
+            }
+
+            if (
+                escala.title &&
+                escala.title !== false
+            ) {
+                escala.title.color = cores.texto;
+            }
+
+            if (
+                escala.pointLabels &&
+                escala.pointLabels !== false
+            ) {
+                escala.pointLabels.color = cores.texto;
+            }
+        }
+
+        // Somente a cor da linha do inventário.
+        // Os valores e as datas permanecem os mesmos.
+        if (
+            grafico.canvas?.id === "smiGraficoEvolucao"
+        ) {
+            for (const serie of grafico.data.datasets) {
+                serie.borderColor = cores.linha;
+                serie.backgroundColor =
+                    cores.preenchimento;
+
+                serie.pointBorderColor = cores.linha;
+                serie.pointBackgroundColor =
+                    cores.superficie;
+            }
+        }
+    }
+
+    function registrarTemaChart() {
+        const biblioteca = window.Chart;
+
+        if (
+            !biblioteca ||
+            typeof biblioteca.register !== "function"
+        ) {
+            return;
+        }
+
+        if (chartRegistrado === biblioteca) {
+            return;
+        }
+
+        biblioteca.register({
+            id: "wmsCoresConformeTema",
+
+            beforeUpdate: function (grafico) {
+                aplicarCoresGrafico(grafico);
+            }
+        });
+
+        chartRegistrado = biblioteca;
+    }
+
+    function atualizarAnelInventario() {
+        const anel = document.getElementById(
+            "smiAnelCobertura"
+        );
+
+        const percentual = document.getElementById(
+            "indCobertura"
+        );
+
+        if (!anel || !percentual) {
+            return;
+        }
+
+        const valor = Number.parseFloat(
+            percentual.textContent
+                .replace(/\s/g, "")
+                .replace(",", ".")
+        );
+
+        const cobertura = Number.isFinite(valor)
+            ? Math.max(0, Math.min(100, valor))
+            : 0;
+
+        anel.style.setProperty(
+            "--wms-cobertura",
+            cobertura + "%"
+        );
+    }
+
+    function atualizarCoresDaTela() {
+        registrarTemaChart();
+        atualizarAnelInventario();
+
+        const biblioteca = window.Chart;
+
+        if (
+            !biblioteca ||
+            typeof biblioteca.getChart !== "function"
+        ) {
+            return;
+        }
+
+        document.querySelectorAll("canvas").forEach(
+            function (canvas) {
+                const grafico =
+                    biblioteca.getChart(canvas);
+
+                if (grafico) {
+                    grafico.update("none");
+                }
+            }
+        );
+    }
+
+    function agendarAtualizacao() {
+        if (atualizacaoAgendada) {
+            return;
+        }
+
+        atualizacaoAgendada = true;
+
+        requestAnimationFrame(function () {
+            atualizacaoAgendada = false;
+            atualizarCoresDaTela();
+        });
+    }
+
+    // A troca de tema existente altera este atributo.
+    new MutationObserver(
+        agendarAtualizacao
+    ).observe(
+        document.documentElement,
+        {
+            attributes: true,
+            attributeFilter: ["data-theme"]
+        }
+    );
+
+    function iniciarAcompanhamento() {
+        registrarTemaChart();
+        atualizarCoresDaTela();
+
+        // Atualiza o preenchimento do anel quando muda
+        // o percentual, sem consultar ou salvar no banco.
+        const percentual = document.getElementById(
+            "indCobertura"
+        );
+
+        if (percentual) {
+            new MutationObserver(
+                atualizarAnelInventario
+            ).observe(
+                percentual,
+                {
+                    childList: true,
+                    characterData: true,
+                    subtree: true
+                }
+            );
+        }
+    }
+
+    registrarTemaChart();
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            iniciarAcompanhamento,
+            { once: true }
+        );
+    } else {
+        iniciarAcompanhamento();
+    }
+
+    window.addEventListener(
+        "load",
+        agendarAtualizacao,
+        { once: true }
+    );
+})();
