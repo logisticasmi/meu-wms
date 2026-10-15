@@ -3156,6 +3156,755 @@ document.addEventListener(
     opacity: 0.75;
 }
 </style>
+
+<!-- INÍCIO DO TESTE — EVOLUÇÃO DAS MOVIMENTAÇÕES -->
+
+<style>
+    #wms-teste-evolucao {
+        --ev-fundo: #ffffff;
+        --ev-texto: #062d63;
+        --ev-secundario: #526780;
+        --ev-borda: #dce5ef;
+        --ev-campo: #f0f5fb;
+
+        grid-column: 1 / -1;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: hidden;
+        padding: 20px !important;
+        border-radius: 14px !important;
+        background: var(--ev-fundo) !important;
+        color: var(--ev-texto) !important;
+        border: 1px solid var(--ev-borda) !important;
+    }
+
+    html[data-theme="escuro"] #wms-teste-evolucao {
+        --ev-fundo: #0d2032;
+        --ev-texto: #f1f5ff;
+        --ev-secundario: #afc3dc;
+        --ev-borda: #294b66;
+        --ev-campo: #142d44;
+    }
+
+    #wms-teste-evolucao .dashboard-cabecalho-grafico {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 6px;
+    }
+
+    #wms-teste-evolucao .dashboard-cabecalho-grafico h2 {
+        margin: 0 !important;
+        color: var(--ev-texto) !important;
+        font-size: 16px;
+    }
+
+    #wms-teste-evolucao #wms-evolucao-periodo {
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: var(--ev-campo) !important;
+        color: var(--ev-texto) !important;
+        border: 1px solid var(--ev-borda) !important;
+        cursor: pointer;
+    }
+
+    #wms-teste-evolucao .wms-evolucao-subtitulo {
+        margin: 0 0 12px;
+        font-size: 12px;
+        color: var(--ev-secundario) !important;
+    }
+
+    #wms-teste-evolucao .wms-evolucao-area {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        min-height: 0;
+    }
+
+    #wms-teste-evolucao #graficoMovimentacoes {
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-height: none !important;
+        margin: 0 !important;
+    }
+
+    #wms-teste-evolucao .wms-evolucao-totais {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--ev-borda);
+    }
+
+    #wms-teste-evolucao .wms-evolucao-totais > div {
+        padding-left: 14px;
+        border-left: 3px solid;
+    }
+
+    #wms-teste-evolucao .wms-evolucao-totais > div:nth-child(1) {
+        border-left-color: #16a34a;
+    }
+
+    #wms-teste-evolucao .wms-evolucao-totais > div:nth-child(2) {
+        border-left-color: #00a6d6;
+    }
+
+    #wms-teste-evolucao .wms-evolucao-totais > div:nth-child(3) {
+        border-left-color: #9860ef;
+    }
+
+    #wms-teste-evolucao .wms-evolucao-totais span {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 12px;
+        color: var(--ev-secundario) !important;
+    }
+
+    #wms-teste-evolucao .wms-evolucao-totais strong {
+        display: block;
+        font-size: 25px;
+        color: var(--ev-texto) !important;
+    }
+
+    #wms-teste-evolucao #wms-evolucao-nota {
+        margin: 14px 0 0;
+        font-size: 11px;
+        line-height: 1.5;
+        color: var(--ev-secundario) !important;
+    }
+
+    @media (max-width: 600px) {
+        #wms-teste-evolucao {
+            padding: 14px !important;
+        }
+
+        #wms-teste-evolucao .wms-evolucao-area {
+            height: 260px;
+        }
+
+        #wms-teste-evolucao .wms-evolucao-totais {
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        #wms-teste-evolucao .dashboard-cabecalho-grafico h2 {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<script>
+(function () {
+    "use strict";
+
+    if (window.wmsTesteEvolucaoMovimentacoes) {
+        return;
+    }
+
+    window.wmsTesteEvolucaoMovimentacoes = true;
+
+    let periodo = 14;
+    let ultimosMovimentos = [];
+    let quadro = null;
+
+    /*
+     * Usa as mesmas datas e a mesma normalização
+     * de tipos já existentes no dashboard.js.
+     *
+     * Não altera registros e não grava no banco.
+     */
+    function resumir(movimentos) {
+        const dias = [];
+
+        const hoje = new Date();
+        hoje.setHours(12, 0, 0, 0);
+
+        for (let i = periodo - 1; i >= 0; i--) {
+            const data = new Date(hoje);
+            data.setDate(data.getDate() - i);
+
+            dias.push({
+                chave: obterChaveData(data),
+
+                rotulo: data.toLocaleDateString(
+                    "pt-BR",
+                    {
+                        day: "2-digit",
+                        month: "2-digit"
+                    }
+                )
+            });
+        }
+
+        const indices = new Map(
+            dias.map(
+                (dia, indice) => [dia.chave, indice]
+            )
+        );
+
+        const series = {
+            ENTRADA: Array(periodo).fill(0),
+            SAIDA: Array(periodo).fill(0),
+            TRANSFERENCIA: Array(periodo).fill(0)
+        };
+
+        let semData = 0;
+
+        for (const movimento of movimentos) {
+            if (
+                !movimento ||
+                typeof movimento !== "object"
+            ) {
+                continue;
+            }
+
+            const tipo =
+                normalizarTipoMovimentacao(
+                    movimento.tipo
+                );
+
+            if (!Object.hasOwn(series, tipo)) {
+                continue;
+            }
+
+            const data =
+                converterDataDashboard(
+                    movimento.data
+                );
+
+            if (!data) {
+                semData++;
+                continue;
+            }
+
+            const indice = indices.get(
+                obterChaveData(data)
+            );
+
+            if (indice !== undefined) {
+                // Um registro = uma movimentação.
+                series[tipo][indice]++;
+            }
+        }
+
+        return {
+            dias: dias,
+            series: series,
+            semData: semData
+        };
+    }
+
+    function montar() {
+        const canvas =
+            document.getElementById(
+                "graficoMovimentacoes"
+            );
+
+        if (!canvas) {
+            return null;
+        }
+
+        const card = canvas.closest(
+            ".dashboard-grafico-card"
+        );
+
+        if (!card) {
+            return null;
+        }
+
+        if (
+            document.getElementById(
+                "wms-evolucao-periodo"
+            )
+        ) {
+            return canvas;
+        }
+
+        card.id = "wms-teste-evolucao";
+
+        const cabecalho = card.querySelector(
+            ".dashboard-cabecalho-grafico"
+        );
+
+        cabecalho.querySelector("h2").textContent =
+            "EVOLUÇÃO DAS MOVIMENTAÇÕES";
+
+        const seletor =
+            document.createElement("select");
+
+        seletor.id = "wms-evolucao-periodo";
+
+        seletor.setAttribute(
+            "aria-label",
+            "Período das movimentações"
+        );
+
+        seletor.innerHTML = `
+            <option value="7">7 dias</option>
+            <option value="14" selected>14 dias</option>
+            <option value="30">30 dias</option>
+        `;
+
+        const filtro = cabecalho.querySelector(
+            ".filtro-grafico"
+        );
+
+        if (filtro) {
+            filtro.replaceWith(seletor);
+        } else {
+            cabecalho.appendChild(seletor);
+        }
+
+        seletor.addEventListener(
+            "change",
+            function () {
+                periodo = Number(this.value);
+                desenhar(ultimosMovimentos);
+            }
+        );
+
+        const subtitulo =
+            document.createElement("p");
+
+        subtitulo.className =
+            "wms-evolucao-subtitulo";
+
+        subtitulo.textContent =
+            "Registros por dia • Cada registro conta " +
+            "como uma movimentação";
+
+        cabecalho.insertAdjacentElement(
+            "afterend",
+            subtitulo
+        );
+
+        const area =
+            document.createElement("div");
+
+        area.className = "wms-evolucao-area";
+
+        canvas.before(area);
+        area.appendChild(canvas);
+
+        const rodape =
+            document.createElement("div");
+
+        rodape.className =
+            "wms-evolucao-totais";
+
+        rodape.innerHTML = `
+            <div>
+                <span>Entradas no período</span>
+                <strong id="wms-evolucao-entradas">—</strong>
+            </div>
+
+            <div>
+                <span>Saídas no período</span>
+                <strong id="wms-evolucao-saidas">—</strong>
+            </div>
+
+            <div>
+                <span>Transferências no período</span>
+                <strong id="wms-evolucao-transferencias">—</strong>
+            </div>
+        `;
+
+        area.after(rodape);
+
+        const nota =
+            document.createElement("p");
+
+        nota.id = "wms-evolucao-nota";
+        nota.setAttribute("role", "status");
+
+        rodape.after(nota);
+
+        return canvas;
+    }
+
+    function desenhar(movimentos) {
+        ultimosMovimentos =
+            Array.isArray(movimentos)
+                ? movimentos
+                : [];
+
+        const canvas = montar();
+
+        if (!canvas) {
+            return;
+        }
+
+        const nota =
+            document.getElementById(
+                "wms-evolucao-nota"
+            );
+
+        if (typeof Chart !== "function") {
+            nota.textContent =
+                "A biblioteca de gráficos não carregou. " +
+                "Atualize a página.";
+
+            return;
+        }
+
+        const resumo = resumir(
+            ultimosMovimentos
+        );
+
+        const escuro =
+            document.documentElement.getAttribute(
+                "data-theme"
+            ) === "escuro";
+
+        const texto =
+            escuro ? "#afc3dc" : "#526780";
+
+        const grade =
+            escuro ? "#294156" : "#e1e8f0";
+
+        const cores = escuro
+            ? ["#25df82", "#00cfff", "#ae75ff"]
+            : ["#168342", "#007fa8", "#7946cc"];
+
+        const tipos = [
+            "ENTRADA",
+            "SAIDA",
+            "TRANSFERENCIA"
+        ];
+
+        const nomes = [
+            "Entradas",
+            "Saídas",
+            "Transferências"
+        ];
+
+        const ids = [
+            "wms-evolucao-entradas",
+            "wms-evolucao-saidas",
+            "wms-evolucao-transferencias"
+        ];
+
+        const totais = tipos.map(
+            tipo => resumo.series[tipo].reduce(
+                (total, valor) => total + valor,
+                0
+            )
+        );
+
+        ids.forEach(function (id, indice) {
+            document.getElementById(id).textContent =
+                totais[indice].toLocaleString("pt-BR");
+        });
+
+        nota.textContent =
+            (
+                totais.every(numero => numero === 0)
+                    ? "Nenhuma movimentação disponível " +
+                      "neste período. "
+                    : ""
+            ) +
+            "Fonte: registros disponíveis na base " +
+            "usada pelo Dashboard." +
+            (
+                resumo.semData
+                    ? " " + resumo.semData +
+                      " registro(s) sem data válida " +
+                      "ficaram fora do gráfico."
+                    : ""
+            );
+
+        if (graficoMovimentacoesDashboard) {
+            graficoMovimentacoesDashboard.destroy();
+        }
+
+        graficoMovimentacoesDashboard =
+            new Chart(canvas, {
+                type: "line",
+
+                data: {
+                    labels: resumo.dias.map(
+                        dia => dia.rotulo
+                    ),
+
+                    datasets: tipos.map(
+                        function (tipo, indice) {
+                            return {
+                                label: nomes[indice],
+
+                                data:
+                                    resumo.series[tipo],
+
+                                borderColor:
+                                    cores[indice],
+
+                                backgroundColor:
+                                    cores[indice] + "18",
+
+                                borderWidth: 3,
+                                pointRadius: 3,
+                                pointHoverRadius: 5,
+                                fill: true,
+                                tension: 0.25,
+
+                                cubicInterpolationMode:
+                                    "monotone"
+                            };
+                        }
+                    )
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+
+                    interaction: {
+                        mode: "index",
+                        intersect: false
+                    },
+
+                    plugins: {
+                        legend: {
+                            position: "top",
+
+                            labels: {
+                                color: texto,
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        },
+
+                        tooltip: {
+                            callbacks: {
+                                label: function (contexto) {
+                                    return (
+                                        contexto.dataset.label +
+                                        ": " +
+                                        Number(
+                                            contexto.raw || 0
+                                        ).toLocaleString(
+                                            "pt-BR"
+                                        ) +
+                                        " registro(s)"
+                                    );
+                                }
+                            }
+                        }
+                    },
+
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: texto,
+                                maxTicksLimit: 14
+                            },
+
+                            grid: {
+                                color: grade
+                            }
+                        },
+
+                        y: {
+                            beginAtZero: true,
+
+                            ticks: {
+                                color: texto,
+                                precision: 0
+                            },
+
+                            grid: {
+                                color: grade
+                            },
+
+                            title: {
+                                display: true,
+
+                                text:
+                                    "Movimentações (registros)",
+
+                                color: texto
+                            }
+                        }
+                    }
+                }
+            });
+    }
+
+    /*
+     * As atualizações existentes do Dashboard passam
+     * a chamar este gráfico no lugar do anterior.
+     */
+    window.criarGraficoMovimentacoes = desenhar;
+
+    /*
+     * Acompanha a mudança entre modo claro e escuro.
+     */
+    new MutationObserver(function () {
+        if (quadro !== null) {
+            cancelAnimationFrame(quadro);
+        }
+
+        quadro = requestAnimationFrame(function () {
+            quadro = null;
+            desenhar(ultimosMovimentos);
+        });
+    }).observe(
+        document.documentElement,
+        {
+            attributes: true,
+            attributeFilter: ["data-theme"]
+        }
+    );
+
+    function iniciar() {
+        if (
+            typeof obterMovimentacoesDashboard ===
+            "function"
+        ) {
+            desenhar(
+                obterMovimentacoesDashboard()
+            );
+        }
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            iniciar,
+            { once: true }
+        );
+    } else {
+        iniciar();
+    }
+})();
+</script>
+
+<style>
+    /* Reduz a altura da área do gráfico de 300 para 220px. */
+    #wms-teste-evolucao .wms-evolucao-area {
+        height: 220px !important;
+    }
+
+    /* Conferência ocupa a mesma largura do gráfico. */
+    .dashboard-novo .sc7-card {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 0;
+    }
+
+    @media (max-width: 600px) {
+        #wms-teste-evolucao .wms-evolucao-area {
+            height: 200px !important;
+        }
+    }
+</style>
+<style>
+    .dashboard-novo .sc7-card {
+        display: none !important;
+    }
+</style>
+<style>
+    /* Conferência volta ao tamanho de um card dessa linha. */
+    .dashboard-novo .sc7-card.sc7-no-lugar-divergencias {
+        display: block !important;
+        grid-column: auto !important;
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        box-sizing: border-box;
+    }
+
+    .sc7-no-lugar-divergencias .sc7-cabecalho {
+        flex-wrap: wrap;
+    }
+
+    .sc7-no-lugar-divergencias .sc7-item {
+        grid-template-columns:
+            30px minmax(0, 1.4fr) minmax(45px, 1fr) 38px;
+        gap: 8px;
+    }
+
+    .sc7-no-lugar-divergencias .sc7-item > * {
+        min-width: 0;
+    }
+</style>
+
+<script>
+(function () {
+    "use strict";
+
+    function trocarCards() {
+        const listaDivergencias =
+            document.getElementById("topDivergencias");
+
+        const conferencia =
+            document.querySelector(".sc7-card");
+
+        if (!listaDivergencias || !conferencia) {
+            return false;
+        }
+
+        const cardDivergencias =
+            listaDivergencias.closest(
+                ".dashboard-painel-compacto"
+            );
+
+        if (!cardDivergencias) {
+            return false;
+        }
+
+        conferencia.classList.add(
+            "sc7-no-lugar-divergencias"
+        );
+
+        // Move o card existente, sem duplicar seus indicadores.
+        cardDivergencias.before(conferencia);
+
+        // Mantém o elemento para as atualizações do dashboard.js.
+        cardDivergencias.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        return true;
+    }
+
+    function iniciarTroca() {
+        if (trocarCards()) {
+            return;
+        }
+
+        // Aguarda caso a conferência ainda esteja sendo criada.
+        const observador = new MutationObserver(function () {
+            if (trocarCards()) {
+                observador.disconnect();
+            }
+        });
+
+        observador.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            iniciarTroca,
+            { once: true }
+        );
+    } else {
+        iniciarTroca();
+    }
+})();
+</script>
 </body>
 
 </html>
