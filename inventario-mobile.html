@@ -1393,5 +1393,63 @@
         });
     </script>
 
+    <script>
+(function () {
+    function removerIndicadoresFinanceiros() {
+        const indicadores = [
+            {
+                id: "relValor",
+                cartao: ".rel-kpi"
+            },
+            {
+                id: "indDivFinanceira",
+                cartao: ".indicador-inventario"
+            },
+            {
+                id: "indValorInventariado",
+                cartao: ".indicador-inventario"
+            },
+            {
+                id: "indDivFinanceiraMobile",
+                cartao: ".card-indicador"
+            },
+            {
+                id: "indValorInventariadoMobile",
+                cartao: ".card-indicador"
+            }
+        ];
+
+        indicadores.forEach(function (indicador) {
+            const elemento = document.getElementById(indicador.id);
+
+            if (!elemento) return;
+
+            const cartao = elemento.closest(indicador.cartao);
+
+            if (cartao) cartao.remove();
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            removerIndicadoresFinanceiros
+        );
+    } else {
+        removerIndicadoresFinanceiros();
+    }
+})();
+</script>
+
+<style>
+/* Distribui os três indicadores restantes nas telas maiores. */
+@media (min-width: 1200px) {
+    .rel-kpis,
+    .indicadores-inventario {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+</style>
+
 </body>
 </html>
