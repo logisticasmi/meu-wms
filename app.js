@@ -1,157 +1,85 @@
-// APP.JS - PARTE 1 DE 6
-// Linhas 1 até 2292
-// Cole esta parte na sequência, sem apagar conteúdo das partes anteriores.
+// APP.JS — PARTE 1/10
+// FUNÇÕES GERAIS E PRODUTOS
 
 // =====================================================
-// SMI WMS - APP.JS
-// NOVA VERSÃO ORGANIZADA
-// PARTE 1 - FUNÇÕES GERAIS
-// =====================================================
-
-
-
-
-// =====================================================
-// TEMA GLOBAL DO SMI WMS
+// TEMA GLOBAL
 // =====================================================
 
 function aplicarTemaGlobalWMS() {
+    const tema = localStorage.getItem("wms_tema") || "claro";
 
-    const tema =
-        localStorage.getItem("wms_tema") ||
-        "claro";
-
-    document.documentElement.setAttribute(
-        "data-theme",
-        tema
-    );
+    document.documentElement.setAttribute("data-theme", tema);
 
     return tema;
 }
 
-
-// Aplica imediatamente para reduzir o "piscar" entre claro e escuro.
 aplicarTemaGlobalWMS();
 
+document.addEventListener("DOMContentLoaded", function () {
+    aplicarTemaGlobalWMS();
+});
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
+window.addEventListener("storage", function (evento) {
+    if (evento.key === "wms_tema") {
         aplicarTemaGlobalWMS();
-
     }
-);
+});
 
+window.addEventListener("wmsTemaAlterado", function () {
+    aplicarTemaGlobalWMS();
+});
 
-window.addEventListener(
-    "storage",
-    function (evento) {
-
-        if (
-            evento.key === "wms_tema"
-        ) {
-
-            aplicarTemaGlobalWMS();
-
-        }
-
-    }
-);
-
-
-window.addEventListener(
-    "wmsTemaAlterado",
-    function () {
-
-        aplicarTemaGlobalWMS();
-
-    }
-);
-
-
-window.aplicarTemaGlobalWMS =
-    aplicarTemaGlobalWMS;
-
+window.aplicarTemaGlobalWMS = aplicarTemaGlobalWMS;
 
 // =====================================================
-// INICIALIZAÇÃO GERAL
+// INICIALIZAÇÃO
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        atualizarRelogio();
-        carregarNomeUsuario();
-
-    }
-);
-
+document.addEventListener("DOMContentLoaded", function () {
+    atualizarRelogio();
+    carregarNomeUsuario();
+});
 
 // =====================================================
 // RELÓGIO
 // =====================================================
 
 function atualizarRelogio() {
-
-    const relogio =
-        document.getElementById(
-            "relogio"
-        );
+    const relogio = document.getElementById("relogio");
 
     if (!relogio) {
         return;
     }
 
-    relogio.textContent =
-        new Date().toLocaleString(
-            "pt-BR",
-            {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit"
-            }
-        );
-
+    relogio.textContent = new Date().toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+    });
 }
 
-
-setInterval(
-    atualizarRelogio,
-    1000
-);
-
+setInterval(atualizarRelogio, 1000);
 
 // =====================================================
 // USUÁRIO DO SISTEMA
 // =====================================================
 
 function carregarNomeUsuario() {
-
-    const elemento =
-        document.getElementById(
-            "nomeUsuario"
-        );
+    const elemento = document.getElementById("nomeUsuario");
 
     if (!elemento) {
         return;
     }
 
-    const nome =
-        obterNomeUsuario();
+    const nome = obterNomeUsuario();
 
-    elemento.textContent =
-        "👤 " + nome;
-
+    elemento.textContent = "👤 " + nome;
 }
 
-
 function obterNomeUsuario() {
-
     const chaves = [
         "nomeUsuario",
         "usuarioLogado",
@@ -159,798 +87,541 @@ function obterNomeUsuario() {
         "operador"
     ];
 
-
     for (const chave of chaves) {
+        const valor = localStorage.getItem(chave);
 
-        const valor =
-            localStorage.getItem(chave);
-
-        if (
-            !valor ||
-            valor.trim() === ""
-        ) {
+        if (!valor || valor.trim() === "") {
             continue;
         }
 
-
         try {
+            const dados = JSON.parse(valor);
 
-            const dados =
-                JSON.parse(valor);
+            if (dados && typeof dados === "object") {
+                const nomeEncontrado =
+                    dados.nome ||
+                    dados.usuario ||
+                    dados.login ||
+                    "Administrador";
 
-            if (
-                dados &&
-                typeof dados === "object"
-            ) {
-
-              const nomeEncontrado =
-    dados.nome ||
-    dados.usuario ||
-    dados.login ||
-    "Administrador";
-
-return (
-    String(nomeEncontrado).trim().toLowerCase() === "administrador"
-        ? "DAVI.SMI"
-        : nomeEncontrado
-);
-
+                return (
+                    String(nomeEncontrado).trim().toLowerCase() ===
+                    "administrador"
+                        ? "DAVI.SMI"
+                        : nomeEncontrado
+                );
             }
-
         } catch (erro) {
-
             return valor;
-
         }
-
     }
 
-
     return "Administrador";
-
 }
-
 
 // =====================================================
 // LOGIN
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
+    const botaoLogin = document.getElementById("btnLogin");
 
-        const botaoLogin =
-            document.getElementById(
-                "btnLogin"
-            );
-
-        if (!botaoLogin) {
-            return;
-        }
-
-
-        botaoLogin.addEventListener(
-            "click",
-            realizarLogin
-        );
-
-
-        const campoSenha =
-            document.getElementById(
-                "senha"
-            );
-
-        if (campoSenha) {
-
-            campoSenha.addEventListener(
-                "keydown",
-                function (evento) {
-
-                    if (
-                        evento.key ===
-                        "Enter"
-                    ) {
-
-                        realizarLogin();
-
-                    }
-
-                }
-            );
-
-        }
-
+    if (!botaoLogin) {
+        return;
     }
-);
 
+    botaoLogin.addEventListener("click", realizarLogin);
+
+    const campoSenha = document.getElementById("senha");
+
+    if (campoSenha) {
+        campoSenha.addEventListener("keydown", function (evento) {
+            if (evento.key === "Enter") {
+                realizarLogin();
+            }
+        });
+    }
+});
 
 function realizarLogin() {
+    const campoUsuario = document.getElementById("usuario");
+    const campoSenha = document.getElementById("senha");
 
-    const campoUsuario =
-        document.getElementById(
-            "usuario"
-        );
-
-    const campoSenha =
-        document.getElementById(
-            "senha"
-        );
-
-
-    if (
-        !campoUsuario ||
-        !campoSenha
-    ) {
-
-        alert(
-            "Os campos de login não foram encontrados."
-        );
-
+    if (!campoUsuario || !campoSenha) {
+        alert("Os campos de login não foram encontrados.");
         return;
-
     }
 
-
-    const usuario =
-        String(
-            campoUsuario.value || ""
-        )
+    const usuario = String(campoUsuario.value || "")
         .trim()
         .toLowerCase();
 
+    const senha = String(campoSenha.value || "").trim();
 
-    const senha =
-        String(
-            campoSenha.value || ""
-        )
-        .trim();
+    const usuariosPermitidos = [
+        {
+            login: "davi.smi",
+            senha: "1234",
+            nome: "DAVI.SMI"
+        },
+        {
+            login: "julio.smi",
+            senha: "1234",
+            nome: "JULIO.SMI"
+        },
+        {
+            login: "rafael.smi",
+            senha: "1234",
+            nome: "RAFAEL.SMI"
+        },
+        {
+            login: "marcos.smi",
+            senha: "1234",
+            nome: "MARCOS.SMI"
+        },
+        {
+            login: "juliana.smi",
+            senha: "1234",
+            nome: "JULIANA.SMI"
+        }
+    ];
 
-
-const usuariosPermitidos = [
-
-    {
-        login: "davi.smi",
-        senha: "1234",
-        nome: "DAVI.SMI"
-    },
-
-    {
-        login: "julio.smi",
-        senha: "1234",
-        nome: "JULIO.SMI"
-    },
-
-    {
-        login: "rafael.smi",
-        senha: "1234",
-        nome: "RAFAEL.SMI"
-    },
-
-    {
-        login: "marcos.smi",
-        senha: "1234",
-        nome: "MARCOS.SMI"
-    },
-
-    {
-    login: "juliana.smi",
-    senha: "1234",
-    nome: "JULIANA.SMI"
-}
-
-];
-
-const usuarioEncontrado =
-    usuariosPermitidos.find(
+    const usuarioEncontrado = usuariosPermitidos.find(
         function (item) {
-
             return (
                 item.login === usuario &&
                 item.senha === senha
             );
-
         }
     );
 
-if (usuarioEncontrado) {
+    if (usuarioEncontrado) {
+        localStorage.setItem(
+            "usuario",
+            usuarioEncontrado.nome
+        );
 
-    localStorage.setItem(
-        "usuario",
-        usuarioEncontrado.nome
-    );
+        localStorage.setItem(
+            "usuarioLogado",
+            JSON.stringify(usuarioEncontrado)
+        );
 
-    localStorage.setItem(
-        "usuarioLogado",
-        JSON.stringify(
-            usuarioEncontrado
-        )
-    );
+        window.location.href = "dashboard.html";
+        return;
+    }
 
-    window.location.href =
-        "dashboard.html";
-
-    return;
-
-}
-
-
-    alert(
-        "Usuário ou senha inválidos."
-    );
-
+    alert("Usuário ou senha inválidos.");
 
     campoSenha.value = "";
-
     campoSenha.focus();
-
 }
-
 
 // =====================================================
 // SAIR DO SISTEMA
 // =====================================================
 
 function sairSistema() {
-
-    const confirmou =
-        confirm(
-            "Deseja realmente sair do sistema?"
-        );
-
+    const confirmou = confirm(
+        "Deseja realmente sair do sistema?"
+    );
 
     if (!confirmou) {
         return;
     }
 
+    localStorage.removeItem("usuarioLogado");
 
-    localStorage.removeItem(
-        "usuarioLogado"
-    );
-
-
-    window.location.href =
-        "index.html";
-
+    window.location.href = "index.html";
 }
-
 
 // =====================================================
 // BANCO LOCAL — ESTOQUE
 // =====================================================
 
 function carregarEstoque() {
-
     try {
-
-        const dados =
-            JSON.parse(
-                localStorage.getItem(
-                    "estoque"
-                )
-            );
-
-
-        return Array.isArray(dados)
-            ? dados
-            : [];
-
-    } catch (erro) {
-
-        console.error(
-            "Erro ao carregar estoque:",
-            erro
+        const dados = JSON.parse(
+            localStorage.getItem("estoque")
         );
 
-
+        return Array.isArray(dados) ? dados : [];
+    } catch (erro) {
+        console.error("Erro ao carregar estoque:", erro);
         return [];
-
     }
-
 }
 
-
 function salvarEstoque(estoque) {
-
     if (!Array.isArray(estoque)) {
-
         console.error(
             "O estoque informado não é uma lista válida."
         );
 
         return false;
-
     }
-
 
     try {
-
         localStorage.setItem(
             "estoque",
-            JSON.stringify(
-                estoque
-            )
+            JSON.stringify(estoque)
         );
-
 
         return true;
-
     } catch (erro) {
+        console.error("Erro ao salvar estoque:", erro);
 
-        console.error(
-            "Erro ao salvar estoque:",
-            erro
-        );
-
-
-        alert(
-            "Não foi possível salvar o estoque."
-        );
-
+        alert("Não foi possível salvar o estoque.");
 
         return false;
-
     }
-
 }
-
 
 // =====================================================
 // LEITURA SEGURA DO LOCALSTORAGE
 // =====================================================
 
-function carregarListaLocalStorage(
-    chave
-) {
-
+function carregarListaLocalStorage(chave) {
     try {
+        const dados = JSON.parse(
+            localStorage.getItem(chave)
+        );
 
-        const dados =
-            JSON.parse(
-                localStorage.getItem(
-                    chave
-                )
-            );
-
-
-        return Array.isArray(dados)
-            ? dados
-            : [];
-
+        return Array.isArray(dados) ? dados : [];
     } catch (erro) {
-
         console.error(
-            "Erro ao carregar " +
-            chave +
-            ":",
+            "Erro ao carregar " + chave + ":",
             erro
         );
 
-
         return [];
-
     }
-
 }
 
-
-function salvarListaLocalStorage(
-    chave,
-    lista
-) {
-
+function salvarListaLocalStorage(chave, lista) {
     if (!Array.isArray(lista)) {
-
         console.error(
-            "Os dados da chave " +
-            chave +
-            " não são uma lista."
+            "Os dados da chave " + chave + " não são uma lista."
         );
 
         return false;
-
     }
 
-
     try {
-
         localStorage.setItem(
             chave,
             JSON.stringify(lista)
         );
 
-
         return true;
-
     } catch (erro) {
-
         console.error(
-            "Erro ao salvar " +
-            chave +
-            ":",
+            "Erro ao salvar " + chave + ":",
             erro
         );
 
-
         return false;
-
     }
-
 }
-
 
 // =====================================================
 // NORMALIZAÇÃO DE CÓDIGOS E ENDEREÇOS
 // =====================================================
 
-function normalizarCodigo(
-    codigo
-) {
-
-    return String(
-        codigo || ""
-    )
-    .trim()
-    .toUpperCase();
-
+function normalizarCodigo(codigo) {
+    return String(codigo || "")
+        .trim()
+        .toUpperCase();
 }
 
-
-function normalizarEndereco(
-    endereco
-) {
-
-    return String(
-        endereco || ""
-    )
-    .trim()
-    .toUpperCase()
-    .replace(
-        /\s+/g,
-        ""
-    );
-
+function normalizarEndereco(endereco) {
+    return String(endereco || "")
+        .trim()
+        .toUpperCase()
+        .replace(/\s+/g, "");
 }
-
 
 // =====================================================
 // CONVERSÃO DE NÚMEROS
 // =====================================================
 
-function converterNumero(
-    valor
-) {
-
+function converterNumero(valor) {
     if (
         valor === undefined ||
         valor === null ||
         valor === ""
     ) {
-
         return 0;
-
     }
 
-
-    if (
-        typeof valor ===
-        "number"
-    ) {
-
-        return Number.isFinite(valor)
-            ? valor
-            : 0;
-
+    if (typeof valor === "number") {
+        return Number.isFinite(valor) ? valor : 0;
     }
 
+    let texto = String(valor)
+        .trim()
+        .replace(/\s/g, "");
 
-    let texto =
-        String(valor)
-            .trim()
-            .replace(
-                /\s/g,
-                ""
-            );
-
-
-    if (
-        texto.includes(".") &&
-        texto.includes(",")
-    ) {
-
-        texto =
-            texto
-                .replace(
-                    /\./g,
-                    ""
-                )
-                .replace(
-                    ",",
-                    "."
-                );
-
-    } else if (
-        texto.includes(",")
-    ) {
-
-        texto =
-            texto.replace(
-                ",",
-                "."
-            );
-
+    if (texto.includes(".") && texto.includes(",")) {
+        texto = texto
+            .replace(/\./g, "")
+            .replace(",", ".");
+    } else if (texto.includes(",")) {
+        texto = texto.replace(",", ".");
     }
 
+    texto = texto.replace(/[^0-9.-]/g, "");
 
-    texto =
-        texto.replace(
-            /[^0-9.-]/g,
-            ""
-        );
+    const numero = Number(texto);
 
-
-    const numero =
-        Number(texto);
-
-
-    return Number.isFinite(numero)
-        ? numero
-        : 0;
-
+    return Number.isFinite(numero) ? numero : 0;
 }
-
 
 // =====================================================
 // FORMATAÇÃO DE QUANTIDADE
 // =====================================================
 
-function formatarQuantidade(
-    valor
-) {
-
-    return converterNumero(
-        valor
-    ).toLocaleString(
+function formatarQuantidade(valor) {
+    return converterNumero(valor).toLocaleString(
         "pt-BR",
         {
             minimumFractionDigits: 0,
             maximumFractionDigits: 3
         }
     );
-
 }
-
 
 // =====================================================
 // DATA E HORA
 // =====================================================
 
 function obterDataHoraAtual() {
-
-    return new Date()
-        .toLocaleString(
-            "pt-BR"
-        );
-
+    return new Date().toLocaleString("pt-BR");
 }
-
 
 // =====================================================
 // CRIAR CÉLULA DE TABELA
 // =====================================================
 
-function criarCelula(
-    valor
-) {
-
-    const celula =
-        document.createElement(
-            "td"
-        );
-
+function criarCelula(valor) {
+    const celula = document.createElement("td");
 
     celula.textContent =
-
         valor === undefined ||
         valor === null ||
         valor === ""
-
             ? "-"
-
             : valor;
 
-
     return celula;
-
 }
-
 
 // =====================================================
 // LIMPEZA ADMINISTRATIVA DO ESTOQUE
 // =====================================================
 
 function limparEstoque() {
-
-    const confirmou =
-        confirm(
-            "Deseja apagar todo o estoque?\n\n" +
-            "Esta ação não poderá ser desfeita."
-        );
-
+    const confirmou = confirm(
+        "Deseja apagar todo o estoque?\n\n" +
+        "Esta ação não poderá ser desfeita."
+    );
 
     if (!confirmou) {
         return;
     }
 
+    localStorage.removeItem("estoque");
 
-    localStorage.removeItem(
-        "estoque"
-    );
-
-
-    alert(
-        "Estoque apagado com sucesso."
-    );
-
+    alert("Estoque apagado com sucesso.");
 
     window.location.reload();
-
 }
-
 
 // =====================================================
 // DISPONIBILIZAÇÃO GLOBAL
 // =====================================================
 
-window.atualizarRelogio =
-    atualizarRelogio;
-
-window.carregarEstoque =
-    carregarEstoque;
-
-window.salvarEstoque =
-    salvarEstoque;
-
-window.sairSistema =
-    sairSistema;
-
-window.normalizarCodigo =
-    normalizarCodigo;
-
-window.normalizarEndereco =
-    normalizarEndereco;
-
-window.converterNumero =
-    converterNumero;
-
-window.formatarQuantidade =
-    formatarQuantidade;
-
-window.obterDataHoraAtual =
-    obterDataHoraAtual;
-
-window.criarCelula =
-    criarCelula;
-
-window.limparEstoque =
-    limparEstoque;
-
+window.atualizarRelogio = atualizarRelogio;
+window.carregarEstoque = carregarEstoque;
+window.salvarEstoque = salvarEstoque;
+window.sairSistema = sairSistema;
+window.normalizarCodigo = normalizarCodigo;
+window.normalizarEndereco = normalizarEndereco;
+window.converterNumero = converterNumero;
+window.formatarQuantidade = formatarQuantidade;
+window.obterDataHoraAtual = obterDataHoraAtual;
+window.criarCelula = criarCelula;
+window.limparEstoque = limparEstoque;
 
 // =====================================================
-// SMI WMS - APP.JS
-// PARTE 2 - PRODUTOS
-// =====================================================
-
-
-// =====================================================
-// INICIALIZAÇÃO DA PÁGINA DE PRODUTOS
-// =====================================================
-
-
-// =====================================================
-// ABRIR CADASTRO
+// PRODUTOS — ABRIR CADASTRO
 // =====================================================
 
 function abrirCadastro() {
-
-    const cadastro =
-        document.getElementById(
-            "cadastroProduto"
-        );
+    const cadastro = document.getElementById(
+        "cadastroProduto"
+    );
 
     if (!cadastro) {
         return;
     }
 
-    cadastro.style.display =
-        "block";
-
+    cadastro.style.display = "block";
 }
-
 
 // =====================================================
 // FECHAR CADASTRO
 // =====================================================
 
 function fecharCadastro() {
-
-    const cadastro =
-        document.getElementById(
-            "cadastroProduto"
-        );
+    const cadastro = document.getElementById(
+        "cadastroProduto"
+    );
 
     if (!cadastro) {
         return;
     }
 
-    cadastro.style.display =
-        "none";
-
+    cadastro.style.display = "none";
 }
-
 
 // =====================================================
 // SALVAR PRODUTO MANUALMENTE
 // =====================================================
 
 function salvarProduto() {
-
     const campoCodigo = document.getElementById("codigo");
     const campoDescricao = document.getElementById("descricao");
     const campoCliente = document.getElementById("cliente");
     const campoQuantidade = document.getElementById("quantidade");
     const campoEndereco = document.getElementById("endereco");
     const campoNF = document.getElementById("nf");
-    const campoValorTotal = document.getElementById("valorTotal") || document.getElementById("valor");
 
-        if (!campoCodigo || !campoDescricao || !campoQuantidade || !campoEndereco) {
+    const campoValorTotal =
+        document.getElementById("valorTotal") ||
+        document.getElementById("valor");
+
+    if (
+        !campoCodigo ||
+        !campoDescricao ||
+        !campoQuantidade ||
+        !campoEndereco
+    ) {
         alert("Os campos do cadastro não foram encontrados.");
         return;
     }
 
     const codigo = normalizarCodigo(campoCodigo.value);
-    const descricao = String(campoDescricao.value || "").trim();
-    const cliente = String(campoCliente ? campoCliente.value : "SMI").trim() || "SMI";
-    const quantidade = converterNumero(campoQuantidade.value);
-    const endereco = normalizarEndereco(campoEndereco.value);
-    const nf = String(campoNF ? campoNF.value : "").trim();
-    const valorTotal = converterNumero(campoValorTotal ? campoValorTotal.value : 0);
 
-    if (codigo === "") { alert("Digite o código do produto."); campoCodigo.focus(); return; }
-    if (descricao === "") { alert("Digite a descrição do produto."); campoDescricao.focus(); return; }
-    if (!Number.isFinite(quantidade) || quantidade < 0) { alert("Digite uma quantidade válida."); campoQuantidade.focus(); return; }
-    if (endereco === "") { alert("Digite o endereço do produto."); campoEndereco.focus(); return; }
+    const descricao = String(
+        campoDescricao.value || ""
+    ).trim();
 
-    const estoque = carregarEstoque();
-    const produtoExistente = estoque.find(function (produto) {
-        return normalizarCodigo(produto.codigo) === codigo && normalizarEndereco(produto.endereco) === endereco;
-    });
+    const cliente = String(
+        campoCliente ? campoCliente.value : "SMI"
+    ).trim() || "SMI";
 
-    if (produtoExistente) {
-        const confirmou = confirm("Este produto já existe nesta posição.\n\nDeseja somar a quantidade informada ao saldo atual?");
-        if (!confirmou) return;
-        produtoExistente.quantidade = converterNumero(produtoExistente.quantidade) + quantidade;
-        produtoExistente.descricao = descricao;
-        produtoExistente.cliente = cliente;
-        produtoExistente.nf = nf || produtoExistente.nf || "";
-        produtoExistente.valorTotal = valorTotal || converterNumero(produtoExistente.valorTotal);
-    } else {
-        estoque.push({ nf, codigo, descricao, cliente, quantidade, valorTotal, endereco });
+    const quantidade = converterNumero(
+        campoQuantidade.value
+    );
+
+    const endereco = normalizarEndereco(
+        campoEndereco.value
+    );
+
+    const nf = String(
+        campoNF ? campoNF.value : ""
+    ).trim();
+
+    const valorTotal = converterNumero(
+        campoValorTotal ? campoValorTotal.value : 0
+    );
+
+    if (codigo === "") {
+        alert("Digite o código do produto.");
+        campoCodigo.focus();
+        return;
     }
 
-    if (!salvarEstoque(estoque)) return;
+    if (descricao === "") {
+        alert("Digite a descrição do produto.");
+        campoDescricao.focus();
+        return;
+    }
+
+    if (!Number.isFinite(quantidade) || quantidade < 0) {
+        alert("Digite uma quantidade válida.");
+        campoQuantidade.focus();
+        return;
+    }
+
+    if (endereco === "") {
+        alert("Digite o endereço do produto.");
+        campoEndereco.focus();
+        return;
+    }
+
+    const estoque = carregarEstoque();
+
+    const produtoExistente = estoque.find(
+        function (produto) {
+            return (
+                normalizarCodigo(produto.codigo) === codigo &&
+                normalizarEndereco(produto.endereco) === endereco
+            );
+        }
+    );
+
+    if (produtoExistente) {
+        const confirmou = confirm(
+            "Este produto já existe nesta posição.\n\n" +
+            "Deseja somar a quantidade informada ao saldo atual?"
+        );
+
+        if (!confirmou) {
+            return;
+        }
+
+        produtoExistente.quantidade =
+            converterNumero(produtoExistente.quantidade) +
+            quantidade;
+
+        produtoExistente.descricao = descricao;
+        produtoExistente.cliente = cliente;
+
+        produtoExistente.nf =
+            nf || produtoExistente.nf || "";
+
+        produtoExistente.valorTotal =
+            valorTotal ||
+            converterNumero(produtoExistente.valorTotal);
+    } else {
+        estoque.push({
+            nf,
+            codigo,
+            descricao,
+            cliente,
+            quantidade,
+            valorTotal,
+            endereco
+        });
+    }
+
+    if (!salvarEstoque(estoque)) {
+        return;
+    }
+
     alert("Produto salvo com sucesso.");
+
     limparFormularioProduto();
     fecharCadastro();
     carregarTabelaProdutos();
 }
-
 
 // =====================================================
 // LIMPAR FORMULÁRIO
 // =====================================================
 
 function limparFormularioProduto() {
-
     const ids = [
         "nf",
         "codigo",
@@ -962,121 +633,83 @@ function limparFormularioProduto() {
         "endereco"
     ];
 
+    ids.forEach(function (id) {
+        const campo = document.getElementById(id);
 
-    ids.forEach(
-        function (id) {
-
-            const campo =
-                document.getElementById(
-                    id
-                );
-
-            if (campo) {
-                campo.value = "";
-            }
-
+        if (campo) {
+            campo.value = "";
         }
-    );
-
+    });
 }
-
 
 // =====================================================
 // CARREGAR TABELA DE PRODUTOS
 // =====================================================
 
 function carregarTabelaProdutos() {
-
-        if (
-        typeof window.carregarTabelaProdutosSupabase === "function"
+    if (
+        typeof window.carregarTabelaProdutosSupabase ===
+        "function"
     ) {
         return window.carregarTabelaProdutosSupabase();
     }
 
-    const tabela =
-        document.getElementById(
-            "listaProdutos"
-        );
-
+    const tabela = document.getElementById(
+        "listaProdutos"
+    );
 
     if (!tabela) {
         return;
     }
 
+    const estoque = carregarEstoque();
 
-    const estoque =
-        carregarEstoque();
-        estoque.sort(function (a, b) {
-
-    const enderecoA =
-        String(a.endereco || "")
+    estoque.sort(function (a, b) {
+        const enderecoA = String(a.endereco || "")
             .trim()
             .toUpperCase();
 
-    const enderecoB =
-        String(b.endereco || "")
+        const enderecoB = String(b.endereco || "")
             .trim()
             .toUpperCase();
 
+        const partesA = enderecoA.match(
+            /^(\d+)([A-Z]+)$/
+        );
 
-    const partesA =
-        enderecoA.match(/^(\d+)([A-Z]+)$/);
+        const partesB = enderecoB.match(
+            /^(\d+)([A-Z]+)$/
+        );
 
-    const partesB =
-        enderecoB.match(/^(\d+)([A-Z]+)$/);
+        // Endereços fora do padrão ficam no final.
+        if (!partesA && !partesB) {
+            return enderecoA.localeCompare(enderecoB);
+        }
 
+        if (!partesA) {
+            return 1;
+        }
 
-    /*
-      Endereços fora do padrão ficam no final.
-    */
+        if (!partesB) {
+            return -1;
+        }
 
-    if (!partesA && !partesB) {
-        return enderecoA.localeCompare(enderecoB);
-    }
+        const numeroA = Number(partesA[1]);
+        const numeroB = Number(partesB[1]);
 
-    if (!partesA) {
-        return 1;
-    }
+        if (numeroA !== numeroB) {
+            return numeroA - numeroB;
+        }
 
-    if (!partesB) {
-        return -1;
-    }
+        const letraA = partesA[2];
+        const letraB = partesB[2];
 
-
-    const numeroA =
-        Number(partesA[1]);
-
-    const numeroB =
-        Number(partesB[1]);
-
-
-    if (numeroA !== numeroB) {
-
-        return numeroA - numeroB;
-
-    }
-
-
-    const letraA =
-        partesA[2];
-
-    const letraB =
-        partesB[2];
-
-
-    return letraA.localeCompare(
-        letraB,
-        "pt-BR"
-    );
-
-});
-
+        return letraA.localeCompare(letraB, "pt-BR");
+    });
 
     tabela.innerHTML = "";
 
-
     if (estoque.length === 0) {
-
         tabela.innerHTML =
             "<tr>" +
                 "<td " +
@@ -1088,1357 +721,742 @@ function carregarTabelaProdutos() {
             "</tr>";
 
         return;
-
     }
 
+    estoque.forEach(function (produto, indice) {
+        const linha = document.createElement("tr");
 
-    estoque.forEach(
-        function (
-            produto,
-            indice
-        ) {
+        linha.dataset.indice = indice;
 
-            const linha =
-                document.createElement(
-                    "tr"
-                );
+        linha.dataset.codigo = normalizarCodigo(
+            produto.codigo
+        );
 
+        linha.appendChild(
+            criarCelula(produto.codigo || "-")
+        );
 
-            linha.dataset.indice =
-                indice;
+        linha.appendChild(
+            criarCelula(
+                produto.descricao || "Sem descrição"
+            )
+        );
 
+        const celulaCliente = document.createElement("td");
+        const cliente = document.createElement("span");
 
-            linha.dataset.codigo =
-                normalizarCodigo(
-                    produto.codigo
-                );
+        cliente.className = "cliente-produto";
+        cliente.textContent = produto.cliente || "SMI";
 
+        celulaCliente.appendChild(cliente);
+        linha.appendChild(celulaCliente);
 
-            linha.appendChild(
-                criarCelula(
-                    produto.codigo || "-"
-                )
-            );
+        linha.appendChild(
+            criarCelula(
+                formatarQuantidade(produto.quantidade)
+            )
+        );
 
+        linha.appendChild(
+            criarCelula(
+                converterNumero(
+                    produto.valorTotal
+                ).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL"
+                })
+            )
+        );
 
-            linha.appendChild(
-                criarCelula(
-                    produto.descricao ||
-                    "Sem descrição"
-                )
-            );
+        const celulaEndereco = document.createElement("td");
+        const endereco = document.createElement("span");
 
+        endereco.className = "endereco-produto";
+        endereco.textContent = produto.endereco || "-";
 
-            const celulaCliente =
-                document.createElement(
-                    "td"
-                );
+        celulaEndereco.appendChild(endereco);
+        linha.appendChild(celulaEndereco);
 
+        const celulaAcoes = document.createElement("td");
+        const acoes = document.createElement("div");
 
-            const cliente =
-                document.createElement(
-                    "span"
-                );
+        acoes.className = "acoes-produto";
 
+        const botaoEditar = document.createElement("button");
 
-            cliente.className =
-                "cliente-produto";
+        botaoEditar.type = "button";
+        botaoEditar.className = "btn-editar-produto";
+        botaoEditar.textContent = "✏️";
+        botaoEditar.title = "Editar produto";
 
+        botaoEditar.addEventListener("click", function () {
+            editarProduto(produto.codigo, indice);
+        });
 
-            cliente.textContent =
-                produto.cliente ||
-                "SMI";
+        const botaoExcluir = document.createElement("button");
 
+        botaoExcluir.type = "button";
+        botaoExcluir.className = "btn-excluir-produto";
+        botaoExcluir.textContent = "🗑️";
+        botaoExcluir.title = "Excluir produto";
 
-            celulaCliente.appendChild(
-                cliente
-            );
+        botaoExcluir.addEventListener("click", function () {
+            excluirProduto(produto.codigo, indice);
+        });
 
+        acoes.appendChild(botaoEditar);
+        acoes.appendChild(botaoExcluir);
 
-            linha.appendChild(
-                celulaCliente
-            );
+        celulaAcoes.appendChild(acoes);
+        linha.appendChild(celulaAcoes);
 
-
-            linha.appendChild(
-                criarCelula(
-                    formatarQuantidade(
-                        produto.quantidade
-                    )
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    converterNumero(
-                        produto.valorTotal
-                    ).toLocaleString(
-                        "pt-BR",
-                        {
-                            style: "currency",
-                            currency: "BRL"
-                        }
-                    )
-                )
-            );
-
-
-            const celulaEndereco =
-                document.createElement(
-                    "td"
-                );
-
-
-            const endereco =
-                document.createElement(
-                    "span"
-                );
-
-
-            endereco.className =
-                "endereco-produto";
-
-
-            endereco.textContent =
-                produto.endereco ||
-                "-";
-
-
-            celulaEndereco.appendChild(
-                endereco
-            );
-
-
-            linha.appendChild(
-                celulaEndereco
-            );
-
-
-            const celulaAcoes =
-                document.createElement(
-                    "td"
-                );
-
-
-            const acoes =
-                document.createElement(
-                    "div"
-                );
-
-
-            acoes.className =
-                "acoes-produto";
-
-
-            const botaoEditar =
-                document.createElement(
-                    "button"
-                );
-
-
-            botaoEditar.type =
-                "button";
-
-
-            botaoEditar.className =
-                "btn-editar-produto";
-
-
-            botaoEditar.textContent =
-                "✏️";
-
-
-            botaoEditar.title =
-                "Editar produto";
-
-
-            botaoEditar.addEventListener(
-                "click",
-                function () {
-
-                    editarProduto(
-                        produto.codigo,
-                        indice
-                    );
-
-                }
-            );
-
-
-            const botaoExcluir =
-                document.createElement(
-                    "button"
-                );
-
-
-            botaoExcluir.type =
-                "button";
-
-
-            botaoExcluir.className =
-                "btn-excluir-produto";
-
-
-            botaoExcluir.textContent =
-                "🗑️";
-
-
-            botaoExcluir.title =
-                "Excluir produto";
-
-
-            botaoExcluir.addEventListener(
-                "click",
-                function () {
-
-                    excluirProduto(
-                        produto.codigo,
-                        indice
-                    );
-
-                }
-            );
-
-
-            acoes.appendChild(
-                botaoEditar
-            );
-
-
-            acoes.appendChild(
-                botaoExcluir
-            );
-
-
-            celulaAcoes.appendChild(
-                acoes
-            );
-
-
-            linha.appendChild(
-                celulaAcoes
-            );
-
-
-            tabela.appendChild(
-                linha
-            );
-
-        }
-    );
+        tabela.appendChild(linha);
+    });
 
     carregarFiltroClientesProdutos();
-
 }
-
 
 // =====================================================
 // EDITAR PRODUTO
 // =====================================================
 
-function editarProduto(
-    codigo,
-    indice
-) {
+function editarProduto(codigo, indice) {
+    const estoque = carregarEstoque();
 
-    const estoque =
-        carregarEstoque();
-
-
-    let indiceProduto =
-        Number.isInteger(indice)
-            ? indice
-            : -1;
-
+    let indiceProduto = Number.isInteger(indice)
+        ? indice
+        : -1;
 
     if (
         indiceProduto < 0 ||
         !estoque[indiceProduto]
     ) {
-
-        indiceProduto =
-            estoque.findIndex(
-                function (produto) {
-
-                    return (
-                        normalizarCodigo(
-                            produto.codigo
-                        ) ===
-                        normalizarCodigo(
-                            codigo
-                        )
-                    );
-
-                }
-            );
-
+        indiceProduto = estoque.findIndex(
+            function (produto) {
+                return (
+                    normalizarCodigo(produto.codigo) ===
+                    normalizarCodigo(codigo)
+                );
+            }
+        );
     }
 
-
     if (
         indiceProduto < 0 ||
         !estoque[indiceProduto]
     ) {
-
-        alert(
-            "Produto não encontrado."
-        );
-
+        alert("Produto não encontrado.");
         return;
-
     }
 
+    const produto = estoque[indiceProduto];
 
-    const produto =
-        estoque[indiceProduto];
-
-
-    const novaDescricao =
-        prompt(
-            "Descrição do produto:",
-            produto.descricao || ""
-        );
-
+    const novaDescricao = prompt(
+        "Descrição do produto:",
+        produto.descricao || ""
+    );
 
     if (novaDescricao === null) {
         return;
     }
 
-
-    const novaQuantidade =
-        prompt(
-            "Quantidade:",
-            produto.quantidade ?? 0
-        );
-
+    const novaQuantidade = prompt(
+        "Quantidade:",
+        produto.quantidade ?? 0
+    );
 
     if (novaQuantidade === null) {
         return;
     }
 
-
-    const novoValorTotal =
-        prompt(
-            "Valor Total:",
-            produto.valorTotal ?? 0
-        );
-
+    const novoValorTotal = prompt(
+        "Valor Total:",
+        produto.valorTotal ?? 0
+    );
 
     if (novoValorTotal === null) {
         return;
     }
 
-
-    const novoEndereco =
-        prompt(
-            "Endereço:",
-            produto.endereco || ""
-        );
-
+    const novoEndereco = prompt(
+        "Endereço:",
+        produto.endereco || ""
+    );
 
     if (novoEndereco === null) {
         return;
     }
 
-
     produto.descricao =
-        String(
-            novaDescricao || ""
-        ).trim() ||
+        String(novaDescricao || "").trim() ||
         "Sem descrição";
 
+    produto.quantidade = converterNumero(
+        novaQuantidade
+    );
 
-    produto.quantidade =
-        converterNumero(
-            novaQuantidade
-        );
+    produto.valorTotal = converterNumero(
+        novoValorTotal
+    );
 
+    produto.endereco = normalizarEndereco(
+        novoEndereco
+    );
 
-    produto.valorTotal =
-        converterNumero(
-            novoValorTotal
-        );
+    estoque[indiceProduto] = produto;
 
-
-    produto.endereco =
-        normalizarEndereco(
-            novoEndereco
-        );
-
-
-    estoque[indiceProduto] =
-        produto;
-
-
-    const salvou =
-        salvarEstoque(
-            estoque
-        );
-
+    const salvou = salvarEstoque(estoque);
 
     if (!salvou) {
         return;
     }
 
-
-    alert(
-        "Produto atualizado com sucesso."
-    );
-
+    alert("Produto atualizado com sucesso.");
 
     carregarTabelaProdutos();
-
 }
-
 
 // =====================================================
 // EXCLUIR PRODUTO
 // =====================================================
 
-function excluirProduto(
-    codigo,
-    indice
-) {
+function excluirProduto(codigo, indice) {
+    const estoque = carregarEstoque();
 
-    const estoque =
-        carregarEstoque();
-
-
-    let indiceProduto =
-        Number.isInteger(indice)
-            ? indice
-            : -1;
-
+    let indiceProduto = Number.isInteger(indice)
+        ? indice
+        : -1;
 
     if (
         indiceProduto < 0 ||
         !estoque[indiceProduto]
     ) {
-
-        indiceProduto =
-            estoque.findIndex(
-                function (produto) {
-
-                    return (
-                        normalizarCodigo(
-                            produto.codigo
-                        ) ===
-                        normalizarCodigo(
-                            codigo
-                        )
-                    );
-
-                }
-            );
-
+        indiceProduto = estoque.findIndex(
+            function (produto) {
+                return (
+                    normalizarCodigo(produto.codigo) ===
+                    normalizarCodigo(codigo)
+                );
+            }
+        );
     }
 
-
     if (
         indiceProduto < 0 ||
         !estoque[indiceProduto]
     ) {
-
-        alert(
-            "Produto não encontrado."
-        );
-
+        alert("Produto não encontrado.");
         return;
-
     }
 
+    const produto = estoque[indiceProduto];
 
-    const produto =
-        estoque[indiceProduto];
-
-
-    const confirmou =
-        confirm(
-            "Deseja excluir este registro?\n\n" +
-            "Código: " +
-            (
-                produto.codigo ||
-                "-"
-            ) +
-            "\nDescrição: " +
-            (
-                produto.descricao ||
-                "-"
-            ) +
-            "\nEndereço: " +
-            (
-                produto.endereco ||
-                "-"
-            )
-        );
-
+    const confirmou = confirm(
+        "Deseja excluir este registro?\n\n" +
+        "Código: " + (produto.codigo || "-") +
+        "\nDescrição: " + (produto.descricao || "-") +
+        "\nEndereço: " + (produto.endereco || "-")
+    );
 
     if (!confirmou) {
         return;
     }
 
+    estoque.splice(indiceProduto, 1);
 
-    estoque.splice(
-        indiceProduto,
-        1
-    );
-
-
-    const salvou =
-        salvarEstoque(
-            estoque
-        );
-
+    const salvou = salvarEstoque(estoque);
 
     if (!salvou) {
         return;
     }
 
-
-    alert(
-        "Produto excluído com sucesso."
-    );
-
+    alert("Produto excluído com sucesso.");
 
     carregarTabelaProdutos();
-
 }
-
 
 // =====================================================
 // PESQUISAR PRODUTO
 // =====================================================
 
 function pesquisarProduto() {
-
-    const campo =
-        document.getElementById(
-            "pesquisa"
-        );
-
+    const campo = document.getElementById("pesquisa");
 
     if (!campo) {
         return;
     }
 
-
-    const pesquisa =
-        String(
-            campo.value || ""
-        )
+    const pesquisa = String(campo.value || "")
         .trim()
         .toLowerCase();
 
-
-    const linhas =
-        document.querySelectorAll(
-            "#listaProdutos tr"
-        );
-
-
-    linhas.forEach(
-        function (linha) {
-
-            const conteudo =
-                String(
-                    linha.textContent ||
-                    ""
-                ).toLowerCase();
-
-
-            linha.style.display =
-                conteudo.includes(
-                    pesquisa
-                )
-                    ? ""
-                    : "none";
-
-        }
+    const linhas = document.querySelectorAll(
+        "#listaProdutos tr"
     );
 
-}
+    linhas.forEach(function (linha) {
+        const conteudo = String(
+            linha.textContent || ""
+        ).toLowerCase();
 
+        linha.style.display = conteudo.includes(pesquisa)
+            ? ""
+            : "none";
+    });
+}
 
 // =====================================================
 // DISPONIBILIZAÇÃO GLOBAL
 // =====================================================
 
-window.abrirCadastro =
-    abrirCadastro;
+window.abrirCadastro = abrirCadastro;
+window.fecharCadastro = fecharCadastro;
+window.salvarProduto = salvarProduto;
+window.carregarTabelaProdutos = carregarTabelaProdutos;
+window.editarProduto = editarProduto;
+window.excluirProduto = excluirProduto;
+window.pesquisarProduto = pesquisarProduto;
 
-window.fecharCadastro =
-    fecharCadastro;
+// FIM DA PARTE 1/10
+// A PARTE 2 ENTRA LOGO ABAIXO.
 
-window.salvarProduto =
-    salvarProduto;
-
-window.carregarTabelaProdutos =
-    carregarTabelaProdutos;
-
-window.editarProduto =
-    editarProduto;
-
-window.excluirProduto =
-    excluirProduto;
-
-window.pesquisarProduto =
-    pesquisarProduto;
-
-
-// =====================================================
-// SMI WMS - APP.JS
-// PARTE 3 - IMPORTAÇÃO DE EXCEL E JSON
-// =====================================================
-
+// APP.JS — PARTE 2/10
+// IMPORTAÇÃO E SINCRONIZAÇÃO DE PRODUTOS
 
 // =====================================================
 // INICIALIZAÇÃO DO BOTÃO DE IMPORTAÇÃO
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
+    const botaoImportar =
+        document.getElementById("btnImportarProdutos") ||
+        document.querySelector(
+            "button[onclick*='executarImportacaoProdutos']"
+        );
 
-        const botaoImportar =
-            document.getElementById(
-                "btnImportarProdutos"
-            ) ||
-            document.querySelector(
-                "button[onclick*='executarImportacaoProdutos']"
-            );
-
-
-        if (botaoImportar) {
-
-            botaoImportar.onclick =
-                executarImportacaoProdutos;
-
-        }
-
+    if (botaoImportar) {
+        botaoImportar.onclick = executarImportacaoProdutos;
     }
-);
+});
 
 // =====================================================
 // INICIAR IMPORTAÇÃO
 // =====================================================
 
 function executarImportacaoProdutos() {
-
-    const campoArquivo =
-        document.getElementById(
-            "arquivoExcel"
-        );
-
+    const campoArquivo = document.getElementById(
+        "arquivoExcel"
+    );
 
     if (
         !campoArquivo ||
         !campoArquivo.files ||
         campoArquivo.files.length === 0
     ) {
-
-        alert(
-            "Selecione uma planilha antes de importar."
-        );
-
+        alert("Selecione uma planilha antes de importar.");
         return;
-
     }
 
+    const arquivo = campoArquivo.files[0];
 
-    const arquivo =
-        campoArquivo.files[0];
-
-
-    const extensao =
-        String(
-            arquivo.name || ""
-        )
+    const extensao = String(arquivo.name || "")
         .split(".")
         .pop()
         .toLowerCase();
-
 
     if (
         extensao !== "xlsx" &&
         extensao !== "xls" &&
         extensao !== "json"
     ) {
-
         alert(
             "Formato inválido.\n\n" +
             "Selecione um arquivo XLSX, XLS ou JSON."
         );
 
         campoArquivo.value = "";
-
         return;
-
     }
-
 
     if (extensao === "json") {
-
-        importarProdutosJSON(
-            arquivo
-        );
-
+        importarProdutosJSON(arquivo);
         return;
-
     }
 
-
-    importarProdutosExcel(
-        arquivo
-    );
-
+    importarProdutosExcel(arquivo);
 }
-
 
 // =====================================================
 // IMPORTAR PLANILHA EXCEL
 // =====================================================
 
-function importarProdutosExcel(
-    arquivo
-) {
-
-    if (
-        typeof XLSX ===
-        "undefined"
-    ) {
-
+function importarProdutosExcel(arquivo) {
+    if (typeof XLSX === "undefined") {
         alert(
             "A biblioteca XLSX não foi carregada.\n\n" +
             "Verifique se o produtos.html possui a biblioteca do Excel."
         );
 
         return;
-
     }
 
+    const leitor = new FileReader();
 
-    const leitor =
-        new FileReader();
-
-
-    leitor.onload =
-        function (evento) {
-
-            try {
-
-                const dados =
-                    new Uint8Array(
-                        evento.target.result
-                    );
-
-
-                const workbook =
-                    XLSX.read(
-                        dados,
-                        {
-                            type: "array"
-                        }
-                    );
-
-
-                if (
-                    !workbook.SheetNames ||
-                    workbook.SheetNames.length === 0
-                ) {
-
-                    alert(
-                        "A planilha não possui nenhuma aba."
-                    );
-
-                    return;
-
-                }
-
-
-                const nomePlanilha =
-                    workbook.SheetNames[0];
-
-
-                const planilha =
-                    workbook.Sheets[
-                        nomePlanilha
-                    ];
-
-
-                const linhas =
-                    XLSX.utils.sheet_to_json(
-                        planilha,
-                        {
-                            defval: "",
-                            raw: true
-                        }
-                    );
-
-
-                if (
-                    !Array.isArray(linhas) ||
-                    linhas.length === 0
-                ) {
-
-                    alert(
-                        "A planilha está vazia."
-                    );
-
-                    return;
-
-                }
-
-
-                window.processarProdutosImportados(
-                    linhas
-                );
-
-            } catch (erro) {
-
-                console.error(
-                    "Erro ao importar Excel:",
-                    erro
-                );
-
-
-                alert(
-                    "Não foi possível importar a planilha.\n\n" +
-                    "Confira se o arquivo está preenchido corretamente."
-                );
-
-            }
-
-        };
-
-
-    leitor.onerror =
-        function () {
-
-            alert(
-                "Não foi possível ler o arquivo selecionado."
+    leitor.onload = function (evento) {
+        try {
+            const dados = new Uint8Array(
+                evento.target.result
             );
 
-        };
+            const workbook = XLSX.read(dados, {
+                type: "array"
+            });
 
+            if (
+                !workbook.SheetNames ||
+                workbook.SheetNames.length === 0
+            ) {
+                alert("A planilha não possui nenhuma aba.");
+                return;
+            }
 
-    leitor.readAsArrayBuffer(
-        arquivo
-    );
+            const nomePlanilha = workbook.SheetNames[0];
 
+            const planilha = workbook.Sheets[nomePlanilha];
+
+            const linhas = XLSX.utils.sheet_to_json(
+                planilha,
+                {
+                    defval: "",
+                    raw: true
+                }
+            );
+
+            if (
+                !Array.isArray(linhas) ||
+                linhas.length === 0
+            ) {
+                alert("A planilha está vazia.");
+                return;
+            }
+
+            window.processarProdutosImportados(linhas);
+        } catch (erro) {
+            console.error("Erro ao importar Excel:", erro);
+
+            alert(
+                "Não foi possível importar a planilha.\n\n" +
+                "Confira se o arquivo está preenchido corretamente."
+            );
+        }
+    };
+
+    leitor.onerror = function () {
+        alert(
+            "Não foi possível ler o arquivo selecionado."
+        );
+    };
+
+    leitor.readAsArrayBuffer(arquivo);
 }
-
 
 // =====================================================
 // IMPORTAR JSON
 // =====================================================
 
-function importarProdutosJSON(
-    arquivo
-) {
+function importarProdutosJSON(arquivo) {
+    const leitor = new FileReader();
 
-    const leitor =
-        new FileReader();
-
-
-    leitor.onload =
-        function (evento) {
-
-            try {
-
-                const dados =
-                    JSON.parse(
-                        evento.target.result
-                    );
-
-
-                const linhas =
-                    Array.isArray(dados)
-                        ? dados
-                        : dados.estoque ||
-                          dados.produtos ||
-                          [];
-
-
-                if (
-                    !Array.isArray(linhas) ||
-                    linhas.length === 0
-                ) {
-
-                    alert(
-                        "O arquivo JSON não possui produtos válidos."
-                    );
-
-                    return;
-
-                }
-
-
-                window.processarProdutosImportados(
-                    linhas
-                );
-
-            } catch (erro) {
-
-                console.error(
-                    "Erro ao importar JSON:",
-                    erro
-                );
-
-
-                alert(
-                    "O arquivo JSON é inválido."
-                );
-
-            }
-
-        };
-
-
-    leitor.onerror =
-        function () {
-
-            alert(
-                "Não foi possível ler o arquivo JSON."
+    leitor.onload = function (evento) {
+        try {
+            const dados = JSON.parse(
+                evento.target.result
             );
 
-        };
+            const linhas = Array.isArray(dados)
+                ? dados
+                : dados.estoque || dados.produtos || [];
 
+            if (
+                !Array.isArray(linhas) ||
+                linhas.length === 0
+            ) {
+                alert(
+                    "O arquivo JSON não possui produtos válidos."
+                );
 
-    leitor.readAsText(
-        arquivo,
-        "UTF-8"
-    );
+                return;
+            }
 
+            window.processarProdutosImportados(linhas);
+        } catch (erro) {
+            console.error("Erro ao importar JSON:", erro);
+
+            alert("O arquivo JSON é inválido.");
+        }
+    };
+
+    leitor.onerror = function () {
+        alert("Não foi possível ler o arquivo JSON.");
+    };
+
+    leitor.readAsText(arquivo, "UTF-8");
 }
-
 
 // =====================================================
 // PROCESSAR PRODUTOS IMPORTADOS
 // =====================================================
 
-function processarProdutosImportados(
-    linhas
-) {
-
+function processarProdutosImportados(linhas) {
     const produtosValidos = [];
 
+    linhas.forEach(function (linha, indice) {
+        const produto = normalizarProdutoImportado(linha);
 
-    linhas.forEach(
-        function (
-            linha,
-            indice
-        ) {
+        console.log("PRODUTO IMPORTADO:", produto);
 
-            const produto =
-                normalizarProdutoImportado(
-                    linha
-                );
+        const linhaValida =
+            produto.codigo !== "" ||
+            produto.descricao !== "" ||
+            produto.nf !== "" ||
+            produto.endereco !== "";
 
-            console.log(
-                "PRODUTO IMPORTADO:",
-                produto
+        if (!linhaValida) {
+            console.warn(
+                "Linha ignorada:",
+                indice + 2,
+                linha
             );
 
-
-            const linhaValida =
-                produto.codigo !== "" ||
-                produto.descricao !== "" ||
-                produto.nf !== "" ||
-                produto.endereco !== "";
-
-
-            if (!linhaValida) {
-
-                console.warn(
-                    "Linha ignorada:",
-                    indice + 2,
-                    linha
-                );
-
-                return;
-
-            }
-
-
-            produtosValidos.push(
-                produto
-            );
-
+            return;
         }
-    );
 
+        produtosValidos.push(produto);
+    });
 
-    if (
-        produtosValidos.length === 0
-    ) {
-
+    if (produtosValidos.length === 0) {
         alert(
             "Nenhum produto válido foi reconhecido.\n\n" +
             "Confira os nomes das colunas da planilha."
         );
 
         return;
-
     }
 
+    const estoqueAtual = carregarEstoque();
 
-    const estoqueAtual =
-        carregarEstoque();
+    let estoqueFinal = produtosValidos;
 
-
-    let estoqueFinal =
-        produtosValidos;
-
-
-    if (
-        estoqueAtual.length > 0
-    ) {
-
-        const substituir =
-            confirm(
-                "Já existem produtos cadastrados.\n\n" +
-                "Clique em OK para SUBSTITUIR o estoque atual.\n" +
-                "Clique em Cancelar para ACRESCENTAR os novos produtos."
-            );
-
-
-        estoqueFinal =
-            substituir
-                ? produtosValidos
-                : estoqueAtual.concat(
-                    produtosValidos
-                );
-
-    }
-
-
-    const salvou =
-        salvarEstoque(
-            estoqueFinal
+    if (estoqueAtual.length > 0) {
+        const substituir = confirm(
+            "Já existem produtos cadastrados.\n\n" +
+            "Clique em OK para SUBSTITUIR o estoque atual.\n" +
+            "Clique em Cancelar para ACRESCENTAR os novos produtos."
         );
 
+        estoqueFinal = substituir
+            ? produtosValidos
+            : estoqueAtual.concat(produtosValidos);
+    }
+
+    const salvou = salvarEstoque(estoqueFinal);
 
     if (!salvou) {
         return;
     }
 
-
-    const campoArquivo =
-        document.getElementById(
-            "arquivoExcel"
-        );
-
+    const campoArquivo = document.getElementById(
+        "arquivoExcel"
+    );
 
     if (campoArquivo) {
         campoArquivo.value = "";
     }
 
-
     if (
         typeof carregarTodosOsProdutosNaTela ===
         "function"
     ) {
-
         carregarTodosOsProdutosNaTela();
-
     }
-
 
     alert(
         produtosValidos.length +
         " produto(s) importado(s) com sucesso!"
     );
-
 }
-
 
 // =====================================================
 // NORMALIZAR PRODUTO IMPORTADO
 // =====================================================
 
-function normalizarProdutoImportado(
-    linha
-) {
-
+function normalizarProdutoImportado(linha) {
     return {
+        nf: obterValorColuna(linha, [
+            "NF",
+            "Nota Fiscal",
+            "Nota",
+            "Número da NF",
+            "Numero da NF",
+            "Nº NF"
+        ]),
 
-        nf:
-            obterValorColuna(
-                linha,
-                [
-                    "NF",
-                    "Nota Fiscal",
-                    "Nota",
-                    "Número da NF",
-                    "Numero da NF",
-                    "Nº NF"
-                ]
-            ),
+        codigo: normalizarCodigo(
+            obterValorColuna(linha, [
+                "CODIGO",
+                "Código",
+                "Codigo",
+                "Cód.",
+                "Cod",
+                "SKU",
+                "Material",
+                "Código do Produto",
+                "Codigo do Produto"
+            ])
+        ),
 
-        codigo:
-            normalizarCodigo(
-                obterValorColuna(
-                    linha,
-                    [
-                        "CODIGO",
-                        "Código",
-                        "Codigo",
-                        "Cód.",
-                        "Cod",
-                        "SKU",
-                        "Material",
-                        "Código do Produto",
-                        "Codigo do Produto"
-                    ]
-                )
-            ),
+        descricao: obterValorColuna(linha, [
+            "DESCRICAO",
+            "Descrição",
+            "Descricao",
+            "Produto",
+            "Nome do Produto"
+        ]),
 
-        descricao:
-            obterValorColuna(
-                linha,
-                [
-                    "DESCRICAO",
-                    "Descrição",
-                    "Descricao",
-                    "Produto",
-                    "Nome do Produto"
-                ]
-            ),
-
-        descricaoDetalhada:
-            obterValorColuna(
-                linha,
-                [
-                    "DESCRIÇÃO DETALHADA",
-                    "DESCRICAO DETALHADA",
-                    "Descrição Detalhada",
-                    "Descricao Detalhada"
-                ]
-            ),
+        descricaoDetalhada: obterValorColuna(linha, [
+            "DESCRIÇÃO DETALHADA",
+            "DESCRICAO DETALHADA",
+            "Descrição Detalhada",
+            "Descricao Detalhada"
+        ]),
 
         cliente: "SMI",
 
-        quantidade:
-            converterNumero(
-                obterValorColuna(
-                    linha,
-                    [
-                        "QUANTIDADE",
-                        "Quantidade",
-                        "Qtd",
-                        "Qtde",
-                        "QTD"
-                    ]
-                )
-            ),
+        quantidade: converterNumero(
+            obterValorColuna(linha, [
+                "QUANTIDADE",
+                "Quantidade",
+                "Qtd",
+                "Qtde",
+                "QTD"
+            ])
+        ),
 
-        minimo:
-            converterNumero(
-                obterValorColuna(
-                    linha,
-                    [
-                        "Mínimo",
-                        "Minimo",
-                        "MÍNIMO",
-                        "MINIMO",
-                        "Estoque Mínimo",
-                        "Estoque Minimo"
-                    ]
-                )
-            ),
+        minimo: converterNumero(
+            obterValorColuna(linha, [
+                "Mínimo",
+                "Minimo",
+                "MÍNIMO",
+                "MINIMO",
+                "Estoque Mínimo",
+                "Estoque Minimo"
+            ])
+        ),
 
-        maximo:
-            converterNumero(
-                obterValorColuna(
-                    linha,
-                    [
-                        "Máximo",
-                        "Maximo",
-                        "MÁXIMO",
-                        "MAXIMO",
-                        "Estoque Máximo",
-                        "Estoque Maximo"
-                    ]
-                )
-            ),
+        maximo: converterNumero(
+            obterValorColuna(linha, [
+                "Máximo",
+                "Maximo",
+                "MÁXIMO",
+                "MAXIMO",
+                "Estoque Máximo",
+                "Estoque Maximo"
+            ])
+        ),
 
-        ncm:
-            obterValorColuna(
-                linha,
-                [
-                    "NCM",
-                    "ncm"
-                ]
-            ),
+        ncm: obterValorColuna(linha, [
+            "NCM",
+            "ncm"
+        ]),
 
-        ipi:
-            obterValorColuna(
-                linha,
-                [
-                    "IPI",
-                    "ipi"
-                ]
-            ),
+        ipi: obterValorColuna(linha, [
+            "IPI",
+            "ipi"
+        ]),
 
-        valorUnitario:
-            converterNumero(
-                obterValorColuna(
-                    linha,
-                    [
-                        "Valor Unitário",
-                        "VALOR UNITÁRIO",
-                        "VALOR UNITARIO",
-                        "Valor Unitario"
-                    ]
-                )
-            ),
+        valorUnitario: converterNumero(
+            obterValorColuna(linha, [
+                "Valor Unitário",
+                "VALOR UNITÁRIO",
+                "VALOR UNITARIO",
+                "Valor Unitario"
+            ])
+        ),
 
-        valorTotal:
-            converterNumero(
-                obterValorColuna(
-                    linha,
-                    [
-                        "Valor Total",
-                        "VALOR TOTAL",
-                        "ValorTotal",
-                        "Total"
-                    ]
-                )
-            ),
+        valorTotal: converterNumero(
+            obterValorColuna(linha, [
+                "Valor Total",
+                "VALOR TOTAL",
+                "ValorTotal",
+                "Total"
+            ])
+        ),
 
-        endereco:
-            normalizarEndereco(
-                obterValorColuna(
-                    linha,
-                    [
-                        "POSICAO",
-                        "POSIÇÃO",
-                        "Posição",
-                        "Posicao",
-                        "Endereço",
-                        "Endereco"
-                    ]
-                )
-            )
-
+        endereco: normalizarEndereco(
+            obterValorColuna(linha, [
+                "POSICAO",
+                "POSIÇÃO",
+                "Posição",
+                "Posicao",
+                "Endereço",
+                "Endereco"
+            ])
+        )
     };
-
 }
-
 
 // =====================================================
 // LOCALIZAR COLUNA DA PLANILHA
 // =====================================================
 
-function obterValorColuna(
-    linha,
-    nomesAceitos
-) {
-
-    if (
-        !linha ||
-        typeof linha !== "object"
-    ) {
-
+function obterValorColuna(linha, nomesAceitos) {
+    if (!linha || typeof linha !== "object") {
         return "";
-
     }
 
+    const colunas = Object.keys(linha);
 
-    const colunas =
-        Object.keys(
-            linha
+    for (const nomeAceito of nomesAceitos) {
+        const nomeNormalizado = normalizarNomeColuna(
+            nomeAceito
         );
 
+        const colunaEncontrada = colunas.find(
+            function (coluna) {
+                return (
+                    normalizarNomeColuna(coluna) ===
+                    nomeNormalizado
+                );
+            }
+        );
 
-    for (
-        const nomeAceito of nomesAceitos
-    ) {
-
-        const nomeNormalizado =
-            normalizarNomeColuna(
-                nomeAceito
-            );
-
-
-        const colunaEncontrada =
-            colunas.find(
-                function (coluna) {
-
-                    // APP.JS - PARTE 2 DE 6
-                    // Linhas 2293 até 4584
-                    // Cole esta parte na sequência, sem apagar conteúdo das partes anteriores.
-
-
-                    return (
-                        normalizarNomeColuna(
-                            coluna
-                        ) ===
-                        nomeNormalizado
-                    );
-
-                }
-            );
-
-
-        if (
-            colunaEncontrada !==
-            undefined
-        ) {
-
-            const valor =
-                linha[
-                    colunaEncontrada
-                ];
-
+        if (colunaEncontrada !== undefined) {
+            const valor = linha[colunaEncontrada];
 
             if (
                 valor !== undefined &&
                 valor !== null &&
                 String(valor).trim() !== ""
             ) {
-
                 return valor;
-
             }
-
         }
-
     }
 
-
     return "";
-
 }
-
 
 // =====================================================
 // NORMALIZAR NOME DA COLUNA
 // =====================================================
 
-function normalizarNomeColuna(
-    texto
-) {
-
-    return String(
-        texto || ""
-    )
-    .normalize(
-        "NFD"
-    )
-    .replace(
-        /[\u0300-\u036f]/g,
-        ""
-    )
-    .replace(
-        /[^a-zA-Z0-9]/g,
-        ""
-    )
-    .toLowerCase();
-
+function normalizarNomeColuna(texto) {
+    return String(texto || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-zA-Z0-9]/g, "")
+        .toLowerCase();
 }
-
 
 // =====================================================
 // DISPONIBILIZAÇÃO GLOBAL
@@ -2459,131 +1477,83 @@ window.processarProdutosImportados =
 window.normalizarProdutoImportado =
     normalizarProdutoImportado;
 
-
 // =====================================================
-// SINCRONIZAÇÃO DAS MOVIMENTAÇÕES COM A TABELA PRODUTOS
-// =====================================================
-
-// =====================================================
-// SINCRONIZAÇÃO DAS MOVIMENTAÇÕES COM A TABELA PRODUTOS
+// SINCRONIZAÇÃO DAS MOVIMENTAÇÕES COM PRODUTOS
 // =====================================================
 
 function obterClienteProdutosMovimentacao() {
-
     return window.supabaseClient || null;
-
 }
-
 
 async function buscarProdutosMovimentacaoSupabase(
     codigo,
     endereco
 ) {
-
-    const supabase =
-        obterClienteProdutosMovimentacao();
-
+    const supabase = obterClienteProdutosMovimentacao();
 
     if (!supabase) {
-
         alert(
             "A conexão com o banco online não foi carregada.\n\n" +
             "Verifique se a página possui supabase.js antes de app.js."
         );
 
-
         return null;
-
     }
 
-
-    let consulta =
-        supabase
-            .from("produtos")
-            .select("*")
-            .eq(
-                "codigo",
-                String(
-                    codigo ||
-                    ""
-                ).trim()
-            );
-
-
-    if (endereco) {
-
-        consulta =
-            consulta.eq(
-                "endereco",
-                String(
-                    endereco ||
-                    ""
-                )
-                .trim()
-                .toUpperCase()
-                .replace(
-                    /\s+/g,
-                    ""
-                )
-            );
-
-    }
-
-
-    const {
-        data,
-        error
-    } =
-        await consulta.order(
-            "id",
-            {
-                ascending: true
-            }
+    let consulta = supabase
+        .from("produtos")
+        .select("*")
+        .eq(
+            "codigo",
+            String(codigo || "").trim()
         );
 
+    if (endereco) {
+        consulta = consulta.eq(
+            "endereco",
+            String(endereco || "")
+                .trim()
+                .toUpperCase()
+                .replace(/\s+/g, "")
+        );
+    }
+
+    const { data, error } = await consulta.order(
+        "id",
+        { ascending: true }
+    );
 
     if (error) {
-
         console.error(
             "Erro ao buscar produto no banco:",
             error
         );
-
 
         alert(
             "Não foi possível consultar o produto no banco online.\n\n" +
             error.message
         );
 
-
         return null;
-
     }
 
-
-    return Array.isArray(data)
-        ? data
-        : [];
-
+    return Array.isArray(data) ? data : [];
 }
 
+// =====================================================
+// SINCRONIZAR ENTRADA DE PRODUTO
+// =====================================================
 
 async function sincronizarEntradaProdutoSupabase(
     codigo,
     endereco,
     quantidade
 ) {
-
-    const supabase =
-        obterClienteProdutosMovimentacao();
-
+    const supabase = obterClienteProdutosMovimentacao();
 
     if (!supabase) {
-
         return false;
-
     }
-
 
     const registrosExatos =
         await buscarProdutosMovimentacaoSupabase(
@@ -2591,129 +1561,78 @@ async function sincronizarEntradaProdutoSupabase(
             endereco
         );
 
-
-    if (
-        registrosExatos ===
-        null
-    ) {
-
+    if (registrosExatos === null) {
         return false;
-
     }
 
+    const quantidadeEntrada = converterNumero(
+        quantidade
+    );
 
-    const quantidadeEntrada =
-        converterNumero(
-            quantidade
+    if (registrosExatos.length > 0) {
+        const produto = registrosExatos[0];
+
+        const quantidadeAtual = converterNumero(
+            produto.quantidade
         );
 
+        const valorAtual = converterNumero(
+            produto.valor_total ??
+            produto.valorTotal ??
+            0
+        );
 
-    if (
-        registrosExatos.length >
-        0
-    ) {
-
-        const produto =
-            registrosExatos[0];
-
-
-        const quantidadeAtual =
-            converterNumero(
-                produto.quantidade
-            );
-
-
-        const valorAtual =
-            converterNumero(
-                produto.valor_total ??
-                produto.valorTotal ??
-                0
-            );
-
-
-        const valorUnitario =
-            quantidadeAtual > 0
-                ? valorAtual /
-                  quantidadeAtual
-                : 0;
-
+        const valorUnitario = quantidadeAtual > 0
+            ? valorAtual / quantidadeAtual
+            : 0;
 
         const {
             data: produtoAtualizado,
             error
-        } =
-            await supabase
-                .from(
-                    "produtos"
-                )
-                .update(
-                    {
-                        quantidade:
-                            quantidadeAtual +
-                            quantidadeEntrada,
+        } = await supabase
+            .from("produtos")
+            .update({
+                quantidade:
+                    quantidadeAtual + quantidadeEntrada,
 
-                        valor_total:
-                            valorAtual +
-                            (
-                                quantidadeEntrada *
-                                valorUnitario
-                            )
-                    }
-                )
-                .eq(
-                    "id",
-                    produto.id
-                )
-                .select(
-                    "id, codigo, quantidade, endereco"
-                )
-                .maybeSingle();
-
+                valor_total:
+                    valorAtual +
+                    (quantidadeEntrada * valorUnitario)
+            })
+            .eq("id", produto.id)
+            .select("id, codigo, quantidade, endereco")
+            .maybeSingle();
 
         if (error) {
-
             console.error(
                 "Erro ao atualizar entrada no banco:",
                 error
             );
-
 
             alert(
                 "A entrada não foi salva na base de produtos.\n\n" +
                 error.message
             );
 
-
             return false;
-
         }
 
-
-        if (
-            !produtoAtualizado
-        ) {
-
+        if (!produtoAtualizado) {
             alert(
                 "A entrada foi registrada no histórico, mas a tabela Produtos não foi alterada.\n\n" +
                 "O Supabase não permitiu atualizar esse registro. Verifique a política de UPDATE da tabela produtos."
             );
 
-
             return false;
-
         }
-
 
         console.log(
             "PRODUTO ATUALIZADO NO SUPABASE:",
             produtoAtualizado
         );
 
-
         return true;
-
     }
-
 
     const referencias =
         await buscarProdutosMovimentacaoSupabase(
@@ -2721,383 +1640,247 @@ async function sincronizarEntradaProdutoSupabase(
             ""
         );
 
-
     if (
         referencias === null ||
-        referencias.length ===
-        0
+        referencias.length === 0
     ) {
-
         alert(
             "O produto não foi encontrado na base online."
         );
 
-
         return false;
-
     }
 
+    const referencia = referencias[0];
 
-    const referencia =
-        referencias[0];
+    const quantidadeReferencia = converterNumero(
+        referencia.quantidade
+    );
 
+    const valorReferencia = converterNumero(
+        referencia.valor_total ??
+        referencia.valorTotal ??
+        0
+    );
 
-    const quantidadeReferencia =
-        converterNumero(
-            referencia.quantidade
-        );
-
-
-    const valorReferencia =
-        converterNumero(
-            referencia.valor_total ??
-            referencia.valorTotal ??
-            0
-        );
-
-
-    const valorUnitario =
-        quantidadeReferencia > 0
-            ? valorReferencia /
-              quantidadeReferencia
-            : 0;
-
+    const valorUnitario = quantidadeReferencia > 0
+        ? valorReferencia / quantidadeReferencia
+        : 0;
 
     const {
         data: produtoInserido,
         error
-    } =
-        await supabase
-            .from(
-                "produtos"
-            )
-            .insert(
-                [
-                    {
-                        nf:
-                            referencia.nf ||
-                            "",
+    } = await supabase
+        .from("produtos")
+        .insert([
+            {
+                nf: referencia.nf || "",
 
-                        codigo:
-                            referencia.codigo ||
-                            codigo,
+                codigo:
+                    referencia.codigo || codigo,
 
-                        descricao:
-                            referencia.descricao ||
-                            "Sem descrição",
+                descricao:
+                    referencia.descricao ||
+                    "Sem descrição",
 
-                        cliente:
-                            referencia.cliente ||
-                            "SMI",
+                cliente:
+                    referencia.cliente || "SMI",
 
-                        quantidade:
-                            quantidadeEntrada,
+                quantidade:
+                    quantidadeEntrada,
 
-                        valor_total:
-                            quantidadeEntrada *
-                            valorUnitario,
+                valor_total:
+                    quantidadeEntrada * valorUnitario,
 
-                        endereco:
-                            String(
-                                endereco ||
-                                ""
-                            )
-                            .trim()
-                            .toUpperCase()
-                            .replace(
-                                /\s+/g,
-                                ""
-                            )
-                    }
-                ]
-            )
-            .select(
-                "id, codigo, quantidade, endereco"
-            )
-            .maybeSingle();
-
+                endereco: String(endereco || "")
+                    .trim()
+                    .toUpperCase()
+                    .replace(/\s+/g, "")
+            }
+        ])
+        .select("id, codigo, quantidade, endereco")
+        .maybeSingle();
 
     if (error) {
-
         console.error(
             "Erro ao inserir entrada no banco:",
             error
         );
-
 
         alert(
             "A entrada não foi salva na base de produtos.\n\n" +
             error.message
         );
 
-
         return false;
-
     }
 
-
-    if (
-        !produtoInserido
-    ) {
-
+    if (!produtoInserido) {
         alert(
             "A nova posição não foi criada na tabela Produtos.\n\n" +
             "O Supabase não permitiu inserir esse registro. Verifique a política de INSERT da tabela produtos."
         );
 
-
         return false;
-
     }
-
 
     console.log(
         "PRODUTO INSERIDO NO SUPABASE:",
         produtoInserido
     );
 
-
     return true;
-
 }
 
+// =====================================================
+// SINCRONIZAR SAÍDA DE PRODUTO
+// =====================================================
 
 async function sincronizarSaidaProdutoSupabase(
     codigo,
     endereco,
     quantidade
 ) {
-
-    const supabase =
-        obterClienteProdutosMovimentacao();
-
+    const supabase = obterClienteProdutosMovimentacao();
 
     if (!supabase) {
-
         return false;
-
     }
-
 
     const registros =
         await buscarProdutosMovimentacaoSupabase(
             codigo,
-            endereco ||
-            ""
+            endereco || ""
         );
 
-
-    if (
-        registros ===
-        null
-    ) {
-
+    if (registros === null) {
         return false;
-
     }
 
+    const quantidadeSolicitada = converterNumero(
+        quantidade
+    );
 
-    const quantidadeSolicitada =
-        converterNumero(
-            quantidade
-        );
+    const saldoTotal = registros.reduce(
+        function (total, produto) {
+            return (
+                total +
+                converterNumero(produto.quantidade)
+            );
+        },
+        0
+    );
 
-
-    const saldoTotal =
-        registros.reduce(
-            function (
-                total,
-                produto
-            ) {
-
-                return (
-                    total +
-                    converterNumero(
-                        produto.quantidade
-                    )
-                );
-
-            },
-            0
-        );
-
-
-    if (
-        saldoTotal <
-        quantidadeSolicitada
-    ) {
-
+    if (saldoTotal < quantidadeSolicitada) {
         alert(
             "Saldo insuficiente na base online.\n\n" +
             "Saldo disponível: " +
-            formatarQuantidade(
-                saldoTotal
-            )
+            formatarQuantidade(saldoTotal)
         );
 
-
         return false;
-
     }
 
+    let restante = quantidadeSolicitada;
 
-    let restante =
-        quantidadeSolicitada;
-
-
-    for (
-        const produto of
-        registros
-    ) {
-
-        if (
-            restante <=
-            0
-        ) {
-
+    for (const produto of registros) {
+        if (restante <= 0) {
             break;
-
         }
 
+        const quantidadeAtual = converterNumero(
+            produto.quantidade
+        );
 
-        const quantidadeAtual =
-            converterNumero(
-                produto.quantidade
-            );
+        const valorAtual = converterNumero(
+            produto.valor_total ??
+            produto.valorTotal ??
+            0
+        );
 
+        const retirada = Math.min(
+            quantidadeAtual,
+            restante
+        );
 
-        const valorAtual =
-            converterNumero(
-                produto.valor_total ??
-                produto.valorTotal ??
-                0
-            );
-
-
-        const retirada =
-            Math.min(
-                quantidadeAtual,
-                restante
-            );
-
-
-        const valorUnitario =
-            quantidadeAtual > 0
-                ? valorAtual /
-                  quantidadeAtual
-                : 0;
-
+        const valorUnitario = quantidadeAtual > 0
+            ? valorAtual / quantidadeAtual
+            : 0;
 
         const novaQuantidade =
-            quantidadeAtual -
-            retirada;
+            quantidadeAtual - retirada;
 
-
-        const novoValor =
-            Math.max(
-                0,
-                valorAtual -
-                (
-                    retirada *
-                    valorUnitario
-                )
-            );
-
+        const novoValor = Math.max(
+            0,
+            valorAtual - (retirada * valorUnitario)
+        );
 
         let error;
+        let produtoAlterado = null;
 
-        let produtoAlterado =
-            null;
+        const resposta = await supabase
+            .from("produtos")
+            .update({
+                quantidade: Math.max(
+                    0,
+                    novaQuantidade
+                ),
 
-
-        const resposta =
-            await supabase
-                .from(
-                    "produtos"
+                valor_total: Math.max(
+                    0,
+                    novoValor
                 )
-                .update(
-                    {
-                        quantidade:
-                            Math.max(
-                                0,
-                                novaQuantidade
-                            ),
+            })
+            .eq("id", produto.id)
+            .select("id, codigo, quantidade, endereco")
+            .maybeSingle();
 
-                        valor_total:
-                            Math.max(
-                                0,
-                                novoValor
-                            )
-                    }
-                )
-                .eq(
-                    "id",
-                    produto.id
-                )
-                .select(
-                    "id, codigo, quantidade, endereco"
-                )
-                .maybeSingle();
-
-
-        error =
-            resposta.error;
-
-
-        produtoAlterado =
-            resposta.data;
-
+        error = resposta.error;
+        produtoAlterado = resposta.data;
 
         if (error) {
-
             console.error(
                 "Erro ao registrar saída no banco:",
                 error
             );
-
 
             alert(
                 "A saída não foi salva na base de produtos.\n\n" +
                 error.message
             );
 
-
             return false;
-
         }
 
-
-        if (
-            !produtoAlterado
-        ) {
-
+        if (!produtoAlterado) {
             alert(
                 "A saída foi registrada no histórico, mas a tabela Produtos não foi alterada.\n\n" +
                 "O Supabase não permitiu atualizar ou excluir esse registro. Verifique as políticas de UPDATE e DELETE da tabela produtos."
             );
 
-
             return false;
-
         }
-
 
         console.log(
             "PRODUTO ALTERADO NA SAÍDA:",
             produtoAlterado
         );
 
-
-        restante -=
-            retirada;
-
+        restante -= retirada;
     }
 
-
     return true;
-
 }
 
+// FIM DA PARTE 2/10
+// A PARTE 3 ENTRA LOGO ABAIXO.
+
+// APP.JS — PARTE 3/10
+// TRANSFERÊNCIAS E TELA DE ENTRADAS
+
+// =====================================================
+// SINCRONIZAR TRANSFERÊNCIA DE PRODUTO
+// =====================================================
 
 async function sincronizarTransferenciaProdutoSupabase(
     codigo,
@@ -3105,29 +1888,14 @@ async function sincronizarTransferenciaProdutoSupabase(
     destino,
     quantidade
 ) {
-
-    const supabase =
-        obterClienteProdutosMovimentacao();
-
+    const supabase = obterClienteProdutosMovimentacao();
 
     if (!supabase) {
-
         return false;
-
     }
 
-
-    const origemNormalizada =
-        normalizarEndereco(
-            origem
-        );
-
-
-    const destinoNormalizado =
-        normalizarEndereco(
-            destino
-        );
-
+    const origemNormalizada = normalizarEndereco(origem);
+    const destinoNormalizado = normalizarEndereco(destino);
 
     const registrosOrigem =
         await buscarProdutosMovimentacaoSupabase(
@@ -3135,216 +1903,117 @@ async function sincronizarTransferenciaProdutoSupabase(
             origemNormalizada
         );
 
-
     if (
-        registrosOrigem ===
-        null ||
-        registrosOrigem.length ===
-        0
+        registrosOrigem === null ||
+        registrosOrigem.length === 0
     ) {
-
         alert(
             "O produto não foi encontrado na posição de origem na base online."
         );
 
-
         return false;
-
     }
 
+    const quantidadeTransferida = converterNumero(
+        quantidade
+    );
 
-    const quantidadeTransferida =
-        converterNumero(
-            quantidade
-        );
+    const saldoOrigem = registrosOrigem.reduce(
+        function (total, produto) {
+            return (
+                total +
+                converterNumero(produto.quantidade)
+            );
+        },
+        0
+    );
 
-
-    const saldoOrigem =
-        registrosOrigem.reduce(
-            function (
-                total,
-                produto
-            ) {
-
-                return (
-                    total +
-                    converterNumero(
-                        produto.quantidade
-                    )
-                );
-
-            },
-            0
-        );
-
-
-    if (
-        saldoOrigem <
-        quantidadeTransferida
-    ) {
-
+    if (saldoOrigem < quantidadeTransferida) {
         alert(
             "Saldo insuficiente na posição de origem da base online."
         );
 
-
         return false;
-
     }
 
+    const referencia = registrosOrigem[0];
 
-    const referencia =
-        registrosOrigem[0];
+    let restante = quantidadeTransferida;
+    let valorTransferido = 0;
 
-
-    let restante =
-        quantidadeTransferida;
-
-
-    let valorTransferido =
-        0;
-
-
-    for (
-        const produto of
-        registrosOrigem
-    ) {
-
-        if (
-            restante <=
-            0
-        ) {
-
+    for (const produto of registrosOrigem) {
+        if (restante <= 0) {
             break;
-
         }
 
+        const quantidadeAtual = converterNumero(
+            produto.quantidade
+        );
 
-        const quantidadeAtual =
-            converterNumero(
-                produto.quantidade
-            );
+        const valorAtual = converterNumero(
+            produto.valor_total ??
+            produto.valorTotal ??
+            0
+        );
 
+        const retirada = Math.min(
+            quantidadeAtual,
+            restante
+        );
 
-        const valorAtual =
-            converterNumero(
-                produto.valor_total ??
-                produto.valorTotal ??
-                0
-            );
-
-
-        const retirada =
-            Math.min(
-                quantidadeAtual,
-                restante
-            );
-
-
-        const valorUnitario =
-            quantidadeAtual > 0
-                ? valorAtual /
-                  quantidadeAtual
-                : 0;
-
+        const valorUnitario = quantidadeAtual > 0
+            ? valorAtual / quantidadeAtual
+            : 0;
 
         const valorRetirado =
-            retirada *
-            valorUnitario;
-
+            retirada * valorUnitario;
 
         const novaQuantidade =
-            quantidadeAtual -
-            retirada;
+            quantidadeAtual - retirada;
 
-
-        const novoValor =
-            Math.max(
-                0,
-                valorAtual -
-                valorRetirado
-            );
-
+        const novoValor = Math.max(
+            0,
+            valorAtual - valorRetirado
+        );
 
         let error;
 
+        if (novaQuantidade <= 0) {
+            const resposta = await supabase
+                .from("produtos")
+                .delete()
+                .eq("id", produto.id);
 
-        if (
-            novaQuantidade <=
-            0
-        ) {
-
-            const resposta =
-                await supabase
-                    .from(
-                        "produtos"
-                    )
-                    .delete()
-                    .eq(
-                        "id",
-                        produto.id
-                    );
-
-
-            error =
-                resposta.error;
-
+            error = resposta.error;
         } else {
+            const resposta = await supabase
+                .from("produtos")
+                .update({
+                    quantidade: novaQuantidade,
+                    valor_total: novoValor
+                })
+                .eq("id", produto.id);
 
-            const resposta =
-                await supabase
-                    .from(
-                        "produtos"
-                    )
-                    .update(
-                        {
-                            quantidade:
-                                novaQuantidade,
-
-                            valor_total:
-                                novoValor
-                        }
-                    )
-                    .eq(
-                        "id",
-                        produto.id
-                    );
-
-
-            error =
-                resposta.error;
-
+            error = resposta.error;
         }
 
-
         if (error) {
-
             console.error(
                 "Erro ao retirar transferência da origem:",
                 error
             );
-
 
             alert(
                 "A transferência não foi salva na base de produtos.\n\n" +
                 error.message
             );
 
-
             return false;
-
         }
 
-
-        valorTransferido +=
-            valorRetirado;
-
-
-        restante -=
-            retirada;
-
+        valorTransferido += valorRetirado;
+        restante -= retirada;
     }
-
 
     const registrosDestino =
         await buscarProdutosMovimentacaoSupabase(
@@ -3352,951 +2021,511 @@ async function sincronizarTransferenciaProdutoSupabase(
             destinoNormalizado
         );
 
-
-    if (
-        registrosDestino ===
-        null
-    ) {
-
+    if (registrosDestino === null) {
         return false;
-
     }
 
+    if (registrosDestino.length > 0) {
+        const produtoDestino = registrosDestino[0];
 
-    if (
-        registrosDestino.length >
-        0
-    ) {
+        const quantidadeDestino = converterNumero(
+            produtoDestino.quantidade
+        );
 
-        const produtoDestino =
-            registrosDestino[0];
+        const valorDestino = converterNumero(
+            produtoDestino.valor_total ??
+            produtoDestino.valorTotal ??
+            0
+        );
 
+        const { error } = await supabase
+            .from("produtos")
+            .update({
+                quantidade:
+                    quantidadeDestino +
+                    quantidadeTransferida,
 
-        const quantidadeDestino =
-            converterNumero(
-                produtoDestino.quantidade
-            );
-
-
-        const valorDestino =
-            converterNumero(
-                produtoDestino.valor_total ??
-                produtoDestino.valorTotal ??
-                0
-            );
-
-
-        const {
-            error
-        } =
-            await supabase
-                .from(
-                    "produtos"
-                )
-                .update(
-                    {
-                        quantidade:
-                            quantidadeDestino +
-                            quantidadeTransferida,
-
-                        valor_total:
-                            valorDestino +
-                            valorTransferido
-                    }
-                )
-                .eq(
-                    "id",
-                    produtoDestino.id
-                );
-
+                valor_total:
+                    valorDestino +
+                    valorTransferido
+            })
+            .eq("id", produtoDestino.id);
 
         if (error) {
-
             console.error(
                 "Erro ao atualizar destino da transferência:",
                 error
             );
-
 
             alert(
                 "A transferência não foi concluída na posição de destino.\n\n" +
                 error.message
             );
 
-
             return false;
-
         }
 
-
         return true;
-
     }
 
+    const { error } = await supabase
+        .from("produtos")
+        .insert([
+            {
+                nf: referencia.nf || "",
 
-    const {
-        error
-    } =
-        await supabase
-            .from(
-                "produtos"
-            )
-            .insert(
-                [
-                    {
-                        nf:
-                            referencia.nf ||
-                            "",
+                codigo:
+                    referencia.codigo || codigo,
 
-                        codigo:
-                            referencia.codigo ||
-                            codigo,
+                descricao:
+                    referencia.descricao ||
+                    "Sem descrição",
 
-                        descricao:
-                            referencia.descricao ||
-                            "Sem descrição",
+                cliente:
+                    referencia.cliente || "SMI",
 
-                        cliente:
-                            referencia.cliente ||
-                            "SMI",
+                quantidade:
+                    quantidadeTransferida,
 
-                        quantidade:
-                            quantidadeTransferida,
+                valor_total:
+                    valorTransferido,
 
-                        valor_total:
-                            valorTransferido,
-
-                        endereco:
-                            destinoNormalizado
-                    }
-                ]
-            );
-
+                endereco:
+                    destinoNormalizado
+            }
+        ]);
 
     if (error) {
-
         console.error(
             "Erro ao criar destino da transferência:",
             error
         );
-
 
         alert(
             "A transferência não foi concluída na base de produtos.\n\n" +
             error.message
         );
 
-
         return false;
-
     }
 
-
     return true;
-
 }
-
 
 window.sincronizarEntradaProdutoSupabase =
     sincronizarEntradaProdutoSupabase;
 
-
 window.sincronizarSaidaProdutoSupabase =
     sincronizarSaidaProdutoSupabase;
-
 
 window.sincronizarTransferenciaProdutoSupabase =
     sincronizarTransferenciaProdutoSupabase;
 
-
 // =====================================================
-// SMI WMS - APP.JS
-// PARTE 4 - ENTRADAS DE ESTOQUE
-// NOVO VISUAL + FUNCIONALIDADES
+// ENTRADAS DE ESTOQUE — VARIÁVEIS
 // =====================================================
 
+let produtoVisualEntrada = null;
+let estoqueAtualVisualEntrada = 0;
+let paginaAtualHistoricoEntrada = 1;
 
-// =====================================================
-// VARIÁVEIS DA TELA
-// =====================================================
-
-let produtoVisualEntrada =
-    null;
-
-
-let estoqueAtualVisualEntrada =
-    0;
-
-
-let paginaAtualHistoricoEntrada =
-    1;
-
-
-const itensPorPaginaHistoricoEntrada =
-    10;
-
+const itensPorPaginaHistoricoEntrada = 10;
 
 // =====================================================
 // INICIALIZAÇÃO DA PÁGINA DE ENTRADAS
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        const tabelaEntradas =
-            document.getElementById(
-                "listaEntradas"
-            );
-
-
-        /*
-            Só executa esta parte se estivermos
-            realmente na página de Entradas.
-        */
-
-        if (
-            !tabelaEntradas
-        ) {
-
-            return;
-
-        }
-
-
-        // Histórico inicial
-
-        carregarHistoricoEntradas();
-
-
-        // Resumo do dia
-
-        atualizarResumoDiaEntradas();
-
-
-        // Operador
-
-        atualizarOperadorResumoEntrada();
-
-
-        // =====================================================
-        // CAMPOS
-        // =====================================================
-
-        const campoCodigo =
-            document.getElementById(
-                "codigoEntrada"
-            );
-
-
-        const campoQuantidade =
-            document.getElementById(
-                "quantidadeEntrada"
-            );
-
-
-        const campoEndereco =
-            document.getElementById(
-                "enderecoEntrada"
-            );
-
-
-        // =====================================================
-        // BOTÃO REGISTRAR
-        // =====================================================
-
-        const botaoEntrada =
-            document.getElementById(
-                "btnRegistrarEntrada"
-            );
-
-
-        if (
-            botaoEntrada
-        ) {
-
-            botaoEntrada.addEventListener(
-                "click",
-                registrarEntrada
-            );
-
-        }
-
-
-        // =====================================================
-        // CÓDIGO DO PRODUTO
-        // =====================================================
-
-        if (
-            campoCodigo
-        ) {
-
-            campoCodigo.addEventListener(
-                "change",
-                carregarResumoProdutoEntrada
-            );
-
-
-            campoCodigo.addEventListener(
-                "blur",
-                carregarResumoProdutoEntrada
-            );
-
-
-            campoCodigo.addEventListener(
-                "keydown",
-                function (
-                    evento
-                ) {
-
-                    if (
-                        evento.key ===
-                        "Enter"
-                    ) {
-
-                        evento.preventDefault();
-
-
-                        carregarResumoProdutoEntrada()
-                            .then(
-                                function () {
-
-                                    if (
-                                        campoQuantidade
-                                    ) {
-
-                                        campoQuantidade.focus();
-
-                                    }
-
-                                }
-                            );
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        // =====================================================
-        // QUANTIDADE
-        // =====================================================
-
-        if (
-            campoQuantidade
-        ) {
-
-            campoQuantidade.addEventListener(
-                "input",
-                atualizarNovoSaldoEntrada
-            );
-
-
-            campoQuantidade.addEventListener(
-                "keydown",
-                function (
-                    evento
-                ) {
-
-                    if (
-                        evento.key ===
-                        "Enter"
-                    ) {
-
-                        evento.preventDefault();
-
-
-                        if (
-                            campoEndereco
-                        ) {
-
-                            campoEndereco.focus();
-
-                        }
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        // =====================================================
-        // ENDEREÇO
-        // =====================================================
-
-        if (
-            campoEndereco
-        ) {
-
-                       campoEndereco.addEventListener(
-                "input",
-                atualizarStatusEnderecoEntrada
-            );
-
-
-            campoEndereco.addEventListener(
-                "blur",
-                atualizarStatusEnderecoEntrada
-            );
-
-
-            campoEndereco.addEventListener(
-                "keydown",
-                function (evento) {
-
-                    if (
-                        evento.key ===
-                        "Enter"
-                    ) {
-
-                        evento.preventDefault();
-
-                        registrarEntrada();
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        // =====================================================
-        // PESQUISA
-        // =====================================================
-
-        const pesquisa =
-            document.getElementById(
-                "pesquisaHistoricoEntrada"
-            );
-
-
-        if (pesquisa) {
-
-            pesquisa.addEventListener(
-                "input",
-                function () {
-
-                    paginaAtualHistoricoEntrada =
-                        1;
-
-                    carregarHistoricoEntradas();
-
-                }
-            );
-
-        }
-
-
-        // =====================================================
-        // PERÍODO
-        // =====================================================
-
-        const periodo =
-            document.getElementById(
-                "periodoHistoricoEntrada"
-            );
-
-
-        if (periodo) {
-
-            periodo.addEventListener(
-                "change",
-                function () {
-
-                    paginaAtualHistoricoEntrada =
-                        1;
-
-                    carregarHistoricoEntradas();
-
-                }
-            );
-
-        }
-
-
-        // =====================================================
-        // EXPORTAR
-        // =====================================================
-
-        const exportar =
-            document.getElementById(
-                "btnExportarEntradas"
-            );
-
-
-        if (exportar) {
-
-            exportar.addEventListener(
-                "click",
-                exportarHistoricoEntradasCSV
-            );
-
-        }
-
-
-        // Foco inicial
-        if (campoCodigo) {
-            campoCodigo.focus();
-        }
-
+document.addEventListener("DOMContentLoaded", function () {
+    const tabelaEntradas = document.getElementById(
+        "listaEntradas"
+    );
+
+    // Executa apenas na página de Entradas.
+    if (!tabelaEntradas) {
+        return;
     }
-);
+
+    carregarHistoricoEntradas();
+    atualizarResumoDiaEntradas();
+    atualizarOperadorResumoEntrada();
+
+    const campoCodigo = document.getElementById(
+        "codigoEntrada"
+    );
+
+    const campoQuantidade = document.getElementById(
+        "quantidadeEntrada"
+    );
+
+    const campoEndereco = document.getElementById(
+        "enderecoEntrada"
+    );
+
+    const botaoEntrada = document.getElementById(
+        "btnRegistrarEntrada"
+    );
+
+    if (botaoEntrada) {
+        botaoEntrada.addEventListener(
+            "click",
+            registrarEntrada
+        );
+    }
+
+    // Código do produto.
+    if (campoCodigo) {
+        campoCodigo.addEventListener(
+            "change",
+            carregarResumoProdutoEntrada
+        );
+
+        campoCodigo.addEventListener(
+            "blur",
+            carregarResumoProdutoEntrada
+        );
+
+        campoCodigo.addEventListener(
+            "keydown",
+            function (evento) {
+                if (evento.key === "Enter") {
+                    evento.preventDefault();
+
+                    carregarResumoProdutoEntrada().then(
+                        function () {
+                            if (campoQuantidade) {
+                                campoQuantidade.focus();
+                            }
+                        }
+                    );
+                }
+            }
+        );
+    }
+
+    // Quantidade.
+    if (campoQuantidade) {
+        campoQuantidade.addEventListener(
+            "input",
+            atualizarNovoSaldoEntrada
+        );
+
+        campoQuantidade.addEventListener(
+            "keydown",
+            function (evento) {
+                if (evento.key === "Enter") {
+                    evento.preventDefault();
+
+                    if (campoEndereco) {
+                        campoEndereco.focus();
+                    }
+                }
+            }
+        );
+    }
+
+    // Endereço.
+    if (campoEndereco) {
+        campoEndereco.addEventListener(
+            "input",
+            atualizarStatusEnderecoEntrada
+        );
+
+        campoEndereco.addEventListener(
+            "blur",
+            atualizarStatusEnderecoEntrada
+        );
+
+        campoEndereco.addEventListener(
+            "keydown",
+            function (evento) {
+                if (evento.key === "Enter") {
+                    evento.preventDefault();
+                    registrarEntrada();
+                }
+            }
+        );
+    }
+
+    // Pesquisa do histórico.
+    const pesquisa = document.getElementById(
+        "pesquisaHistoricoEntrada"
+    );
+
+    if (pesquisa) {
+        pesquisa.addEventListener("input", function () {
+            paginaAtualHistoricoEntrada = 1;
+            carregarHistoricoEntradas();
+        });
+    }
+
+    // Período do histórico.
+    const periodo = document.getElementById(
+        "periodoHistoricoEntrada"
+    );
+
+    if (periodo) {
+        periodo.addEventListener("change", function () {
+            paginaAtualHistoricoEntrada = 1;
+            carregarHistoricoEntradas();
+        });
+    }
+
+    // Exportação do histórico.
+    const exportar = document.getElementById(
+        "btnExportarEntradas"
+    );
+
+    if (exportar) {
+        exportar.addEventListener(
+            "click",
+            exportarHistoricoEntradasCSV
+        );
+    }
+
+    if (campoCodigo) {
+        campoCodigo.focus();
+    }
+});
 
 // =====================================================
-// CARREGAR RESUMO DO PRODUTO
+// CARREGAR RESUMO DO PRODUTO NA ENTRADA
 // =====================================================
 
 async function carregarResumoProdutoEntrada() {
+    const campoCodigo = document.getElementById(
+        "codigoEntrada"
+    );
 
-    const campoCodigo =
-        document.getElementById(
-            "codigoEntrada"
-        );
+    const card = document.getElementById(
+        "cardProdutoEntrada"
+    );
 
-    const card =
-        document.getElementById(
-            "cardProdutoEntrada"
-        );
+    const cardEnderecoInteligente = document.getElementById(
+        "cardEnderecoInteligenteEntrada"
+    );
 
-    const cardEnderecoInteligente =
-        document.getElementById(
-            "cardEnderecoInteligenteEntrada"
-        );
+    const listaEnderecos = document.getElementById(
+        "listaEnderecosInteligentesEntrada"
+    );
 
-    const listaEnderecos =
-        document.getElementById(
-            "listaEnderecosInteligentesEntrada"
-        );
+    const recomendacaoEndereco = document.getElementById(
+        "recomendacaoEnderecoEntrada"
+    );
 
-    const recomendacaoEndereco =
-        document.getElementById(
-            "recomendacaoEnderecoEntrada"
-        );
-
-
-    if (
-        !campoCodigo ||
-        !card
-    ) {
+    if (!campoCodigo || !card) {
         return;
     }
 
+    const ocultarEnderecoInteligente = function () {
+        if (cardEnderecoInteligente) {
+            cardEnderecoInteligente.classList.add(
+                "oculto"
+            );
+        }
 
-    const ocultarEnderecoInteligente =
-        function () {
+        if (listaEnderecos) {
+            listaEnderecos.innerHTML = "";
+        }
 
-            if (cardEnderecoInteligente) {
+        if (recomendacaoEndereco) {
+            recomendacaoEndereco.textContent = "";
+        }
+    };
 
-                cardEnderecoInteligente.classList.add(
-                    "oculto"
-                );
-
-            }
-
-
-            if (listaEnderecos) {
-
-                listaEnderecos.innerHTML =
-                    "";
-
-            }
-
-
-            if (recomendacaoEndereco) {
-
-                recomendacaoEndereco.textContent =
-                    "";
-
-            }
-
-        };
-
-
-    const codigo =
-        normalizarCodigo(
-            campoCodigo.value
-        );
-
-
-    /*
-        Campo vazio.
-    */
+    const codigo = normalizarCodigo(
+        campoCodigo.value
+    );
 
     if (!codigo) {
+        produtoVisualEntrada = null;
+        estoqueAtualVisualEntrada = 0;
 
-        produtoVisualEntrada =
-            null;
-
-        estoqueAtualVisualEntrada =
-            0;
-
-
-        card.classList.add(
-            "oculto"
-        );
-
+        card.classList.add("oculto");
 
         ocultarEnderecoInteligente();
-
-
         ocultarNovoSaldoEntrada();
 
-
         return;
-
     }
 
-
     if (!window.supabaseClient) {
-
         console.warn(
             "Supabase não disponível para consultar o produto."
         );
 
-
         ocultarEnderecoInteligente();
-
-
         return;
-
     }
 
-
     try {
-
-        /*
-            Busca todas as posições do SKU.
-        */
-
+        // Busca todas as posições do SKU.
         const produtos =
             await buscarProdutosMovimentacaoSupabase(
                 codigo,
                 ""
             );
 
-
         if (
             !Array.isArray(produtos) ||
             produtos.length === 0
         ) {
+            produtoVisualEntrada = null;
+            estoqueAtualVisualEntrada = 0;
 
-            produtoVisualEntrada =
-                null;
-
-            estoqueAtualVisualEntrada =
-                0;
-
-
-            card.classList.add(
-                "oculto"
-            );
-
+            card.classList.add("oculto");
 
             ocultarEnderecoInteligente();
-
-
             ocultarNovoSaldoEntrada();
 
-
             return;
-
         }
 
+        produtoVisualEntrada = produtos[0];
 
-        produtoVisualEntrada =
-            produtos[0];
+        // Soma o estoque do SKU em todas as posições.
+        estoqueAtualVisualEntrada = produtos.reduce(
+            function (total, produto) {
+                return (
+                    total +
+                    converterNumero(produto.quantidade)
+                );
+            },
+            0
+        );
 
-
-        /*
-            Soma o estoque do SKU em todas
-            as posições.
-        */
-
-        estoqueAtualVisualEntrada =
-            produtos.reduce(
-                function (
-                    total,
-                    produto
-                ) {
-
-                    return (
-                        total +
-                        converterNumero(
-                            produto.quantidade
-                        )
-                    );
-
-                },
-                0
-            );
-
-
-        // =====================================================
-        // NOME
-        // =====================================================
-
-        const nome =
-            document.getElementById(
-                "produtoEntradaNome"
-            );
-
+        const nome = document.getElementById(
+            "produtoEntradaNome"
+        );
 
         if (nome) {
-
             nome.textContent =
-                (
-                    produtoVisualEntrada.codigo ||
-                    codigo
-                ) +
+                (produtoVisualEntrada.codigo || codigo) +
                 " - " +
                 (
                     produtoVisualEntrada.descricao ||
                     "Sem descrição"
                 );
-
         }
 
-
-        // =====================================================
-        // DESCRIÇÃO DETALHADA
-        // =====================================================
-
-        const detalhe =
-            document.getElementById(
-                "produtoEntradaDetalhe"
-            );
-
-
-        if (detalhe) {
-
-            detalhe.textContent =
-                produtoVisualEntrada
-                    .descricao_detalhada ||
-
-                produtoVisualEntrada
-                    .descricaoDetalhada ||
-
-                "Descrição detalhada não disponível";
-
-        }
-
-
-        // =====================================================
-        // ESTOQUE ATUAL
-        // =====================================================
-
-        const estoque =
-            document.getElementById(
-                "estoqueAtualEntrada"
-            );
-
-
-        if (estoque) {
-
-            estoque.textContent =
-                formatarQuantidade(
-                    estoqueAtualVisualEntrada
-                );
-
-        }
-
-
-        card.classList.remove(
-            "oculto"
+        const detalhe = document.getElementById(
+            "produtoEntradaDetalhe"
         );
 
+        if (detalhe) {
+            detalhe.textContent =
+                produtoVisualEntrada.descricao_detalhada ||
+                produtoVisualEntrada.descricaoDetalhada ||
+                "Descrição detalhada não disponível";
+        }
 
-        // =====================================================
-        // ENDEREÇAMENTO INTELIGENTE
-        // =====================================================
+        const estoque = document.getElementById(
+            "estoqueAtualEntrada"
+        );
 
+        if (estoque) {
+            estoque.textContent = formatarQuantidade(
+                estoqueAtualVisualEntrada
+            );
+        }
+
+        card.classList.remove("oculto");
+
+        // Endereçamento inteligente.
         if (
             cardEnderecoInteligente &&
             listaEnderecos &&
             recomendacaoEndereco
         ) {
+            const mapaPosicoes = new Map();
 
-            /*
-                Agrupa os registros do mesmo SKU
-                por posição e soma suas quantidades.
-            */
-
-            const mapaPosicoes =
-                new Map();
-
-
-            produtos.forEach(
-                function (produto) {
-
-                    const endereco =
-                        normalizarEndereco(
-                            produto.endereco
-                        );
-
-
-                    if (!endereco) {
-                        return;
-                    }
-
-
-                    const quantidade =
-                        converterNumero(
-                            produto.quantidade
-                        );
-
-
-                    mapaPosicoes.set(
-                        endereco,
-                        (
-                            mapaPosicoes.get(
-                                endereco
-                            ) || 0
-                        ) +
-                        quantidade
-                    );
-
-                }
-            );
-
-
-            const posicoesProduto =
-                Array.from(
-                    mapaPosicoes.entries()
-                )
-                .map(
-                    function (item) {
-
-                        return {
-
-                            endereco:
-                                item[0],
-
-                            quantidade:
-                                item[1]
-
-                        };
-
-                    }
+            produtos.forEach(function (produto) {
+                const endereco = normalizarEndereco(
+                    produto.endereco
                 );
 
+                if (!endereco) {
+                    return;
+                }
 
-            if (
-                posicoesProduto.length ===
-                0
-            ) {
+                const quantidade = converterNumero(
+                    produto.quantidade
+                );
 
-                listaEnderecos.innerHTML =
-                    `
-                        <div class="endereco-inteligente-item">
+                mapaPosicoes.set(
+                    endereco,
+                    (mapaPosicoes.get(endereco) || 0) +
+                    quantidade
+                );
+            });
 
-                            <span class="endereco-inteligente-posicao">
-                                Sem posição atual
-                            </span>
+            const posicoesProduto = Array.from(
+                mapaPosicoes.entries()
+            ).map(function (item) {
+                return {
+                    endereco: item[0],
+                    quantidade: item[1]
+                };
+            });
 
-                            <span class="endereco-inteligente-quantidade">
-                                Produto ainda não endereçado
-                            </span>
-
-                        </div>
-                    `;
-
+            if (posicoesProduto.length === 0) {
+                listaEnderecos.innerHTML = `
+                    <div class="endereco-inteligente-item">
+                        <span class="endereco-inteligente-posicao">
+                            Sem posição atual
+                        </span>
+                        <span class="endereco-inteligente-quantidade">
+                            Produto ainda não endereçado
+                        </span>
+                    </div>
+                `;
 
                 recomendacaoEndereco.textContent =
                     "Selecione uma posição disponível para armazenagem.";
 
-
                 cardEnderecoInteligente.classList.remove(
                     "oculto"
                 );
-
             } else {
-
-                /*
-                    A posição com maior quantidade
-                    será exibida como sugestão.
-                */
-
-                posicoesProduto.sort(
-                    function (a, b) {
-
-                        if (
-                            b.quantidade !==
-                            a.quantidade
-                        ) {
-
-                            return (
-                                b.quantidade -
-                                a.quantidade
-                            );
-
-                        }
-
-
-                        return a.endereco.localeCompare(
-                            b.endereco,
-                            "pt-BR",
-                            {
-                                numeric: true
-                            }
-                        );
-
+                // Sugere a posição com maior quantidade.
+                posicoesProduto.sort(function (a, b) {
+                    if (b.quantidade !== a.quantidade) {
+                        return b.quantidade - a.quantidade;
                     }
-                );
 
+                    return a.endereco.localeCompare(
+                        b.endereco,
+                        "pt-BR",
+                        { numeric: true }
+                    );
+                });
 
-                const posicaoSugerida =
-                    posicoesProduto[0];
+                const posicaoSugerida = posicoesProduto[0];
 
-
-                listaEnderecos.innerHTML =
-                    "";
-
+                listaEnderecos.innerHTML = "";
 
                 posicoesProduto.forEach(
-                    function (
-                        posicao,
-                        indice
-                    ) {
-
-                        const item =
-                            document.createElement(
-                                "div"
-                            );
-
+                    function (posicao, indice) {
+                        const item = document.createElement(
+                            "div"
+                        );
 
                         item.className =
                             "endereco-inteligente-item";
 
-
                         const elementoPosicao =
-                            document.createElement(
-                                "span"
-                            );
-
+                            document.createElement("span");
 
                         elementoPosicao.className =
                             "endereco-inteligente-posicao";
 
-
                         elementoPosicao.textContent =
-                            "📍 " +
-                            posicao.endereco;
-
+                            "📍 " + posicao.endereco;
 
                         const elementoQuantidade =
-                            document.createElement(
-                                "span"
-                            );
-
+                            document.createElement("span");
 
                         elementoQuantidade.className =
                             "endereco-inteligente-quantidade";
-
 
                         elementoQuantidade.textContent =
                             formatarQuantidade(
@@ -4304,430 +2533,240 @@ async function carregarResumoProdutoEntrada() {
                             ) +
                             " un.";
 
+                        item.appendChild(elementoPosicao);
+                        item.appendChild(elementoQuantidade);
 
-                        item.appendChild(
-                            elementoPosicao
-                        );
-
-
-                        item.appendChild(
-                            elementoQuantidade
-                        );
-
-
-                        if (
-                            indice ===
-                            0
-                        ) {
-
+                        if (indice === 0) {
                             const selo =
-                                document.createElement(
-                                    "span"
-                                );
-
+                                document.createElement("span");
 
                             selo.className =
                                 "endereco-inteligente-sugerido";
 
-
                             selo.textContent =
                                 "✓ POSIÇÃO SUGERIDA";
 
-
-                            item.appendChild(
-                                selo
-                            );
-
+                            item.appendChild(selo);
                         }
 
-
-                        listaEnderecos.appendChild(
-                            item
-                        );
-
+                        listaEnderecos.appendChild(item);
                     }
                 );
-
 
                 recomendacaoEndereco.textContent =
                     "Recomendação: utilize a posição " +
                     posicaoSugerida.endereco +
                     " para manter o estoque organizado.";
 
-
                 cardEnderecoInteligente.classList.remove(
                     "oculto"
                 );
-
             }
-
         }
 
-
         atualizarNovoSaldoEntrada();
-
     } catch (erro) {
-
         console.error(
             "Erro ao carregar produto na tela de entrada:",
             erro
         );
 
-
         ocultarEnderecoInteligente();
-
     }
-
 }
 
-
 // =====================================================
-// ATUALIZAR NOVO SALDO
+// ATUALIZAR NOVO SALDO DA ENTRADA
 // =====================================================
 
 function atualizarNovoSaldoEntrada() {
+    const campoQuantidade = document.getElementById(
+        "quantidadeEntrada"
+    );
 
-    const campoQuantidade =
-        document.getElementById(
-            "quantidadeEntrada"
-        );
+    const card = document.getElementById(
+        "cardNovoSaldoEntrada"
+    );
 
-
-    const card =
-        document.getElementById(
-            "cardNovoSaldoEntrada"
-        );
-
-
-    const elementoSaldo =
-        document.getElementById(
-            "novoSaldoEntrada"
-        );
-
+    const elementoSaldo = document.getElementById(
+        "novoSaldoEntrada"
+    );
 
     if (
         !campoQuantidade ||
         !card ||
         !elementoSaldo
     ) {
-
         return;
-
     }
 
-
-    const quantidade =
-        converterNumero(
-            campoQuantidade.value
-        );
-
-
-    /*
-        Só mostra quando existir produto
-        e quantidade válida.
-    */
+    const quantidade = converterNumero(
+        campoQuantidade.value
+    );
 
     if (
         !produtoVisualEntrada ||
         quantidade <= 0
     ) {
-
-        card.classList.add(
-            "oculto"
-        );
-
-
+        card.classList.add("oculto");
         return;
-
     }
 
-
     const novoSaldo =
-        estoqueAtualVisualEntrada +
-        quantidade;
+        estoqueAtualVisualEntrada + quantidade;
 
-
-    elementoSaldo.textContent =
-        formatarQuantidade(
-            novoSaldo
-        );
-
-
-    card.classList.remove(
-        "oculto"
+    elementoSaldo.textContent = formatarQuantidade(
+        novoSaldo
     );
 
+    card.classList.remove("oculto");
 }
-
 
 // =====================================================
 // OCULTAR NOVO SALDO
 // =====================================================
 
 function ocultarNovoSaldoEntrada() {
-
-    const card =
-        document.getElementById(
-            "cardNovoSaldoEntrada"
-        );
-
+    const card = document.getElementById(
+        "cardNovoSaldoEntrada"
+    );
 
     if (card) {
-
-        card.classList.add(
-            "oculto"
-        );
-
+        card.classList.add("oculto");
     }
-
 }
 
-
 // =====================================================
-// STATUS DO ENDEREÇO
+// STATUS DO ENDEREÇO DE ENTRADA
 // =====================================================
 
 function atualizarStatusEnderecoEntrada() {
-
-    const campoEndereco =
-        document.getElementById(
-            "enderecoEntrada"
-        );
-
-
-    const status =
-        document.getElementById(
-            "statusEnderecoEntrada"
-        );
-
-
-    const texto =
-        document.getElementById(
-            "textoStatusEndereco"
-        );
-
-
-    if (
-        !campoEndereco ||
-        !status ||
-        !texto
-    ) {
-
-        return;
-
-    }
-
-
-    const endereco =
-        normalizarEndereco(
-            campoEndereco.value
-        );
-
-
-    if (!endereco) {
-
-        status.classList.add(
-            "oculto"
-        );
-
-
-        return;
-
-    }
-
-
-    /*
-        Mostra a confirmação da leitura.
-        A validação definitiva acontece
-        no registro da entrada.
-    */
-
-    texto.textContent =
-        "Posição informada: " +
-        endereco;
-
-
-    status.classList.remove(
-        "oculto"
+    const campoEndereco = document.getElementById(
+        "enderecoEntrada"
     );
 
+    const status = document.getElementById(
+        "statusEnderecoEntrada"
+    );
+
+    const texto = document.getElementById(
+        "textoStatusEndereco"
+    );
+
+    if (!campoEndereco || !status || !texto) {
+        return;
+    }
+
+    const endereco = normalizarEndereco(
+        campoEndereco.value
+    );
+
+    if (!endereco) {
+        status.classList.add("oculto");
+        return;
+    }
+
+    texto.textContent =
+        "Posição informada: " + endereco;
+
+    status.classList.remove("oculto");
 }
 
+// APP.JS — PARTE 4/10
+// REGISTRO E HISTÓRICO DE ENTRADAS
 
 // =====================================================
 // REGISTRAR ENTRADA
 // =====================================================
 
 async function registrarEntrada() {
+    const campoCodigo = document.getElementById(
+        "codigoEntrada"
+    );
 
-    const campoCodigo =
-        document.getElementById(
-            "codigoEntrada"
-        );
+    const campoQuantidade = document.getElementById(
+        "quantidadeEntrada"
+    );
 
-
-    const campoQuantidade =
-        document.getElementById(
-            "quantidadeEntrada"
-        );
-
-
-    const campoEndereco =
-        document.getElementById(
-            "enderecoEntrada"
-        );
-
+    const campoEndereco = document.getElementById(
+        "enderecoEntrada"
+    );
 
     if (
         !campoCodigo ||
         !campoQuantidade ||
         !campoEndereco
     ) {
-
-        alert(
-            "Os campos da entrada não foram encontrados."
-        );
-
-
+        alert("Os campos da entrada não foram encontrados.");
         return;
-
     }
 
+    const codigo = normalizarCodigo(
+        campoCodigo.value
+    );
 
-    const codigo =
-        normalizarCodigo(
-            campoCodigo.value
-        );
+    const quantidadeEntrada = converterNumero(
+        campoQuantidade.value
+    );
 
+    const endereco = normalizarEndereco(
+        campoEndereco.value
+    );
 
-    const quantidadeEntrada =
-        converterNumero(
-            campoQuantidade.value
-        );
-
-
-    const endereco =
-        normalizarEndereco(
-            campoEndereco.value
-        );
-
-
-    // =====================================================
-    // VALIDAÇÕES
-    // =====================================================
-
-    if (
-        codigo ===
-        ""
-    ) {
-
-        alert(
-            "Digite o código do produto."
-        );
-
-
+    // Validações.
+    if (codigo === "") {
+        alert("Digite o código do produto.");
         campoCodigo.focus();
-
-
         return;
-
     }
 
-
     if (
-        !Number.isFinite(
-            quantidadeEntrada
-        ) ||
-        quantidadeEntrada <=
-        0
+        !Number.isFinite(quantidadeEntrada) ||
+        quantidadeEntrada <= 0
     ) {
-
-        alert(
-            "Digite uma quantidade válida."
-        );
-
-
+        alert("Digite uma quantidade válida.");
         campoQuantidade.focus();
-
-
         return;
-
     }
 
-
-    if (
-        endereco ===
-        ""
-    ) {
-
-        alert(
-            "Digite o endereço de armazenagem."
-        );
-
-
+    if (endereco === "") {
+        alert("Digite o endereço de armazenagem.");
         campoEndereco.focus();
-
-
         return;
-
     }
 
-
-    if (
-        !window.supabaseClient
-    ) {
-
+    if (!window.supabaseClient) {
         alert(
             "A conexão com o banco online não foi carregada."
         );
 
-
         return;
-
     }
 
-
-    // =====================================================
-    // BUSCAR PRODUTO
-    // =====================================================
-
+    // Buscar produto.
     const produtosMesmoCodigo =
         await buscarProdutosMovimentacaoSupabase(
             codigo,
             ""
         );
 
-
     if (
-        produtosMesmoCodigo ===
-        null ||
-        produtosMesmoCodigo.length ===
-        0
+        produtosMesmoCodigo === null ||
+        produtosMesmoCodigo.length === 0
     ) {
-
         alert(
             'O produto "' +
             codigo +
             '" não foi encontrado na base online.'
         );
 
-
         campoCodigo.focus();
-
-
         return;
-
     }
 
+    const produtoReferencia = produtosMesmoCodigo[0];
 
-    const produtoReferencia =
-        produtosMesmoCodigo[0];
-
-
-    // =====================================================
-    // ATUALIZAR SUPABASE
-    // =====================================================
-
+    // Atualizar Supabase.
     const sincronizouBanco =
         await sincronizarEntradaProdutoSupabase(
             codigo,
@@ -4735,91 +2774,48 @@ async function registrarEntrada() {
             quantidadeEntrada
         );
 
-
-    if (
-        !sincronizouBanco
-    ) {
-
+    if (!sincronizouBanco) {
         return;
-
     }
 
+    // Atualizar estoque local.
+    const estoque = carregarEstoque();
 
-    // =====================================================
-    // ATUALIZAR ESTOQUE LOCAL
-    // =====================================================
+    const produtoNaPosicao = estoque.find(
+        function (produto) {
+            return (
+                normalizarCodigo(produto.codigo) === codigo &&
+                normalizarEndereco(produto.endereco) === endereco
+            );
+        }
+    );
 
-    const estoque =
-        carregarEstoque();
+    const quantidadeReferencia = converterNumero(
+        produtoReferencia.quantidade
+    );
 
-
-    const produtoNaPosicao =
-        estoque.find(
-            function (produto) {
-
-                return (
-                    normalizarCodigo(
-                        produto.codigo
-                    ) ===
-                    codigo &&
-
-                    normalizarEndereco(
-                        produto.endereco
-                    ) ===
-                    endereco
-                );
-
-            }
-        );
-
-
-    const quantidadeReferencia =
-        converterNumero(
-            produtoReferencia.quantidade
-        );
-
-
-    const valorTotalReferencia =
-        converterNumero(
-
-            produtoReferencia.valor_total ??
-
-            produtoReferencia.valorTotal ??
-
-            0
-
-        );
-
+    const valorTotalReferencia = converterNumero(
+        produtoReferencia.valor_total ??
+        produtoReferencia.valorTotal ??
+        0
+    );
 
     const valorUnitarioReferencia =
         quantidadeReferencia > 0
-
-            ? valorTotalReferencia /
-              quantidadeReferencia
-
+            ? valorTotalReferencia / quantidadeReferencia
             : 0;
 
+    if (produtoNaPosicao) {
+        const quantidadeAnterior = converterNumero(
+            produtoNaPosicao.quantidade
+        );
 
-    if (
-        produtoNaPosicao
-    ) {
-
-        const quantidadeAnterior =
-            converterNumero(
-                produtoNaPosicao.quantidade
-            );
-
-
-        const valorTotalAnterior =
-            converterNumero(
-                produtoNaPosicao.valorTotal
-            );
-
+        const valorTotalAnterior = converterNumero(
+            produtoNaPosicao.valorTotal
+        );
 
         produtoNaPosicao.quantidade =
-            quantidadeAnterior +
-            quantidadeEntrada;
-
+            quantidadeAnterior + quantidadeEntrada;
 
         produtoNaPosicao.valorTotal =
             valorTotalAnterior +
@@ -4827,61 +2823,40 @@ async function registrarEntrada() {
                 quantidadeEntrada *
                 valorUnitarioReferencia
             );
-
     } else {
+        estoque.push({
+            nf: produtoReferencia.nf || "",
 
-        estoque.push(
-            {
+            codigo:
+                produtoReferencia.codigo || codigo,
 
-                nf:
-                    produtoReferencia.nf ||
-                    "",
+            descricao:
+                produtoReferencia.descricao ||
+                "Sem descrição",
 
-                codigo:
-                    produtoReferencia.codigo ||
-                    codigo,
+            cliente:
+                produtoReferencia.cliente || "SMI",
 
-                descricao:
-                    produtoReferencia.descricao ||
-                    "Sem descrição",
+            quantidade:
+                quantidadeEntrada,
 
-                cliente:
-                    produtoReferencia.cliente ||
-                    "SMI",
+            valorTotal:
+                quantidadeEntrada *
+                valorUnitarioReferencia,
 
-                quantidade:
-                    quantidadeEntrada,
-
-                valorTotal:
-                    quantidadeEntrada *
-                    valorUnitarioReferencia,
-
-                endereco:
-                    endereco
-
-            }
-        );
-
+            endereco:
+                endereco
+        });
     }
 
+    salvarEstoque(estoque);
 
-    salvarEstoque(
-        estoque
-    );
-
-
-    // =====================================================
-    // MOVIMENTAÇÃO
-    // =====================================================
-
+    // Movimentação.
     const movimentacao = {
-
-        tipo:
-            "ENTRADA",
+        tipo: "ENTRADA",
 
         codigo:
-            produtoReferencia.codigo ||
-            codigo,
+            produtoReferencia.codigo || codigo,
 
         descricao:
             produtoReferencia.descricao ||
@@ -4900,481 +2875,260 @@ async function registrarEntrada() {
             endereco,
 
         cliente:
-            produtoReferencia.cliente ||
-            "SMI",
+            produtoReferencia.cliente || "SMI",
 
         data:
             obterDataHoraAtual(),
 
         operador:
             obterNomeUsuario()
-
     };
 
+    salvarHistoricoEntrada(movimentacao);
+    salvarMovimentacaoGeral(movimentacao);
 
-    // =====================================================
-    // HISTÓRICOS
-    // =====================================================
-
-    salvarHistoricoEntrada(
-        movimentacao
-    );
-
-
-    salvarMovimentacaoGeral(
-        movimentacao
-    );
-
-
-    // =====================================================
-    // ATUALIZAR TELA
-    // =====================================================
-
+    // Atualizar tela.
     mostrarToastEntrada(
         movimentacao.codigo,
         quantidadeEntrada,
         endereco
     );
 
-
     limparCamposEntrada();
 
-
-    produtoVisualEntrada =
-        null;
-
-
-    estoqueAtualVisualEntrada =
-        0;
-
+    produtoVisualEntrada = null;
+    estoqueAtualVisualEntrada = 0;
 
     ocultarCardsEntrada();
 
-
-    paginaAtualHistoricoEntrada =
-        1;
-
+    paginaAtualHistoricoEntrada = 1;
 
     carregarHistoricoEntradas();
-
-
     atualizarResumoDiaEntradas();
 
-
     if (
-        typeof window
-            .carregarTabelaProdutosSupabase ===
+        typeof window.carregarTabelaProdutosSupabase ===
         "function"
     ) {
-
-        await window
-            .carregarTabelaProdutosSupabase();
-
+        await window.carregarTabelaProdutosSupabase();
     }
 
-
     campoCodigo.focus();
-
 }
-
 
 // =====================================================
 // SALVAR HISTÓRICO DE ENTRADAS
 // =====================================================
 
-function salvarHistoricoEntrada(
-    movimentacao
-) {
-
-    const entradas =
-        carregarListaLocalStorage(
-            "entradas"
-        );
-
-
-    entradas.unshift(
-        movimentacao
+function salvarHistoricoEntrada(movimentacao) {
+    const entradas = carregarListaLocalStorage(
+        "entradas"
     );
 
+    entradas.unshift(movimentacao);
 
-    salvarListaLocalStorage(
-        "entradas",
-        entradas
-    );
-
+    salvarListaLocalStorage("entradas", entradas);
 }
-
 
 // =====================================================
 // SALVAR MOVIMENTAÇÃO GERAL
 // =====================================================
 
-function salvarMovimentacaoGeral(
-    movimentacao
-) {
-
-    const movimentacoes =
-        carregarListaLocalStorage(
-            "movimentacoes"
-        );
-
-            movimentacoes.unshift(
-        movimentacao
+function salvarMovimentacaoGeral(movimentacao) {
+    const movimentacoes = carregarListaLocalStorage(
+        "movimentacoes"
     );
 
+    movimentacoes.unshift(movimentacao);
 
     salvarListaLocalStorage(
         "movimentacoes",
         movimentacoes
     );
-
 }
-
 
 // =====================================================
 // OBTER ENTRADAS FILTRADAS
 // =====================================================
 
 function obterEntradasFiltradas() {
+    let entradas = carregarListaLocalStorage(
+        "entradas"
+    );
 
-    let entradas =
-        carregarListaLocalStorage(
-            "entradas"
-        );
+    const campoPesquisa = document.getElementById(
+        "pesquisaHistoricoEntrada"
+    );
 
+    const campoPeriodo = document.getElementById(
+        "periodoHistoricoEntrada"
+    );
 
-    const campoPesquisa =
-        document.getElementById(
-            "pesquisaHistoricoEntrada"
-        );
-
-
-    const campoPeriodo =
-        document.getElementById(
-            "periodoHistoricoEntrada"
-        );
-
-
-    const pesquisa =
-        String(
-            campoPesquisa
-                ? campoPesquisa.value
-                : ""
-        )
+    const pesquisa = String(
+        campoPesquisa ? campoPesquisa.value : ""
+    )
         .trim()
         .toUpperCase();
 
+    const periodo = campoPeriodo
+        ? campoPeriodo.value
+        : "todos";
 
-    const periodo =
-        campoPeriodo
-            ? campoPeriodo.value
-            : "todos";
-
-
-    // =====================================================
-    // PESQUISA
-    // =====================================================
-
+    // Pesquisa.
     if (pesquisa) {
+        entradas = entradas.filter(function (entrada) {
+            const texto = [
+                entrada.codigo,
+                entrada.descricao,
+                entrada.endereco,
+                entrada.destino,
+                entrada.operador
+            ]
+                .join(" ")
+                .toUpperCase();
 
-        entradas =
-            entradas.filter(
-                function (entrada) {
-
-                    const texto =
-                        [
-                            entrada.codigo,
-                            entrada.descricao,
-                            entrada.endereco,
-                            entrada.destino,
-                            entrada.operador
-                        ]
-                        .join(
-                            " "
-                        )
-                        .toUpperCase();
-
-
-                    return texto.includes(
-                        pesquisa
-                    );
-
-                }
-            );
-
+            return texto.includes(pesquisa);
+        });
     }
 
+    // Período.
+    if (periodo !== "todos") {
+        const hoje = new Date();
 
-    // =====================================================
-    // PERÍODO
-    // =====================================================
+        hoje.setHours(0, 0, 0, 0);
 
-    if (
-        periodo !==
-        "todos"
-    ) {
+        entradas = entradas.filter(function (entrada) {
+            const dataEntrada =
+                converterDataEntradaParaDate(
+                    entrada.data
+                );
 
-        const hoje =
-            new Date();
+            if (!dataEntrada) {
+                return false;
+            }
 
+            dataEntrada.setHours(0, 0, 0, 0);
 
-        hoje.setHours(
-            0,
-            0,
-            0,
-            0
-        );
-
-
-        entradas =
-            entradas.filter(
-                function (entrada) {
-
-                    const dataEntrada =
-                        converterDataEntradaParaDate(
-                            entrada.data
-                        );
-
-
-                    if (!dataEntrada) {
-                        return false;
-                    }
-
-
-                    dataEntrada.setHours(
-                        0,
-                        0,
-                        0,
-                        0
-                    );
-
-
-                    const diferencaDias =
-                        Math.floor(
-                            (
-                                hoje -
-                                dataEntrada
-                            ) /
-                            86400000
-                        );
-
-
-                    if (
-                        periodo ===
-                        "hoje"
-                    ) {
-
-                        return (
-                            diferencaDias ===
-                            0
-                        );
-
-                    }
-
-
-                    const quantidadeDias =
-                        Number(
-                            periodo
-                        );
-
-
-                    return (
-                        diferencaDias >= 0 &&
-                        diferencaDias <
-                        quantidadeDias
-                    );
-
-                }
+            const diferencaDias = Math.floor(
+                (hoje - dataEntrada) / 86400000
             );
 
-    }
+            if (periodo === "hoje") {
+                return diferencaDias === 0;
+            }
 
+            const quantidadeDias = Number(periodo);
+
+            return (
+                diferencaDias >= 0 &&
+                diferencaDias < quantidadeDias
+            );
+        });
+    }
 
     return entradas;
-
 }
 
-
 // =====================================================
-// CARREGAR HISTÓRICO
+// CARREGAR HISTÓRICO DE ENTRADAS
 // =====================================================
 
 function carregarHistoricoEntradas() {
-
-    const tabela =
-        document.getElementById(
-            "listaEntradas"
-        );
-
+    const tabela = document.getElementById(
+        "listaEntradas"
+    );
 
     if (!tabela) {
         return;
     }
 
+    const entradas = obterEntradasFiltradas();
 
-    const entradas =
-        obterEntradasFiltradas();
+    tabela.innerHTML = "";
 
+    if (entradas.length === 0) {
+        tabela.innerHTML = `
+            <tr>
+                <td
+                    colspan="6"
+                    style="text-align:center;"
+                >
+                    Nenhuma entrada encontrada.
+                </td>
+            </tr>
+        `;
 
-    tabela.innerHTML =
-        "";
-
-
-    // =====================================================
-    // SEM RESULTADOS
-    // =====================================================
-
-    if (
-        entradas.length ===
-        0
-    ) {
-
-        tabela.innerHTML =
-            `
-                <tr>
-
-                    <td
-                        colspan="6"
-                        style="text-align:center;"
-                    >
-                        Nenhuma entrada encontrada.
-                    </td>
-
-                </tr>
-            `;
-
-
-        atualizarContadorHistoricoEntrada(
-            0,
-            0,
-            0
-        );
-
-
-        criarPaginacaoHistoricoEntrada(
-            0
-        );
-
+        atualizarContadorHistoricoEntrada(0, 0, 0);
+        criarPaginacaoHistoricoEntrada(0);
 
         return;
     }
 
-
-    // =====================================================
-    // PAGINAÇÃO
-    // =====================================================
-
-    const totalPaginas =
-        Math.ceil(
-            entradas.length /
-            itensPorPaginaHistoricoEntrada
-        );
-
-
-    if (
-        paginaAtualHistoricoEntrada >
-        totalPaginas
-    ) {
-
-        paginaAtualHistoricoEntrada =
-            totalPaginas;
-
-    }
-
-
-    const inicio =
-        (
-            paginaAtualHistoricoEntrada -
-            1
-        ) *
-        itensPorPaginaHistoricoEntrada;
-
-
-    const fim =
-        Math.min(
-            inicio +
-            itensPorPaginaHistoricoEntrada,
-            entradas.length
-        );
-
-
-    const entradasPagina =
-        entradas.slice(
-            inicio,
-            fim
-        );
-
-
-    // =====================================================
-    // LINHAS
-    // =====================================================
-
-    entradasPagina.forEach(
-        function (entrada) {
-
-            const linha =
-                document.createElement(
-                    "tr"
-                );
-
-
-            linha.appendChild(
-                criarCelula(
-                    entrada.codigo ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    entrada.descricao ||
-                    "Sem descrição"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    formatarQuantidade(
-                        entrada.quantidade
-                    )
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    entrada.endereco ||
-                    entrada.destino ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    entrada.data ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    entrada.operador ||
-                    "Administrador"
-                )
-            );
-
-
-            tabela.appendChild(
-                linha
-            );
-
-        }
+    // Paginação.
+    const totalPaginas = Math.ceil(
+        entradas.length /
+        itensPorPaginaHistoricoEntrada
     );
 
+    if (
+        paginaAtualHistoricoEntrada > totalPaginas
+    ) {
+        paginaAtualHistoricoEntrada = totalPaginas;
+    }
+
+    const inicio =
+        (paginaAtualHistoricoEntrada - 1) *
+        itensPorPaginaHistoricoEntrada;
+
+    const fim = Math.min(
+        inicio + itensPorPaginaHistoricoEntrada,
+        entradas.length
+    );
+
+    const entradasPagina = entradas.slice(
+        inicio,
+        fim
+    );
+
+    entradasPagina.forEach(function (entrada) {
+        const linha = document.createElement("tr");
+
+        linha.appendChild(
+            criarCelula(entrada.codigo || "-")
+        );
+
+        linha.appendChild(
+            criarCelula(
+                entrada.descricao || "Sem descrição"
+            )
+        );
+
+        linha.appendChild(
+            criarCelula(
+                formatarQuantidade(entrada.quantidade)
+            )
+        );
+
+        linha.appendChild(
+            criarCelula(
+                entrada.endereco ||
+                entrada.destino ||
+                "-"
+            )
+        );
+
+        linha.appendChild(
+            criarCelula(entrada.data || "-")
+        );
+
+        linha.appendChild(
+            criarCelula(
+                entrada.operador || "Administrador"
+            )
+        );
+
+        tabela.appendChild(linha);
+    });
 
     atualizarContadorHistoricoEntrada(
         inicio + 1,
@@ -5382,13 +3136,8 @@ function carregarHistoricoEntradas() {
         entradas.length
     );
 
-
-    criarPaginacaoHistoricoEntrada(
-        totalPaginas
-    );
-
+    criarPaginacaoHistoricoEntrada(totalPaginas);
 }
-
 
 // =====================================================
 // CONTADOR DO HISTÓRICO
@@ -5399,31 +3148,18 @@ function atualizarContadorHistoricoEntrada(
     fim,
     total
 ) {
-
-    const contador =
-        document.getElementById(
-            "contadorHistoricoEntrada"
-        );
-
+    const contador = document.getElementById(
+        "contadorHistoricoEntrada"
+    );
 
     if (!contador) {
         return;
     }
 
-
-    if (
-        total ===
-        0
-    ) {
-
-        contador.textContent =
-            "0 entradas";
-
-
+    if (total === 0) {
+        contador.textContent = "0 entradas";
         return;
-
     }
-
 
     contador.textContent =
         "Mostrando " +
@@ -5432,592 +3168,307 @@ function atualizarContadorHistoricoEntrada(
         fim +
         " de " +
         total +
-        (
-            total === 1
-                ? " entrada"
-                : " entradas"
-        );
-
+        (total === 1 ? " entrada" : " entradas");
 }
 
-
 // =====================================================
-// CRIAR PAGINAÇÃO
+// CRIAR PAGINAÇÃO DO HISTÓRICO
 // =====================================================
 
-function criarPaginacaoHistoricoEntrada(
-    totalPaginas
-) {
-
-    const rodape =
-        document.querySelector(
-            ".pagina-entradas .rodape-historico-entrada"
-        );
-
+function criarPaginacaoHistoricoEntrada(totalPaginas) {
+    const rodape = document.querySelector(
+        ".pagina-entradas .rodape-historico-entrada"
+    );
 
     if (!rodape) {
         return;
     }
 
-
-    let paginacao =
-        document.getElementById(
-            "paginacaoHistoricoEntrada"
-        );
-
+    let paginacao = document.getElementById(
+        "paginacaoHistoricoEntrada"
+    );
 
     if (!paginacao) {
+        paginacao = document.createElement("div");
 
-        paginacao =
-            document.createElement(
-                "div"
-            );
+        paginacao.id = "paginacaoHistoricoEntrada";
 
+        paginacao.style.display = "flex";
+        paginacao.style.alignItems = "center";
+        paginacao.style.gap = "6px";
 
-        paginacao.id =
-            "paginacaoHistoricoEntrada";
-
-
-        paginacao.style.display =
-            "flex";
-
-
-        paginacao.style.alignItems =
-            "center";
-
-
-        paginacao.style.gap =
-            "6px";
-
-
-        const botaoExportar =
-            document.getElementById(
-                "btnExportarEntradas"
-            );
-
+        const botaoExportar = document.getElementById(
+            "btnExportarEntradas"
+        );
 
         if (botaoExportar) {
-
             rodape.insertBefore(
                 paginacao,
                 botaoExportar
             );
-
         } else {
-
-            rodape.appendChild(
-                paginacao
-            );
-
+            rodape.appendChild(paginacao);
         }
-
     }
 
+    paginacao.innerHTML = "";
 
-    paginacao.innerHTML =
-        "";
-
-
-    if (
-        totalPaginas <=
-        1
-    ) {
-
+    if (totalPaginas <= 1) {
         return;
-
     }
-
-
-    // =====================================================
-    // PÁGINAS
-    // =====================================================
 
     for (
         let pagina = 1;
         pagina <= totalPaginas;
         pagina++
     ) {
-
         if (
             totalPaginas > 7 &&
             pagina !== 1 &&
             pagina !== totalPaginas &&
             Math.abs(
-                pagina -
-                paginaAtualHistoricoEntrada
+                pagina - paginaAtualHistoricoEntrada
             ) > 1
         ) {
-
             continue;
-
         }
 
+        const botao = document.createElement("button");
 
-        const botao =
-            document.createElement(
-                "button"
-            );
+        botao.type = "button";
+        botao.textContent = pagina;
 
+        botao.style.width = "32px";
+        botao.style.height = "32px";
+        botao.style.borderRadius = "6px";
+        botao.style.cursor = "pointer";
+        botao.style.fontWeight = "700";
 
-        botao.type =
-            "button";
-
-
-        botao.textContent =
-            pagina;
-
-
-        botao.style.width =
-            "32px";
-
-
-        botao.style.height =
-            "32px";
-
-
-        botao.style.borderRadius =
-            "6px";
-
-
-        botao.style.cursor =
-            "pointer";
-
-
-        botao.style.fontWeight =
-            "700";
-
-
-        if (
-            pagina ===
-            paginaAtualHistoricoEntrada
-        ) {
-
-            botao.style.background =
-                "#063b73";
-
-
-            botao.style.color =
-                "#ffffff";
-
-
-            botao.style.border =
-                "1px solid #063b73";
-
+        if (pagina === paginaAtualHistoricoEntrada) {
+            botao.style.background = "#063b73";
+            botao.style.color = "#ffffff";
+            botao.style.border = "1px solid #063b73";
         } else {
-
-            botao.style.background =
-                "#ffffff";
-
-
-            botao.style.color =
-                "#17345c";
-
-
-            botao.style.border =
-                "1px solid #d5deea";
-
+            botao.style.background = "#ffffff";
+            botao.style.color = "#17345c";
+            botao.style.border = "1px solid #d5deea";
         }
 
+        botao.addEventListener("click", function () {
+            paginaAtualHistoricoEntrada = pagina;
+            carregarHistoricoEntradas();
+        });
 
-        botao.addEventListener(
-            "click",
-            function () {
-
-                paginaAtualHistoricoEntrada =
-                    pagina;
-
-
-                carregarHistoricoEntradas();
-
-            }
-        );
-
-
-        paginacao.appendChild(
-            botao
-        );
-
+        paginacao.appendChild(botao);
     }
-
 }
 
-
 // =====================================================
-// RESUMO DO DIA
+// RESUMO DO DIA — ENTRADAS
 // =====================================================
 
 function atualizarResumoDiaEntradas() {
+    const entradas = carregarListaLocalStorage(
+        "entradas"
+    );
 
-    const entradas =
-        carregarListaLocalStorage(
-            "entradas"
-        );
+    const hoje = new Date();
 
+    hoje.setHours(0, 0, 0, 0);
 
-    const hoje =
-        new Date();
+    const entradasHoje = entradas.filter(
+        function (entrada) {
+            const data = converterDataEntradaParaDate(
+                entrada.data
+            );
 
+            if (!data) {
+                return false;
+            }
 
-    hoje.setHours(
-        0,
-        0,
-        0,
+            data.setHours(0, 0, 0, 0);
+
+            return (
+                data.getTime() === hoje.getTime()
+            );
+        }
+    );
+
+    // Quantidade de movimentações.
+    const totalEntradas = document.getElementById(
+        "totalEntradasHoje"
+    );
+
+    if (totalEntradas) {
+        totalEntradas.textContent = entradasHoje.length;
+    }
+
+    // Quantidade de unidades.
+    const unidades = entradasHoje.reduce(
+        function (total, entrada) {
+            return (
+                total +
+                converterNumero(entrada.quantidade)
+            );
+        },
         0
     );
 
-
-    const entradasHoje =
-        entradas.filter(
-            function (entrada) {
-
-                const data =
-                    converterDataEntradaParaDate(
-                        entrada.data
-                    );
-
-
-                if (!data) {
-                    return false;
-                }
-
-
-                data.setHours(
-                    0,
-                    0,
-                    0,
-                    0
-                );
-
-
-                return (
-                    data.getTime() ===
-                    hoje.getTime()
-                );
-
-            }
-        );
-
-
-    // =====================================================
-    // MOVIMENTAÇÕES
-    // =====================================================
-
-    const totalEntradas =
-        document.getElementById(
-            "totalEntradasHoje"
-        );
-
-
-    if (totalEntradas) {
-
-        totalEntradas.textContent =
-            entradasHoje.length;
-
-    }
-
-
-    // =====================================================
-    // UNIDADES
-    // =====================================================
-
-    const unidades =
-        entradasHoje.reduce(
-            function (
-                total,
-                entrada
-            ) {
-
-                return (
-                    total +
-                    converterNumero(
-                        entrada.quantidade
-                    )
-                );
-
-            },
-            0
-        );
-
-
-    const totalUnidades =
-        document.getElementById(
-            "totalUnidadesEntradaHoje"
-        );
-
+    const totalUnidades = document.getElementById(
+        "totalUnidadesEntradaHoje"
+    );
 
     if (totalUnidades) {
-
-        totalUnidades.textContent =
-            formatarQuantidade(
-                unidades
-            );
-
+        totalUnidades.textContent = formatarQuantidade(
+            unidades
+        );
     }
 
+    // Última entrada.
+    const ultimaHora = document.getElementById(
+        "ultimaEntradaHoje"
+    );
 
-    // =====================================================
-    // ÚLTIMA ENTRADA
-    // =====================================================
+    const ultimaData = document.getElementById(
+        "dataUltimaEntradaHoje"
+    );
 
-    const ultimaHora =
-        document.getElementById(
-            "ultimaEntradaHoje"
+    if (entradasHoje.length > 0) {
+        const ultimaEntrada = entradasHoje[0];
+
+        const textoData = String(
+            ultimaEntrada.data || ""
         );
 
-
-    const ultimaData =
-        document.getElementById(
-            "dataUltimaEntradaHoje"
-        );
-
-
-    if (
-        entradasHoje.length >
-        0
-    ) {
-
-        const ultimaEntrada =
-            entradasHoje[0];
-
-
-        const textoData =
-            String(
-                ultimaEntrada.data ||
-                ""
-            );
-
-
-        const partes =
-            textoData.split(
-                ","
-            );
-
+        const partes = textoData.split(",");
 
         if (ultimaHora) {
-
-            ultimaHora.textContent =
-                partes[1]
-                    ? partes[1].trim()
-                    : "--";
-
+            ultimaHora.textContent = partes[1]
+                ? partes[1].trim()
+                : "--";
         }
-
 
         if (ultimaData) {
-
-            ultimaData.textContent =
-                partes[0] ||
-                "--";
-
+            ultimaData.textContent = partes[0] || "--";
         }
-
     } else {
-
         if (ultimaHora) {
-
-            ultimaHora.textContent =
-                "--";
-
+            ultimaHora.textContent = "--";
         }
-
 
         if (ultimaData) {
-
-            ultimaData.textContent =
-                "--";
-
+            ultimaData.textContent = "--";
         }
-
     }
-
 
     atualizarOperadorResumoEntrada();
-
 }
 
-
 // =====================================================
-// OPERADOR
+// OPERADOR DO RESUMO
 // =====================================================
 
 function atualizarOperadorResumoEntrada() {
-
-    const operador =
-        document.getElementById(
-            "operadorResumoEntrada"
-        );
-
+    const operador = document.getElementById(
+        "operadorResumoEntrada"
+    );
 
     if (!operador) {
         return;
     }
 
-
     operador.textContent =
-        typeof obterNomeUsuario ===
-        "function"
-
+        typeof obterNomeUsuario === "function"
             ? obterNomeUsuario()
-
             : (
-                localStorage.getItem(
-                    "usuario"
-                ) ||
+                localStorage.getItem("usuario") ||
                 "-"
             );
-
 }
-
 
 // =====================================================
 // CONVERTER DATA DO HISTÓRICO
 // =====================================================
 
-function converterDataEntradaParaDate(
-    texto
-) {
-
+function converterDataEntradaParaDate(texto) {
     if (!texto) {
         return null;
     }
 
-
-    const resultado =
-        String(
-            texto
-        ).match(
-            /(\d{2})\/(\d{2})\/(\d{4})/
-        );
-
+    const resultado = String(texto).match(
+        /(\d{2})\/(\d{2})\/(\d{4})/
+    );
 
     if (!resultado) {
         return null;
     }
 
-
     return new Date(
-        Number(
-            resultado[3]
-        ),
-
-        Number(
-            resultado[2]
-        ) - 1,
-
-        Number(
-            resultado[1]
-        )
+        Number(resultado[3]),
+        Number(resultado[2]) - 1,
+        Number(resultado[1])
     );
-
 }
 
-
 // =====================================================
-// LIMPAR CAMPOS
+// LIMPAR CAMPOS DA ENTRADA
 // =====================================================
 
 function limparCamposEntrada() {
-
     const campos = [
-
         "codigoEntrada",
         "quantidadeEntrada",
         "enderecoEntrada"
-
     ];
 
+    campos.forEach(function (id) {
+        const campo = document.getElementById(id);
 
-    campos.forEach(
-        function (id) {
-
-            const campo =
-                document.getElementById(
-                    id
-                );
-
-
-            if (campo) {
-
-                campo.value =
-                    "";
-
-            }
-
+        if (campo) {
+            campo.value = "";
         }
-    );
-
+    });
 }
-
 
 // =====================================================
 // OCULTAR CARDS APÓS REGISTRO
 // =====================================================
 
 function ocultarCardsEntrada() {
-
     const ids = [
-
         "cardProdutoEntrada",
         "cardNovoSaldoEntrada",
         "statusEnderecoEntrada",
         "cardEnderecoInteligenteEntrada"
-
     ];
 
+    ids.forEach(function (id) {
+        const elemento = document.getElementById(id);
 
-    ids.forEach(
-        function (id) {
-
-            const elemento =
-                document.getElementById(
-                    id
-                );
-
-
-            if (elemento) {
-
-                elemento.classList.add(
-                    "oculto"
-                );
-
-            }
-
+        if (elemento) {
+            elemento.classList.add("oculto");
         }
+    });
+
+    const listaEnderecos = document.getElementById(
+        "listaEnderecosInteligentesEntrada"
     );
 
-
-    const listaEnderecos =
-        document.getElementById(
-            "listaEnderecosInteligentesEntrada"
-        );
-
-
-    const recomendacaoEndereco =
-        document.getElementById(
-            "recomendacaoEnderecoEntrada"
-        );
-
+    const recomendacaoEndereco = document.getElementById(
+        "recomendacaoEnderecoEntrada"
+    );
 
     if (listaEnderecos) {
-
-        listaEnderecos.innerHTML =
-            "";
-
+        listaEnderecos.innerHTML = "";
     }
-
 
     if (recomendacaoEndereco) {
-
-        recomendacaoEndereco.textContent =
-            "";
-
+        recomendacaoEndereco.textContent = "";
     }
-
 }
 
-
 // =====================================================
-// TOAST DE SUCESSO
+// TOAST DE SUCESSO DA ENTRADA
 // =====================================================
 
 function mostrarToastEntrada(
@@ -6025,88 +3476,47 @@ function mostrarToastEntrada(
     quantidade,
     endereco
 ) {
+    const toast = document.getElementById(
+        "toastEntrada"
+    );
 
-    const toast =
-        document.getElementById(
-            "toastEntrada"
-        );
+    const texto = document.getElementById(
+        "textoToastEntrada"
+    );
 
-
-    const texto =
-        document.getElementById(
-            "textoToastEntrada"
-        );
-
-
-    if (
-        !toast ||
-        !texto
-    ) {
-
-        alert(
-            "Entrada registrada com sucesso!"
-        );
-
-
+    if (!toast || !texto) {
+        alert("Entrada registrada com sucesso!");
         return;
-
     }
-
 
     texto.textContent =
         "Entrada registrada com sucesso!   " +
         codigo +
         " | " +
-        formatarQuantidade(
-            quantidade
-        ) +
+        formatarQuantidade(quantidade) +
         " un. | " +
         endereco;
 
-            toast.classList.add(
-        "mostrar"
-    );
+    toast.classList.add("mostrar");
 
-
-    setTimeout(
-        function () {
-
-            toast.classList.remove(
-                "mostrar"
-            );
-
-        },
-        3500
-    );
-
+    setTimeout(function () {
+        toast.classList.remove("mostrar");
+    }, 3500);
 }
 
-
 // =====================================================
-// EXPORTAR HISTÓRICO
+// EXPORTAR HISTÓRICO DE ENTRADAS
 // =====================================================
 
 function exportarHistoricoEntradasCSV() {
+    const entradas = obterEntradasFiltradas();
 
-    const entradas =
-        obterEntradasFiltradas();
-
-
-    if (
-        entradas.length ===
-        0
-    ) {
-
-        alert(
-            "Não existem entradas para exportar."
-        );
-
+    if (entradas.length === 0) {
+        alert("Não existem entradas para exportar.");
         return;
     }
 
-
     const linhas = [
-
         [
             "Código",
             "Descrição",
@@ -6115,131 +3525,57 @@ function exportarHistoricoEntradasCSV() {
             "Data",
             "Operador"
         ]
-
     ];
 
+    entradas.forEach(function (entrada) {
+        linhas.push([
+            entrada.codigo || "",
+            entrada.descricao || "",
+            entrada.quantidade || 0,
+            entrada.endereco || entrada.destino || "",
+            entrada.data || "",
+            entrada.operador || ""
+        ]);
+    });
 
-    entradas.forEach(
-        function (entrada) {
+    const csv = linhas
+        .map(function (linha) {
+            return linha
+                .map(function (valor) {
+                    return (
+                        '"' +
+                        String(valor).replace(/"/g, '""') +
+                        '"'
+                    );
+                })
+                .join(";");
+        })
+        .join("\n");
 
-            linhas.push(
-                [
-
-                    entrada.codigo ||
-                    "",
-
-                    entrada.descricao ||
-                    "",
-
-                    entrada.quantidade ||
-                    0,
-
-                    entrada.endereco ||
-                    entrada.destino ||
-                    "",
-
-                    entrada.data ||
-                    "",
-
-                    entrada.operador ||
-                    ""
-
-                ]
-            );
-
+    const blob = new Blob(
+        ["\uFEFF" + csv],
+        {
+            type: "text/csv;charset=utf-8;"
         }
     );
 
+    const link = document.createElement("a");
 
-    const csv =
-        linhas
-            .map(
-                function (linha) {
+    link.href = URL.createObjectURL(blob);
+    link.download = "historico_entradas.csv";
 
-                    return linha
-                        .map(
-                            function (valor) {
-
-                                return (
-                                    '"' +
-                                    String(
-                                        valor
-                                    )
-                                    .replace(
-                                        /"/g,
-                                        '""'
-                                    ) +
-                                    '"'
-                                );
-
-                            }
-                        )
-                        .join(
-                            ";"
-                        );
-
-                }
-            )
-            .join(
-                "\n"
-            );
-
-
-    const blob =
-        new Blob(
-            [
-                "\uFEFF" +
-                csv
-            ],
-            {
-                type:
-                    "text/csv;charset=utf-8;"
-            }
-        );
-
-
-    const link =
-        document.createElement(
-            "a"
-        );
-
-
-    link.href =
-        URL.createObjectURL(
-            blob
-        );
-
-
-    link.download =
-        "historico_entradas.csv";
-
-
-    document.body.appendChild(
-        link
-    );
-
-
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
 
-
-    document.body.removeChild(
-        link
-    );
-
-
-    URL.revokeObjectURL(
-        link.href
-    );
-
+    URL.revokeObjectURL(link.href);
 }
-
 
 // =====================================================
 // DISPONIBILIZAÇÃO GLOBAL
 // =====================================================
 
-window.registrarEntrada =
-    registrarEntrada;
+window.registrarEntrada = registrarEntrada;
 
 window.salvarHistoricoEntrada =
     salvarHistoricoEntrada;
@@ -6262,438 +3598,229 @@ window.atualizarResumoDiaEntradas =
 window.mostrarToastEntrada =
     mostrarToastEntrada;
 
+// FIM DA PARTE 4/10
 
-// =====================================================
-// SMI WMS - APP.JS
-// PARTE 5 - SAÍDAS DE ESTOQUE
-// NOVO VISUAL + FUNCIONALIDADES
-// =====================================================
 
+// APP.JS — PARTE 5/10
+// SAÍDAS DE ESTOQUE
 
 // =====================================================
 // VARIÁVEIS DA TELA
 // =====================================================
 
-let produtoVisualSaida =
-    null;
+let produtoVisualSaida = null;
+let produtosPosicoesSaida = [];
+let estoqueTotalVisualSaida = 0;
+let estoquePosicaoVisualSaida = 0;
+let paginaAtualHistoricoSaida = 1;
 
-
-let produtosPosicoesSaida =
-    [];
-
-
-let estoqueTotalVisualSaida =
-    0;
-
-
-let estoquePosicaoVisualSaida =
-    0;
-
-
-let paginaAtualHistoricoSaida =
-    1;
-
-
-const itensPorPaginaHistoricoSaida =
-    50;
-
+const itensPorPaginaHistoricoSaida = 50;
 
 // =====================================================
 // INICIALIZAÇÃO DA PÁGINA DE SAÍDAS
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        const tabela =
-            document.getElementById(
-                "listaSaidas"
-            );
-
-
-        /*
-            Só executa esta parte na
-            tela de Saídas.
-        */
-
-        if (!tabela) {
-
-            return;
-
-        }
-
-
-        carregarHistoricoSaidas();
-
-
-        atualizarResumoDiaSaidas();
-
-
-        atualizarOperadorResumoSaida();
-
-
-        const campoCodigo =
-            document.getElementById(
-                "codigoSaida"
-            );
-
-
-        const campoQuantidade =
-            document.getElementById(
-                "quantidadeSaida"
-            );
-
-
-        const campoEndereco =
-            document.getElementById(
-                "enderecoSaida"
-            );
-
-
-        const campoDestino =
-            document.getElementById(
-                "requisitanteSaida"
-            );
-
-
-        const botaoSaida =
-            document.getElementById(
-                "btnRegistrarSaida"
-            );
-
-
-        // =====================================================
-        // BOTÃO
-        // =====================================================
-
-        if (
-            botaoSaida
-        ) {
-
-            botaoSaida.addEventListener(
-                "click",
-                registrarSaida
-            );
-
-        }
-
-
-        // =====================================================
-        // CÓDIGO
-        // =====================================================
-
-        if (
-            campoCodigo
-        ) {
-
-            campoCodigo.addEventListener(
-                "change",
-                carregarResumoProdutoSaida
-            );
-
-
-            campoCodigo.addEventListener(
-                "blur",
-                carregarResumoProdutoSaida
-            );
-
-
-            campoCodigo.addEventListener(
-                "keydown",
-                function (evento) {
-
-                    if (
-                        evento.key ===
-                        "Enter"
-                    ) {
-
-                        evento.preventDefault();
-
-
-                        carregarResumoProdutoSaida()
-                            .then(
-                                function () {
-
-                                    if (
-                                        campoQuantidade
-                                    ) {
-
-                                        campoQuantidade.focus();
-
-                                    }
-
-                                }
-                            );
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        // =====================================================
-        // QUANTIDADE
-        // =====================================================
-
-        if (
-            campoQuantidade
-        ) {
-
-            campoQuantidade.addEventListener(
-                "input",
-                atualizarNovoSaldoSaida
-            );
-
-
-            campoQuantidade.addEventListener(
-                "keydown",
-                function (evento) {
-
-                    if (
-                        evento.key ===
-                        "Enter"
-                    ) {
-
-                        evento.preventDefault();
-
-
-                        if (
-                            campoEndereco
-                        ) {
-
-                            campoEndereco.focus();
-
-                        }
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        // =====================================================
-        // POSIÇÃO
-        // =====================================================
-
-        if (
-            campoEndereco
-        ) {
-
-            campoEndereco.addEventListener(
-                "change",
-                function () {
-
-                    atualizarPosicaoSelecionadaSaida();
-
-
-                    atualizarNovoSaldoSaida();
-
-                }
-            );
-
-        }
-
-
-        // =====================================================
-        // DESTINO
-        // =====================================================
-
-        if (
-            campoDestino
-        ) {
-
-            campoDestino.addEventListener(
-                "change",
-                atualizarStatusDestinoSaida
-            );
-
-        }
-
-
-        // =====================================================
-        // PESQUISA
-        // =====================================================
-
-        const pesquisa =
-            document.getElementById(
-                "pesquisaHistoricoSaida"
-            );
-
-
-        if (
-            pesquisa
-        ) {
-
-            pesquisa.addEventListener(
-                "input",
-                function () {
-
-                    paginaAtualHistoricoSaida =
-                        1;
-
-
-                    carregarHistoricoSaidas();
-
-                }
-            );
-
-        }
-
-
-        // =====================================================
-        // PERÍODO
-        // =====================================================
-
-        const periodo =
-            document.getElementById(
-                "periodoHistoricoSaida"
-            );
-
-
-        if (
-            periodo
-        ) {
-
-            periodo.addEventListener(
-                "change",
-                function () {
-
-                    paginaAtualHistoricoSaida =
-                        1;
-
-
-                    carregarHistoricoSaidas();
-
-                }
-            );
-
-        }
-
-
-        // =====================================================
-        // EXPORTAR
-        // =====================================================
-
-        const exportar =
-            document.getElementById(
-                "btnExportarSaidas"
-            );
-
-
-        if (
-            exportar
-        ) {
-
-            exportar.addEventListener(
-                "click",
-                exportarHistoricoSaidasCSV
-            );
-
-        }
-
-
-        if (
-            campoCodigo
-        ) {
-
-            campoCodigo.focus();
-
-        }
-
+document.addEventListener("DOMContentLoaded", function () {
+    const tabela = document.getElementById(
+        "listaSaidas"
+    );
+
+    if (!tabela) {
+        return;
     }
-);
 
+    carregarHistoricoSaidas();
+    atualizarResumoDiaSaidas();
+    atualizarOperadorResumoSaida();
+
+    const campoCodigo = document.getElementById(
+        "codigoSaida"
+    );
+
+    const campoQuantidade = document.getElementById(
+        "quantidadeSaida"
+    );
+
+    const campoEndereco = document.getElementById(
+        "enderecoSaida"
+    );
+
+    const campoDestino = document.getElementById(
+        "requisitanteSaida"
+    );
+
+    const botaoSaida = document.getElementById(
+        "btnRegistrarSaida"
+    );
+
+    if (botaoSaida) {
+        botaoSaida.addEventListener(
+            "click",
+            registrarSaida
+        );
+    }
+
+    // Código.
+    if (campoCodigo) {
+        campoCodigo.addEventListener(
+            "change",
+            carregarResumoProdutoSaida
+        );
+
+        campoCodigo.addEventListener(
+            "blur",
+            carregarResumoProdutoSaida
+        );
+
+        campoCodigo.addEventListener(
+            "keydown",
+            function (evento) {
+                if (evento.key === "Enter") {
+                    evento.preventDefault();
+
+                    carregarResumoProdutoSaida().then(
+                        function () {
+                            if (campoQuantidade) {
+                                campoQuantidade.focus();
+                            }
+                        }
+                    );
+                }
+            }
+        );
+    }
+
+    // Quantidade.
+    if (campoQuantidade) {
+        campoQuantidade.addEventListener(
+            "input",
+            atualizarNovoSaldoSaida
+        );
+
+        campoQuantidade.addEventListener(
+            "keydown",
+            function (evento) {
+                if (evento.key === "Enter") {
+                    evento.preventDefault();
+
+                    if (campoEndereco) {
+                        campoEndereco.focus();
+                    }
+                }
+            }
+        );
+    }
+
+    // Posição.
+    if (campoEndereco) {
+        campoEndereco.addEventListener(
+            "change",
+            function () {
+                atualizarPosicaoSelecionadaSaida();
+                atualizarNovoSaldoSaida();
+            }
+        );
+    }
+
+    // Destino.
+    if (campoDestino) {
+        campoDestino.addEventListener(
+            "change",
+            atualizarStatusDestinoSaida
+        );
+    }
+
+    // Pesquisa.
+    const pesquisa = document.getElementById(
+        "pesquisaHistoricoSaida"
+    );
+
+    if (pesquisa) {
+        pesquisa.addEventListener("input", function () {
+            paginaAtualHistoricoSaida = 1;
+            carregarHistoricoSaidas();
+        });
+    }
+
+    // Período.
+    const periodo = document.getElementById(
+        "periodoHistoricoSaida"
+    );
+
+    if (periodo) {
+        periodo.addEventListener("change", function () {
+            paginaAtualHistoricoSaida = 1;
+            carregarHistoricoSaidas();
+        });
+    }
+
+    // Exportar histórico.
+    const exportar = document.getElementById(
+        "btnExportarSaidas"
+    );
+
+    if (exportar) {
+        exportar.addEventListener(
+            "click",
+            exportarHistoricoSaidasCSV
+        );
+    }
+
+    if (campoCodigo) {
+        campoCodigo.focus();
+    }
+});
 
 // =====================================================
 // CARREGAR PRODUTO DA SAÍDA
 // =====================================================
 
 async function carregarResumoProdutoSaida() {
+    const campoCodigo = document.getElementById(
+        "codigoSaida"
+    );
 
-    const campoCodigo =
-        document.getElementById(
-            "codigoSaida"
-        );
+    const card = document.getElementById(
+        "cardProdutoSaida"
+    );
 
+    const campoEndereco = document.getElementById(
+        "enderecoSaida"
+    );
 
-    const card =
-        document.getElementById(
-            "cardProdutoSaida"
-        );
-
-
-    const campoEndereco =
-        document.getElementById(
-            "enderecoSaida"
-        );
-
-
-    if (
-        !campoCodigo ||
-        !card
-    ) {
-
+    if (!campoCodigo || !card) {
         return;
-
     }
 
+    const codigo = normalizarCodigo(
+        campoCodigo.value
+    );
 
-    const codigo =
-        normalizarCodigo(
-            campoCodigo.value
-        );
-
-
-    if (
-        !codigo
-    ) {
-
+    if (!codigo) {
         limparProdutoVisualSaida();
-
-
         return;
-
     }
 
-
-    if (
-        !window.supabaseClient
-    ) {
-
+    if (!window.supabaseClient) {
         console.warn(
             "Supabase não disponível para consultar a saída."
         );
 
-
         return;
-
     }
 
-
     try {
-
         const produtos =
             await buscarProdutosMovimentacaoSupabase(
                 codigo,
                 ""
             );
 
-
         if (
-            !Array.isArray(
-                produtos
-            ) ||
-            produtos.length ===
-            0
+            !Array.isArray(produtos) ||
+            produtos.length === 0
         ) {
-
             limparProdutoVisualSaida();
-
 
             alert(
                 'O produto "' +
@@ -6701,194 +3828,103 @@ async function carregarResumoProdutoSaida() {
                 '" não foi encontrado na base online.'
             );
 
-
             campoCodigo.focus();
-
-
             return;
-
         }
 
+        // Mantém somente posições com estoque disponível.
+        produtosPosicoesSaida = produtos.filter(
+            function (produto) {
+                return (
+                    converterNumero(produto.quantidade) > 0
+                );
+            }
+        );
 
-        /*
-            Mantém apenas posições com
-            estoque disponível.
-        */
-
-        produtosPosicoesSaida =
-            produtos.filter(
-                function (produto) {
-
-                    return (
-                        converterNumero(
-                            produto.quantidade
-                        ) > 0
-                    );
-
-                }
-            );
-
-
-        if (
-            produtosPosicoesSaida.length ===
-            0
-        ) {
-
+        if (produtosPosicoesSaida.length === 0) {
             limparProdutoVisualSaida();
-
 
             alert(
                 "O produto existe, porém está sem estoque disponível."
             );
 
-
             return;
-
         }
 
+        produtoVisualSaida = produtosPosicoesSaida[0];
 
-        produtoVisualSaida =
-            produtosPosicoesSaida[0];
-
-
-        // =====================================================
-        // ESTOQUE TOTAL DO SKU
-        // =====================================================
-
+        // Estoque total do SKU.
         estoqueTotalVisualSaida =
             produtosPosicoesSaida.reduce(
-                function (
-                    total,
-                    produto
-                ) {
-
+                function (total, produto) {
                     return (
                         total +
-                        converterNumero(
-                            produto.quantidade
-                        )
+                        converterNumero(produto.quantidade)
                     );
-
                 },
                 0
             );
 
-
         estoquePosicaoVisualSaida =
             estoqueTotalVisualSaida;
 
+        // Nome.
+        const nome = document.getElementById(
+            "produtoSaidaNome"
+        );
 
-        // =====================================================
-        // NOME
-        // =====================================================
-
-        const nome =
-            document.getElementById(
-                "produtoSaidaNome"
-            );
-
-
-        if (
-            nome
-        ) {
-
+        if (nome) {
             nome.textContent =
-                (
-                    produtoVisualSaida.codigo ||
-                    codigo
-                ) +
+                (produtoVisualSaida.codigo || codigo) +
                 " - " +
                 (
                     produtoVisualSaida.descricao ||
                     "Sem descrição"
                 );
-
         }
 
+        // Descrição detalhada.
+        const detalhe = document.getElementById(
+            "produtoSaidaDetalhe"
+        );
 
-        // =====================================================
-        // DESCRIÇÃO DETALHADA
-        // =====================================================
-
-        const detalhe =
-            document.getElementById(
-                "produtoSaidaDetalhe"
-            );
-
-
-        if (
-            detalhe
-        ) {
-
+        if (detalhe) {
             detalhe.textContent =
-                produtoVisualSaida
-                    .descricao_detalhada ||
-
-                produtoVisualSaida
-                    .descricaoDetalhada ||
-
+                produtoVisualSaida.descricao_detalhada ||
+                produtoVisualSaida.descricaoDetalhada ||
                 "Descrição detalhada não disponível";
-
         }
 
-
-        // =====================================================
-        // ESTOQUE
-        // =====================================================
-
+        // Estoque.
         atualizarEstoqueCardSaida(
             estoqueTotalVisualSaida
         );
 
+        card.classList.remove("oculto");
 
-        card.classList.remove(
-            "oculto"
-        );
-
-
-        // =====================================================
-        // PREENCHER POSIÇÕES
-        // =====================================================
-
-        if (
-            campoEndereco
-        ) {
-
-            campoEndereco.innerHTML =
-                `
-                    <option value="">
-                        Selecione o Endereço
-                    </option>
-                `;
-
+        // Preencher posições.
+        if (campoEndereco) {
+            campoEndereco.innerHTML = `
+                <option value="">
+                    Selecione o Endereço
+                </option>
+            `;
 
             produtosPosicoesSaida.forEach(
                 function (produto) {
+                    const endereco = normalizarEndereco(
+                        produto.endereco
+                    );
 
-                    const endereco =
-                        normalizarEndereco(
-                            produto.endereco
-                        );
-
-
-                    if (
-                        !endereco
-                    ) {
-
+                    if (!endereco) {
                         return;
-
                     }
 
+                    const option = document.createElement(
+                        "option"
+                    );
 
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-
-                    option.value =
-                        endereco;
-
+                    option.value = endereco;
 
                     option.textContent =
                         endereco +
@@ -6898,201 +3934,108 @@ async function carregarResumoProdutoSaida() {
                         ) +
                         " un.";
 
-
-                    campoEndereco.appendChild(
-                        option
-                    );
-
+                    campoEndereco.appendChild(option);
                 }
             );
 
-
-            /*
-                Caso exista apenas uma posição,
-                já seleciona automaticamente.
-            */
-
-            if (
-                produtosPosicoesSaida.length ===
-                1
-            ) {
-
-                campoEndereco.value =
-                    normalizarEndereco(
-                        produtosPosicoesSaida[0]
-                            .endereco
-                    );
-
+            // Seleciona automaticamente se houver uma posição.
+            if (produtosPosicoesSaida.length === 1) {
+                campoEndereco.value = normalizarEndereco(
+                    produtosPosicoesSaida[0].endereco
+                );
 
                 atualizarPosicaoSelecionadaSaida();
-
             }
-
         }
 
-
         atualizarNovoSaldoSaida();
-
-    } catch (
-        erro
-    ) {
-
+    } catch (erro) {
         console.error(
             "Erro ao carregar produto para saída:",
             erro
         );
-
     }
-
 }
-
 
 // =====================================================
 // ATUALIZAR ESTOQUE NO CARD
 // =====================================================
 
-function atualizarEstoqueCardSaida(
-    quantidade
-) {
+function atualizarEstoqueCardSaida(quantidade) {
+    const estoque = document.getElementById(
+        "estoqueAtualSaida"
+    );
 
-    const estoque =
-        document.getElementById(
-            "estoqueAtualSaida"
+    if (estoque) {
+        estoque.textContent = formatarQuantidade(
+            quantidade
         );
-
-
-    if (
-        estoque
-    ) {
-
-        estoque.textContent =
-            formatarQuantidade(
-                quantidade
-            );
-
     }
-
 }
-
 
 // =====================================================
 // POSIÇÃO SELECIONADA
 // =====================================================
 
 function atualizarPosicaoSelecionadaSaida() {
+    const campoEndereco = document.getElementById(
+        "enderecoSaida"
+    );
 
-    const campoEndereco =
-        document.getElementById(
-            "enderecoSaida"
-        );
+    const status = document.getElementById(
+        "statusPosicaoSaida"
+    );
 
+    const texto = document.getElementById(
+        "textoStatusPosicaoSaida"
+    );
 
-    const status =
-        document.getElementById(
-            "statusPosicaoSaida"
-        );
-
-
-    const texto =
-        document.getElementById(
-            "textoStatusPosicaoSaida"
-        );
-
-
-    if (
-        !campoEndereco
-    ) {
-
+    if (!campoEndereco) {
         return;
-
     }
 
+    const endereco = normalizarEndereco(
+        campoEndereco.value
+    );
 
-    const endereco =
-        normalizarEndereco(
-            campoEndereco.value
-        );
-
-
-    if (
-        !endereco
-    ) {
-
+    if (!endereco) {
         estoquePosicaoVisualSaida =
             estoqueTotalVisualSaida;
-
 
         atualizarEstoqueCardSaida(
             estoqueTotalVisualSaida
         );
 
-
-        if (
-            status
-        ) {
-
-            status.classList.add(
-                "oculto"
-            );
-
+        if (status) {
+            status.classList.add("oculto");
         }
 
-
         return;
-
     }
 
+    const produtoPosicao = produtosPosicoesSaida.find(
+        function (produto) {
+            return (
+                normalizarEndereco(produto.endereco) ===
+                endereco
+            );
+        }
+    );
 
-    const produtoPosicao =
-        produtosPosicoesSaida.find(
-            function (produto) {
-
-                return (
-                    normalizarEndereco(
-                        produto.endereco
-                    ) ===
-                    endereco
-                );
-
-            }
-        );
-
-
-    if (
-        !produtoPosicao
-    ) {
-
-        estoquePosicaoVisualSaida =
-            0;
-
-
+    if (!produtoPosicao) {
+        estoquePosicaoVisualSaida = 0;
         return;
-
     }
 
-
-    estoquePosicaoVisualSaida =
-        converterNumero(
-            produtoPosicao.quantidade
-        );
-
-
-    /*
-        Depois que a posição é escolhida,
-        o estoque exibido passa a ser
-        o estoque daquela posição.
-    */
+    estoquePosicaoVisualSaida = converterNumero(
+        produtoPosicao.quantidade
+    );
 
     atualizarEstoqueCardSaida(
         estoquePosicaoVisualSaida
     );
 
-
-    if (
-        status &&
-        texto
-    ) {
-
+    if (status && texto) {
         texto.textContent =
             "Posição selecionada: " +
             endereco +
@@ -7102,64 +4045,38 @@ function atualizarPosicaoSelecionadaSaida() {
             ) +
             " un.";
 
-
-        status.classList.remove(
-            "oculto"
-        );
-
+        status.classList.remove("oculto");
     }
-
 }
 
-
 // =====================================================
-// NOVO SALDO
+// NOVO SALDO DA SAÍDA
 // =====================================================
 
 function atualizarNovoSaldoSaida() {
+    const campoQuantidade = document.getElementById(
+        "quantidadeSaida"
+    );
 
-    const campoQuantidade =
-        document.getElementById(
-            "quantidadeSaida"
-        );
+    const campoEndereco = document.getElementById(
+        "enderecoSaida"
+    );
 
+    const card = document.getElementById(
+        "cardNovoSaldoSaida"
+    );
 
-    const campoEndereco =
-        document.getElementById(
-            "enderecoSaida"
-        );
+    const saldo = document.getElementById(
+        "novoSaldoSaida"
+    );
 
-            const card =
-        document.getElementById(
-            "cardNovoSaldoSaida"
-        );
-
-
-    const saldo =
-        document.getElementById(
-            "novoSaldoSaida"
-        );
-
-
-    if (
-        !campoQuantidade ||
-        !card ||
-        !saldo
-    ) {
+    if (!campoQuantidade || !card || !saldo) {
         return;
     }
 
-
-    const quantidade =
-        converterNumero(
-            campoQuantidade.value
-        );
-
-
-    /*
-        Exige produto, quantidade
-        e posição.
-    */
+    const quantidade = converterNumero(
+        campoQuantidade.value
+    );
 
     if (
         !produtoVisualSaida ||
@@ -7167,167 +4084,86 @@ function atualizarNovoSaldoSaida() {
         !campoEndereco ||
         !campoEndereco.value
     ) {
-
-        card.classList.add(
-            "oculto"
-        );
-
+        card.classList.add("oculto");
         return;
-
     }
-
 
     const novoSaldo =
-        estoquePosicaoVisualSaida -
-        quantidade;
+        estoquePosicaoVisualSaida - quantidade;
 
-
-    saldo.textContent =
-        formatarQuantidade(
-            Math.max(
-                0,
-                novoSaldo
-            )
-        );
-
-
-    /*
-        Se a quantidade for maior
-        que a posição disponível,
-        deixa o card em tom de alerta.
-    */
-
-    if (
-        quantidade >
-        estoquePosicaoVisualSaida
-    ) {
-
-        card.style.background =
-            "#fff1f1";
-
-
-        card.style.borderColor =
-            "#efb2b2";
-
-
-        saldo.style.color =
-            "#c62828";
-
-    } else {
-
-        card.style.background =
-            "";
-
-
-        card.style.borderColor =
-            "";
-
-
-        saldo.style.color =
-            "";
-
-    }
-
-
-    card.classList.remove(
-        "oculto"
+    saldo.textContent = formatarQuantidade(
+        Math.max(0, novoSaldo)
     );
 
+    if (quantidade > estoquePosicaoVisualSaida) {
+        card.style.background = "#fff1f1";
+        card.style.borderColor = "#efb2b2";
+        saldo.style.color = "#c62828";
+    } else {
+        card.style.background = "";
+        card.style.borderColor = "";
+        saldo.style.color = "";
+    }
+
+    card.classList.remove("oculto");
 }
 
-
 // =====================================================
-// STATUS DESTINO
+// STATUS DO DESTINO
 // =====================================================
 
 function atualizarStatusDestinoSaida() {
-
-    const destino =
-        document.getElementById(
-            "requisitanteSaida"
-        );
-
-
-    const status =
-        document.getElementById(
-            "statusDestinoSaida"
-        );
-
-
-    const texto =
-        document.getElementById(
-            "textoStatusDestinoSaida"
-        );
-
-
-    if (
-        !destino ||
-        !status ||
-        !texto
-    ) {
-        return;
-    }
-
-
-    const valor =
-        String(
-            destino.value ||
-            ""
-        ).trim();
-
-
-    if (!valor) {
-
-        status.classList.add(
-            "oculto"
-        );
-
-        return;
-
-    }
-
-
-    texto.textContent =
-        "Destino selecionado: " +
-        valor;
-
-
-    status.classList.remove(
-        "oculto"
+    const destino = document.getElementById(
+        "requisitanteSaida"
     );
 
-}
+    const status = document.getElementById(
+        "statusDestinoSaida"
+    );
 
+    const texto = document.getElementById(
+        "textoStatusDestinoSaida"
+    );
+
+    if (!destino || !status || !texto) {
+        return;
+    }
+
+    const valor = String(
+        destino.value || ""
+    ).trim();
+
+    if (!valor) {
+        status.classList.add("oculto");
+        return;
+    }
+
+    texto.textContent =
+        "Destino selecionado: " + valor;
+
+    status.classList.remove("oculto");
+}
 
 // =====================================================
 // REGISTRAR SAÍDA
 // =====================================================
 
 async function registrarSaida() {
+    const campoCodigo = document.getElementById(
+        "codigoSaida"
+    );
 
-    const campoCodigo =
-        document.getElementById(
-            "codigoSaida"
-        );
+    const campoQuantidade = document.getElementById(
+        "quantidadeSaida"
+    );
 
+    const campoEndereco = document.getElementById(
+        "enderecoSaida"
+    );
 
-    const campoQuantidade =
-        document.getElementById(
-            "quantidadeSaida"
-        );
-
-
-    const campoEndereco =
-        document.getElementById(
-            "enderecoSaida"
-        );
-
-
-    const campoDestino =
-        document.getElementById(
-            "requisitanteSaida"
-        );
-
+    const campoDestino = document.getElementById(
+        "requisitanteSaida"
+    );
 
     if (
         !campoCodigo ||
@@ -7335,226 +4171,129 @@ async function registrarSaida() {
         !campoEndereco ||
         !campoDestino
     ) {
-
         alert(
             "Os campos da saída não foram encontrados."
         );
 
         return;
-
     }
 
+    const codigo = normalizarCodigo(
+        campoCodigo.value
+    );
 
-    const codigo =
-        normalizarCodigo(
-            campoCodigo.value
-        );
+    const quantidadeSolicitada = converterNumero(
+        campoQuantidade.value
+    );
 
+    const endereco = normalizarEndereco(
+        campoEndereco.value
+    );
 
-    const quantidadeSolicitada =
-        converterNumero(
-            campoQuantidade.value
-        );
-
-
-    const endereco =
-        normalizarEndereco(
-            campoEndereco.value
-        );
-
-
-    const destino =
-        String(
-            campoDestino.value ||
-            ""
-        )
+    const destino = String(
+        campoDestino.value || ""
+    )
         .trim()
         .toUpperCase();
 
-
-    // =====================================================
-    // VALIDAÇÕES
-    // =====================================================
-
+    // Validações.
     if (!codigo) {
-
-        alert(
-            "Digite o código do produto."
-        );
-
-
+        alert("Digite o código do produto.");
         campoCodigo.focus();
-
         return;
-
     }
 
-
-    if (
-        quantidadeSolicitada <= 0
-    ) {
-
-        alert(
-            "Digite uma quantidade válida."
-        );
-
-
+    if (quantidadeSolicitada <= 0) {
+        alert("Digite uma quantidade válida.");
         campoQuantidade.focus();
-
         return;
-
     }
-
 
     if (!endereco) {
-
-        alert(
-            "Selecione o endereço de origem."
-        );
-
-
+        alert("Selecione o endereço de origem.");
         campoEndereco.focus();
-
         return;
-
     }
-
 
     if (!destino) {
-
-        alert(
-            "Selecione o destino da saída."
-        );
-
-
+        alert("Selecione o destino da saída.");
         campoDestino.focus();
-
         return;
-
     }
 
-
     if (!window.supabaseClient) {
-
         alert(
             "A conexão com o banco online não foi carregada."
         );
 
         return;
-
     }
 
-
-    // =====================================================
-    // CONSULTA NOVAMENTE A POSIÇÃO
-    // =====================================================
-
+    // Consulta novamente a posição.
     const registros =
         await buscarProdutosMovimentacaoSupabase(
             codigo,
             endereco
         );
 
-
     if (
         !Array.isArray(registros) ||
         registros.length === 0
     ) {
-
         alert(
             "O produto não foi encontrado nesta posição."
         );
 
         return;
-
     }
 
+    const produtoReferencia = registros[0];
 
-    const produtoReferencia =
-        registros[0];
+    const saldoAtual = registros.reduce(
+        function (total, produto) {
+            return (
+                total +
+                converterNumero(produto.quantidade)
+            );
+        },
+        0
+    );
 
-
-    const saldoAtual =
-        registros.reduce(
-            function (
-                total,
-                produto
-            ) {
-
-                return (
-                    total +
-                    converterNumero(
-                        produto.quantidade
-
-                        // APP.JS - PARTE 4 DE 6
-// Linhas 6877 até 9168
-// Cole esta parte na sequência, sem apagar conteúdo das partes anteriores.
-
-                    )
-                );
-
-            },
-            0
-        );
-
-
-    if (
-        quantidadeSolicitada >
-        saldoAtual
-    ) {
-
+    if (quantidadeSolicitada > saldoAtual) {
         alert(
             "Saldo insuficiente nesta posição.\n\n" +
             "Posição: " +
             endereco +
             "\nSaldo disponível: " +
-            formatarQuantidade(
-                saldoAtual
-            )
+            formatarQuantidade(saldoAtual)
         );
-
 
         campoQuantidade.focus();
-
         return;
-
     }
 
-
-    // =====================================================
-    // CONFIRMAÇÃO
-    // =====================================================
-
-    const confirmou =
-        confirm(
-            "Confirmar saída de estoque?\n\n" +
-            "Código: " +
-            codigo +
-            "\nQuantidade: " +
-            formatarQuantidade(
-                quantidadeSolicitada
-            ) +
-            "\nPosição: " +
-            endereco +
-            "\nDestino: " +
-            destino +
-            "\nNovo saldo: " +
-            formatarQuantidade(
-                saldoAtual -
-                quantidadeSolicitada
-            )
-        );
-
+    // Confirmação.
+    const confirmou = confirm(
+        "Confirmar saída de estoque?\n\n" +
+        "Código: " +
+        codigo +
+        "\nQuantidade: " +
+        formatarQuantidade(quantidadeSolicitada) +
+        "\nPosição: " +
+        endereco +
+        "\nDestino: " +
+        destino +
+        "\nNovo saldo: " +
+        formatarQuantidade(
+            saldoAtual - quantidadeSolicitada
+        )
+    );
 
     if (!confirmou) {
         return;
     }
 
-
-    // =====================================================
-    // SUPABASE
-    // =====================================================
-
+    // Atualizar Supabase.
     const sincronizouBanco =
         await sincronizarSaidaProdutoSupabase(
             codigo,
@@ -7562,35 +4301,23 @@ async function registrarSaida() {
             quantidadeSolicitada
         );
 
-
     if (!sincronizouBanco) {
         return;
     }
 
-
-    // =====================================================
-    // ATUALIZAÇÃO LOCAL
-    // =====================================================
-
+    // Atualizar estoque local.
     atualizarEstoqueLocalAposSaida(
         codigo,
         endereco,
         quantidadeSolicitada
     );
 
-
-    // =====================================================
-    // MOVIMENTAÇÃO
-    // =====================================================
-
+    // Movimentação.
     const movimentacao = {
-
-        tipo:
-            "SAIDA",
+        tipo: "SAIDA",
 
         codigo:
-            produtoReferencia.codigo ||
-            codigo,
+            produtoReferencia.codigo || codigo,
 
         descricao:
             produtoReferencia.descricao ||
@@ -7612,32 +4339,19 @@ async function registrarSaida() {
             destino,
 
         cliente:
-            produtoReferencia.cliente ||
-            "SMI",
+            produtoReferencia.cliente || "SMI",
 
         data:
             obterDataHoraAtual(),
 
         operador:
             obterNomeUsuario()
-
     };
 
+    salvarHistoricoSaida(movimentacao);
+    salvarMovimentacaoGeral(movimentacao);
 
-    salvarHistoricoSaida(
-        movimentacao
-    );
-
-
-    salvarMovimentacaoGeral(
-        movimentacao
-    );
-
-
-    // =====================================================
-    // ATUALIZAR INTERFACE
-    // =====================================================
-
+    // Atualizar interface.
     mostrarToastSaida(
         movimentacao.codigo,
         quantidadeSolicitada,
@@ -7645,30 +4359,19 @@ async function registrarSaida() {
         destino
     );
 
-
     limparCamposSaida();
-
-
     limparProdutoVisualSaida();
 
-
-    paginaAtualHistoricoSaida =
-        1;
-
+    paginaAtualHistoricoSaida = 1;
 
     carregarHistoricoSaidas();
-
-
     atualizarResumoDiaSaidas();
 
-
     campoCodigo.focus();
-
 }
 
-
 // =====================================================
-// ATUALIZAR ESTOQUE LOCAL
+// ATUALIZAR ESTOQUE LOCAL APÓS SAÍDA
 // =====================================================
 
 function atualizarEstoqueLocalAposSaida(
@@ -7676,469 +4379,253 @@ function atualizarEstoqueLocalAposSaida(
     endereco,
     quantidade
 ) {
+    const estoque = carregarEstoque();
 
-    const estoque =
-        carregarEstoque();
+    let restante = converterNumero(quantidade);
 
-
-    let restante =
-        converterNumero(
-            quantidade
-        );
-
-
-    estoque.forEach(
-        function (produto) {
-
-            if (restante <= 0) {
-                return;
-            }
-
-
-            if (
-                normalizarCodigo(
-                    produto.codigo
-                ) !==
-                normalizarCodigo(
-                    codigo
-                )
-            ) {
-                return;
-            }
-
-
-            if (
-                normalizarEndereco(
-                    produto.endereco
-                ) !==
-                normalizarEndereco(
-                    endereco
-                )
-            ) {
-                return;
-            }
-
-
-            const atual =
-                converterNumero(
-                    produto.quantidade
-                );
-
-
-            const retirada =
-                Math.min(
-                    atual,
-                    restante
-                );
-
-
-            produto.quantidade =
-                Math.max(
-                    0,
-                    atual -
-                    retirada
-                );
-
-
-            /*
-                Mantém o produto mesmo com
-                saldo zero, assim como já
-                utilizávamos na operação.
-            */
-
-            restante -=
-                retirada;
-
+    estoque.forEach(function (produto) {
+        if (restante <= 0) {
+            return;
         }
-    );
 
+        if (
+            normalizarCodigo(produto.codigo) !==
+            normalizarCodigo(codigo)
+        ) {
+            return;
+        }
 
-    salvarEstoque(
-        estoque
-    );
+        if (
+            normalizarEndereco(produto.endereco) !==
+            normalizarEndereco(endereco)
+        ) {
+            return;
+        }
 
-}
-
-
-// =====================================================
-// SALVAR HISTÓRICO
-// =====================================================
-
-function salvarHistoricoSaida(
-    movimentacao
-) {
-
-    const saidas =
-        carregarListaLocalStorage(
-            "saidas"
+        const atual = converterNumero(
+            produto.quantidade
         );
 
+        const retirada = Math.min(
+            atual,
+            restante
+        );
 
-    saidas.unshift(
-        movimentacao
-    );
+        produto.quantidade = Math.max(
+            0,
+            atual - retirada
+        );
 
+        // Mantém o produto mesmo com saldo zero.
+        restante -= retirada;
+    });
 
-    salvarListaLocalStorage(
-        "saidas",
-        saidas
-    );
-
+    salvarEstoque(estoque);
 }
 
+// =====================================================
+// SALVAR HISTÓRICO DE SAÍDAS
+// =====================================================
+
+function salvarHistoricoSaida(movimentacao) {
+    const saidas = carregarListaLocalStorage(
+        "saidas"
+    );
+
+    saidas.unshift(movimentacao);
+
+    salvarListaLocalStorage("saidas", saidas);
+}
+
+// FIM DA PARTE 5/10
+// A PARTE 6 COMEÇA COM:
+// function obterSaidasFiltradas()
+
+// APP.JS — PARTE 6/10
+// HISTÓRICO DE SAÍDAS E INICIALIZAÇÃO DE TRANSFERÊNCIAS
 
 // =====================================================
 // FILTRAR SAÍDAS
 // =====================================================
 
 function obterSaidasFiltradas() {
+    let saidas = carregarListaLocalStorage("saidas");
 
-    let saidas =
-        carregarListaLocalStorage(
-            "saidas"
-        );
+    const campoPesquisa = document.getElementById(
+        "pesquisaHistoricoSaida"
+    );
 
+    const campoPeriodo = document.getElementById(
+        "periodoHistoricoSaida"
+    );
 
-    const campoPesquisa =
-        document.getElementById(
-            "pesquisaHistoricoSaida"
-        );
-
-
-    const campoPeriodo =
-        document.getElementById(
-            "periodoHistoricoSaida"
-        );
-
-
-    const pesquisa =
-        String(
-            campoPesquisa
-                ? campoPesquisa.value
-                : ""
-        )
+    const pesquisa = String(
+        campoPesquisa ? campoPesquisa.value : ""
+    )
         .trim()
         .toUpperCase();
 
-
-    const periodo =
-        campoPeriodo
-            ? campoPeriodo.value
-            : "todos";
-
-
-    // =====================================================
-    // PESQUISA
-    // =====================================================
+    const periodo = campoPeriodo
+        ? campoPeriodo.value
+        : "todos";
 
     if (pesquisa) {
+        saidas = saidas.filter(function (saida) {
+            const texto = [
+                saida.codigo,
+                saida.descricao,
+                saida.origem,
+                saida.endereco,
+                saida.destino,
+                saida.requisitante,
+                saida.operador
+            ]
+                .join(" ")
+                .toUpperCase();
 
-        saidas =
-            saidas.filter(
-                function (saida) {
-
-                    const texto =
-                        [
-                            saida.codigo,
-                            saida.descricao,
-                            saida.origem,
-                            saida.endereco,
-                            saida.destino,
-                            saida.requisitante,
-                            saida.operador
-                        ]
-                        .join(
-                            " "
-                        )
-                        .toUpperCase();
-
-
-                    return texto.includes(
-                        pesquisa
-                    );
-
-                }
-            );
-
+            return texto.includes(pesquisa);
+        });
     }
 
+    if (periodo !== "todos") {
+        const hoje = new Date();
 
-    // =====================================================
-    // PERÍODO
-    // =====================================================
+        hoje.setHours(0, 0, 0, 0);
 
-    if (
-        periodo !==
-        "todos"
-    ) {
-
-        const hoje =
-            new Date();
-
-
-        hoje.setHours(
-            0,
-            0,
-            0,
-            0
-        );
-
-
-        saidas =
-            saidas.filter(
-                function (saida) {
-
-                    const data =
-                        converterDataSaidaParaDate(
-                            saida.data
-                        );
-
-
-                    if (!data) {
-                        return false;
-                    }
-
-
-                    data.setHours(
-                        0,
-                        0,
-                        0,
-                        0
-                    );
-
-
-                    const diferenca =
-                        Math.floor(
-                            (
-                                hoje -
-                                data
-                            ) /
-                            86400000
-                        );
-
-
-                    if (
-                        periodo ===
-                        "hoje"
-                    ) {
-
-                        return (
-                            diferenca ===
-                            0
-                        );
-
-                    }
-
-
-                    const dias =
-                        Number(
-                            periodo
-                        );
-
-
-                    return (
-                        diferenca >= 0 &&
-                        diferenca <
-                        dias
-                    );
-
-                }
+        saidas = saidas.filter(function (saida) {
+            const data = converterDataSaidaParaDate(
+                saida.data
             );
 
-    }
+            if (!data) {
+                return false;
+            }
 
+            data.setHours(0, 0, 0, 0);
+
+            const diferenca = Math.floor(
+                (hoje - data) / 86400000
+            );
+
+            if (periodo === "hoje") {
+                return diferenca === 0;
+            }
+
+            const dias = Number(periodo);
+
+            return (
+                diferenca >= 0 &&
+                diferenca < dias
+            );
+        });
+    }
 
     return saidas;
-
 }
 
+// =====================================================
+// CARREGAR HISTÓRICO DE SAÍDAS
+// =====================================================
+
 function carregarHistoricoSaidas() {
-
-    const tabela =
-        document.getElementById(
-            "listaSaidas"
-        );
-
+    const tabela = document.getElementById(
+        "listaSaidas"
+    );
 
     if (!tabela) {
         return;
     }
 
+    const saidas = obterSaidasFiltradas();
 
-    const saidas =
-        obterSaidasFiltradas();
+    tabela.innerHTML = "";
 
+    if (saidas.length === 0) {
+        tabela.innerHTML = `
+            <tr>
+                <td
+                    colspan="7"
+                    style="text-align:center;"
+                >
+                    Nenhuma saída encontrada.
+                </td>
+            </tr>
+        `;
 
-    tabela.innerHTML =
-        "";
-
-
-    // =====================================================
-    // VAZIO
-    // =====================================================
-
-    if (
-        saidas.length ===
-        0
-    ) {
-
-        tabela.innerHTML =
-            `
-                <tr>
-
-                    <td
-                        colspan="7"
-                        style="text-align:center;"
-                    >
-                        Nenhuma saída encontrada.
-                    </td>
-
-                </tr>
-            `;
-
-
-        atualizarContadorHistoricoSaida(
-            0,
-            0,
-            0
-        );
-
-
-        criarPaginacaoHistoricoSaida(
-            0
-        );
-
+        atualizarContadorHistoricoSaida(0, 0, 0);
+        criarPaginacaoHistoricoSaida(0);
 
         return;
-
     }
 
-
-    // =====================================================
-    // PAGINAÇÃO
-    // =====================================================
-
-    const totalPaginas =
-        Math.ceil(
-            saidas.length /
-            itensPorPaginaHistoricoSaida
-        );
-
-
-    if (
-        paginaAtualHistoricoSaida >
-        totalPaginas
-    ) {
-
-        paginaAtualHistoricoSaida =
-            totalPaginas;
-
-    }
-
-
-    const inicio =
-        (
-            paginaAtualHistoricoSaida -
-            1
-        ) *
-        itensPorPaginaHistoricoSaida;
-
-
-    const fim =
-        Math.min(
-            inicio +
-            itensPorPaginaHistoricoSaida,
-            saidas.length
-        );
-
-
-    const pagina =
-        saidas.slice(
-            inicio,
-            fim
-        );
-
-
-    // =====================================================
-    // LINHAS
-    // =====================================================
-
-    pagina.forEach(
-        function (saida) {
-
-            const linha =
-                document.createElement(
-                    "tr"
-                );
-
-
-            linha.appendChild(
-                criarCelula(
-                    saida.codigo ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    saida.descricao ||
-                    "Sem descrição"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    formatarQuantidade(
-                        saida.quantidade
-                    )
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    saida.origem ||
-                    saida.endereco ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    saida.requisitante ||
-                    saida.destino ||
-                    "VENDA"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    saida.data ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    saida.operador ||
-                    saida.usuario ||
-                    "DAVI.SMI"
-                )
-            );
-
-
-            tabela.appendChild(
-                linha
-            );
-
-        }
+    const totalPaginas = Math.ceil(
+        saidas.length / itensPorPaginaHistoricoSaida
     );
 
+    if (paginaAtualHistoricoSaida > totalPaginas) {
+        paginaAtualHistoricoSaida = totalPaginas;
+    }
+
+    const inicio =
+        (paginaAtualHistoricoSaida - 1) *
+        itensPorPaginaHistoricoSaida;
+
+    const fim = Math.min(
+        inicio + itensPorPaginaHistoricoSaida,
+        saidas.length
+    );
+
+    const pagina = saidas.slice(inicio, fim);
+
+    pagina.forEach(function (saida) {
+        const linha = document.createElement("tr");
+
+        linha.appendChild(
+            criarCelula(saida.codigo || "-")
+        );
+
+        linha.appendChild(
+            criarCelula(
+                saida.descricao || "Sem descrição"
+            )
+        );
+
+        linha.appendChild(
+            criarCelula(
+                formatarQuantidade(saida.quantidade)
+            )
+        );
+
+        linha.appendChild(
+            criarCelula(
+                saida.origem ||
+                saida.endereco ||
+                "-"
+            )
+        );
+
+        linha.appendChild(
+            criarCelula(
+                saida.requisitante ||
+                saida.destino ||
+                "VENDA"
+            )
+        );
+
+        linha.appendChild(
+            criarCelula(saida.data || "-")
+        );
+
+        linha.appendChild(
+            criarCelula(
+                saida.operador ||
+                saida.usuario ||
+                "DAVI.SMI"
+            )
+        );
+
+        tabela.appendChild(linha);
+    });
 
     atualizarContadorHistoricoSaida(
         inicio + 1,
@@ -8146,16 +4633,11 @@ function carregarHistoricoSaidas() {
         saidas.length
     );
 
-
-    criarPaginacaoHistoricoSaida(
-        totalPaginas
-    );
-
+    criarPaginacaoHistoricoSaida(totalPaginas);
 }
 
-
 // =====================================================
-// CONTADOR
+// CONTADOR DO HISTÓRICO DE SAÍDAS
 // =====================================================
 
 function atualizarContadorHistoricoSaida(
@@ -8163,27 +4645,18 @@ function atualizarContadorHistoricoSaida(
     fim,
     total
 ) {
-
-    const contador =
-        document.getElementById(
-            "contadorHistoricoSaida"
-        );
-
+    const contador = document.getElementById(
+        "contadorHistoricoSaida"
+    );
 
     if (!contador) {
         return;
     }
 
-
     if (total === 0) {
-
-        contador.textContent =
-            "0 saídas";
-
+        contador.textContent = "0 saídas";
         return;
-
     }
-
 
     contador.textContent =
         "Mostrando " +
@@ -8192,556 +4665,284 @@ function atualizarContadorHistoricoSaida(
         fim +
         " de " +
         total +
-        (
-            total === 1
-                ? " saída"
-                : " saídas"
-        );
-
+        (total === 1 ? " saída" : " saídas");
 }
 
-
 // =====================================================
-// PAGINAÇÃO
+// PAGINAÇÃO DO HISTÓRICO DE SAÍDAS
 // =====================================================
 
-function criarPaginacaoHistoricoSaida(
-    totalPaginas
-) {
-
-    const paginacao =
-        document.getElementById(
-            "paginacaoHistoricoSaida"
-        );
-
+function criarPaginacaoHistoricoSaida(totalPaginas) {
+    const paginacao = document.getElementById(
+        "paginacaoHistoricoSaida"
+    );
 
     if (!paginacao) {
         return;
     }
 
+    paginacao.innerHTML = "";
 
-    paginacao.innerHTML =
-        "";
+    paginacao.style.display = "flex";
+    paginacao.style.alignItems = "center";
+    paginacao.style.justifyContent = "center";
+    paginacao.style.gap = "6px";
 
-
-    paginacao.style.display =
-        "flex";
-
-
-    paginacao.style.alignItems =
-        "center";
-
-
-    paginacao.style.justifyContent =
-        "center";
-
-
-    paginacao.style.gap =
-        "6px";
-
-
-    if (
-        totalPaginas <= 1
-    ) {
+    if (totalPaginas <= 1) {
         return;
     }
-
 
     for (
         let numeroPagina = 1;
         numeroPagina <= totalPaginas;
         numeroPagina++
     ) {
-
         if (
             totalPaginas > 7 &&
             numeroPagina !== 1 &&
             numeroPagina !== totalPaginas &&
             Math.abs(
-                numeroPagina -
-                paginaAtualHistoricoSaida
+                numeroPagina - paginaAtualHistoricoSaida
             ) > 1
         ) {
-
             continue;
-
         }
 
+        const botao = document.createElement("button");
 
-        const botao =
-            document.createElement(
-                "button"
-            );
+        botao.type = "button";
+        botao.textContent = numeroPagina;
 
+        botao.style.width = "32px";
+        botao.style.height = "32px";
+        botao.style.borderRadius = "6px";
+        botao.style.cursor = "pointer";
+        botao.style.fontWeight = "700";
 
-        botao.type =
-            "button";
-
-
-        botao.textContent =
-            numeroPagina;
-
-
-        botao.style.width =
-            "32px";
-
-
-        botao.style.height =
-            "32px";
-
-
-        botao.style.borderRadius =
-            "6px";
-
-
-        botao.style.cursor =
-            "pointer";
-
-
-        botao.style.fontWeight =
-            "700";
-
-
-        if (
-            numeroPagina ===
-            paginaAtualHistoricoSaida
-        ) {
-
-            botao.style.background =
-                "#063b73";
-
-
-            botao.style.color =
-                "#ffffff";
-
-
-            botao.style.border =
-                "1px solid #063b73";
-
+        if (numeroPagina === paginaAtualHistoricoSaida) {
+            botao.style.background = "#063b73";
+            botao.style.color = "#ffffff";
+            botao.style.border = "1px solid #063b73";
         } else {
-
-            botao.style.background =
-                "#ffffff";
-
-
-            botao.style.color =
-                "#17345c";
-
-
-            botao.style.border =
-                "1px solid #d5deea";
-
+            botao.style.background = "#ffffff";
+            botao.style.color = "#17345c";
+            botao.style.border = "1px solid #d5deea";
         }
 
+        botao.addEventListener("click", function () {
+            paginaAtualHistoricoSaida = numeroPagina;
+            carregarHistoricoSaidas();
+        });
 
-        botao.addEventListener(
-            "click",
-            function () {
-
-                paginaAtualHistoricoSaida =
-                    numeroPagina;
-
-
-                carregarHistoricoSaidas();
-
-            }
-        );
-
-
-        paginacao.appendChild(
-            botao
-        );
-
+        paginacao.appendChild(botao);
     }
-
 }
 
-
 // =====================================================
-// RESUMO DO DIA
+// RESUMO DO DIA — SAÍDAS
 // =====================================================
 
 function atualizarResumoDiaSaidas() {
+    const saidas = carregarListaLocalStorage("saidas");
 
-    const saidas =
-        carregarListaLocalStorage(
-            "saidas"
+    const hoje = new Date();
+
+    hoje.setHours(0, 0, 0, 0);
+
+    const saidasHoje = saidas.filter(function (saida) {
+        const data = converterDataSaidaParaDate(
+            saida.data
         );
 
+        if (!data) {
+            return false;
+        }
 
-    const hoje =
-        new Date();
+        data.setHours(0, 0, 0, 0);
 
+        return data.getTime() === hoje.getTime();
+    });
 
-    hoje.setHours(
-        0,
-        0,
-        0,
+    const totalSaidas = document.getElementById(
+        "totalSaidasHoje"
+    );
+
+    if (totalSaidas) {
+        totalSaidas.textContent = saidasHoje.length;
+    }
+
+    const unidades = saidasHoje.reduce(
+        function (total, saida) {
+            return (
+                total +
+                converterNumero(saida.quantidade)
+            );
+        },
         0
     );
 
-
-    const saidasHoje =
-        saidas.filter(
-            function (saida) {
-
-                const data =
-                    converterDataSaidaParaDate(
-                        saida.data
-                    );
-
-
-                if (!data) {
-                    return false;
-                }
-
-
-                data.setHours(
-                    0,
-                    0,
-                    0,
-                    0
-                );
-
-
-                return (
-                    data.getTime() ===
-                    hoje.getTime()
-                );
-
-            }
-        );
-
-
-    const totalSaidas =
-        document.getElementById(
-            "totalSaidasHoje"
-        );
-
-
-    if (totalSaidas) {
-
-        totalSaidas.textContent =
-            saidasHoje.length;
-
-    }
-
-
-    const unidades =
-        saidasHoje.reduce(
-            function (
-                total,
-                saida
-            ) {
-
-                return (
-                    total +
-                    converterNumero(
-                        saida.quantidade
-                    )
-                );
-
-            },
-            0
-        );
-
-
-    const totalUnidades =
-        document.getElementById(
-            "totalUnidadesSaidaHoje"
-        );
-
+    const totalUnidades = document.getElementById(
+        "totalUnidadesSaidaHoje"
+    );
 
     if (totalUnidades) {
-
-        totalUnidades.textContent =
-            formatarQuantidade(
-                unidades
-            );
-
+        totalUnidades.textContent = formatarQuantidade(
+            unidades
+        );
     }
 
+    const ultimaHora = document.getElementById(
+        "ultimaSaidaHoje"
+    );
 
-    const ultimaHora =
-        document.getElementById(
-            "ultimaSaidaHoje"
-        );
+    const ultimaData = document.getElementById(
+        "dataUltimaSaidaHoje"
+    );
 
+    if (saidasHoje.length > 0) {
+        const ultima = saidasHoje[0];
 
-    const ultimaData =
-        document.getElementById(
-            "dataUltimaSaidaHoje"
-        );
-
-
-    if (
-        saidasHoje.length >
-        0
-    ) {
-
-        const ultima =
-            saidasHoje[0];
-
-
-        const texto =
-            String(
-                ultima.data ||
-                ""
-            );
-
-
-        const partes =
-            texto.split(
-                ","
-            );
-
+        const texto = String(ultima.data || "");
+        const partes = texto.split(",");
 
         if (ultimaHora) {
-
-            ultimaHora.textContent =
-                partes[1]
-                    ? partes[1].trim()
-                    : "--";
-
+            ultimaHora.textContent = partes[1]
+                ? partes[1].trim()
+                : "--";
         }
-
 
         if (ultimaData) {
-
-            ultimaData.textContent =
-                partes[0] ||
-                "--";
-
+            ultimaData.textContent = partes[0] || "--";
         }
-
     } else {
-
         if (ultimaHora) {
-
-            ultimaHora.textContent =
-                "--";
-
+            ultimaHora.textContent = "--";
         }
-
 
         if (ultimaData) {
-
-            ultimaData.textContent =
-                "--";
-
+            ultimaData.textContent = "--";
         }
-
     }
-
 
     atualizarOperadorResumoSaida();
-
 }
 
-
 // =====================================================
-// OPERADOR
+// OPERADOR DO RESUMO DE SAÍDAS
 // =====================================================
 
 function atualizarOperadorResumoSaida() {
-
-    const operador =
-        document.getElementById(
-            "operadorResumoSaida"
-        );
-
+    const operador = document.getElementById(
+        "operadorResumoSaida"
+    );
 
     if (!operador) {
         return;
     }
 
-
     operador.textContent =
-        typeof obterNomeUsuario ===
-        "function"
-
+        typeof obterNomeUsuario === "function"
             ? obterNomeUsuario()
-
             : (
-                localStorage.getItem(
-                    "usuario"
-                ) ||
+                localStorage.getItem("usuario") ||
                 "-"
             );
-
 }
 
-
 // =====================================================
-// CONVERTER DATA
+// CONVERTER DATA DO HISTÓRICO DE SAÍDAS
 // =====================================================
 
-function converterDataSaidaParaDate(
-    texto
-) {
-
+function converterDataSaidaParaDate(texto) {
     if (!texto) {
         return null;
     }
 
-
-    const resultado =
-        String(
-            texto
-        ).match(
-            /(\d{2})\/(\d{2})\/(\d{4})/
-        );
-
+    const resultado = String(texto).match(
+        /(\d{2})\/(\d{2})\/(\d{4})/
+    );
 
     if (!resultado) {
         return null;
     }
 
-
     return new Date(
-
-        Number(
-            resultado[3]
-        ),
-
-        Number(
-            resultado[2]
-        ) - 1,
-
-        Number(
-            resultado[1]
-        )
-
+        Number(resultado[3]),
+        Number(resultado[2]) - 1,
+        Number(resultado[1])
     );
-
 }
 
-
 // =====================================================
-// LIMPAR CAMPOS
+// LIMPAR CAMPOS DA SAÍDA
 // =====================================================
 
 function limparCamposSaida() {
+    const codigo = document.getElementById(
+        "codigoSaida"
+    );
 
-    const codigo =
-        document.getElementById(
-            "codigoSaida"
-        );
+    const quantidade = document.getElementById(
+        "quantidadeSaida"
+    );
 
+    const endereco = document.getElementById(
+        "enderecoSaida"
+    );
 
-    const quantidade =
-        document.getElementById(
-            "quantidadeSaida"
-        );
-
-
-    const endereco =
-        document.getElementById(
-            "enderecoSaida"
-        );
-
-
-    const destino =
-        document.getElementById(
-            "requisitanteSaida"
-        );
-
+    const destino = document.getElementById(
+        "requisitanteSaida"
+    );
 
     if (codigo) {
-
-        codigo.value =
-            "";
-
+        codigo.value = "";
     }
-
 
     if (quantidade) {
-
-        quantidade.value =
-            "";
-
+        quantidade.value = "";
     }
-
 
     if (endereco) {
-
-        endereco.innerHTML =
-            `
-                <option value="">
-                    Selecione o Endereço
-                </option>
-            `;
-
+        endereco.innerHTML = `
+            <option value="">
+                Selecione o Endereço
+            </option>
+        `;
     }
-
 
     if (destino) {
-
-        destino.value =
-            "";
-
+        destino.value = "";
     }
-
 }
 
-
 // =====================================================
-// LIMPAR VISUAL DO PRODUTO
+// LIMPAR VISUAL DO PRODUTO NA SAÍDA
 // =====================================================
 
 function limparProdutoVisualSaida() {
-
-    produtoVisualSaida =
-        null;
-
-
-    produtosPosicoesSaida =
-        [];
-
-
-    estoqueTotalVisualSaida =
-        0;
-
-
-    estoquePosicaoVisualSaida =
-        0;
-
+    produtoVisualSaida = null;
+    produtosPosicoesSaida = [];
+    estoqueTotalVisualSaida = 0;
+    estoquePosicaoVisualSaida = 0;
 
     const ids = [
-
         "cardProdutoSaida",
         "cardNovoSaldoSaida",
         "statusPosicaoSaida",
         "statusDestinoSaida"
-
     ];
 
+    ids.forEach(function (id) {
+        const elemento = document.getElementById(id);
 
-    ids.forEach(
-        function (id) {
-
-            const elemento =
-                document.getElementById(
-                    id
-                );
-
-
-            if (elemento) {
-
-                elemento.classList.add(
-                    "oculto"
-                );
-
-            }
-
+        if (elemento) {
+            elemento.classList.add("oculto");
         }
-    );
-
+    });
 }
 
-
 // =====================================================
-// TOAST
+// TOAST DE SUCESSO DA SAÍDA
 // =====================================================
 
 function mostrarToastSaida(
@@ -8750,91 +4951,49 @@ function mostrarToastSaida(
     endereco,
     destino
 ) {
+    const toast = document.getElementById(
+        "toastSaida"
+    );
 
-    const toast =
-        document.getElementById(
-            "toastSaida"
-        );
+    const texto = document.getElementById(
+        "textoToastSaida"
+    );
 
-
-    const texto =
-        document.getElementById(
-            "textoToastSaida"
-        );
-
-
-    if (
-        !toast ||
-        !texto
-    ) {
-
-        alert(
-            "Saída registrada com sucesso!"
-        );
-
+    if (!toast || !texto) {
+        alert("Saída registrada com sucesso!");
         return;
-
     }
-
 
     texto.textContent =
         "Saída registrada com sucesso!   " +
         codigo +
         " | " +
-        formatarQuantidade(
-            quantidade
-        ) +
+        formatarQuantidade(quantidade) +
         " un. | " +
         endereco +
         " → " +
         destino;
 
+    toast.classList.add("mostrar");
 
-    toast.classList.add(
-        "mostrar"
-    );
-
-
-    setTimeout(
-        function () {
-
-            toast.classList.remove(
-                "mostrar"
-            );
-
-        },
-        3500
-    );
-
+    setTimeout(function () {
+        toast.classList.remove("mostrar");
+    }, 3500);
 }
 
-
 // =====================================================
-// EXPORTAR
+// EXPORTAR HISTÓRICO DE SAÍDAS
 // =====================================================
 
 function exportarHistoricoSaidasCSV() {
+    const saidas = obterSaidasFiltradas();
 
-    const saidas =
-        obterSaidasFiltradas();
-
-
-    if (
-        saidas.length ===
-        0
-    ) {
-
-        alert(
-            "Não existem saídas para exportar."
-        );
-
+    if (saidas.length === 0) {
+        alert("Não existem saídas para exportar.");
         return;
-
     }
 
-
     const linhas = [
-
         [
             "Código",
             "Descrição",
@@ -8844,134 +5003,58 @@ function exportarHistoricoSaidasCSV() {
             "Data",
             "Operador"
         ]
-
     ];
 
+    saidas.forEach(function (saida) {
+        linhas.push([
+            saida.codigo || "",
+            saida.descricao || "",
+            saida.quantidade || 0,
+            saida.origem || saida.endereco || "",
+            saida.requisitante || saida.destino || "VENDA",
+            saida.data || "",
+            saida.operador || ""
+        ]);
+    });
 
-    saidas.forEach(
-        function (saida) {
+    const csv = linhas
+        .map(function (linha) {
+            return linha
+                .map(function (valor) {
+                    return (
+                        '"' +
+                        String(valor).replace(/"/g, '""') +
+                        '"'
+                    );
+                })
+                .join(";");
+        })
+        .join("\n");
 
-            linhas.push(
-                [
-
-                    saida.codigo ||
-                    "",
-
-                    saida.descricao ||
-                    "",
-
-                    saida.quantidade ||
-                    0,
-
-                    saida.origem ||
-                    saida.endereco ||
-                    "",
-
-                    saida.requisitante ||
-                    saida.destino ||
-                    "VENDA",
-
-                    saida.data ||
-                    "",
-
-                    saida.operador ||
-                    ""
-
-                ]
-            );
-
+    const blob = new Blob(
+        ["\uFEFF" + csv],
+        {
+            type: "text/csv;charset=utf-8;"
         }
     );
 
+    const link = document.createElement("a");
 
-    const csv =
-        linhas
-            .map(
-                function (linha) {
+    link.href = URL.createObjectURL(blob);
+    link.download = "historico_saidas.csv";
 
-                    return linha
-                        .map(
-                            function (valor) {
-
-                                return (
-                                    '"' +
-                                    String(
-                                        valor
-                                    )
-                                    .replace(
-                                        /"/g,
-                                        '""'
-                                    ) +
-                                    '"'
-                                );
-
-                            }
-                        )
-                        .join(
-                            ";"
-                        );
-
-                }
-            )
-            .join(
-                "\n"
-            );
-
-
-    const blob =
-        new Blob(
-            [
-                "\uFEFF" +
-                csv
-            ],
-            {
-                type:
-                    "text/csv;charset=utf-8;"
-            }
-        );
-
-
-    const link =
-        document.createElement(
-            "a"
-        );
-
-            link.href =
-        URL.createObjectURL(
-            blob
-        );
-
-
-    link.download =
-        "historico_saidas.csv";
-
-
-    document.body.appendChild(
-        link
-    );
-
-
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
 
-
-    document.body.removeChild(
-        link
-    );
-
-
-    URL.revokeObjectURL(
-        link.href
-    );
-
+    URL.revokeObjectURL(link.href);
 }
 
-
 // =====================================================
-// DISPONIBILIZAÇÃO GLOBAL
+// DISPONIBILIZAÇÃO GLOBAL — SAÍDAS
 // =====================================================
 
-window.registrarSaida =
-    registrarSaida;
+window.registrarSaida = registrarSaida;
 
 window.salvarHistoricoSaida =
     salvarHistoricoSaida;
@@ -8991,111 +5074,73 @@ window.atualizarResumoDiaSaidas =
 window.mostrarToastSaida =
     mostrarToastSaida;
 
-
-// =====================================================
-// PARTE 6 - TRANSFERÊNCIAS
-// =====================================================
-
-
 // =====================================================
 // INICIALIZAÇÃO DA PÁGINA DE TRANSFERÊNCIAS
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
+    const tabelaTransferencias = document.getElementById(
+        "listaTransferencias"
+    );
 
-        const tabelaTransferencias =
-            document.getElementById(
-                "listaTransferencias"
-            );
-
-
-        if (tabelaTransferencias) {
-
-            carregarHistoricoTransferencias();
-
-        }
-
-
-        const botaoTransferencia =
-            document.getElementById(
-                "btnRegistrarTransferencia"
-            );
-
-
-        if (botaoTransferencia) {
-
-            botaoTransferencia.addEventListener(
-                "click",
-                registrarTransferencia
-            );
-
-        }
-
-
-        const campoQuantidade =
-            document.getElementById(
-                "quantidadeTransferencia"
-            );
-
-
-        if (campoQuantidade) {
-
-            campoQuantidade.addEventListener(
-                "keydown",
-                function (evento) {
-
-                    if (evento.key === "Enter") {
-
-                        registrarTransferencia();
-
-                    }
-
-                }
-            );
-
-        }
-
+    if (tabelaTransferencias) {
+        carregarHistoricoTransferencias();
     }
-);
 
+    const botaoTransferencia = document.getElementById(
+        "btnRegistrarTransferencia"
+    );
+
+    if (botaoTransferencia) {
+        botaoTransferencia.addEventListener(
+            "click",
+            registrarTransferencia
+        );
+    }
+
+    const campoQuantidade = document.getElementById(
+        "quantidadeTransferencia"
+    );
+
+    if (campoQuantidade) {
+        campoQuantidade.addEventListener(
+            "keydown",
+            function (evento) {
+                if (evento.key === "Enter") {
+                    registrarTransferencia();
+                }
+            }
+        );
+    }
+});
+
+// FIM DA PARTE 6/10
+// A PARTE 7 COMEÇA COM:
+// async function registrarTransferencia()
+
+// APP.JS — PARTE 7/10
+// TRANSFERÊNCIAS E MAPA DE POSIÇÕES
 
 // =====================================================
 // REGISTRAR TRANSFERÊNCIA
 // =====================================================
 
 async function registrarTransferencia() {
+    const campoCodigo = document.getElementById(
+        "codigoTransferencia"
+    );
 
-    const campoCodigo =
-        document.getElementById(
-            "codigoTransferencia"
-        );
-
-
-    const campoQuantidade =
-        document.getElementById(
-            "quantidadeTransferencia"
-        );
-
+    const campoQuantidade = document.getElementById(
+        "quantidadeTransferencia"
+    );
 
     const campoOrigem =
-        document.getElementById(
-            "origemTransferencia"
-        ) ||
-        document.getElementById(
-            "enderecoOrigem"
-        );
-
+        document.getElementById("origemTransferencia") ||
+        document.getElementById("enderecoOrigem");
 
     const campoDestino =
-        document.getElementById(
-            "destinoTransferencia"
-        ) ||
-        document.getElementById(
-            "enderecoDestino"
-        );
-
+        document.getElementById("destinoTransferencia") ||
+        document.getElementById("enderecoDestino");
 
     if (
         !campoCodigo ||
@@ -9103,134 +5148,77 @@ async function registrarTransferencia() {
         !campoOrigem ||
         !campoDestino
     ) {
-
         alert(
             "Os campos da transferência não foram encontrados."
         );
 
         return;
-
     }
 
+    const codigo = normalizarCodigo(
+        campoCodigo.value
+    );
 
-    const codigo =
-        normalizarCodigo(
-            campoCodigo.value
-        );
+    const quantidadeTransferida = converterNumero(
+        campoQuantidade.value
+    );
 
+    const origem = normalizarEndereco(
+        campoOrigem.value
+    );
 
-    const quantidadeTransferida =
-        converterNumero(
-            campoQuantidade.value
-        );
-
-
-    const origem =
-        normalizarEndereco(
-            campoOrigem.value
-        );
-
-
-    const destino =
-        normalizarEndereco(
-            campoDestino.value
-        );
-
+    const destino = normalizarEndereco(
+        campoDestino.value
+    );
 
     if (codigo === "") {
-
-        alert(
-            "Digite o código do produto."
-        );
-
+        alert("Digite o código do produto.");
         campoCodigo.focus();
-
         return;
-
     }
-
 
     if (
-        !Number.isFinite(
-            quantidadeTransferida
-        ) ||
+        !Number.isFinite(quantidadeTransferida) ||
         quantidadeTransferida <= 0
     ) {
-
-        alert(
-            "Digite uma quantidade válida."
-        );
-
+        alert("Digite uma quantidade válida.");
         campoQuantidade.focus();
-
         return;
-
     }
-
 
     if (origem === "") {
-
-        alert(
-            "Digite a posição de origem."
-        );
-
+        alert("Digite a posição de origem.");
         campoOrigem.focus();
-
         return;
-
     }
-
 
     if (destino === "") {
-
-        alert(
-            "Digite a posição de destino."
-        );
-
+        alert("Digite a posição de destino.");
         campoDestino.focus();
-
         return;
-
     }
 
-
     if (origem === destino) {
-
         alert(
             "A posição de origem e a posição de destino não podem ser iguais."
         );
 
         campoDestino.focus();
-
         return;
-
     }
 
+    const estoque = carregarEstoque();
 
-    const estoque =
-        carregarEstoque();
-
-
-    const produtoOrigem =
-        estoque.find(
-            function (produto) {
-
-                return (
-                    normalizarCodigo(
-                        produto.codigo
-                    ) === codigo
-                    &&
-                    normalizarEndereco(
-                        produto.endereco
-                    ) === origem
-                );
-
-            }
-        );
-
+    const produtoOrigem = estoque.find(
+        function (produto) {
+            return (
+                normalizarCodigo(produto.codigo) === codigo &&
+                normalizarEndereco(produto.endereco) === origem
+            );
+        }
+    );
 
     if (!produtoOrigem) {
-
         alert(
             "Produto não encontrado na posição de origem.\n\n" +
             "Código: " +
@@ -9240,145 +5228,88 @@ async function registrarTransferencia() {
         );
 
         return;
-
     }
 
+    const quantidadeOrigem = converterNumero(
+        produtoOrigem.quantidade
+    );
 
-    const quantidadeOrigem =
-        converterNumero(
-            produtoOrigem.quantidade
-        );
-
-
-    if (
-        quantidadeTransferida >
-        quantidadeOrigem
-    ) {
-
+    if (quantidadeTransferida > quantidadeOrigem) {
         alert(
             "Saldo insuficiente na posição de origem.\n\n" +
             "Saldo disponível: " +
-            formatarQuantidade(
-                quantidadeOrigem
-            )
+            formatarQuantidade(quantidadeOrigem)
         );
 
         return;
-
     }
 
+    const valorTotalOrigem = converterNumero(
+        produtoOrigem.valorTotal
+    );
 
-    const valorTotalOrigem =
-        converterNumero(
-            produtoOrigem.valorTotal
-        );
-
-
-    const valorUnitario =
-        quantidadeOrigem > 0
-            ? valorTotalOrigem /
-              quantidadeOrigem
-            : 0;
-
+    const valorUnitario = quantidadeOrigem > 0
+        ? valorTotalOrigem / quantidadeOrigem
+        : 0;
 
     const valorTransferido =
-        quantidadeTransferida *
-        valorUnitario;
-
+        quantidadeTransferida * valorUnitario;
 
     produtoOrigem.quantidade =
-        quantidadeOrigem -
-        quantidadeTransferida;
+        quantidadeOrigem - quantidadeTransferida;
 
+    produtoOrigem.valorTotal = Math.max(
+        0,
+        valorTotalOrigem - valorTransferido
+    );
 
-    produtoOrigem.valorTotal =
-        Math.max(
-            0,
-            valorTotalOrigem -
-            valorTransferido
-        );
-
-
-    const produtoDestino =
-        estoque.find(
-            function (produto) {
-
-                return (
-                    normalizarCodigo(
-                        produto.codigo
-                    ) === codigo
-                    &&
-                    normalizarEndereco(
-                        produto.endereco
-                    ) === destino
-                );
-
-            }
-        );
-
+    const produtoDestino = estoque.find(
+        function (produto) {
+            return (
+                normalizarCodigo(produto.codigo) === codigo &&
+                normalizarEndereco(produto.endereco) === destino
+            );
+        }
+    );
 
     if (produtoDestino) {
-
         produtoDestino.quantidade =
-            converterNumero(
-                produtoDestino.quantidade
-            ) +
+            converterNumero(produtoDestino.quantidade) +
             quantidadeTransferida;
 
-
         produtoDestino.valorTotal =
-            converterNumero(
-                produtoDestino.valorTotal
-            ) +
+            converterNumero(produtoDestino.valorTotal) +
             valorTransferido;
-
     } else {
+        estoque.push({
+            nf: produtoOrigem.nf || "",
 
-        estoque.push(
-            {
-                nf:
-                    produtoOrigem.nf ||
-                    "",
+            codigo:
+                produtoOrigem.codigo || codigo,
 
-                codigo:
-                    produtoOrigem.codigo ||
-                    codigo,
+            descricao:
+                produtoOrigem.descricao ||
+                "Sem descrição",
 
-                descricao:
-                    produtoOrigem.descricao ||
-                    "Sem descrição",
+            cliente:
+                produtoOrigem.cliente || "SMI",
 
-                cliente:
-                    produtoOrigem.cliente ||
-                    "SMI",
+            quantidade:
+                quantidadeTransferida,
 
-                quantidade:
-                    quantidadeTransferida,
+            valorTotal:
+                valorTransferido,
 
-                valorTotal:
-                    valorTransferido,
-
-                endereco:
-                    destino
-            }
-        );
-
+            endereco:
+                destino
+        });
     }
 
-
-    const estoqueAtualizado =
-        estoque.filter(
-            function (produto) {
-
-                return (
-                    converterNumero(
-                        produto.quantidade
-                    ) > 0
-                );
-
-            }
-        );
-
+    const estoqueAtualizado = estoque.filter(
+        function (produto) {
+            return converterNumero(produto.quantidade) > 0;
+        }
+    );
 
     const sincronizouBanco =
         await sincronizarTransferenciaProdutoSupabase(
@@ -9388,33 +5319,23 @@ async function registrarTransferencia() {
             quantidadeTransferida
         );
 
-
     if (!sincronizouBanco) {
         return;
     }
 
-
-    const salvou =
-        salvarEstoque(
-            estoqueAtualizado
-        );
-
+    const salvou = salvarEstoque(
+        estoqueAtualizado
+    );
 
     if (!salvou) {
-
         return;
-
     }
 
-
     const movimentacao = {
-
-        tipo:
-            "TRANSFERENCIA",
+        tipo: "TRANSFERENCIA",
 
         codigo:
-            produtoOrigem.codigo ||
-            codigo,
+            produtoOrigem.codigo || codigo,
 
         descricao:
             produtoOrigem.descricao ||
@@ -9433,114 +5354,73 @@ async function registrarTransferencia() {
             destino,
 
         cliente:
-            produtoOrigem.cliente ||
-            "SMI",
+            produtoOrigem.cliente || "SMI",
 
         data:
             obterDataHoraAtual(),
 
         operador:
             obterNomeUsuario()
-
     };
 
-
-    salvarHistoricoTransferencia(
-        movimentacao
-    );
-
-
-    salvarMovimentacaoGeral(
-        movimentacao
-    );
-
+    salvarHistoricoTransferencia(movimentacao);
+    salvarMovimentacaoGeral(movimentacao);
 
     limparCamposTransferencia();
-
-
     carregarHistoricoTransferencias();
-
 
     alert(
         "Transferência registrada com sucesso!\n\n" +
         "Código: " +
         movimentacao.codigo +
         "\nQuantidade: " +
-        formatarQuantidade(
-            quantidadeTransferida
-        ) +
+        formatarQuantidade(quantidadeTransferida) +
         "\nOrigem: " +
         origem +
         "\nDestino: " +
         destino
     );
 
-
     campoCodigo.focus();
-
 }
-
 
 // =====================================================
 // SALVAR HISTÓRICO DE TRANSFERÊNCIAS
 // =====================================================
 
-function salvarHistoricoTransferencia(
-    movimentacao
-) {
-
-    const transferencias =
-        carregarListaLocalStorage(
-            "transferencias"
-        );
-
-
-    transferencias.unshift(
-        movimentacao
+function salvarHistoricoTransferencia(movimentacao) {
+    const transferencias = carregarListaLocalStorage(
+        "transferencias"
     );
 
+    transferencias.unshift(movimentacao);
 
     salvarListaLocalStorage(
         "transferencias",
         transferencias
     );
-
 }
-
 
 // =====================================================
 // CARREGAR HISTÓRICO DE TRANSFERÊNCIAS
 // =====================================================
 
 function carregarHistoricoTransferencias() {
-
-    const tabela =
-        document.getElementById(
-            "listaTransferencias"
-        );
-
+    const tabela = document.getElementById(
+        "listaTransferencias"
+    );
 
     if (!tabela) {
-
         return;
-
     }
 
-
-    const transferencias =
-        carregarListaLocalStorage(
-            "transferencias"
-        );
-
+    const transferencias = carregarListaLocalStorage(
+        "transferencias"
+    );
 
     tabela.innerHTML = "";
 
-
-    if (
-        transferencias.length ===
-        0
-    ) {
-
+    if (transferencias.length === 0) {
         tabela.innerHTML =
             "<tr>" +
                 "<td " +
@@ -9551,94 +5431,59 @@ function carregarHistoricoTransferencias() {
                 "</td>" +
             "</tr>";
 
-
         return;
-
     }
 
+    transferencias.forEach(function (transferencia) {
+        const linha = document.createElement("tr");
 
-    transferencias.forEach(
-        function (transferencia) {
+        linha.appendChild(
+            criarCelula(transferencia.codigo || "-")
+        );
 
-            const linha =
-                document.createElement(
-                    "tr"
-                );
+        linha.appendChild(
+            criarCelula(
+                transferencia.descricao ||
+                "Sem descrição"
+            )
+        );
 
-
-            linha.appendChild(
-                criarCelula(
-                    transferencia.codigo ||
-                    "-"
+        linha.appendChild(
+            criarCelula(
+                formatarQuantidade(
+                    transferencia.quantidade
                 )
-            );
+            )
+        );
 
+        linha.appendChild(
+            criarCelula(transferencia.origem || "-")
+        );
 
-            linha.appendChild(
-                criarCelula(
-                    transferencia.descricao ||
-                    "Sem descrição"
-                )
-            );
+        linha.appendChild(
+            criarCelula(transferencia.destino || "-")
+        );
 
+        linha.appendChild(
+            criarCelula(transferencia.data || "-")
+        );
 
-            linha.appendChild(
-                criarCelula(
-                    formatarQuantidade(
-                        transferencia.quantidade
-                    )
-                )
-            );
+        linha.appendChild(
+            criarCelula(
+                transferencia.operador ||
+                "Administrador"
+            )
+        );
 
-
-            linha.appendChild(
-                criarCelula(
-                    transferencia.origem ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    transferencia.destino ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    transferencia.data ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    transferencia.operador ||
-                    "Administrador"
-                )
-            );
-
-
-            tabela.appendChild(
-                linha
-            );
-
-        }
-    );
-
+        tabela.appendChild(linha);
+    });
 }
-
 
 // =====================================================
 // LIMPAR CAMPOS DA TRANSFERÊNCIA
 // =====================================================
 
 function limparCamposTransferencia() {
-
     const ids = [
         "codigoTransferencia",
         "quantidadeTransferencia",
@@ -9648,30 +5493,17 @@ function limparCamposTransferencia() {
         "enderecoDestino"
     ];
 
+    ids.forEach(function (id) {
+        const campo = document.getElementById(id);
 
-    ids.forEach(
-        function (id) {
-
-            const campo =
-                document.getElementById(
-                    id
-                );
-
-
-            if (campo) {
-
-                campo.value = "";
-
-            }
-
+        if (campo) {
+            campo.value = "";
         }
-    );
-
+    });
 }
 
-
 // =====================================================
-// DISPONIBILIZAÇÃO GLOBAL
+// DISPONIBILIZAÇÃO GLOBAL — TRANSFERÊNCIAS
 // =====================================================
 
 window.registrarTransferencia =
@@ -9686,905 +5518,475 @@ window.carregarHistoricoTransferencias =
 window.carregarTransferencias =
     carregarHistoricoTransferencias;
 
-
-// =====================================================
-// SMI WMS - APP.JS
-// PARTE 7 - MAPA DE POSIÇÕES
-// =====================================================
-
-
 // =====================================================
 // INICIALIZAÇÃO DA PÁGINA DE POSIÇÕES
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
+    const mapa = document.getElementById(
+        "mapaEstoque"
+    );
 
-        const mapa =
-            document.getElementById(
-                "mapaEstoque"
-            );
-
-
-        if (mapa) {
-
-            carregarMapaEstoque();
-
-        }
-
+    if (mapa) {
+        carregarMapaEstoque();
     }
-);
-
+});
 
 // =====================================================
 // CONFIGURAÇÃO DAS POSIÇÕES
 // =====================================================
 
 function gerarListaPosicoes() {
-
     const posicoes = [];
 
-
     const letrasPadrao = [
-        "A",
-        "B",
-        "C",
-        "D"
+        "A", "B", "C", "D"
     ];
-
 
     const letrasPosicoes1e2 = [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J"
+        "A", "B", "C", "D", "E",
+        "F", "G", "H", "I", "J"
     ];
-
 
     const letrasPosicoes46a56 = [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I"
+        "A", "B", "C", "D", "E",
+        "F", "G", "H", "I"
     ];
 
+    for (let numero = 1; numero <= 90; numero++) {
+        let letrasDaPosicao = letrasPadrao;
 
-    for (
-        let numero = 1;
-        numero <= 90;
-        numero++
-    ) {
-
-        let letrasDaPosicao =
-            letrasPadrao;
-
-
-        // POSIÇÕES 1 E 2 = A ATÉ J
-
-        if (
-            numero === 1 ||
-            numero === 2
-        ) {
-
-            letrasDaPosicao =
-                letrasPosicoes1e2;
-
+        if (numero === 1 || numero === 2) {
+            letrasDaPosicao = letrasPosicoes1e2;
         }
 
-
-        // POSIÇÕES 46 ATÉ 56 = A ATÉ I
-
-        if (
-            numero >= 46 &&
-            numero <= 56
-        ) {
-
-            letrasDaPosicao =
-                letrasPosicoes46a56;
-
+        if (numero >= 46 && numero <= 56) {
+            letrasDaPosicao = letrasPosicoes46a56;
         }
 
-
-        letrasDaPosicao.forEach(
-            function (letra) {
-
-                posicoes.push(
-                    String(numero) +
-                    letra
-                );
-
-            }
-        );
-
+        letrasDaPosicao.forEach(function (letra) {
+            posicoes.push(String(numero) + letra);
+        });
     }
 
-
     return posicoes;
-
 }
-
 
 // =====================================================
 // CARREGAR MAPA DO ESTOQUE
 // =====================================================
 
 function carregarMapaEstoque() {
-
-    const mapa =
-        document.getElementById(
-            "mapaEstoque"
-        );
-
+    const mapa = document.getElementById(
+        "mapaEstoque"
+    );
 
     if (!mapa) {
-
         return;
-
     }
 
+    const estoque = carregarEstoque();
+    const listaPosicoes = gerarListaPosicoes();
 
-    const estoque =
-        carregarEstoque();
-
-
-    const listaPosicoes =
-        gerarListaPosicoes();
-
-        let totalPosicoesOcupadas = 0;
-
-let totalItensArmazenados = 0;
-
-
-
+    let totalPosicoesOcupadas = 0;
+    let totalItensArmazenados = 0;
 
     mapa.innerHTML = "";
 
-
-    listaPosicoes.forEach(
-        function (posicao) {
-
-            const produtosPosicao =
-                estoque.filter(
-                    function (produto) {
-
-                        return (
-                            normalizarEndereco(
-                                produto.endereco
-                            ) ===
-                            normalizarEndereco(
-                                posicao
-                            )
-                        );
-
-                    }
+    listaPosicoes.forEach(function (posicao) {
+        const produtosPosicao = estoque.filter(
+            function (produto) {
+                return (
+                    normalizarEndereco(produto.endereco) ===
+                    normalizarEndereco(posicao)
                 );
-
-
-            const quantidadeTotal =
-                produtosPosicao.reduce(
-                    function (
-                        total,
-                        produto
-                    ) {
-
-                        return (
-                            total +
-                            converterNumero(
-                                produto.quantidade
-                            )
-                        );
-
-                    },
-                    0
-                );
-
-if (produtosPosicao.length > 0) {
-
-    totalPosicoesOcupadas++;
-
-}
-
-totalItensArmazenados +=
-    quantidadeTotal;
-
-            const botao =
-                document.createElement(
-                    "button"
-                );
-
-
-            botao.type =
-                "button";
-
-
-            botao.className =
-                "posicao-estoque";
-
-
-            if (
-                produtosPosicao.length >
-                0
-            ) {
-
-                botao.classList.add(
-                    "ocupada"
-                );
-
-            } else {
-
-                botao.classList.add(
-                    "livre"
-                );
-
             }
+        );
 
-
-            const codigoPosicao =
-                document.createElement(
-                    "strong"
+        const quantidadeTotal = produtosPosicao.reduce(
+            function (total, produto) {
+                return (
+                    total +
+                    converterNumero(produto.quantidade)
                 );
+            },
+            0
+        );
 
-
-            codigoPosicao.textContent =
-                posicao;
-
-
-            const informacao =
-                document.createElement(
-                    "span"
-                );
-
-
-            informacao.textContent =
-                produtosPosicao.length > 0
-
-                    ? produtosPosicao.length +
-                      " item(ns)"
-
-                    : "0 itens";
-
-
-            const quantidade =
-                document.createElement(
-                    "small"
-                );
-
-
-            quantidade.textContent =
-                produtosPosicao.length > 0
-
-                    ? formatarQuantidade(
-                        quantidadeTotal
-                    ) +
-                    " unidades"
-
-                    : "Posição livre";
-
-
-            botao.appendChild(
-                codigoPosicao
-            );
-
-
-            botao.appendChild(
-                informacao
-            );
-
-
-            botao.appendChild(
-                quantidade
-            );
-
-
-            botao.addEventListener(
-                "click",
-                function () {
-
-                    abrirModalPosicao(
-                        posicao
-                    );
-
-                }
-            );
-
-
-            mapa.appendChild(
-                botao
-            );
-
+        if (produtosPosicao.length > 0) {
+            totalPosicoesOcupadas++;
         }
-    );
 
-    // =====================================================
-// ATUALIZAR CARDS DO MAPA
-// =====================================================
+        totalItensArmazenados += quantidadeTotal;
 
-const totalPosicoes =
-    listaPosicoes.length;
+        const botao = document.createElement("button");
 
-const totalPosicoesLivres =
-    totalPosicoes -
-    totalPosicoesOcupadas;
+        botao.type = "button";
+        botao.className = "posicao-estoque";
 
+        if (produtosPosicao.length > 0) {
+            botao.classList.add("ocupada");
+        } else {
+            botao.classList.add("livre");
+        }
 
-const cardOcupadas =
-    document.getElementById(
+        const codigoPosicao = document.createElement(
+            "strong"
+        );
+
+        codigoPosicao.textContent = posicao;
+
+        const informacao = document.createElement(
+            "span"
+        );
+
+        informacao.textContent =
+            produtosPosicao.length > 0
+                ? produtosPosicao.length + " item(ns)"
+                : "0 itens";
+
+        const quantidade = document.createElement(
+            "small"
+        );
+
+        quantidade.textContent =
+            produtosPosicao.length > 0
+                ? formatarQuantidade(quantidadeTotal) +
+                  " unidades"
+                : "Posição livre";
+
+        botao.appendChild(codigoPosicao);
+        botao.appendChild(informacao);
+        botao.appendChild(quantidade);
+
+        botao.addEventListener("click", function () {
+            abrirModalPosicao(posicao);
+        });
+
+        mapa.appendChild(botao);
+    });
+
+    // Atualizar cards do mapa.
+    const totalPosicoes = listaPosicoes.length;
+
+    const totalPosicoesLivres =
+        totalPosicoes - totalPosicoesOcupadas;
+
+    const cardOcupadas = document.getElementById(
         "mapaPosicoesOcupadas"
     );
 
-const cardOcupadasInfo =
-    document.getElementById(
+    const cardOcupadasInfo = document.getElementById(
         "mapaPosicoesOcupadasInfo"
     );
 
-const cardLivres =
-    document.getElementById(
+    const cardLivres = document.getElementById(
         "mapaPosicoesLivres"
     );
 
-const cardLivresInfo =
-    document.getElementById(
+    const cardLivresInfo = document.getElementById(
         "mapaPosicoesLivresInfo"
     );
 
-const cardCapacidade =
-    document.getElementById(
+    const cardCapacidade = document.getElementById(
         "mapaCapacidadeTotal"
     );
 
-const cardItens =
-    document.getElementById(
+    const cardItens = document.getElementById(
         "mapaItensArmazenados"
     );
 
+    if (cardOcupadas) {
+        cardOcupadas.textContent =
+            totalPosicoesOcupadas.toLocaleString("pt-BR");
+    }
 
-if (cardOcupadas) {
+    if (cardOcupadasInfo) {
+        cardOcupadasInfo.textContent =
+            "de " +
+            totalPosicoes.toLocaleString("pt-BR") +
+            " posições";
+    }
 
-    cardOcupadas.textContent =
-        totalPosicoesOcupadas
-            .toLocaleString("pt-BR");
+    if (cardLivres) {
+        cardLivres.textContent =
+            totalPosicoesLivres.toLocaleString("pt-BR");
+    }
 
-}
+    if (cardLivresInfo) {
+        cardLivresInfo.textContent =
+            "de " +
+            totalPosicoes.toLocaleString("pt-BR") +
+            " posições";
+    }
 
+    if (cardCapacidade) {
+        cardCapacidade.textContent =
+            totalPosicoes.toLocaleString("pt-BR");
+    }
 
-if (cardOcupadasInfo) {
-
-    cardOcupadasInfo.textContent =
-        "de " +
-        totalPosicoes.toLocaleString("pt-BR") +
-        " posições";
-
-}
-
-
-if (cardLivres) {
-
-    cardLivres.textContent =
-        totalPosicoesLivres
-            .toLocaleString("pt-BR");
-
-}
-
-
-if (cardLivresInfo) {
-
-    cardLivresInfo.textContent =
-        "de " +
-        totalPosicoes.toLocaleString("pt-BR") +
-        " posições";
-
-}
-
-
-if (cardCapacidade) {
-
-    cardCapacidade.textContent =
-        totalPosicoes
-            .toLocaleString("pt-BR");
-
-}
-
-
-if (cardItens) {
-
-    cardItens.textContent =
-        formatarQuantidade(
+    if (cardItens) {
+        cardItens.textContent = formatarQuantidade(
             totalItensArmazenados
         );
-
-}
-
+    }
 }
 
 // =====================================================
 // ABRIR MODAL DA POSIÇÃO
 // =====================================================
 
-function abrirModalPosicao(
-    posicao
-) {
+function abrirModalPosicao(posicao) {
+    const modal = document.getElementById(
+        "modalPosicao"
+    );
 
-    const modal =
-        document.getElementById(
-            "modalPosicao"
-        );
+    const titulo = document.getElementById(
+        "tituloPosicao"
+    );
 
+    const tabela = document.getElementById(
+        "listaProdutosPosicao"
+    );
 
-    const titulo =
-        document.getElementById(
-            "tituloPosicao"
-        );
+    const totalSku = document.getElementById(
+        "totalSku"
+    );
 
-
-    const tabela =
-        document.getElementById(
-            "listaProdutosPosicao"
-        );
-
-
-    const totalSku =
-        document.getElementById(
-            "totalSku"
-        );
-
-
-    if (
-        !modal ||
-        !titulo ||
-        !tabela
-    ) {
-
+    if (!modal || !titulo || !tabela) {
         return;
-
     }
 
+    const estoque = carregarEstoque();
 
-    const estoque =
-        carregarEstoque();
+    const produtosPosicao = estoque.filter(
+        function (produto) {
+            return (
+                normalizarEndereco(produto.endereco) ===
+                normalizarEndereco(posicao)
+            );
+        }
+    );
 
-
-    const produtosPosicao =
-        estoque.filter(
-            function (produto) {
-
-                return (
-                    normalizarEndereco(
-                        produto.endereco
-                    ) ===
-                    normalizarEndereco(
-                        posicao
-                    )
-                );
-
-            }
-        );
-
-
-    titulo.textContent =
-        "POSIÇÃO " +
-        posicao;
-
-
+    titulo.textContent = "POSIÇÃO " + posicao;
     tabela.innerHTML = "";
 
+    if (produtosPosicao.length === 0) {
+        const linha = document.createElement("tr");
+        const celula = document.createElement("td");
 
-    if (
-        produtosPosicao.length === 0
-    ) {
-
-        const linha =
-            document.createElement(
-                "tr"
-            );
-
-
-        const celula =
-            document.createElement(
-                "td"
-            );
-
-
-        celula.colSpan =
-            3;
-
-
-        celula.style.textAlign =
-            "center";
-
+        celula.colSpan = 3;
+        celula.style.textAlign = "center";
 
         celula.textContent =
             "Nenhum produto armazenado nesta posição.";
 
-
-        linha.appendChild(
-            celula
-        );
-
-
-        tabela.appendChild(
-            linha
-        );
-
+        linha.appendChild(celula);
+        tabela.appendChild(linha);
     } else {
+        produtosPosicao.forEach(function (produto) {
+            const linha = document.createElement("tr");
 
-        produtosPosicao.forEach(
-            function (produto) {
+            linha.appendChild(
+                criarCelula(produto.codigo || "-")
+            );
 
-                const linha =
-                    document.createElement(
-                        "tr"
-                    );
+            linha.appendChild(
+                criarCelula(
+                    produto.descricao || "Sem descrição"
+                )
+            );
 
+            linha.appendChild(
+                criarCelula(
+                    formatarQuantidade(produto.quantidade)
+                )
+            );
 
-                linha.appendChild(
-                    criarCelula(
-                        produto.codigo ||
-                        "-"
-                    )
-                );
-
-
-                linha.appendChild(
-                    criarCelula(
-                        produto.descricao ||
-                        "Sem descrição"
-                    )
-                );
-
-
-                linha.appendChild(
-                    criarCelula(
-                        formatarQuantidade(
-                            produto.quantidade
-                        )
-                    )
-                );
-
-
-                tabela.appendChild(
-                    linha
-                );
-
-            }
-        );
-
+            tabela.appendChild(linha);
+        });
     }
-
 
     if (totalSku) {
-
-        totalSku.textContent =
-            produtosPosicao.length;
-
+        totalSku.textContent = produtosPosicao.length;
     }
 
-
-    modal.style.display =
-        "flex";
-
+    modal.style.display = "flex";
 }
-
 
 // =====================================================
 // FECHAR MODAL DA POSIÇÃO
 // =====================================================
 
 function fecharModalPosicao() {
-
-    const modal =
-        document.getElementById(
-            "modalPosicao"
-        );
-
+    const modal = document.getElementById(
+        "modalPosicao"
+    );
 
     if (!modal) {
-
         return;
-
     }
 
-
-    modal.style.display =
-        "none";
-
+    modal.style.display = "none";
 }
-
 
 // =====================================================
 // PESQUISAR POSIÇÃO
 // =====================================================
 
 function pesquisarPosicao() {
-
-    const campo =
-        document.getElementById(
-            "pesquisaPosicao"
-        );
-
-
-    if (!campo) {
-
-        return;
-
-    }
-
-
-    const pesquisa =
-        normalizarEndereco(
-            campo.value
-        );
-
-
-    const botoes =
-        document.querySelectorAll(
-            "#mapaEstoque .posicao-estoque"
-        );
-
-
-    botoes.forEach(
-        function (botao) {
-
-            const texto =
-                normalizarEndereco(
-                    botao.textContent
-                );
-
-
-            botao.style.display =
-                pesquisa === "" ||
-                texto.includes(
-                    pesquisa
-                )
-
-                    ? ""
-
-                    : "none";
-
-        }
+    const campo = document.getElementById(
+        "pesquisaPosicao"
     );
 
-}
+    if (!campo) {
+        return;
+    }
 
+    const pesquisa = normalizarEndereco(
+        campo.value
+    );
+
+    const botoes = document.querySelectorAll(
+        "#mapaEstoque .posicao-estoque"
+    );
+
+    botoes.forEach(function (botao) {
+        const texto = normalizarEndereco(
+            botao.textContent
+        );
+
+        botao.style.display =
+            pesquisa === "" || texto.includes(pesquisa)
+                ? ""
+                : "none";
+    });
+}
 
 // =====================================================
 // FECHAR MODAL CLICANDO FORA
 // =====================================================
 
-window.addEventListener(
-    "click",
-    function (evento) {
+window.addEventListener("click", function (evento) {
+    const modal = document.getElementById(
+        "modalPosicao"
+    );
 
-        const modal =
-            document.getElementById(
-                "modalPosicao"
-            );
-
-
-        if (
-            modal &&
-            evento.target === modal
-        ) {
-
-            fecharModalPosicao();
-
-        }
-
+    if (modal && evento.target === modal) {
+        fecharModalPosicao();
     }
-);
-
+});
 
 // =====================================================
 // ATUALIZAR MAPA QUANDO O ESTOQUE MUDAR
 // =====================================================
 
-window.addEventListener(
-    "storage",
-    function (evento) {
-
-        if (
-            evento.key ===
-            "estoque"
-        ) {
-
-            carregarMapaEstoque();
-
-        }
-
+window.addEventListener("storage", function (evento) {
+    if (evento.key === "estoque") {
+        carregarMapaEstoque();
     }
-);
-
-
-// =====================================================
-// DISPONIBILIZAÇÃO GLOBAL
-// =====================================================
-
-window.carregarMapaEstoque =
-    carregarMapaEstoque;
-
-window.abrirModalPosicao =
-    abrirModalPosicao;
-
-window.fecharModalPosicao =
-    fecharModalPosicao;
-
-window.pesquisarPosicao =
-    pesquisarPosicao;
-
+});
 
 // =====================================================
-// SMI WMS - APP.JS
-// PARTE 8 - DASHBOARD E MOVIMENTAÇÕES
+// DISPONIBILIZAÇÃO GLOBAL — POSIÇÕES
 // =====================================================
 
+window.carregarMapaEstoque = carregarMapaEstoque;
+window.abrirModalPosicao = abrirModalPosicao;
+window.fecharModalPosicao = fecharModalPosicao;
+window.pesquisarPosicao = pesquisarPosicao;
+
+// FIM DA PARTE 7/10
+// A PARTE 8 ENTRA LOGO ABAIXO.
+
+// APP.JS — PARTE 8/10
+// DASHBOARD E MOVIMENTAÇÕES
 
 // =====================================================
 // INICIALIZAÇÃO DO DASHBOARD
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        atualizarResumoDashboard();
-
-    }
-);
-
+document.addEventListener("DOMContentLoaded", function () {
+    atualizarResumoDashboard();
+});
 
 // =====================================================
 // ALTERAR TEXTO DE UM ELEMENTO COM SEGURANÇA
 // =====================================================
 
-function alterarTextoDashboard(
-    id,
-    texto
-) {
-
-    const elemento =
-        document.getElementById(
-            id
-        );
-
+function alterarTextoDashboard(id, texto) {
+    const elemento = document.getElementById(id);
 
     if (elemento) {
-
-        elemento.textContent =
-            texto;
-
+        elemento.textContent = texto;
     }
-
 }
-
 
 // =====================================================
 // OBTER TODAS AS MOVIMENTAÇÕES
 // =====================================================
 
 function obterTodasMovimentacoes() {
-
-    const movimentacoesGerais =
-        carregarListaLocalStorage(
-            "movimentacoes"
-        );
-
-
-    const entradas =
-        carregarListaLocalStorage(
-            "entradas"
-        )
-        .map(
-            function (movimentacao) {
-
-                return prepararMovimentacao(
-                    movimentacao,
-                    "ENTRADA"
-                );
-
-            }
-        );
-
-
-    const saidas =
-        carregarListaLocalStorage(
-            "saidas"
-        )
-        .map(
-            function (movimentacao) {
-
-                return prepararMovimentacao(
-                    movimentacao,
-                    "SAIDA"
-                );
-
-            }
-        );
-
-
-    const transferencias =
-        carregarListaLocalStorage(
-            "transferencias"
-        )
-        .map(
-            function (movimentacao) {
-
-                return prepararMovimentacao(
-                    movimentacao,
-                    "TRANSFERENCIA"
-                );
-
-            }
-        );
-
-
-    const todas = [
-
-        ...movimentacoesGerais.map(
-            function (movimentacao) {
-
-                return prepararMovimentacao(
-                    movimentacao,
-                    movimentacao.tipo || ""
-                );
-
-            }
-        ),
-
-        ...entradas,
-
-        ...saidas,
-
-        ...transferencias
-
-    ];
-
-
-    return removerMovimentacoesDuplicadas(
-        todas
+    const movimentacoesGerais = carregarListaLocalStorage(
+        "movimentacoes"
     );
 
-}
+    const entradas = carregarListaLocalStorage(
+        "entradas"
+    ).map(function (movimentacao) {
+        return prepararMovimentacao(
+            movimentacao,
+            "ENTRADA"
+        );
+    });
 
+    const saidas = carregarListaLocalStorage(
+        "saidas"
+    ).map(function (movimentacao) {
+        return prepararMovimentacao(
+            movimentacao,
+            "SAIDA"
+        );
+    });
+
+    const transferencias = carregarListaLocalStorage(
+        "transferencias"
+    ).map(function (movimentacao) {
+        return prepararMovimentacao(
+            movimentacao,
+            "TRANSFERENCIA"
+        );
+    });
+
+    const todas = [
+        ...movimentacoesGerais.map(function (movimentacao) {
+            return prepararMovimentacao(
+                movimentacao,
+                movimentacao.tipo || ""
+            );
+        }),
+        ...entradas,
+        ...saidas,
+        ...transferencias
+    ];
+
+    return removerMovimentacoesDuplicadas(todas);
+}
 
 // =====================================================
 // PREPARAR MOVIMENTAÇÃO
 // =====================================================
 
-function prepararMovimentacao(
-    movimentacao,
-    tipoPadrao
-) {
-
+function prepararMovimentacao(movimentacao, tipoPadrao) {
     const registro =
-
         movimentacao &&
-        typeof movimentacao ===
-        "object"
-
-            ? {
-                ...movimentacao
-            }
-
+        typeof movimentacao === "object"
+            ? { ...movimentacao }
             : {};
 
-
-    registro.tipo =
-        normalizarTipoMovimentacaoApp(
-            registro.tipo ||
-            tipoPadrao
-        );
-
+    registro.tipo = normalizarTipoMovimentacaoApp(
+        registro.tipo || tipoPadrao
+    );
 
     registro.codigo =
         registro.codigo ||
@@ -10592,28 +5994,21 @@ function prepararMovimentacao(
         registro.produto ||
         "";
 
-
     registro.descricao =
         registro.descricao ||
         registro.nomeProduto ||
         "Sem descrição";
 
+    registro.quantidade = converterNumero(
+        registro.quantidade ??
+        registro.qtd ??
+        registro.qtde ??
+        0
+    );
 
-    registro.quantidade =
-        converterNumero(
-            registro.quantidade ??
-            registro.qtd ??
-            registro.qtde ??
-            0
-        );
-
-
-    registro.valorTotal =
-        converterNumero(
-            registro.valorTotal ??
-            0
-        );
-
+    registro.valorTotal = converterNumero(
+        registro.valorTotal ?? 0
+    );
 
     registro.data =
         registro.data ||
@@ -10622,306 +6017,170 @@ function prepararMovimentacao(
         registro.criadoEm ||
         "";
 
-
     registro.operador =
         registro.operador ||
         registro.usuario ||
         registro.responsavel ||
         obterNomeUsuario();
 
-
-    if (
-        registro.tipo ===
-        "ENTRADA"
-    ) {
-
+    if (registro.tipo === "ENTRADA") {
         registro.origem =
             registro.origem ||
             "Recebimento";
 
-
         registro.destino =
             registro.destino ||
             registro.endereco ||
             "-";
-
     }
 
-
-    if (
-        registro.tipo ===
-        "SAIDA"
-    ) {
-
+    if (registro.tipo === "SAIDA") {
         registro.origem =
             registro.origem ||
             registro.endereco ||
             "-";
 
-
         registro.destino =
             registro.destino ||
             "Venda";
-
     }
 
-
-    if (
-        registro.tipo ===
-        "TRANSFERENCIA"
-    ) {
-
+    if (registro.tipo === "TRANSFERENCIA") {
         registro.origem =
             registro.origem ||
             registro.enderecoOrigem ||
             "-";
 
-
         registro.destino =
             registro.destino ||
             registro.enderecoDestino ||
             "-";
-
     }
 
-
     return registro;
-
 }
-
 
 // =====================================================
 // NORMALIZAR TIPO DA MOVIMENTAÇÃO
 // =====================================================
 
-function normalizarTipoMovimentacaoApp(
-    tipo
-) {
-
-    const texto =
-        String(
-            tipo || ""
-        )
+function normalizarTipoMovimentacaoApp(tipo) {
+    const texto = String(tipo || "")
         .trim()
         .toUpperCase()
-        .normalize(
-            "NFD"
-        )
-        .replace(
-            /[\u0300-\u036f]/g,
-            ""
-        );
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
 
-
-    if (
-        texto.includes(
-            "ENTRADA"
-        )
-    ) {
-
+    if (texto.includes("ENTRADA")) {
         return "ENTRADA";
-
     }
 
-
-    if (
-        texto.includes(
-            "SAIDA"
-        )
-    ) {
-
+    if (texto.includes("SAIDA")) {
         return "SAIDA";
-
     }
-
 
     if (
-        texto.includes(
-            "TRANSFERENCIA"
-        ) ||
-        texto.includes(
-            "TRANSFERIR"
-        )
+        texto.includes("TRANSFERENCIA") ||
+        texto.includes("TRANSFERIR")
     ) {
-
         return "TRANSFERENCIA";
-
     }
 
-
-    return (
-        texto ||
-        "MOVIMENTACAO"
-    );
-
+    return texto || "MOVIMENTACAO";
 }
-
 
 // =====================================================
 // REMOVER MOVIMENTAÇÕES DUPLICADAS
 // =====================================================
 
-function removerMovimentacoesDuplicadas(
-    movimentacoes
-) {
-
+function removerMovimentacoesDuplicadas(movimentacoes) {
     const registrosUnicos = [];
+    const assinaturas = new Set();
 
-    const assinaturas =
-        new Set();
+    movimentacoes.forEach(function (movimentacao) {
+        const assinatura = [
+            normalizarTipoMovimentacaoApp(
+                movimentacao.tipo
+            ),
 
+            normalizarCodigo(
+                movimentacao.codigo
+            ),
 
-    movimentacoes.forEach(
-        function (movimentacao) {
+            converterNumero(
+                movimentacao.quantidade
+            ),
 
-            const assinatura = [
+            String(
+                movimentacao.data || ""
+            ).trim(),
 
-                normalizarTipoMovimentacaoApp(
-                    movimentacao.tipo
-                ),
+            normalizarEndereco(
+                movimentacao.origem ||
+                movimentacao.endereco
+            ),
 
-                normalizarCodigo(
-                    movimentacao.codigo
-                ),
+            normalizarEndereco(
+                movimentacao.destino
+            )
+        ].join("|");
 
-                converterNumero(
-                    movimentacao.quantidade
-                ),
-
-                String(
-                    movimentacao.data || ""
-                ).trim(),
-
-                normalizarEndereco(
-                    movimentacao.origem ||
-                    movimentacao.endereco
-                ),
-
-                normalizarEndereco(
-                    movimentacao.destino
-                )
-
-            ].join("|");
-
-
-            if (
-                assinaturas.has(
-                    assinatura
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            assinaturas.add(
-                assinatura
-            );
-
-
-            registrosUnicos.push(
-                movimentacao
-            );
-
+        if (assinaturas.has(assinatura)) {
+            return;
         }
-    );
 
+        assinaturas.add(assinatura);
+        registrosUnicos.push(movimentacao);
+    });
 
     return registrosUnicos;
-
 }
-
 
 // =====================================================
 // ATUALIZAR RESUMO DO DASHBOARD
 // =====================================================
 
 function atualizarResumoDashboard() {
+    const estoque = carregarEstoque();
 
-    const estoque =
-        carregarEstoque();
+    const codigosUnicos = new Set();
+    const posicoesUnicas = new Set();
 
+    let quantidadeTotal = 0;
+    let valorTotalEstoque = 0;
 
-    const codigosUnicos =
-        new Set();
+    estoque.forEach(function (produto) {
+        const codigo = normalizarCodigo(
+            produto.codigo
+        );
 
+        const endereco = normalizarEndereco(
+            produto.endereco
+        );
 
-    const posicoesUnicas =
-        new Set();
-
-
-    let quantidadeTotal =
-        0;
-
-
-    let valorTotalEstoque =
-        0;
-
-
-    estoque.forEach(
-        function (produto) {
-
-            const codigo =
-                normalizarCodigo(
-                    produto.codigo
-                );
-
-
-            const endereco =
-                normalizarEndereco(
-                    produto.endereco
-                );
-
-
-            if (codigo) {
-
-                codigosUnicos.add(
-                    codigo
-                );
-
-            }
-
-
-            if (endereco) {
-
-                posicoesUnicas.add(
-                    endereco
-                );
-
-            }
-
-
-            quantidadeTotal +=
-                converterNumero(
-                    produto.quantidade
-                );
-
-
-            valorTotalEstoque +=
-                converterNumero(
-                    produto.valorTotal
-                );
-
+        if (codigo) {
+            codigosUnicos.add(codigo);
         }
-    );
 
+        if (endereco) {
+            posicoesUnicas.add(endereco);
+        }
 
-    const totalProdutos =
-        codigosUnicos.size;
+        quantidadeTotal += converterNumero(
+            produto.quantidade
+        );
 
+        valorTotalEstoque += converterNumero(
+            produto.valorTotal
+        );
+    });
 
-    const totalPosicoes =
-        posicoesUnicas.size;
-
-
-    const totalPosicoesArmazem =
-        460;
-
+    const totalProdutos = codigosUnicos.size;
+    const totalPosicoes = posicoesUnicas.size;
+    const totalPosicoesArmazem = 460;
 
     const percentualOcupacao =
         totalPosicoesArmazem > 0
-
             ? Math.min(
                 100,
                 (
@@ -10929,374 +6188,210 @@ function atualizarResumoDashboard() {
                     totalPosicoesArmazem
                 ) * 100
             )
-
             : 0;
-
 
     alterarTextoDashboard(
         "cardQuantidade",
-        quantidadeTotal.toLocaleString(
-            "pt-BR"
-        )
+        quantidadeTotal.toLocaleString("pt-BR")
     );
-
 
     alterarTextoDashboard(
         "cardValor",
-        valorTotalEstoque.toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        )
+        valorTotalEstoque.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        })
     );
-
 
     alterarTextoDashboard(
         "cardPosicoes",
-        totalPosicoes.toLocaleString(
-            "pt-BR"
-        )
+        totalPosicoes.toLocaleString("pt-BR")
     );
-
 
     alterarTextoDashboard(
         "cardNiveis",
-        percentualOcupacao.toLocaleString(
-            "pt-BR",
-            {
-                minimumFractionDigits: 1,
-                maximumFractionDigits: 1
-            }
-        ) + "%"
+        percentualOcupacao.toLocaleString("pt-BR", {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+        }) + "%"
     );
-
 
     alterarTextoDashboard(
         "totalProdutos",
-        totalProdutos.toLocaleString(
-            "pt-BR"
-        )
+        totalProdutos.toLocaleString("pt-BR")
     );
-
 
     alterarTextoDashboard(
         "totalItens",
-        quantidadeTotal.toLocaleString(
-            "pt-BR"
-        )
+        quantidadeTotal.toLocaleString("pt-BR")
     );
-
 
     alterarTextoDashboard(
         "posicoesOcupadas",
-        totalPosicoes.toLocaleString(
-            "pt-BR"
-        )
+        totalPosicoes.toLocaleString("pt-BR")
     );
-
 
     alterarTextoDashboard(
         "valorEstoque",
-        valorTotalEstoque.toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        )
+        valorTotalEstoque.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        })
     );
-
 
     alterarTextoDashboard(
         "totalValorEstoque",
-        valorTotalEstoque.toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        )
+        valorTotalEstoque.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        })
     );
 
-
-    atualizarBarrasOcupacao(
-        percentualOcupacao
-    );
-
-
+    atualizarBarrasOcupacao(percentualOcupacao);
     atualizarResumoMovimentacoes();
-
-
     carregarUltimasMovimentacoes();
-
 }
-
 
 // =====================================================
 // ATUALIZAR BARRAS DE OCUPAÇÃO
 // =====================================================
 
-function atualizarBarrasOcupacao(
-    percentual
-) {
+function atualizarBarrasOcupacao(percentual) {
+    const progressoPosicoes = document.getElementById(
+        "progressoPosicoes"
+    );
 
-    const progressoPosicoes =
-        document.getElementById(
-            "progressoPosicoes"
-        );
+    const progressoNiveis = document.getElementById(
+        "progressoNiveis"
+    );
 
-
-    const progressoNiveis =
-        document.getElementById(
-            "progressoNiveis"
-        );
-
-
-    const largura =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                converterNumero(
-                    percentual
-                )
-            )
-        ) + "%";
-
+    const largura = Math.max(
+        0,
+        Math.min(
+            100,
+            converterNumero(percentual)
+        )
+    ) + "%";
 
     if (progressoPosicoes) {
-
-        progressoPosicoes.style.width =
-            largura;
-
+        progressoPosicoes.style.width = largura;
     }
-
 
     if (progressoNiveis) {
-
-        progressoNiveis.style.width =
-            largura;
-
+        progressoNiveis.style.width = largura;
     }
-
 }
-
 
 // =====================================================
 // RESUMO DAS MOVIMENTAÇÕES
 // =====================================================
 
 function atualizarResumoMovimentacoes() {
-
-    const movimentacoes =
-        obterTodasMovimentacoes();
-
-
-    const agora =
-        new Date();
-
+    const movimentacoes = obterTodasMovimentacoes();
+    const agora = new Date();
 
     const hoje =
-        String(
-            agora.getDate()
-        ).padStart(
-            2,
-            "0"
-        ) +
+        String(agora.getDate()).padStart(2, "0") +
         "/" +
-        String(
-            agora.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        ) +
+        String(agora.getMonth() + 1).padStart(2, "0") +
         "/" +
         agora.getFullYear();
 
-            let totalEntradas = 0;
+    let totalEntradas = 0;
     let totalSaidas = 0;
     let totalTransferencias = 0;
 
+    movimentacoes.forEach(function (movimentacao) {
+        const textoData = String(
+            movimentacao.data || ""
+        ).trim();
 
-    movimentacoes.forEach(
-        function (movimentacao) {
+        const dataMovimentacao = textoData.match(
+            /^(\d{1,2}\/\d{1,2}\/\d{4})/
+        );
 
-            const textoData =
-                String(
-                    movimentacao.data ||
-                    ""
-                ).trim();
-
-
-            const dataMovimentacao =
-                textoData.match(
-                    /^(\d{1,2}\/\d{1,2}\/\d{4})/
-                );
-
-
-            if (
-                !dataMovimentacao ||
-                dataMovimentacao[1] !==
-                hoje
-            ) {
-
-                return;
-
-            }
-
-
-            const tipo =
-                normalizarTipoMovimentacaoApp(
-                    movimentacao.tipo
-                );
-
-
-            const quantidade =
-                converterNumero(
-                    movimentacao.quantidade
-                );
-
-
-            if (
-                tipo ===
-                "ENTRADA"
-            ) {
-
-                totalEntradas +=
-                    quantidade;
-
-            }
-
-
-            if (
-                tipo ===
-                "SAIDA"
-            ) {
-
-                totalSaidas +=
-                    quantidade;
-
-            }
-
-
-            if (
-                tipo ===
-                "TRANSFERENCIA"
-            ) {
-
-                totalTransferencias +=
-                    quantidade > 0
-                        ? quantidade
-                        : 1;
-
-            }
-
+        if (
+            !dataMovimentacao ||
+            dataMovimentacao[1] !== hoje
+        ) {
+            return;
         }
-    );
 
+        const tipo = normalizarTipoMovimentacaoApp(
+            movimentacao.tipo
+        );
 
-    const saldo =
-        totalEntradas -
-        totalSaidas;
+        const quantidade = converterNumero(
+            movimentacao.quantidade
+        );
 
+        if (tipo === "ENTRADA") {
+            totalEntradas += quantidade;
+        }
+
+        if (tipo === "SAIDA") {
+            totalSaidas += quantidade;
+        }
+
+        if (tipo === "TRANSFERENCIA") {
+            totalTransferencias +=
+                quantidade > 0 ? quantidade : 1;
+        }
+    });
+
+    const saldo = totalEntradas - totalSaidas;
 
     alterarTextoDashboard(
         "resumoEntradas",
-        formatarQuantidade(
-            totalEntradas
-        )
+        formatarQuantidade(totalEntradas)
     );
-
 
     alterarTextoDashboard(
         "resumoSaidas",
-        formatarQuantidade(
-            totalSaidas
-        )
+        formatarQuantidade(totalSaidas)
     );
-
 
     alterarTextoDashboard(
         "resumoTransferencias",
-        formatarQuantidade(
-            totalTransferencias
-        )
+        formatarQuantidade(totalTransferencias)
     );
-
 
     alterarTextoDashboard(
         "resumoSaldo",
-        formatarQuantidade(
-            saldo
-        )
+        formatarQuantidade(saldo)
     );
-
 }
-
 
 // =====================================================
 // CARREGAR ÚLTIMAS MOVIMENTAÇÕES
 // =====================================================
 
 function carregarUltimasMovimentacoes() {
-
-    const tabela =
-        document.getElementById(
-            "ultimasMovimentacoes"
-        );
-
+    const tabela = document.getElementById(
+        "ultimasMovimentacoes"
+    );
 
     if (!tabela) {
-
         return;
-
     }
 
-
-    const movimentacoes =
-        obterTodasMovimentacoes()
-            .sort(
-                function (
-                    a,
-                    b
-                ) {
-
-                    const dataA =
-                        converterDataMovimentacao(
-                            a.data
-                        );
-
-
-                    const dataB =
-                        converterDataMovimentacao(
-                            b.data
-                        );
-
-
-                    return (
-                        dataB -
-                        dataA
-                    );
-
-                }
-            )
-            .slice(
-                0,
-                10
+    const movimentacoes = obterTodasMovimentacoes()
+        .sort(function (a, b) {
+            const dataA = converterDataMovimentacao(
+                a.data
             );
 
+            const dataB = converterDataMovimentacao(
+                b.data
+            );
 
-    tabela.innerHTML =
-        "";
+            return dataB - dataA;
+        })
+        .slice(0, 10);
 
+    tabela.innerHTML = "";
 
-    if (
-        movimentacoes.length ===
-        0
-    ) {
-
+    if (movimentacoes.length === 0) {
         tabela.innerHTML =
             "<tr>" +
                 "<td " +
@@ -11307,127 +6402,79 @@ function carregarUltimasMovimentacoes() {
                 "</td>" +
             "</tr>";
 
-
         return;
-
     }
 
+    movimentacoes.forEach(function (movimentacao) {
+        const linha = document.createElement("tr");
 
-    movimentacoes.forEach(
-        function (movimentacao) {
+        linha.appendChild(
+            criarCelula(movimentacao.tipo || "-")
+        );
 
-            const linha =
-                document.createElement(
-                    "tr"
-                );
+        linha.appendChild(
+            criarCelula(movimentacao.codigo || "-")
+        );
 
+        linha.appendChild(
+            criarCelula(
+                movimentacao.descricao ||
+                "Sem descrição"
+            )
+        );
 
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.tipo ||
-                    "-"
+        linha.appendChild(
+            criarCelula(
+                formatarQuantidade(
+                    movimentacao.quantidade
                 )
-            );
+            )
+        );
 
+        linha.appendChild(
+            criarCelula(movimentacao.origem || "-")
+        );
 
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.codigo ||
-                    "-"
-                )
-            );
+        linha.appendChild(
+            criarCelula(
+                movimentacao.destino ||
+                movimentacao.requisitante ||
+                movimentacao.endereco ||
+                "-"
+            )
+        );
 
+        linha.appendChild(
+            criarCelula(movimentacao.data || "-")
+        );
 
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.descricao ||
-                    "Sem descrição"
-                )
-            );
+        linha.appendChild(
+            criarCelula(
+                movimentacao.operador ||
+                "Administrador"
+            )
+        );
 
-
-            linha.appendChild(
-                criarCelula(
-                    formatarQuantidade(
-                        movimentacao.quantidade
-                    )
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.origem ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.destino ||
-                    movimentacao.requisitante ||
-                    movimentacao.endereco ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.data ||
-                    "-"
-                )
-            );
-
-
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.operador ||
-                    "Administrador"
-                )
-            );
-
-
-            tabela.appendChild(
-                linha
-            );
-
-        }
-    );
-
+        tabela.appendChild(linha);
+    });
 }
-
 
 // =====================================================
 // CONVERTER DATA DA MOVIMENTAÇÃO
 // =====================================================
 
-function converterDataMovimentacao(
-    valor
-) {
-
+function converterDataMovimentacao(valor) {
     if (!valor) {
-
         return new Date(0);
-
     }
 
+    const texto = String(valor).trim();
 
-    const texto =
-        String(
-            valor
-        ).trim();
-
-
-    const partes =
-        texto.match(
-            /(\d{2})\/(\d{2})\/(\d{4})(?:,\s*|\s+)?(\d{2}):(\d{2})(?::(\d{2}))?/
-        );
-
+    const partes = texto.match(
+        /(\d{2})\/(\d{2})\/(\d{4})(?:,\s*|\s+)?(\d{2}):(\d{2})(?::(\d{2}))?/
+    );
 
     if (partes) {
-
         return new Date(
             Number(partes[3]),
             Number(partes[2]) - 1,
@@ -11436,136 +6483,76 @@ function converterDataMovimentacao(
             Number(partes[5]),
             Number(partes[6] || 0)
         );
-
     }
 
+    const data = new Date(texto);
 
-    const data =
-        new Date(
-            texto
-        );
-
-
-    return Number.isNaN(
-        data.getTime()
-    )
-
+    return Number.isNaN(data.getTime())
         ? new Date(0)
-
         : data;
-
 }
-
 
 // =====================================================
 // COMPATIBILIDADE COM NOMES ANTIGOS
 // =====================================================
 
 function carregarDashboard() {
-
     atualizarResumoDashboard();
-
 }
-
 
 function atualizarResumoDashboardAntigo() {
-
     atualizarResumoDashboard();
-
 }
-
 
 // =====================================================
 // AVISAR OUTRAS TELAS SOBRE ALTERAÇÕES
 // =====================================================
 
-function dispararAtualizacaoWMS(
-    tipo
-) {
-
+function dispararAtualizacaoWMS(tipo) {
     try {
-
         localStorage.setItem(
             "ultimaAtualizacaoWMS",
-            JSON.stringify(
-                {
-                    tipo:
-                        tipo ||
-                        "ATUALIZACAO",
-
-                    data:
-                        new Date()
-                            .toISOString()
-                }
-            )
+            JSON.stringify({
+                tipo: tipo || "ATUALIZACAO",
+                data: new Date().toISOString()
+            })
         );
-
     } catch (erro) {
-
         console.error(
             "Erro ao registrar atualização do WMS:",
             erro
         );
-
     }
-
 }
-
 
 // =====================================================
 // ATUALIZAÇÃO ENTRE ABAS
 // =====================================================
 
-window.addEventListener(
-    "storage",
-    function (evento) {
+window.addEventListener("storage", function (evento) {
+    const chavesImportantes = [
+        "estoque",
+        "movimentacoes",
+        "entradas",
+        "saidas",
+        "transferencias",
+        "ultimaAtualizacaoWMS"
+    ];
 
-        const chavesImportantes = [
-            "estoque",
-            "movimentacoes",
-            "entradas",
-            "saidas",
-            "transferencias",
-            "ultimaAtualizacaoWMS"
-        ];
-
-
-        if (
-            !chavesImportantes.includes(
-                evento.key
-            )
-        ) {
-
-            return;
-
-        }
-
-
-        atualizarResumoDashboard();
-
-
-        if (
-            typeof carregarTabelaProdutos ===
-            "function"
-        ) {
-
-            carregarTabelaProdutos();
-
-        }
-
-
-        if (
-            typeof carregarMapaEstoque ===
-            "function"
-        ) {
-
-            carregarMapaEstoque();
-
-        }
-
+    if (!chavesImportantes.includes(evento.key)) {
+        return;
     }
-);
 
+    atualizarResumoDashboard();
+
+    if (typeof carregarTabelaProdutos === "function") {
+        carregarTabelaProdutos();
+    }
+
+    if (typeof carregarMapaEstoque === "function") {
+        carregarMapaEstoque();
+    }
+});
 
 // =====================================================
 // DISPONIBILIZAÇÃO GLOBAL
@@ -11598,232 +6585,129 @@ window.carregarUltimasMovimentacoes =
 window.dispararAtualizacaoWMS =
     dispararAtualizacaoWMS;
 
+// FIM DA PARTE 8/10
+// A PARTE 9 ENTRA LOGO ABAIXO.
 
-// =====================================================
-// SMI WMS - APP.JS
-// PARTE 9 - RELATÓRIOS
-// =====================================================
-
+// APP.JS — PARTE 9/10
+// RELATÓRIOS E EXPORTAÇÃO DE ESTOQUE
 
 // =====================================================
 // INICIALIZAÇÃO DA PÁGINA DE RELATÓRIOS
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
+    const tabelaRelatorios = document.getElementById(
+        "listaRelatorios"
+    );
 
-        const tabelaRelatorios =
-            document.getElementById(
-                "listaRelatorios"
-            );
-
-
-        if (
-            tabelaRelatorios
-        ) {
-
-            carregarRelatorios();
-
-        }
-
+    if (tabelaRelatorios) {
+        carregarRelatorios();
     }
-);
-
+});
 
 // =====================================================
 // CARREGAR RELATÓRIOS
 // =====================================================
 
 function carregarRelatorios() {
-
     carregarResumoRelatorios();
-
     carregarTabelaRelatorios();
-
 }
-
 
 // =====================================================
 // CARREGAR RESUMO DO ESTOQUE
 // =====================================================
 
 function carregarResumoRelatorios() {
+    const estoque = carregarEstoque();
 
-    const estoque =
-        carregarEstoque();
+    const codigosUnicos = new Set();
+    const posicoesUnicas = new Set();
 
+    let quantidadeTotal = 0;
+    let valorTotalEstoque = 0;
 
-    const codigosUnicos =
-        new Set();
+    estoque.forEach(function (produto) {
+        const codigo = normalizarCodigo(
+            produto.codigo
+        );
 
+        const endereco = normalizarEndereco(
+            produto.endereco
+        );
 
-    const posicoesUnicas =
-        new Set();
-
-
-    let quantidadeTotal =
-        0;
-
-
-    let valorTotalEstoque =
-        0;
-
-
-    estoque.forEach(
-        function (produto) {
-
-            const codigo =
-                normalizarCodigo(
-                    produto.codigo
-                );
-
-
-            const endereco =
-                normalizarEndereco(
-                    produto.endereco
-                );
-
-
-            if (codigo) {
-
-                codigosUnicos.add(
-                    codigo
-                );
-
-            }
-
-
-            if (endereco) {
-
-                posicoesUnicas.add(
-                    endereco
-                );
-
-            }
-
-
-            quantidadeTotal +=
-                converterNumero(
-                    produto.quantidade
-                );
-
-
-            valorTotalEstoque +=
-                converterNumero(
-                    produto.valorTotal
-                );
-
+        if (codigo) {
+            codigosUnicos.add(codigo);
         }
-    );
 
+        if (endereco) {
+            posicoesUnicas.add(endereco);
+        }
+
+        quantidadeTotal += converterNumero(
+            produto.quantidade
+        );
+
+        valorTotalEstoque += converterNumero(
+            produto.valorTotal
+        );
+    });
 
     atualizarElementoRelatorio(
         "relQuantidade",
-        quantidadeTotal.toLocaleString(
-            "pt-BR"
-        )
+        quantidadeTotal.toLocaleString("pt-BR")
     );
-
 
     atualizarElementoRelatorio(
         "relValor",
-        valorTotalEstoque.toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        )
+        valorTotalEstoque.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        })
     );
-
 
     atualizarElementoRelatorio(
         "relPosicoes",
-        posicoesUnicas.size.toLocaleString(
-            "pt-BR"
-        )
+        posicoesUnicas.size.toLocaleString("pt-BR")
     );
-
 }
-
 
 // =====================================================
 // ATUALIZAR ELEMENTO DO RELATÓRIO
 // =====================================================
 
-function atualizarElementoRelatorio(
-    id,
-    valor
-) {
+function atualizarElementoRelatorio(id, valor) {
+    const elemento = document.getElementById(id);
 
-    const elemento =
-        document.getElementById(
-            id
-        );
-
-
-    if (
-        elemento
-    ) {
-
-        elemento.textContent =
-            valor;
-
+    if (elemento) {
+        elemento.textContent = valor;
     }
-
 }
-
 
 // =====================================================
 // CARREGAR TABELA DE RELATÓRIOS
 // =====================================================
 
 function carregarTabelaRelatorios() {
-
-    const tabela =
-        document.getElementById(
-            "listaRelatorios"
-        );
-
+    const tabela = document.getElementById(
+        "listaRelatorios"
+    );
 
     if (!tabela) {
-
         return;
-
     }
 
-
-    const movimentacoes =
-        obterTodasMovimentacoes()
-            .sort(
-                function (
-                    a,
-                    b
-                ) {
-
-                    return (
-                        converterDataMovimentacao(
-                            b.data
-                        ) -
-                        converterDataMovimentacao(
-                            a.data
-                        )
-                    );
-
-                }
+    const movimentacoes = obterTodasMovimentacoes()
+        .sort(function (a, b) {
+            return (
+                converterDataMovimentacao(b.data) -
+                converterDataMovimentacao(a.data)
             );
+        });
 
+    tabela.innerHTML = "";
 
-    tabela.innerHTML =
-        "";
-
-
-    if (
-        movimentacoes.length ===
-        0
-    ) {
-
+    if (movimentacoes.length === 0) {
         tabela.innerHTML =
             "<tr>" +
                 "<td " +
@@ -11834,378 +6718,205 @@ function carregarTabelaRelatorios() {
                 "</td>" +
             "</tr>";
 
-
         return;
-
     }
 
+    movimentacoes.forEach(function (movimentacao) {
+        const linha = document.createElement("tr");
 
-    movimentacoes.forEach(
-        function (movimentacao) {
+        const tipo = normalizarTipoMovimentacaoApp(
+            movimentacao.tipo
+        );
 
-            const linha =
-                document.createElement(
-                    "tr"
-                );
+        linha.dataset.tipo = tipo;
 
+        linha.appendChild(
+            criarCelula(formatarTipoRelatorio(tipo))
+        );
 
-            const tipo =
-                normalizarTipoMovimentacaoApp(
-                    movimentacao.tipo
-                );
+        linha.appendChild(
+            criarCelula(movimentacao.codigo || "-")
+        );
 
+        linha.appendChild(
+            criarCelula(
+                movimentacao.descricao ||
+                "Sem descrição"
+            )
+        );
 
-            linha.dataset.tipo =
-                tipo;
-
-
-            // TIPO
-
-            linha.appendChild(
-                criarCelula(
-                    formatarTipoRelatorio(
-                        tipo
-                    )
+        linha.appendChild(
+            criarCelula(
+                formatarQuantidade(
+                    movimentacao.quantidade
                 )
-            );
+            )
+        );
 
+        linha.appendChild(
+            criarCelula(
+                movimentacao.origem ||
+                movimentacao.endereco ||
+                "-"
+            )
+        );
 
-            // CÓDIGO
+        let destinoRelatorio = "-";
 
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.codigo ||
-                    "-"
-                )
-            );
-
-
-            // DESCRIÇÃO
-
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.descricao ||
-                    "Sem descrição"
-                )
-            );
-
-
-            // QUANTIDADE
-
-            linha.appendChild(
-                criarCelula(
-                    formatarQuantidade(
-                        movimentacao.quantidade
-                    )
-                )
-            );
-
-
-            // ORIGEM
-
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.origem ||
-                    movimentacao.endereco ||
-                    "-"
-                )
-            );
-
-
-            // DESTINO
-
-            let destinoRelatorio =
+        if (tipo === "SAIDA") {
+            destinoRelatorio =
+                movimentacao.requisitante ||
+                movimentacao.destino ||
+                "Venda";
+        } else {
+            destinoRelatorio =
+                movimentacao.destino ||
+                movimentacao.endereco ||
                 "-";
-
-
-            if (
-                tipo ===
-                "SAIDA"
-            ) {
-
-                destinoRelatorio =
-                    movimentacao.requisitante ||
-                    movimentacao.destino ||
-                    "Venda";
-
-            } else {
-
-                destinoRelatorio =
-                    movimentacao.destino ||
-                    movimentacao.endereco ||
-                    "-";
-
-            }
-
-
-            linha.appendChild(
-                criarCelula(
-                    destinoRelatorio
-                )
-            );
-
-
-            // DATA
-
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.data ||
-                    "-"
-                )
-            );
-
-
-            // OPERADOR
-
-            linha.appendChild(
-                criarCelula(
-                    movimentacao.operador ||
-                    movimentacao.usuario ||
-                    "-"
-                )
-            );
-
-
-            tabela.appendChild(
-                linha
-            );
-
         }
-    );
 
+        linha.appendChild(
+            criarCelula(destinoRelatorio)
+        );
+
+        linha.appendChild(
+            criarCelula(movimentacao.data || "-")
+        );
+
+        linha.appendChild(
+            criarCelula(
+                movimentacao.operador ||
+                movimentacao.usuario ||
+                "-"
+            )
+        );
+
+        tabela.appendChild(linha);
+    });
 
     filtrarRelatorio();
-
 }
-
 
 // =====================================================
 // FORMATAR TIPO DA MOVIMENTAÇÃO
 // =====================================================
 
-function formatarTipoRelatorio(
-    tipo
-) {
-
-    if (
-        tipo ===
-        "ENTRADA"
-    ) {
-
+function formatarTipoRelatorio(tipo) {
+    if (tipo === "ENTRADA") {
         return "ENTRADA";
-
     }
 
-
-    if (
-        tipo ===
-        "SAIDA"
-    ) {
-
+    if (tipo === "SAIDA") {
         return "SAÍDA";
-
     }
 
-
-    if (
-        tipo ===
-        "TRANSFERENCIA"
-    ) {
-
+    if (tipo === "TRANSFERENCIA") {
         return "TRANSFERÊNCIA";
-
     }
 
-
-    return (
-        tipo ||
-        "MOVIMENTAÇÃO"
-    );
-
+    return tipo || "MOVIMENTAÇÃO";
 }
-
 
 // =====================================================
 // FILTRAR RELATÓRIO
 // =====================================================
 
 function filtrarRelatorio() {
-
     const campoFiltro =
-        document.getElementById(
-            "filtroMovimento"
-        ) ||
-        document.getElementById(
-            "filtroTipo"
-        );
+        document.getElementById("filtroMovimento") ||
+        document.getElementById("filtroTipo");
 
+    const filtro = campoFiltro
+        ? normalizarTipoMovimentacaoApp(
+            campoFiltro.value
+        )
+        : "TODOS";
 
-    const filtro =
-        campoFiltro
-
-            ? normalizarTipoMovimentacaoApp(
-                campoFiltro.value
-            )
-
-            : "TODOS";
-
-
-    const linhas =
-        document.querySelectorAll(
-            "#listaRelatorios tr"
-        );
-
-
-    linhas.forEach(
-        function (linha) {
-
-            if (
-                linha.children.length <
-                2
-            ) {
-
-                return;
-
-            }
-
-
-            const tipoLinha =
-                normalizarTipoMovimentacaoApp(
-                    linha.dataset.tipo ||
-                    linha.children[0]
-                        .textContent
-                );
-
-
-            const mostrar =
-                !campoFiltro ||
-                campoFiltro.value === "" ||
-                campoFiltro.value === "TODOS" ||
-                filtro === "MOVIMENTACAO" ||
-                tipoLinha === filtro;
-
-
-            linha.style.display =
-                mostrar
-                    ? ""
-                    : "none";
-
-        }
+    const linhas = document.querySelectorAll(
+        "#listaRelatorios tr"
     );
 
-}
+    linhas.forEach(function (linha) {
+        if (linha.children.length < 2) {
+            return;
+        }
 
+        const tipoLinha = normalizarTipoMovimentacaoApp(
+            linha.dataset.tipo ||
+            linha.children[0].textContent
+        );
+
+        const mostrar =
+            !campoFiltro ||
+            campoFiltro.value === "" ||
+            campoFiltro.value === "TODOS" ||
+            filtro === "MOVIMENTACAO" ||
+            tipoLinha === filtro;
+
+        linha.style.display = mostrar ? "" : "none";
+    });
+}
 
 // =====================================================
 // IMPRIMIR RELATÓRIO
 // =====================================================
 
 function imprimirRelatorio() {
-
     window.print();
-
 }
-
 
 // =====================================================
 // OBTER LINHAS VISÍVEIS DO RELATÓRIO
 // =====================================================
 
 function obterDadosRelatorioVisiveis() {
-
-    const linhas =
-        Array.from(
-            document.querySelectorAll(
-                "#listaRelatorios tr"
-            )
-        );
-
-
-    const dados =
-        [];
-
-
-    linhas.forEach(
-        function (linha) {
-
-            if (
-                linha.style.display ===
-                "none"
-            ) {
-
-                return;
-
-            }
-
-
-            const colunas =
-                linha.querySelectorAll(
-                    "td"
-                );
-
-
-            if (
-                colunas.length <
-                8
-            ) {
-
-                return;
-
-            }
-
-
-            dados.push(
-                {
-
-                    Tipo:
-                        colunas[0]
-                            .textContent
-                            .trim(),
-
-                    Código:
-                        colunas[1]
-                            .textContent
-                            .trim(),
-
-                    Descrição:
-                        colunas[2]
-                            .textContent
-                            .trim(),
-
-                    Quantidade:
-                        colunas[3]
-                            .textContent
-                            .trim(),
-
-                    Origem:
-                        colunas[4]
-                            .textContent
-                            .trim(),
-
-                    Destino:
-                        colunas[5]
-                            .textContent
-                            .trim(),
-
-                    Data:
-                        colunas[6]
-                            .textContent
-                            .trim(),
-
-                    Operador:
-                        colunas[7]
-                            .textContent
-                            .trim()
-
-                }
-            );
-
-        }
+    const linhas = Array.from(
+        document.querySelectorAll(
+            "#listaRelatorios tr"
+        )
     );
 
+    const dados = [];
+
+    linhas.forEach(function (linha) {
+        if (linha.style.display === "none") {
+            return;
+        }
+
+        const colunas = linha.querySelectorAll("td");
+
+        if (colunas.length < 8) {
+            return;
+        }
+
+        dados.push({
+            Tipo:
+                colunas[0].textContent.trim(),
+
+            Código:
+                colunas[1].textContent.trim(),
+
+            Descrição:
+                colunas[2].textContent.trim(),
+
+            Quantidade:
+                colunas[3].textContent.trim(),
+
+            Origem:
+                colunas[4].textContent.trim(),
+
+            Destino:
+                colunas[5].textContent.trim(),
+
+            Data:
+                colunas[6].textContent.trim(),
+
+            Operador:
+                colunas[7].textContent.trim()
+        });
+    });
 
     return dados;
-
 }
 
 // =====================================================
@@ -12213,34 +6924,20 @@ function obterDadosRelatorioVisiveis() {
 // =====================================================
 
 function exportarRelatorioExcel() {
+    const dados = obterDadosRelatorioVisiveis();
 
-    const dados =
-        obterDadosRelatorioVisiveis();
-
-
-    if (
-        dados.length === 0
-    ) {
-
+    if (dados.length === 0) {
         alert(
             "Não existem registros visíveis para exportar."
         );
 
         return;
-
     }
 
-
-    if (
-        typeof XLSX !==
-        "undefined"
-    ) {
-
-        const planilha =
-            XLSX.utils.json_to_sheet(
-                dados
-            );
-
+    if (typeof XLSX !== "undefined") {
+        const planilha = XLSX.utils.json_to_sheet(
+            dados
+        );
 
         planilha["!cols"] = [
             { wch: 18 },
@@ -12253,10 +6950,7 @@ function exportarRelatorioExcel() {
             { wch: 22 }
         ];
 
-
-        const pastaExcel =
-            XLSX.utils.book_new();
-
+        const pastaExcel = XLSX.utils.book_new();
 
         XLSX.utils.book_append_sheet(
             pastaExcel,
@@ -12264,55 +6958,33 @@ function exportarRelatorioExcel() {
             "Movimentações"
         );
 
-
         XLSX.writeFile(
             pastaExcel,
             "relatorio_movimentacoes_smi.xlsx"
         );
 
-
         return;
-
     }
 
-
-    exportarRelatorioCSV(
-        dados
-    );
-
+    exportarRelatorioCSV(dados);
 }
-
 
 // =====================================================
 // EXPORTAÇÃO ALTERNATIVA EM CSV
 // =====================================================
 
-function exportarRelatorioCSV(
-    dadosRecebidos
-) {
+function exportarRelatorioCSV(dadosRecebidos) {
+    const dados = Array.isArray(dadosRecebidos)
+        ? dadosRecebidos
+        : obterDadosRelatorioVisiveis();
 
-    const dados =
-        Array.isArray(
-            dadosRecebidos
-        )
-
-            ? dadosRecebidos
-
-            : obterDadosRelatorioVisiveis();
-
-
-    if (
-        dados.length === 0
-    ) {
-
+    if (dados.length === 0) {
         alert(
             "Não existem registros para exportar."
         );
 
         return;
-
     }
-
 
     const cabecalhos = [
         "Tipo",
@@ -12325,404 +6997,191 @@ function exportarRelatorioCSV(
         "Operador"
     ];
 
-
     const linhasCSV = [
         cabecalhos.join(";")
     ];
 
-
-    dados.forEach(
-        function (registro) {
-
-            const linha = [
-                registro.Tipo,
-                registro.Código,
-                registro.Descrição,
-                registro.Quantidade,
-                registro.Origem,
-                registro.Destino,
-                registro.Data,
-                registro.Operador
-            ]
-            .map(
-                function (valor) {
-
-                    return (
-                        '"' +
-                        String(
-                            valor || ""
-                        )
-                        .replace(
-                            /"/g,
-                            '""'
-                        ) +
-                        '"'
-                    );
-
-                }
-            )
+    dados.forEach(function (registro) {
+        const linha = [
+            registro.Tipo,
+            registro.Código,
+            registro.Descrição,
+            registro.Quantidade,
+            registro.Origem,
+            registro.Destino,
+            registro.Data,
+            registro.Operador
+        ]
+            .map(function (valor) {
+                return (
+                    '"' +
+                    String(valor || "").replace(/"/g, '""') +
+                    '"'
+                );
+            })
             .join(";");
 
+        linhasCSV.push(linha);
+    });
 
-            linhasCSV.push(
-                linha
-            );
+    const conteudo =
+        "\uFEFF" + linhasCSV.join("\n");
 
+    const arquivo = new Blob(
+        [conteudo],
+        {
+            type: "text/csv;charset=utf-8;"
         }
     );
 
+    const link = document.createElement("a");
 
-    const conteudo =
-        "\uFEFF" +
-        linhasCSV.join(
-            "\n"
-        );
-
-
-    const arquivo =
-        new Blob(
-            [
-                conteudo
-            ],
-            {
-                type:
-                    "text/csv;charset=utf-8;"
-            }
-        );
-
-
-    const link =
-        document.createElement(
-            "a"
-        );
-
-
-    link.href =
-        URL.createObjectURL(
-            arquivo
-        );
-
+    link.href = URL.createObjectURL(arquivo);
 
     link.download =
         "relatorio_movimentacoes_smi.csv";
 
-
-    document.body.appendChild(
-        link
-    );
-
-
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
 
-
-    document.body.removeChild(
-        link
-    );
-
-
-    URL.revokeObjectURL(
-        link.href
-    );
-
+    URL.revokeObjectURL(link.href);
 }
-
 
 // =====================================================
 // EXPORTAR ESTOQUE COMPLETO PARA EXCEL
+// SEM VALOR UNITÁRIO E SEM VALOR TOTAL
 // =====================================================
 
 async function exportarEstoqueExcel() {
-
-    if (
-        typeof XLSX ===
-        "undefined"
-    ) {
-
+    if (typeof XLSX === "undefined") {
         alert(
             "A biblioteca XLSX não foi carregada."
         );
 
         return;
-
     }
 
-
-    if (
-        !window.supabaseClient
-    ) {
-
+    if (!window.supabaseClient) {
         alert(
             "A conexão com o banco online não foi encontrada."
         );
 
         return;
-
     }
 
-
     try {
+        const todosProdutos = [];
+        const quantidadePorBusca = 1000;
 
-        const todosProdutos =
-            [];
+        let inicio = 0;
 
-
-        const quantidadePorBusca =
-            1000;
-
-
-        let inicio =
-            0;
-
-
-        // =====================================================
-        // BUSCA TODOS OS PRODUTOS DO SUPABASE
-        // =====================================================
-
-        while (
-            true
-        ) {
-
+        // Busca todos os produtos em lotes.
+        while (true) {
             const fim =
-                inicio +
-                quantidadePorBusca -
-                1;
+                inicio + quantidadePorBusca - 1;
 
-
-            const {
-                data,
-                error
-            } =
+            const { data, error } =
                 await window.supabaseClient
-                    .from(
-                        "produtos"
-                    )
-                    .select(
-                        "*"
-                    )
-                    .order(
-                        "id",
-                        {
-                            ascending: true
-                        }
-                    )
-                    .range(
-                        inicio,
-                        fim
-                    );
+                    .from("produtos")
+                    .select("*")
+                    .order("id", {
+                        ascending: true
+                    })
+                    .range(inicio, fim);
 
-
-            if (
-                error
-            ) {
-
+            if (error) {
                 throw error;
-
             }
-
 
             if (
-                !Array.isArray(
-                    data
-                ) ||
-                data.length ===
-                0
+                !Array.isArray(data) ||
+                data.length === 0
             ) {
-
                 break;
-
             }
 
+            todosProdutos.push(...data);
 
-            todosProdutos.push(
-                ...data
-            );
-
-
-            if (
-                data.length <
-                quantidadePorBusca
-            ) {
-
+            if (data.length < quantidadePorBusca) {
                 break;
-
             }
 
-
-            inicio +=
-                quantidadePorBusca;
-
+            inicio += quantidadePorBusca;
         }
 
-
-        if (
-            todosProdutos.length ===
-            0
-        ) {
-
+        if (todosProdutos.length === 0) {
             alert(
                 "Não existem produtos no estoque para exportar."
             );
 
-
             return;
-
         }
 
+        // Organiza por posição.
+        todosProdutos.sort(function (a, b) {
+            return String(
+                a.endereco || ""
+            ).localeCompare(
+                String(b.endereco || ""),
+                "pt-BR",
+                { numeric: true }
+            );
+        });
 
-        // =====================================================
-        // ORGANIZAR POR POSIÇÃO
-        // =====================================================
-
-        todosProdutos.sort(
-            function (
-                a,
-                b
-            ) {
-
-                return String(
-                    a.endereco ||
-                    ""
-                ).localeCompare(
-                    String(
-                        b.endereco ||
-                        ""
-                    ),
-                    "pt-BR",
-                    {
-                        numeric: true
-                    }
+        // Exporta somente as sete colunas abaixo.
+        const dados = todosProdutos.map(
+            function (produto) {
+                const quantidade = Number(
+                    produto.quantidade || 0
                 );
 
+                return {
+                    "Código":
+                        produto.codigo || "",
+
+                    "Descrição":
+                        produto.descricao || "",
+
+                    "Descrição detalhada":
+                        produto.descricao_detalhada ??
+                        produto.descricaoDetalhada ??
+                        "",
+
+                    "Quantidade":
+                        quantidade,
+
+                    "NCM":
+                        produto.ncm ??
+                        produto.NCM ??
+                        "",
+
+                    "IPI":
+                        produto.ipi ??
+                        produto.IPI ??
+                        "",
+
+                    "Posição":
+                        produto.endereco || ""
+                };
             }
         );
 
-
-        // =====================================================
-        // MONTAR PLANILHA NO NOVO MODELO
-        // =====================================================
-
-        const dados =
-            todosProdutos.map(
-                function (
-                    produto
-                ) {
-
-                    const quantidade =
-                        Number(
-                            produto.quantidade ||
-                            0
-                        );
-
-
-                    const valorTotal =
-                        Number(
-                            produto.valor_total ??
-                            produto.valorTotal ??
-                            0
-                        );
-
-
-                    let valorUnitario =
-                        Number(
-                            produto.valor_unitario ??
-                            produto.valorUnitario ??
-                            0
-                        );
-
-
-                    if (
-                        (
-                            !Number.isFinite(
-                                valorUnitario
-                            ) ||
-                            valorUnitario ===
-                            0
-                        ) &&
-                        quantidade >
-                        0 &&
-                        valorTotal >
-                        0
-                    ) {
-
-                        valorUnitario =
-                            valorTotal /
-                            quantidade;
-
-                    }
-
-
-                    return {
-
-                        "Código":
-                            produto.codigo ||
-                            "",
-
-                        "Descrição":
-                            produto.descricao ||
-                            "",
-
-                        "Descrição detalhada":
-                            produto.descricao_detalhada ??
-                            produto.descricaoDetalhada ??
-                            "",
-
-                        "Quantidade":
-                            quantidade,
-
-                        "NCM":
-                            produto.ncm ??
-                            produto.NCM ??
-                            "",
-
-                        "IPI":
-                            produto.ipi ??
-                            produto.IPI ??
-                            "",
-
-                        "Valor Unitário":
-                            valorUnitario,
-
-                        "Valor Total":
-                            valorTotal,
-
-                        "Posição":
-                            produto.endereco ||
-                            ""
-
-                    };
-
-                }
-            );
-
-
-        const planilha =
-            XLSX.utils.json_to_sheet(
-                dados
-            );
-
-
-        // =====================================================
-        // LARGURA DAS COLUNAS
-        // =====================================================
+        const planilha = XLSX.utils.json_to_sheet(
+            dados
+        );
 
         planilha["!cols"] = [
-
             { wch: 18 }, // Código
             { wch: 45 }, // Descrição
             { wch: 55 }, // Descrição detalhada
             { wch: 15 }, // Quantidade
             { wch: 18 }, // NCM
             { wch: 12 }, // IPI
-            { wch: 18 }, // Valor Unitário
-            { wch: 18 }, // Valor Total
             { wch: 15 }  // Posição
-
         ];
 
-
-        const pastaExcel =
-            XLSX.utils.book_new();
-
+        const pastaExcel = XLSX.utils.book_new();
 
         XLSX.utils.book_append_sheet(
             pastaExcel,
@@ -12730,71 +7189,45 @@ async function exportarEstoqueExcel() {
             "Estoque"
         );
 
-
         XLSX.writeFile(
             pastaExcel,
             "estoque_smi_wms.xlsx"
         );
 
-
         console.log(
             "TOTAL EXPORTADO:",
             todosProdutos.length
         );
-
-
-    } catch (
-        erro
-    ) {
-
+    } catch (erro) {
         console.error(
             "Erro ao exportar estoque:",
             erro
         );
 
-
         alert(
             "Não foi possível exportar o estoque.\n\n" +
             erro.message
         );
-
     }
-
 }
 
-
 // =====================================================
-// ATUALIZAÇÃO ENTRE ABAS
+// ATUALIZAÇÃO ENTRE ABAS — RELATÓRIOS
 // =====================================================
 
-window.addEventListener(
-    "storage",
-    function (
-        evento
-    ) {
+window.addEventListener("storage", function (evento) {
+    const chavesRelatorio = [
+        "estoque",
+        "movimentacoes",
+        "entradas",
+        "saidas",
+        "transferencias"
+    ];
 
-        const chavesRelatorio = [
-            "estoque",
-            "movimentacoes",
-            "entradas",
-            "saidas",
-            "transferencias"
-        ];
-
-
-        if (
-            chavesRelatorio.includes(
-                evento.key
-            )
-        ) {
-
-            carregarRelatorios();
-
-        }
-
+    if (chavesRelatorio.includes(evento.key)) {
+        carregarRelatorios();
     }
-);
-
+});
 
 // =====================================================
 // DISPONIBILIZAÇÃO GLOBAL
@@ -12824,234 +7257,141 @@ window.exportarRelatorioCSV =
 window.exportarEstoqueExcel =
     exportarEstoqueExcel;
 
+// FIM DA PARTE 9/10
+// A PARTE 10 COMEÇA COM:
+// function atualizarTelaAtual()
 
-// =====================================================
-// SMI WMS - APP.JS
-// PARTE 10 - COMPATIBILIDADE E FINALIZAÇÃO
-// =====================================================
-
+// APP.JS — PARTE 10/10
+// COMPATIBILIDADE, IDIOMA E CORES DOS GRÁFICOS
 
 // =====================================================
 // ATUALIZAR A TELA ATUAL
 // =====================================================
 
 function atualizarTelaAtual() {
-
-
     if (
-        document.getElementById(
-            "listaEntradas"
-        ) &&
-        typeof carregarHistoricoEntradas ===
-        "function"
+        document.getElementById("listaEntradas") &&
+        typeof carregarHistoricoEntradas === "function"
     ) {
-
         carregarHistoricoEntradas();
-
     }
 
-
     if (
-        document.getElementById(
-            "listaSaidas"
-        ) &&
-        typeof carregarHistoricoSaidas ===
-        "function"
+        document.getElementById("listaSaidas") &&
+        typeof carregarHistoricoSaidas === "function"
     ) {
-
         carregarHistoricoSaidas();
-
     }
 
-
     if (
-        document.getElementById(
-            "listaTransferencias"
-        ) &&
-        typeof carregarHistoricoTransferencias ===
-        "function"
+        document.getElementById("listaTransferencias") &&
+        typeof carregarHistoricoTransferencias === "function"
     ) {
-
         carregarHistoricoTransferencias();
-
     }
 
-
     if (
-        document.getElementById(
-            "mapaEstoque"
-        ) &&
-        typeof carregarMapaEstoque ===
-        "function"
+        document.getElementById("mapaEstoque") &&
+        typeof carregarMapaEstoque === "function"
     ) {
-
         carregarMapaEstoque();
-
     }
 
-
     if (
-        document.getElementById(
-            "listaRelatorios"
-        ) &&
-        typeof carregarRelatorios ===
-        "function"
+        document.getElementById("listaRelatorios") &&
+        typeof carregarRelatorios === "function"
     ) {
-
         carregarRelatorios();
-
     }
 
-
-    if (
-        typeof atualizarResumoDashboard ===
-        "function"
-    ) {
-
+    if (typeof atualizarResumoDashboard === "function") {
         atualizarResumoDashboard();
-
     }
 
-
-    if (
-        typeof atualizarDashboardCompleto ===
-        "function"
-    ) {
-
+    if (typeof atualizarDashboardCompleto === "function") {
         atualizarDashboardCompleto();
-
     }
-
 }
-
 
 // =====================================================
 // INICIALIZAÇÃO FINAL
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        setTimeout(
-            function () {
-
-                atualizarTelaAtual();
-
-
-                validarEstruturaPaginaAtual();
-
-            },
-            150
-        );
-
-    }
-);
-
+document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(function () {
+        atualizarTelaAtual();
+        validarEstruturaPaginaAtual();
+    }, 150);
+});
 
 // =====================================================
 // VALIDAR ESTRUTURA DA PÁGINA ATUAL
 // =====================================================
 
 function validarEstruturaPaginaAtual() {
-
-    const pagina =
-        String(
-            window.location.pathname ||
-            ""
-        )
-        .split(
-            "/"
-        )
+    const pagina = String(
+        window.location.pathname || ""
+    )
+        .split("/")
         .pop()
         .toLowerCase();
 
-
-    if (
-        pagina ===
-        "produtos.html"
-    ) {
-
+    if (pagina === "produtos.html") {
         validarElementoWMS(
             "arquivoExcel",
             "Campo de seleção do Excel"
         );
 
-
         validarElementoWMS(
             "listaProdutos",
             "Tabela de produtos"
         );
-
     }
 
-
-    if (
-        pagina ===
-        "entradas.html"
-    ) {
-
+    if (pagina === "entradas.html") {
         validarElementoWMS(
             "codigoEntrada",
             "Código da entrada"
         );
-
 
         validarElementoWMS(
             "quantidadeEntrada",
             "Quantidade da entrada"
         );
 
-
         validarElementoWMS(
             "enderecoEntrada",
             "Endereço da entrada"
         );
 
-
         validarElementoWMS(
             "listaEntradas",
             "Histórico de entradas"
         );
-
     }
 
-
-    if (
-        pagina ===
-        "saidas.html"
-    ) {
-
+    if (pagina === "saidas.html") {
         validarElementoWMS(
             "codigoSaida",
             "Código da saída"
         );
-
 
         validarElementoWMS(
             "quantidadeSaida",
             "Quantidade da saída"
         );
 
-
         validarElementoWMS(
             "listaSaidas",
             "Histórico de saídas"
         );
-
     }
 
-
-    if (
-        pagina ===
-        "transferencias.html"
-    ) {
-
+    if (pagina === "transferencias.html") {
         validarElementoWMS(
             "codigoTransferencia",
             "Código da transferência"
         );
-
 
         validarElementoAlternativoWMS(
             [
@@ -13061,7 +7401,6 @@ function validarEstruturaPaginaAtual() {
             "Endereço de origem"
         );
 
-
         validarElementoAlternativoWMS(
             [
                 "destinoTransferencia",
@@ -13069,66 +7408,41 @@ function validarEstruturaPaginaAtual() {
             ],
             "Endereço de destino"
         );
-
     }
 
-
-    if (
-        pagina ===
-        "posicoes.html"
-    ) {
-
+    if (pagina === "posicoes.html") {
         validarElementoWMS(
             "mapaEstoque",
             "Mapa de posições"
         );
-
 
         validarElementoWMS(
             "modalPosicao",
             "Modal da posição"
         );
 
-
         validarElementoWMS(
             "listaProdutosPosicao",
             "Tabela do modal da posição"
         );
-
     }
 
-
-    if (
-        pagina ===
-        "relatorios.html"
-    ) {
-
+    if (pagina === "relatorios.html") {
         validarElementoWMS(
             "listaRelatorios",
             "Tabela de relatórios"
         );
-
     }
-
 }
 
 // =====================================================
 // VALIDAR UM ELEMENTO
 // =====================================================
 
-function validarElementoWMS(
-    id,
-    descricao
-) {
-
-    const elemento =
-        document.getElementById(
-            id
-        );
-
+function validarElementoWMS(id, descricao) {
+    const elemento = document.getElementById(id);
 
     if (!elemento) {
-
         console.warn(
             "SMI WMS: " +
             descricao +
@@ -13137,42 +7451,22 @@ function validarElementoWMS(
             '".'
         );
 
-
         return false;
-
     }
 
-
     return true;
-
 }
-
 
 // =====================================================
 // VALIDAR ELEMENTOS COM IDS ALTERNATIVOS
 // =====================================================
 
-function validarElementoAlternativoWMS(
-    ids,
-    descricao
-) {
-
-    const encontrado =
-        ids.some(
-            function (id) {
-
-                return Boolean(
-                    document.getElementById(
-                        id
-                    )
-                );
-
-            }
-        );
-
+function validarElementoAlternativoWMS(ids, descricao) {
+    const encontrado = ids.some(function (id) {
+        return Boolean(document.getElementById(id));
+    });
 
     if (!encontrado) {
-
         console.warn(
             "SMI WMS: " +
             descricao +
@@ -13180,222 +7474,118 @@ function validarElementoAlternativoWMS(
             ids.join(", ") +
             "."
         );
-
     }
 
-
     return encontrado;
-
 }
-
 
 // =====================================================
 // COMPATIBILIDADE COM NOMES ANTIGOS
 // =====================================================
 
 function carregarProdutos() {
-
-    if (
-        typeof carregarTabelaProdutos ===
-        "function"
-    ) {
-
+    if (typeof carregarTabelaProdutos === "function") {
         carregarTabelaProdutos();
-
     }
-
 }
-
 
 function carregarEntradas() {
-
-    if (
-        typeof carregarHistoricoEntradas ===
-        "function"
-    ) {
-
+    if (typeof carregarHistoricoEntradas === "function") {
         carregarHistoricoEntradas();
-
     }
-
 }
-
 
 function carregarSaidas() {
-
-    if (
-        typeof carregarHistoricoSaidas ===
-        "function"
-    ) {
-
+    if (typeof carregarHistoricoSaidas === "function") {
         carregarHistoricoSaidas();
-
     }
-
 }
 
-
 function carregarTransferencias() {
-
     if (
         typeof carregarHistoricoTransferencias ===
         "function"
     ) {
-
         carregarHistoricoTransferencias();
-
     }
-
 }
-
 
 function carregarPosicoes() {
-
-    if (
-        typeof carregarMapaEstoque ===
-        "function"
-    ) {
-
+    if (typeof carregarMapaEstoque === "function") {
         carregarMapaEstoque();
-
     }
-
 }
-
 
 function receberMercadoria() {
-
-    if (
-        typeof registrarEntrada ===
-        "function"
-    ) {
-
+    if (typeof registrarEntrada === "function") {
         registrarEntrada();
-
     }
-
 }
-
 
 function registrarNovaSaida() {
-
-    if (
-        typeof registrarSaida ===
-        "function"
-    ) {
-
+    if (typeof registrarSaida === "function") {
         registrarSaida();
-
     }
-
 }
-
 
 function movimentarProduto() {
-
-    if (
-        typeof registrarTransferencia ===
-        "function"
-    ) {
-
+    if (typeof registrarTransferencia === "function") {
         registrarTransferencia();
-
     }
-
 }
-
 
 // =====================================================
 // ATUALIZAR O SISTEMA APÓS MOVIMENTAÇÃO
 // =====================================================
 
-function atualizarSistemaDepoisDeMovimentacao(
-    tipo
-) {
-
-    if (
-        typeof dispararAtualizacaoWMS ===
-        "function"
-    ) {
-
-        dispararAtualizacaoWMS(
-            tipo
-        );
-
+function atualizarSistemaDepoisDeMovimentacao(tipo) {
+    if (typeof dispararAtualizacaoWMS === "function") {
+        dispararAtualizacaoWMS(tipo);
     }
 
-
     atualizarTelaAtual();
-
 }
-
 
 // =====================================================
 // EVENTO PERSONALIZADO DO WMS
 // =====================================================
 
-window.addEventListener(
-    "smi-wms-atualizar",
-    function () {
-
-        atualizarTelaAtual();
-
-    }
-);
-
+window.addEventListener("smi-wms-atualizar", function () {
+    atualizarTelaAtual();
+});
 
 // =====================================================
 // ATUALIZAR QUANDO A ABA FICAR VISÍVEL
 // =====================================================
 
-document.addEventListener(
-    "visibilitychange",
-    function () {
-
-        if (
-            document.visibilityState ===
-            "visible"
-        ) {
-
-            atualizarTelaAtual();
-
-        }
-
+document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") {
+        atualizarTelaAtual();
     }
-);
-
+});
 
 // =====================================================
 // TRATAMENTO DE ERROS
 // =====================================================
 
-window.addEventListener(
-    "error",
-    function (evento) {
-
-        console.error(
-            "Erro no SMI WMS:",
-            evento.message,
-            evento.filename,
-            evento.lineno
-        );
-
-    }
-);
-
+window.addEventListener("error", function (evento) {
+    console.error(
+        "Erro no SMI WMS:",
+        evento.message,
+        evento.filename,
+        evento.lineno
+    );
+});
 
 window.addEventListener(
     "unhandledrejection",
     function (evento) {
-
         console.error(
             "Erro não tratado no SMI WMS:",
             evento.reason
         );
-
     }
 );
-
 
 // =====================================================
 // DISPONIBILIZAÇÃO GLOBAL FINAL
@@ -13434,473 +7624,222 @@ window.movimentarProduto =
 window.atualizarSistemaDepoisDeMovimentacao =
     atualizarSistemaDepoisDeMovimentacao;
 
-
-// =====================================================
-// FIM DO APP.JS
-// =====================================================
-
 console.log(
     "SMI WMS: app.js carregado com sucesso."
 );
-
 
 // =====================================================
 // FILTRO DE CLIENTES
 // =====================================================
 
 function carregarFiltroClientesProdutos() {
-
-    const filtro =
-        document.getElementById(
-            "filtroClienteProdutos"
-        );
-
+    const filtro = document.getElementById(
+        "filtroClienteProdutos"
+    );
 
     if (!filtro) {
-
         return;
-
     }
 
+    const estoque = carregarEstoque();
 
-    const estoque =
-        carregarEstoque();
-
-
-    const clientes =
-        [
-            ...new Set(
-
-                estoque.map(
-                    function (produto) {
-
-                        return (
-                            produto.cliente ||
-                            "SMI"
-                        );
-
-                    }
-                )
-
-            )
-        ];
-
+    const clientes = [
+        ...new Set(
+            estoque.map(function (produto) {
+                return produto.cliente || "SMI";
+            })
+        )
+    ];
 
     filtro.innerHTML =
         '<option value="">Todos os clientes</option>';
 
+    clientes.sort().forEach(function (cliente) {
+        const option = document.createElement("option");
 
-    clientes
-        .sort()
-        .forEach(
-            function (cliente) {
+        option.value = cliente;
+        option.textContent = cliente;
 
-                const option =
-                    document.createElement(
-                        "option"
-                    );
-
-
-                option.value =
-                    cliente;
-
-
-                option.textContent =
-                    cliente;
-
-
-                filtro.appendChild(
-                    option
-                );
-
-            }
-        );
-
+        filtro.appendChild(option);
+    });
 }
-
 
 // =====================================================
 // FILTRAR PRODUTOS POR CLIENTE
 // =====================================================
 
 function filtrarProdutosAvancado() {
+    const clienteSelecionado = document.getElementById(
+        "filtroClienteProdutos"
+    ).value;
 
-    const clienteSelecionado =
-        document.getElementById(
-            "filtroClienteProdutos"
-        ).value;
-
-
-    const linhas =
-        document.querySelectorAll(
-            "#listaProdutos tr"
-        );
-
-
-    linhas.forEach(
-        function (linha) {
-
-            const colunas =
-                linha.querySelectorAll(
-                    "td"
-                );
-
-
-            if (
-                colunas.length ===
-                0
-            ) {
-
-                return;
-
-            }
-
-
-            const cliente =
-                colunas[3]
-                    .textContent
-                    .trim();
-
-
-            if (
-                clienteSelecionado ===
-                "" ||
-                cliente ===
-                clienteSelecionado
-            ) {
-
-                linha.style.display =
-                    "";
-
-            } else {
-
-                linha.style.display =
-                    "none";
-
-            }
-
-        }
+    const linhas = document.querySelectorAll(
+        "#listaProdutos tr"
     );
 
-}
+    linhas.forEach(function (linha) {
+        const colunas = linha.querySelectorAll("td");
 
+        if (colunas.length === 0) {
+            return;
+        }
+
+        const cliente = colunas[3].textContent.trim();
+
+        if (
+            clienteSelecionado === "" ||
+            cliente === clienteSelecionado
+        ) {
+            linha.style.display = "";
+        } else {
+            linha.style.display = "none";
+        }
+    });
+}
 
 // =====================================================
 // COMPATIBILIDADE DAS PÁGINAS ANTIGAS
 // =====================================================
 
 function login() {
-
     return realizarLogin();
-
 }
 
-
 function verificarLogin() {
-
     const paginaLogin =
         /(^|\/)index\.html$/i.test(
             window.location.pathname
         ) ||
-        window.location.pathname.endsWith(
-            "/"
-        );
+        window.location.pathname.endsWith("/");
 
-
-    if (
-        paginaLogin
-    ) {
-
+    if (paginaLogin) {
         return true;
-
     }
-
 
     const usuario =
-        localStorage.getItem(
-            "usuarioLogado"
-        ) ||
-        localStorage.getItem(
-            "usuario"
-        );
+        localStorage.getItem("usuarioLogado") ||
+        localStorage.getItem("usuario");
 
-
-    if (
-        !usuario
-    ) {
-
-        window.location.href =
-            "index.html";
-
+    if (!usuario) {
+        window.location.href = "index.html";
     }
 
-
-    return Boolean(
-        usuario
-    );
-
+    return Boolean(usuario);
 }
 
-
-window.login =
-    login;
-
-
-window.verificarLogin =
-    verificarLogin;
-
+window.login = login;
+window.verificarLogin = verificarLogin;
 
 window.atualizarResumoMovimentacoes =
     atualizarResumoMovimentacoes;
 
-
 // =====================================================
-// SMI WMS - IDIOMA GLOBAL PT-BR / IT-IT
-// =====================================================
-//
-// Este bloco centraliza o idioma do sistema.
-// Compatível com as chaves já usadas em configuracoes.html:
-//   - wms_idioma
-//   - idiomaWMS
-//
-// O seletor BR | IT passa a:
-//   1) ler o idioma salvo;
-//   2) destacar a bandeira correta;
-//   3) salvar a troca;
-//   4) traduzir a interface;
-//   5) manter a tela Configurações sincronizada.
-//
+// IDIOMA GLOBAL PT-BR / IT-IT
 // =====================================================
 
-const WMS_IDIOMA_PADRAO =
-    "pt-BR";
+const WMS_IDIOMA_PADRAO = "pt-BR";
 
-
-function normalizarIdiomaGlobalWMS(
-    idioma
-) {
-
-    const valor =
-        String(
-            idioma ||
-            ""
-        )
+function normalizarIdiomaGlobalWMS(idioma) {
+    const valor = String(idioma || "")
         .trim()
         .toLowerCase();
 
-
     if (
-        valor ===
-        "it" ||
-        valor ===
-        "it-it" ||
-        valor ===
-        "italiano" ||
-        valor ===
-        "italian"
+        valor === "it" ||
+        valor === "it-it" ||
+        valor === "italiano" ||
+        valor === "italian"
     ) {
-
         return "it-IT";
-
     }
 
-
     return "pt-BR";
-
 }
-
 
 function obterIdiomaGlobalWMS() {
-
     return normalizarIdiomaGlobalWMS(
-
-        localStorage.getItem(
-            "wms_idioma"
-        ) ||
-
-        localStorage.getItem(
-            "idiomaWMS"
-        ) ||
-
+        localStorage.getItem("wms_idioma") ||
+        localStorage.getItem("idiomaWMS") ||
         WMS_IDIOMA_PADRAO
-
     );
-
 }
 
-
-function salvarIdiomaGlobalWMS(
-    idioma
-) {
-
+function salvarIdiomaGlobalWMS(idioma) {
     const idiomaNormalizado =
-        normalizarIdiomaGlobalWMS(
-            idioma
-        );
-
+        normalizarIdiomaGlobalWMS(idioma);
 
     localStorage.setItem(
         "wms_idioma",
         idiomaNormalizado
     );
 
-
     localStorage.setItem(
         "idiomaWMS",
         idiomaNormalizado
     );
 
-
     document.documentElement.lang =
         idiomaNormalizado;
 
-
-    aplicarIdiomaWMS(
-        idiomaNormalizado
-    );
-
+    aplicarIdiomaWMS(idiomaNormalizado);
 
     sincronizarSeletorIdiomaGlobalWMS(
         idiomaNormalizado
     );
 
-
     sincronizarConfiguracaoIdiomaWMS(
         idiomaNormalizado
     );
 
-
     window.dispatchEvent(
-        new CustomEvent(
-            "wmsIdiomaAlterado",
-            {
-                detail: {
-                    idioma:
-                        idiomaNormalizado
-                }
+        new CustomEvent("wmsIdiomaAlterado", {
+            detail: {
+                idioma: idiomaNormalizado
             }
-        )
+        })
     );
-
 }
-
 
 // =====================================================
 // DICIONÁRIO PRINCIPAL
 // =====================================================
 
 const WMS_TRADUCOES_PT_IT = {
+    "PRINCIPAL": "PRINCIPALE",
+    "OPERAÇÕES": "OPERAZIONI",
+    "SISTEMA": "SISTEMA",
+    "LOGÍSTICA MAIS INTELIGENTE": "LOGISTICA PIÙ INTELLIGENTE",
+    "GESTÃO QUE MOVIMENTA": "LA GESTIONE CHE MUOVE",
+    "Dashboard": "Dashboard",
+    "Produtos": "Prodotti",
+    "Entradas": "Entrate",
+    "Saídas": "Uscite",
+    "Separação": "Preparazione",
+    "Transferências": "Trasferimenti",
+    "Transf. Mobile": "Trasf. Mobile",
+    "Posições": "Posizioni",
+    "Inventário": "Inventario",
+    "Inv. Mobile": "Inv. Mobile",
+    "Relatórios": "Report",
+    "Etiquetagem": "Etichettatura",
+    "Requisição": "Richiesta",
+    "Configurações": "Impostazioni",
 
-    // -------------------------------------------------
-    // MENU LATERAL / IDENTIDADE
-    // -------------------------------------------------
-
-    "PRINCIPAL":
-        "PRINCIPALE",
-
-    "OPERAÇÕES":
-        "OPERAZIONI",
-
-    "SISTEMA":
-        "SISTEMA",
-
-    "LOGÍSTICA MAIS INTELIGENTE":
-        "LOGISTICA PIÙ INTELLIGENTE",
-
-    "GESTÃO QUE MOVIMENTA":
-        "LA GESTIONE CHE MUOVE",
-
-    "Dashboard":
-        "Dashboard",
-
-    "Produtos":
-        "Prodotti",
-
-    "Entradas":
-        "Entrate",
-
-    "Saídas":
-        "Uscite",
-
-    "Separação":
-        "Preparazione",
-
-    "Transferências":
-        "Trasferimenti",
-
-    "Transf. Mobile":
-        "Trasf. Mobile",
-
-    "Posições":
-        "Posizioni",
-
-    "Inventário":
-        "Inventario",
-
-    "Inv. Mobile":
-        "Inv. Mobile",
-
-    "Relatórios":
-        "Report",
-
-    "Etiquetagem":
-        "Etichettatura",
-
-    "Requisição":
-        "Richiesta",
-
-    "Configurações":
-        "Impostazioni",
-
-
-    // -------------------------------------------------
-    // CONFIGURAÇÕES
-    // -------------------------------------------------
-
-    "⚙️ Configurações do Sistema":
-        "⚙️ Impostazioni di Sistema",
-
-    "Configurações do Sistema":
-        "Impostazioni di Sistema",
-
-    "🏢 Dados da Empresa":
-        "🏢 Dati dell'Azienda",
-
-    "Dados da Empresa":
-        "Dati dell'Azienda",
-
-    "Empresa:":
-        "Azienda:",
-
-    "Sistema:":
-        "Sistema:",
-
-    "Depósito:":
-        "Magazzino:",
-
-    "Capacidade:":
-        "Capacità:",
-
-    "1 Unidade":
-        "1 Unità",
-
-    "60 posições / 360 níveis":
-        "60 posizioni / 360 livelli",
-
-    "👤 Usuário Atual":
-        "👤 Utente Attuale",
-
-    "Usuário Atual":
-        "Utente Attuale",
-
-    "Usuário conectado:":
-        "Utente connesso:",
-
-    "🌐 Idioma do Sistema":
-        "🌐 Lingua del Sistema",
-
-    "Idioma do Sistema":
-        "Lingua del Sistema",
+    "⚙️ Configurações do Sistema": "⚙️ Impostazioni di Sistema",
+    "Configurações do Sistema": "Impostazioni di Sistema",
+    "🏢 Dados da Empresa": "🏢 Dati dell'Azienda",
+    "Dados da Empresa": "Dati dell'Azienda",
+    "Empresa:": "Azienda:",
+    "Sistema:": "Sistema:",
+    "Depósito:": "Magazzino:",
+    "Capacidade:": "Capacità:",
+    "1 Unidade": "1 Unità",
+    "60 posições / 360 níveis": "60 posizioni / 360 livelli",
+    "👤 Usuário Atual": "👤 Utente Attuale",
+    "Usuário Atual": "Utente Attuale",
+    "Usuário conectado:": "Utente connesso:",
+    "🌐 Idioma do Sistema": "🌐 Lingua del Sistema",
+    "Idioma do Sistema": "Lingua del Sistema",
 
     "Defina o idioma padrão do WMS.":
         "Imposta la lingua predefinita del WMS.",
@@ -13908,17 +7847,10 @@ const WMS_TRADUCOES_PT_IT = {
     "A seleção também será refletida no seletor BR | IT do sistema.":
         "La selezione verrà riflessa anche nel selettore BR | IT del sistema.",
 
-    "Idioma atual:":
-        "Lingua attuale:",
-
-    "Português (Brasil)":
-        "Portoghese (Brasile)",
-
-    "Idioma padrão do sistema":
-        "Lingua predefinita del sistema",
-
-    "Traduzione del sistema":
-        "Traduzione del sistema",
+    "Idioma atual:": "Lingua attuale:",
+    "Português (Brasil)": "Portoghese (Brasile)",
+    "Idioma padrão do sistema": "Lingua predefinita del sistema",
+    "Traduzione del sistema": "Traduzione del sistema",
 
     "ⓘ A troca de idioma será aplicada em todo o WMS.":
         "ⓘ Il cambio di lingua verrà applicato a tutto il WMS.",
@@ -13926,523 +7858,191 @@ const WMS_TRADUCOES_PT_IT = {
     "A troca de idioma será aplicada em todo o WMS.":
         "Il cambio di lingua verrà applicato a tutto il WMS.",
 
-    "Salvar idioma":
-        "Salva lingua",
-
-    "Idioma salvo com sucesso.":
-        "Lingua salvata con successo.",
-
-    "Selecione um idioma.":
-        "Seleziona una lingua.",
-
-
-    "💾 Backup dos Dados":
-        "💾 Backup dei Dati",
-
-    "Backup dos Dados":
-        "Backup dei Dati",
+    "Salvar idioma": "Salva lingua",
+    "Idioma salvo com sucesso.": "Lingua salvata con successo.",
+    "Selecione um idioma.": "Seleziona una lingua.",
+    "💾 Backup dos Dados": "💾 Backup dei Dati",
+    "Backup dos Dados": "Backup dei Dati",
 
     "Faça uma cópia do estoque salvo no sistema.":
         "Crea una copia dell'inventario salvato nel sistema.",
 
-    "Exportar Backup":
-        "Esporta Backup",
-
-    "⚠️ Administração":
-        "⚠️ Amministrazione",
-
-    "Administração":
-        "Amministrazione",
+    "Exportar Backup": "Esporta Backup",
+    "⚠️ Administração": "⚠️ Amministrazione",
+    "Administração": "Amministrazione",
 
     "Remover todos os dados gravados no navegador.":
         "Rimuovi tutti i dati salvati nel browser.",
 
-    "Limpar Dados":
-        "Cancella Dati",
-
-
-    // -------------------------------------------------
-    // PRODUTOS
-    // -------------------------------------------------
-
-    "Produtos Cadastrados":
-        "Prodotti Registrati",
-
-    "Cadastro de Produtos":
-        "Registrazione Prodotti",
-
-    "Cadastrar Produto":
-        "Registra Prodotto",
-
-    "Novo Produto":
-        "Nuovo Prodotto",
-
-    "Salvar Produto":
-        "Salva Prodotto",
-
-    "Editar produto":
-        "Modifica prodotto",
-
-    "Excluir produto":
-        "Elimina prodotto",
-
-    "Código":
-        "Codice",
-
-    "Código:":
-        "Codice:",
-
-    "Descrição":
-        "Descrizione",
-
-    "Descrição:":
-        "Descrizione:",
-
-    "Descrição Detalhada":
-        "Descrizione Dettagliata",
-
-    "Quantidade":
-        "Quantità",
-
-    "Quantidade:":
-        "Quantità:",
-
-    "Cliente":
-        "Cliente",
-
-    "Posição":
-        "Posizione",
-
-    "Posição:":
-        "Posizione:",
-
-    "Endereço":
-        "Posizione",
-
-    "Endereço:":
-        "Posizione:",
-
-    "Valor Unitário":
-        "Valore Unitario",
-
-    "Valor Total":
-        "Valore Totale",
-
-    "Mínimo":
-        "Minimo",
-
-    "Máximo":
-        "Massimo",
-
-    "Status":
-        "Stato",
-
-    "Ações":
-        "Azioni",
-
-    "Sem descrição":
-        "Senza descrizione",
-
-    "Nenhum produto cadastrado.":
-        "Nessun prodotto registrato.",
-
-    "Produto não encontrado.":
-        "Prodotto non trovato.",
-
-    "Produto salvo com sucesso.":
-        "Prodotto salvato con successo.",
-
-    "Produto atualizado com sucesso.":
-        "Prodotto aggiornato con successo.",
-
-    "Produto excluído com sucesso.":
-        "Prodotto eliminato con successo.",
-
-    "Pesquisar":
-        "Cerca",
-
-    "Buscar":
-        "Cerca",
-
-    "Importar":
-        "Importa",
-
-    "Exportar":
-        "Esporta",
-
-    "Importar Produtos":
-        "Importa Prodotti",
-
-    "Exportar Estoque":
-        "Esporta Inventario",
-
-
-    // -------------------------------------------------
-    // ENTRADAS
-    // -------------------------------------------------
-
-    "Entrada":
-        "Entrata",
-
-    "Entrada de Estoque":
-        "Entrata di Magazzino",
-
-    "Registrar Entrada":
-        "Registra Entrata",
-
-    "Histórico de Entradas":
-        "Storico Entrate",
-
-    "Resumo do Dia":
-        "Riepilogo del Giorno",
-
-    "Estoque Atual":
-        "Giacenza Attuale",
-
-    "Novo Saldo":
-        "Nuovo Saldo",
-
-    "Recebimento":
-        "Ricevimento",
-
-    "Posição sugerida":
-        "Posizione suggerita",
-
-    "POSIÇÃO SUGERIDA":
-        "POSIZIONE SUGGERITA",
-
-
-    // -------------------------------------------------
-    // SAÍDAS
-    // -------------------------------------------------
-
-    "Saída":
-        "Uscita",
-
-    "Saída de Estoque":
-        "Uscita di Magazzino",
-
-    "Registrar Saída":
-        "Registra Uscita",
-
-    "Histórico de Saídas":
-        "Storico Uscite",
-
-    "Requisitante":
-        "Richiedente",
-
-    "Destino":
-        "Destinazione",
-
-    "Venda":
-        "Vendita",
-
-    "Garantia":
-        "Garanzia",
-
-
-    // -------------------------------------------------
-    // TRANSFERÊNCIAS
-    // -------------------------------------------------
-
-    "Transferência":
-        "Trasferimento",
-
-    "Transferência de Estoque":
-        "Trasferimento di Magazzino",
-
-    "Registrar Transferência":
-        "Registra Trasferimento",
-
-    "Histórico de Transferências":
-        "Storico Trasferimenti",
-
-    "Origem":
-        "Origine",
-
-    "Destino":
-        "Destinazione",
+    "Limpar Dados": "Cancella Dati",
+
+    "Produtos Cadastrados": "Prodotti Registrati",
+    "Cadastro de Produtos": "Registrazione Prodotti",
+    "Cadastrar Produto": "Registra Prodotto",
+    "Novo Produto": "Nuovo Prodotto",
+    "Salvar Produto": "Salva Prodotto",
+    "Editar produto": "Modifica prodotto",
+    "Excluir produto": "Elimina prodotto",
+    "Código": "Codice",
+    "Código:": "Codice:",
+    "Descrição": "Descrizione",
+    "Descrição:": "Descrizione:",
+    "Descrição Detalhada": "Descrizione Dettagliata",
+    "Quantidade": "Quantità",
+    "Quantidade:": "Quantità:",
+    "Cliente": "Cliente",
+    "Posição": "Posizione",
+    "Posição:": "Posizione:",
+    "Endereço": "Posizione",
+    "Endereço:": "Posizione:",
+    "Valor Unitário": "Valore Unitario",
+    "Valor Total": "Valore Totale",
+    "Mínimo": "Minimo",
+    "Máximo": "Massimo",
+    "Status": "Stato",
+    "Ações": "Azioni",
+    "Sem descrição": "Senza descrizione",
+    "Nenhum produto cadastrado.": "Nessun prodotto registrato.",
+    "Produto não encontrado.": "Prodotto non trovato.",
+    "Produto salvo com sucesso.": "Prodotto salvato con successo.",
+    "Produto atualizado com sucesso.": "Prodotto aggiornato con successo.",
+    "Produto excluído com sucesso.": "Prodotto eliminato con successo.",
+    "Pesquisar": "Cerca",
+    "Buscar": "Cerca",
+    "Importar": "Importa",
+    "Exportar": "Esporta",
+    "Importar Produtos": "Importa Prodotti",
+    "Exportar Estoque": "Esporta Inventario",
+
+    "Entrada": "Entrata",
+    "Entrada de Estoque": "Entrata di Magazzino",
+    "Registrar Entrada": "Registra Entrata",
+    "Histórico de Entradas": "Storico Entrate",
+    "Resumo do Dia": "Riepilogo del Giorno",
+    "Estoque Atual": "Giacenza Attuale",
+    "Novo Saldo": "Nuovo Saldo",
+    "Recebimento": "Ricevimento",
+    "Posição sugerida": "Posizione suggerita",
+    "POSIÇÃO SUGERIDA": "POSIZIONE SUGGERITA",
+
+    "Saída": "Uscita",
+    "Saída de Estoque": "Uscita di Magazzino",
+    "Registrar Saída": "Registra Uscita",
+    "Histórico de Saídas": "Storico Uscite",
+    "Requisitante": "Richiedente",
+    "Destino": "Destinazione",
+    "Venda": "Vendita",
+    "Garantia": "Garanzia",
+
+    "Transferência": "Trasferimento",
+    "Transferência de Estoque": "Trasferimento di Magazzino",
+    "Registrar Transferência": "Registra Trasferimento",
+    "Histórico de Transferências": "Storico Trasferimenti",
+    "Origem": "Origine",
+    "Destino": "Destinazione",
 
     "Nenhuma transferência registrada.":
         "Nessun trasferimento registrato.",
 
+    "Inventário de Estoque": "Inventario di Magazzino",
+    "Contagem": "Conteggio",
+    "Contagem Física": "Conteggio Fisico",
+    "Quantidade Sistema": "Quantità a Sistema",
+    "Quantidade Contada": "Quantità Conteggiata",
+    "Divergência": "Differenza",
+    "Divergências": "Differenze",
+    "Pendente": "In sospeso",
+    "Aprovado": "Approvato",
+    "Divergente": "Non conforme",
+    "Limpar Contagens": "Cancella Conteggi",
+    "Aprovar": "Approva",
 
-    // -------------------------------------------------
-    // INVENTÁRIO
-    // -------------------------------------------------
-
-    "Inventário de Estoque":
-        "Inventario di Magazzino",
-
-    "Contagem":
-        "Conteggio",
-
-    "Contagem Física":
-        "Conteggio Fisico",
-
-    "Quantidade Sistema":
-        "Quantità a Sistema",
-
-    "Quantidade Contada":
-        "Quantità Conteggiata",
-
-    "Divergência":
-        "Differenza",
-
-    "Divergências":
-        "Differenze",
-
-    "Pendente":
-        "In sospeso",
-
-    "Aprovado":
-        "Approvato",
-
-    "Divergente":
-        "Non conforme",
-
-    "Limpar Contagens":
-        "Cancella Conteggi",
-
-    "Aprovar":
-        "Approva",
-
-
-    // -------------------------------------------------
-    // RELATÓRIOS
-    // -------------------------------------------------
-
-    "Relatório":
-        "Report",
-
-    "Relatório de Movimentações":
-        "Report Movimentazioni",
-
-    "Movimentações":
-        "Movimentazioni",
-
-    "Tipo":
-        "Tipo",
-
-    "Data":
-        "Data",
-
-    "Operador":
-        "Operatore",
-
-    "Período":
-        "Periodo",
-
-    "De":
-        "Da",
-
-    "Até":
-        "A",
-
-    "Imprimir":
-        "Stampa",
-
-    "Exportar Excel":
-        "Esporta Excel",
+    "Relatório": "Report",
+    "Relatório de Movimentações": "Report Movimentazioni",
+    "Movimentações": "Movimentazioni",
+    "Tipo": "Tipo",
+    "Data": "Data",
+    "Operador": "Operatore",
+    "Período": "Periodo",
+    "De": "Da",
+    "Até": "A",
+    "Imprimir": "Stampa",
+    "Exportar Excel": "Esporta Excel",
 
     "Nenhuma movimentação registrada.":
         "Nessuna movimentazione registrata.",
 
+    "Etiquetagem de Pedidos": "Etichettatura Ordini",
+    "Imprimir Etiqueta": "Stampa Etichetta",
+    "Requisição de Material": "Richiesta Materiale",
+    "Código do Material": "Codice Materiale",
+    "Quantidade Solicitada": "Quantità Richiesta",
+    "Unidade": "Unità",
+    "Quantidade Utilizada": "Quantità Utilizzata",
+    "Autorizado por": "Autorizzato da",
+    "Imprimir Requisição": "Stampa Richiesta",
 
-    // -------------------------------------------------
-    // ETIQUETAGEM / REQUISIÇÃO
-    // -------------------------------------------------
+    "Quantidade Total": "Quantità Totale",
+    "Valor do Estoque": "Valore dell'Inventario",
+    "Abaixo do Mínimo": "Sotto il Minimo",
+    "Sem Estoque": "Esaurito",
+    "Posições Disponíveis": "Posizioni Disponibili",
+    "Ocupação Estoque": "Occupazione Magazzino",
+    "Cobertura Inventário": "Copertura Inventario",
+    "Últimos 7 dias": "Ultimi 7 giorni",
+    "Últimos 14 dias": "Ultimi 14 giorni",
+    "Estoque Crítico": "Scorte Critiche",
 
-    "Etiquetagem de Pedidos":
-        "Etichettatura Ordini",
-
-    "Imprimir Etiqueta":
-        "Stampa Etichetta",
-
-    "Requisição de Material":
-        "Richiesta Materiale",
-
-    "Código do Material":
-        "Codice Materiale",
-
-    "Quantidade Solicitada":
-        "Quantità Richiesta",
-
-    "Unidade":
-        "Unità",
-
-    "Quantidade Utilizada":
-        "Quantità Utilizzata",
-
-    "Autorizado por":
-        "Autorizzato da",
-
-    "Imprimir Requisição":
-        "Stampa Richiesta",
-
-
-    // -------------------------------------------------
-    // DASHBOARD / INDICADORES
-    // -------------------------------------------------
-
-    "Quantidade Total":
-        "Quantità Totale",
-
-    "Valor do Estoque":
-        "Valore dell'Inventario",
-
-    "Abaixo do Mínimo":
-        "Sotto il Minimo",
-
-    "Sem Estoque":
-        "Esaurito",
-
-    "Posições Disponíveis":
-        "Posizioni Disponibili",
-
-    "Ocupação Estoque":
-        "Occupazione Magazzino",
-
-    "Cobertura Inventário":
-        "Copertura Inventario",
-
-    "Últimos 7 dias":
-        "Ultimi 7 giorni",
-
-    "Últimos 14 dias":
-        "Ultimi 14 giorni",
-
-    "Estoque Crítico":
-        "Scorte Critiche",
-
-
-    // -------------------------------------------------
-    // GERAIS
-    // -------------------------------------------------
-
-    "Salvar":
-        "Salva",
-
-    "Cancelar":
-        "Annulla",
-
-    "Fechar":
-        "Chiudi",
-
-    "Confirmar":
-        "Conferma",
-
-    "Continuar":
-        "Continua",
-
-    "Voltar":
-        "Indietro",
-
-    "Próximo":
-        "Avanti",
-
-    "Anterior":
-        "Indietro",
-
-    "Todos":
-        "Tutti",
-
-    "Hoje":
-        "Oggi",
-
-    "Usuário":
-        "Utente",
-
-    "Senha":
-        "Password",
-
-    "Entrar":
-        "Accedi",
-
-    "Sair":
-        "Esci",
-
-    "Sim":
-        "Sì",
-
-    "Não":
-        "No",
-
-    "Normal":
-        "Normale",
-
-    "Disponível":
-        "Disponibile",
-
-    "Ocupado":
-        "Occupato"
-
+    "Salvar": "Salva",
+    "Cancelar": "Annulla",
+    "Fechar": "Chiudi",
+    "Confirmar": "Conferma",
+    "Continuar": "Continua",
+    "Voltar": "Indietro",
+    "Próximo": "Avanti",
+    "Anterior": "Indietro",
+    "Todos": "Tutti",
+    "Hoje": "Oggi",
+    "Usuário": "Utente",
+    "Senha": "Password",
+    "Entrar": "Accedi",
+    "Sair": "Esci",
+    "Sim": "Sì",
+    "Não": "No",
+    "Normal": "Normale",
+    "Disponível": "Disponibile",
+    "Ocupado": "Occupato"
 };
 
-const WMS_TRADUCOES_IT_PT =
-    Object.fromEntries(
-        Object.entries(
-            WMS_TRADUCOES_PT_IT
-        ).map(
-            function (item) {
-
-                return [
-                    item[1],
-                    item[0]
-                ];
-
-            }
-        )
-    );
-
+const WMS_TRADUCOES_IT_PT = Object.fromEntries(
+    Object.entries(WMS_TRADUCOES_PT_IT).map(
+        function (item) {
+            return [
+                item[1],
+                item[0]
+            ];
+        }
+    )
+);
 
 // =====================================================
 // TRADUZIR TEXTO EXATO
 // =====================================================
 
-function traduzirTextoExatoWMS(
-    texto,
-    idioma
-) {
+function traduzirTextoExatoWMS(texto, idioma) {
+    const valor = String(texto ?? "");
 
-    const valor =
-        String(
-            texto ?? ""
-        );
+    const inicio = valor.match(/^\s*/)?.[0] || "";
+    const fim = valor.match(/\s*$/)?.[0] || "";
+    const limpo = valor.trim();
 
-
-    const inicio =
-        valor.match(
-            /^\s*/
-        )?.[0] || "";
-
-
-    const fim =
-        valor.match(
-            /\s*$/
-        )?.[0] || "";
-
-
-    const limpo =
-        valor.trim();
-
-
-    if (
-        !limpo
-    ) {
-
+    if (!limpo) {
         return valor;
-
     }
 
-
-    const dicionario =
-        idioma === "it-IT"
-
-            ? WMS_TRADUCOES_PT_IT
-
-            : WMS_TRADUCOES_IT_PT;
-
+    const dicionario = idioma === "it-IT"
+        ? WMS_TRADUCOES_PT_IT
+        : WMS_TRADUCOES_IT_PT;
 
     if (
         Object.prototype.hasOwnProperty.call(
@@ -14450,122 +8050,57 @@ function traduzirTextoExatoWMS(
             limpo
         )
     ) {
-
-        return (
-            inicio +
-            dicionario[limpo] +
-            fim
-        );
-
+        return inicio + dicionario[limpo] + fim;
     }
 
-
     return valor;
-
 }
 
-
 // =====================================================
-// TRADUZIR MENSAGENS / ALERTAS
+// TRADUZIR MENSAGENS E ALERTAS
 // =====================================================
 
-function traduzirMensagemWMS(
-    texto,
-    idioma
-) {
+function traduzirMensagemWMS(texto, idioma) {
+    let resultado = String(texto ?? "");
 
-    let resultado =
-        String(
-            texto ?? ""
-        );
+    const dicionario = idioma === "it-IT"
+        ? WMS_TRADUCOES_PT_IT
+        : WMS_TRADUCOES_IT_PT;
 
-
-    const dicionario =
-        idioma === "it-IT"
-
-            ? WMS_TRADUCOES_PT_IT
-
-            : WMS_TRADUCOES_IT_PT;
-
-
-    const chaves =
-        Object.keys(
-            dicionario
-        )
-        .sort(
-            function (
-                a,
-                b
-            ) {
-
-                return (
-                    b.length -
-                    a.length
-                );
-
-            }
-        );
-
-
-    chaves.forEach(
-        function (chave) {
-
-            if (
-                chave.length <
-                3 ||
-                !resultado.includes(
-                    chave
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            resultado =
-                resultado
-                    .split(
-                        chave
-                    )
-                    .join(
-                        dicionario[chave]
-                    );
-
+    const chaves = Object.keys(dicionario).sort(
+        function (a, b) {
+            return b.length - a.length;
         }
     );
 
+    chaves.forEach(function (chave) {
+        if (
+            chave.length < 3 ||
+            !resultado.includes(chave)
+        ) {
+            return;
+        }
+
+        resultado = resultado
+            .split(chave)
+            .join(dicionario[chave]);
+    });
 
     return resultado;
-
 }
-
 
 // =====================================================
 // TRADUZIR ELEMENTOS DA PÁGINA
 // =====================================================
 
-function traduzirElementoWMS(
-    elemento,
-    idioma
-) {
-
-    if (
-        !elemento
-    ) {
-
+function traduzirElementoWMS(elemento, idioma) {
+    if (!elemento) {
         return;
-
     }
 
-
-    const tag =
-        String(
-            elemento.tagName ||
-            ""
-        )
-        .toUpperCase();
-
+    const tag = String(
+        elemento.tagName || ""
+    ).toUpperCase();
 
     if (
         tag === "SCRIPT" ||
@@ -14574,247 +8109,125 @@ function traduzirElementoWMS(
         tag === "CODE" ||
         tag === "PRE"
     ) {
-
         return;
-
     }
 
+    const walker = document.createTreeWalker(
+        elemento,
+        NodeFilter.SHOW_TEXT,
+        {
+            acceptNode: function (no) {
+                const pai = no.parentElement;
 
-    // =====================================================
-    // TEXTOS VISÍVEIS
-    // =====================================================
+                if (!pai) {
+                    return NodeFilter.FILTER_REJECT;
+                }
 
-    const walker =
-        document.createTreeWalker(
-            elemento,
-            NodeFilter.SHOW_TEXT,
-            {
-                acceptNode:
-                    function (no) {
+                const tagPai = String(
+                    pai.tagName || ""
+                ).toUpperCase();
 
-                        const pai =
-                            no.parentElement;
+                if (
+                    tagPai === "SCRIPT" ||
+                    tagPai === "STYLE" ||
+                    tagPai === "NOSCRIPT" ||
+                    tagPai === "CODE" ||
+                    tagPai === "PRE"
+                ) {
+                    return NodeFilter.FILTER_REJECT;
+                }
 
-
-                        if (
-                            !pai
-                        ) {
-
-                            return (
-                                NodeFilter.FILTER_REJECT
-                            );
-
-                        }
-
-
-                        const tagPai =
-                            String(
-                                pai.tagName ||
-                                ""
-                            )
-                            .toUpperCase();
-
-
-                        if (
-                            tagPai === "SCRIPT" ||
-                            tagPai === "STYLE" ||
-                            tagPai === "NOSCRIPT" ||
-                            tagPai === "CODE" ||
-                            tagPai === "PRE"
-                        ) {
-
-                            return (
-                                NodeFilter.FILTER_REJECT
-                            );
-
-                        }
-
-
-                        return (
-                            NodeFilter.FILTER_ACCEPT
-                        );
-
-                    }
+                return NodeFilter.FILTER_ACCEPT;
             }
-        );
+        }
+    );
 
-
-    const nosTexto =
-        [];
-
+    const nosTexto = [];
 
     let noAtual;
 
-
-    while (
-        (
-            noAtual =
-                walker.nextNode()
-        )
-    ) {
-
-        nosTexto.push(
-            noAtual
-        );
-
+    while ((noAtual = walker.nextNode())) {
+        nosTexto.push(noAtual);
     }
 
+    nosTexto.forEach(function (no) {
+        const traduzido = traduzirTextoExatoWMS(
+            no.nodeValue,
+            idioma
+        );
 
-    nosTexto.forEach(
-        function (no) {
+        if (traduzido !== no.nodeValue) {
+            no.nodeValue = traduzido;
+        }
+    });
 
-            const traduzido =
-                traduzirTextoExatoWMS(
-                    no.nodeValue,
-                    idioma
-                );
+    const elementos = elemento.querySelectorAll
+        ? elemento.querySelectorAll("*")
+        : [];
 
-
-            if (
-                traduzido !==
-                no.nodeValue
-            ) {
-
-                no.nodeValue =
-                    traduzido;
-
+    elementos.forEach(function (item) {
+        [
+            "placeholder",
+            "title",
+            "aria-label"
+        ].forEach(function (atributo) {
+            if (!item.hasAttribute(atributo)) {
+                return;
             }
 
-        }
-    );
-
-
-    // =====================================================
-    // ATRIBUTOS DE INTERFACE
-    // =====================================================
-
-    const elementos =
-        elemento.querySelectorAll
-
-            ? elemento.querySelectorAll(
-                "*"
-            )
-
-            : [];
-
-
-    elementos.forEach(
-        function (item) {
-
-            [
-                "placeholder",
-                "title",
-                "aria-label"
-            ]
-            .forEach(
-                function (
-                    atributo
-                ) {
-
-                    if (
-                        !item.hasAttribute(
-                            atributo
-                        )
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    const original =
-                        item.getAttribute(
-                            atributo
-                        );
-
-
-                    const traduzido =
-                        traduzirTextoExatoWMS(
-                            original,
-                            idioma
-                        );
-
-
-                    if (
-                        traduzido !==
-                        original
-                    ) {
-
-                        item.setAttribute(
-                            atributo,
-                            traduzido
-                        );
-
-                    }
-
-                }
+            const original = item.getAttribute(
+                atributo
             );
 
+            const traduzido = traduzirTextoExatoWMS(
+                original,
+                idioma
+            );
 
-            if (
-                item.tagName ===
-                "INPUT" &&
-                (
-                    item.type ===
-                    "button" ||
-                    item.type ===
-                    "submit" ||
-                    item.type ===
-                    "reset"
-                )
-            ) {
-
-                item.value =
-                    traduzirTextoExatoWMS(
-                        item.value,
-                        idioma
-                    );
-
+            if (traduzido !== original) {
+                item.setAttribute(
+                    atributo,
+                    traduzido
+                );
             }
+        });
 
+        if (
+            item.tagName === "INPUT" &&
+            (
+                item.type === "button" ||
+                item.type === "submit" ||
+                item.type === "reset"
+            )
+        ) {
+            item.value = traduzirTextoExatoWMS(
+                item.value,
+                idioma
+            );
         }
-    );
-
+    });
 }
-
 
 // =====================================================
 // APLICAR IDIOMA
 // =====================================================
 
-function aplicarIdiomaWMS(
-    idiomaRecebido
-) {
+function aplicarIdiomaWMS(idiomaRecebido) {
+    const idioma = normalizarIdiomaGlobalWMS(
+        idiomaRecebido || obterIdiomaGlobalWMS()
+    );
 
-    const idioma =
-        normalizarIdiomaGlobalWMS(
-            idiomaRecebido ||
-            obterIdiomaGlobalWMS()
-        );
+    document.documentElement.lang = idioma;
 
-
-    document.documentElement.lang =
-        idioma;
-
-
-    if (
-        document.body
-    ) {
-
+    if (document.body) {
         traduzirElementoWMS(
             document.body,
             idioma
         );
-
     }
 
-
-    if (
-        document.title
-    ) {
-
+    if (document.title) {
         const titulos = {
-
             "SMI WMS - Configurações":
                 "SMI WMS - Impostazioni",
 
@@ -14844,160 +8257,90 @@ function aplicarIdiomaWMS(
 
             "SMI WMS - Requisição":
                 "SMI WMS - Richiesta"
-
         };
 
-
-        const titulosReversos =
-            Object.fromEntries(
-                Object.entries(
-                    titulos
-                )
-                .map(
-                    function (item) {
-
-                        return [
-                            item[1],
-                            item[0]
-                        ];
-
-                    }
-                )
-            );
-
+        const titulosReversos = Object.fromEntries(
+            Object.entries(titulos).map(
+                function (item) {
+                    return [
+                        item[1],
+                        item[0]
+                    ];
+                }
+            )
+        );
 
         if (
-            idioma ===
-            "it-IT" &&
-            titulos[
-                document.title
-            ]
+            idioma === "it-IT" &&
+            titulos[document.title]
         ) {
-
-            document.title =
-                titulos[
-                    document.title
-                ];
-
+            document.title = titulos[
+                document.title
+            ];
         }
-
 
         if (
-            idioma ===
-            "pt-BR" &&
-            titulosReversos[
-                document.title
-            ]
+            idioma === "pt-BR" &&
+            titulosReversos[document.title]
         ) {
-
-            document.title =
-                titulosReversos[
-                    document.title
-                ];
-
+            document.title = titulosReversos[
+                document.title
+            ];
         }
-
     }
 
-
-    sincronizarSeletorIdiomaGlobalWMS(
-        idioma
-    );
-
-
-    sincronizarConfiguracaoIdiomaWMS(
-        idioma
-    );
-
+    sincronizarSeletorIdiomaGlobalWMS(idioma);
+    sincronizarConfiguracaoIdiomaWMS(idioma);
 }
-
 
 // =====================================================
 // SINCRONIZAR TELA CONFIGURAÇÕES
 // =====================================================
 
-function sincronizarConfiguracaoIdiomaWMS(
-    idioma
-) {
+function sincronizarConfiguracaoIdiomaWMS(idioma) {
+    const radio = document.querySelector(
+        'input[name="idiomaWms"][value="' +
+        idioma +
+        '"]'
+    );
 
-    const radio =
-        document.querySelector(
-            'input[name="idiomaWms"][value="' +
-            idioma +
-            '"]'
-        );
-
-
-    if (
-        radio
-    ) {
-
-        radio.checked =
-            true;
-
+    if (radio) {
+        radio.checked = true;
     }
 
+    const opcaoBR = document.getElementById(
+        "opcaoIdiomaBR"
+    );
 
-    const opcaoBR =
-        document.getElementById(
-            "opcaoIdiomaBR"
-        );
+    const opcaoIT = document.getElementById(
+        "opcaoIdiomaIT"
+    );
 
-
-    const opcaoIT =
-        document.getElementById(
-            "opcaoIdiomaIT"
-        );
-
-
-    if (
-        opcaoBR
-    ) {
-
+    if (opcaoBR) {
         opcaoBR.classList.toggle(
             "selecionado",
-            idioma ===
-            "pt-BR"
+            idioma === "pt-BR"
         );
-
     }
 
-
-    if (
-        opcaoIT
-    ) {
-
+    if (opcaoIT) {
         opcaoIT.classList.toggle(
             "selecionado",
-            idioma ===
-            "it-IT"
+            idioma === "it-IT"
         );
-
     }
 
+    const textoAtual = document.getElementById(
+        "idiomaAtualTexto"
+    );
 
-    const textoAtual =
-        document.getElementById(
-            "idiomaAtualTexto"
-        );
-
-
-    if (
-        textoAtual
-    ) {
-
+    if (textoAtual) {
         textoAtual.textContent =
-            idioma ===
-            "it-IT"
-
+            idioma === "it-IT"
                 ? "Italiano"
-
                 : "Português (Brasil)";
-
     }
-
 }
-
 
 // =====================================================
 // SINCRONIZAR SELETOR BR | IT
@@ -15006,89 +8349,46 @@ function sincronizarConfiguracaoIdiomaWMS(
 function sincronizarSeletorIdiomaGlobalWMS(
     idiomaRecebido
 ) {
+    const idioma = normalizarIdiomaGlobalWMS(
+        idiomaRecebido
+    );
 
-    const idioma =
-        normalizarIdiomaGlobalWMS(
-            idiomaRecebido
-        );
+    document.querySelectorAll(
+        "#wms-language-switcher .wms-lang-item"
+    ).forEach(function (item) {
+        const valor = String(
+            item.dataset.lang || ""
+        ).toLowerCase();
 
+        const ativo =
+            (
+                idioma === "pt-BR" &&
+                valor === "pt"
+            ) ||
+            (
+                idioma === "it-IT" &&
+                valor === "it"
+            );
 
-    document
-        .querySelectorAll(
-            "#wms-language-switcher .wms-lang-item"
-        )
-        .forEach(
-            function (item) {
-
-                const valor =
-                    String(
-                        item.dataset.lang ||
-                        ""
-                    )
-                    .toLowerCase();
-
-
-                const ativo =
-                    (
-                        idioma ===
-                        "pt-BR" &&
-                        valor ===
-                        "pt"
-                    )
-                    ||
-                    (
-                        idioma ===
-                        "it-IT" &&
-                        valor ===
-                        "it"
-                    );
-
-
-                item.classList.toggle(
-                    "active",
-                    ativo
-                );
-
-
-                item.classList.toggle(
-                    "ativo",
-                    ativo
-                );
-
-            }
-        );
-
+        item.classList.toggle("active", ativo);
+        item.classList.toggle("ativo", ativo);
+    });
 }
-
 
 // =====================================================
 // CRIAR SELETOR GLOBAL BR | IT
 // =====================================================
 
 function criarSeletorIdiomaWMS() {
+    document.querySelectorAll(
+        "#wms-language-switcher"
+    ).forEach(function (el) {
+        el.remove();
+    });
 
-    document
-        .querySelectorAll(
-            "#wms-language-switcher"
-        )
-        .forEach(
-            function (el) {
+    const seletor = document.createElement("div");
 
-                el.remove();
-
-            }
-        );
-
-
-    const seletor =
-        document.createElement(
-            "div"
-        );
-
-
-    seletor.id =
-        "wms-language-switcher";
-
+    seletor.id = "wms-language-switcher";
 
     seletor.innerHTML = `
         <button
@@ -15098,12 +8398,27 @@ function criarSeletorIdiomaWMS() {
             aria-label="Português (Brasil)"
             title="Português (Brasil)"
         >
-            <svg class="wms-flag" viewBox="0 0 28 20" aria-hidden="true">
-                <rect width="28" height="20" fill="#009739"/>
-                <polygon points="14,2 25,10 14,18 3,10" fill="#FFDF00"/>
-                <circle cx="14" cy="10" r="4.2" fill="#002776"/>
+            <svg
+                class="wms-flag"
+                viewBox="0 0 28 20"
+                aria-hidden="true"
+            >
+                <rect
+                    width="28"
+                    height="20"
+                    fill="#009739"
+                />
+                <polygon
+                    points="14,2 25,10 14,18 3,10"
+                    fill="#FFDF00"
+                />
+                <circle
+                    cx="14"
+                    cy="10"
+                    r="4.2"
+                    fill="#002776"
+                />
             </svg>
-
             <span>BR</span>
         </button>
 
@@ -15116,236 +8431,140 @@ function criarSeletorIdiomaWMS() {
             aria-label="Italiano"
             title="Italiano"
         >
-            <svg class="wms-flag" viewBox="0 0 30 20" aria-hidden="true">
-                <rect width="10" height="20" x="0" fill="#009246"/>
-                <rect width="10" height="20" x="10" fill="#FFFFFF"/>
-                <rect width="10" height="20" x="20" fill="#CE2B37"/>
+            <svg
+                class="wms-flag"
+                viewBox="0 0 30 20"
+                aria-hidden="true"
+            >
+                <rect
+                    width="10"
+                    height="20"
+                    x="0"
+                    fill="#009246"
+                />
+                <rect
+                    width="10"
+                    height="20"
+                    x="10"
+                    fill="#FFFFFF"
+                />
+                <rect
+                    width="10"
+                    height="20"
+                    x="20"
+                    fill="#CE2B37"
+                />
             </svg>
-
             <span>IT</span>
         </button>
     `;
 
+    document.body.appendChild(seletor);
 
-    document.body.appendChild(
-        seletor
-    );
+    seletor.querySelectorAll(
+        ".wms-lang-item"
+    ).forEach(function (item) {
+        item.addEventListener("click", function () {
+            const idioma = item.dataset.lang === "it"
+                ? "it-IT"
+                : "pt-BR";
 
-
-    seletor
-        .querySelectorAll(
-            ".wms-lang-item"
-        )
-        .forEach(
-            function (item) {
-
-                item.addEventListener(
-                    "click",
-                    function () {
-
-                        const idioma =
-                            item.dataset.lang ===
-                            "it"
-
-                                ? "it-IT"
-
-                                : "pt-BR";
-
-
-                        salvarIdiomaGlobalWMS(
-                            idioma
-                        );
-
-                    }
-                );
-
-            }
-        );
-
+            salvarIdiomaGlobalWMS(idioma);
+        });
+    });
 
     sincronizarSeletorIdiomaGlobalWMS(
         obterIdiomaGlobalWMS()
     );
-
 }
 
-
 // =====================================================
-// ALERT / CONFIRM / PROMPT NO IDIOMA ESCOLHIDO
+// ALERT, CONFIRM E PROMPT NO IDIOMA ESCOLHIDO
 // =====================================================
 
 (function prepararMensagensIdiomaWMS() {
-
-    if (
-        window.__wmsMensagensIdiomaPreparadas
-    ) {
-
+    if (window.__wmsMensagensIdiomaPreparadas) {
         return;
-
     }
 
+    window.__wmsMensagensIdiomaPreparadas = true;
 
-    window.__wmsMensagensIdiomaPreparadas =
-        true;
+    const alertaOriginal = window.alert.bind(window);
+    const confirmOriginal = window.confirm.bind(window);
+    const promptOriginal = window.prompt.bind(window);
 
-
-    const alertaOriginal =
-        window.alert.bind(
-            window
+    window.alert = function (mensagem) {
+        return alertaOriginal(
+            traduzirMensagemWMS(
+                mensagem,
+                obterIdiomaGlobalWMS()
+            )
         );
+    };
 
-
-    const confirmOriginal =
-        window.confirm.bind(
-            window
+    window.confirm = function (mensagem) {
+        return confirmOriginal(
+            traduzirMensagemWMS(
+                mensagem,
+                obterIdiomaGlobalWMS()
+            )
         );
+    };
 
-
-    const promptOriginal =
-        window.prompt.bind(
-            window
-        );
-
-
-    window.alert =
-        function (
-            mensagem
-        ) {
-
-            return alertaOriginal(
-                traduzirMensagemWMS(
-                    mensagem,
-                    obterIdiomaGlobalWMS()
-                )
-            );
-
-        };
-
-
-    window.confirm =
-        function (
-            mensagem
-        ) {
-
-            return confirmOriginal(
-                traduzirMensagemWMS(
-                    mensagem,
-                    obterIdiomaGlobalWMS()
-                )
-            );
-
-        };
-
-
-    window.prompt =
-        function (
-            mensagem,
+    window.prompt = function (
+        mensagem,
+        valorPadrao
+    ) {
+        return promptOriginal(
+            traduzirMensagemWMS(
+                mensagem,
+                obterIdiomaGlobalWMS()
+            ),
             valorPadrao
-        ) {
-
-            return promptOriginal(
-                traduzirMensagemWMS(
-                    mensagem,
-                    obterIdiomaGlobalWMS()
-                ),
-                valorPadrao
-            );
-
-        };
-
+        );
+    };
 })();
-
 
 // =====================================================
 // OBSERVAR CONTEÚDO CRIADO DINAMICAMENTE
 // =====================================================
 
-let observadorIdiomaWMS =
-    null;
-
+let observadorIdiomaWMS = null;
 
 function iniciarObservadorIdiomaWMS() {
-
-    if (
-        observadorIdiomaWMS ||
-        !document.body
-    ) {
-
+    if (observadorIdiomaWMS || !document.body) {
         return;
-
     }
 
+    observadorIdiomaWMS = new MutationObserver(
+        function (mutacoes) {
+            const idioma = obterIdiomaGlobalWMS();
 
-    observadorIdiomaWMS =
-        new MutationObserver(
-            function (
-                mutacoes
-            ) {
-
-                const idioma =
-                    obterIdiomaGlobalWMS();
-
-
-                mutacoes.forEach(
-                    function (
-                        mutacao
-                    ) {
-
-                        mutacao.addedNodes
-                            .forEach(
-                                function (
-                                    no
-                                ) {
-
-                                    if (
-                                        no.nodeType ===
-                                        Node.TEXT_NODE
-                                    ) {
-
-                                        const traduzido =
-                                            traduzirTextoExatoWMS(
-                                                no.nodeValue,
-                                                idioma
-                                            );
-
-
-                                        if (
-                                            traduzido !==
-                                            no.nodeValue
-                                        ) {
-
-                                            no.nodeValue =
-                                                traduzido;
-
-                                        }
-
-
-                                        return;
-
-                                    }
-
-
-                                    if (
-                                        no.nodeType ===
-                                        Node.ELEMENT_NODE
-                                    ) {
-
-                                        traduzirElementoWMS(
-                                            no,
-                                            idioma
-                                        );
-
-                                    }
-
-                                }
+            mutacoes.forEach(function (mutacao) {
+                mutacao.addedNodes.forEach(function (no) {
+                    if (no.nodeType === Node.TEXT_NODE) {
+                        const traduzido =
+                            traduzirTextoExatoWMS(
+                                no.nodeValue,
+                                idioma
                             );
 
+                        if (traduzido !== no.nodeValue) {
+                            no.nodeValue = traduzido;
+                        }
+
+                        return;
                     }
-                );
 
-            }
-        );
-
+                    if (
+                        no.nodeType === Node.ELEMENT_NODE
+                    ) {
+                        traduzirElementoWMS(no, idioma);
+                    }
+                });
+            });
+        }
+    );
 
     observadorIdiomaWMS.observe(
         document.body,
@@ -15354,130 +8573,27 @@ function iniciarObservadorIdiomaWMS() {
             subtree: true
         }
     );
-
 }
 
-
 // =====================================================
-// INICIALIZAÇÃO
+// INICIALIZAÇÃO DO IDIOMA
 // =====================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
+    criarSeletorIdiomaWMS();
 
-        criarSeletorIdiomaWMS();
+    aplicarIdiomaWMS(
+        obterIdiomaGlobalWMS()
+    );
 
+    iniciarObservadorIdiomaWMS();
 
+    setTimeout(function () {
         aplicarIdiomaWMS(
             obterIdiomaGlobalWMS()
         );
-
-
-        iniciarObservadorIdiomaWMS();
-
-
-        setTimeout(
-            function () {
-
-                aplicarIdiomaWMS(
-                    obterIdiomaGlobalWMS()
-                );
-
-            },
-            300
-        );
-
-    }
-);
-
-
-// =====================================================
-// EVENTO DISPARADO PELA TELA CONFIGURAÇÕES
-// =====================================================
-
-window.addEventListener(
-    "wmsIdiomaAlterado",
-    function (
-        evento
-    ) {
-
-        const idioma =
-            evento &&
-            evento.detail
-
-                ? evento.detail.idioma
-
-                : obterIdiomaGlobalWMS();
-
-
-        aplicarIdiomaWMS(
-            idioma
-        );
-
-    }
-);
-
-
-// =====================================================
-// DISPONIBILIZAÇÃO GLOBAL
-// =====================================================
-
-window.obterIdiomaGlobalWMS =
-    obterIdiomaGlobalWMS;
-
-
-window.salvarIdiomaGlobalWMS =
-    salvarIdiomaGlobalWMS;
-
-
-window.aplicarIdiomaWMS =
-    aplicarIdiomaWMS;
-
-
-window.sincronizarSeletorIdiomaGlobalWMS =
-    sincronizarSeletorIdiomaGlobalWMS;
-
-
-window.sincronizarConfiguracaoIdiomaWMS =
-    sincronizarConfiguracaoIdiomaWMS;
-
-    // =====================================================
-// INICIALIZAÇÃO FINAL DO IDIOMA
-// =====================================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        criarSeletorIdiomaWMS();
-
-
-        aplicarIdiomaWMS(
-            obterIdiomaGlobalWMS()
-        );
-
-
-        iniciarObservadorIdiomaWMS();
-
-
-        // Segunda passada após as rotinas das páginas
-        // criarem cards, tabelas e componentes.
-
-        setTimeout(
-            function () {
-
-                aplicarIdiomaWMS(
-                    obterIdiomaGlobalWMS()
-                );
-
-            },
-            300
-        );
-
-    }
-);
-
+    }, 300);
+});
 
 // =====================================================
 // EVENTO DISPARADO PELA TELA CONFIGURAÇÕES
@@ -15486,23 +8602,14 @@ document.addEventListener(
 window.addEventListener(
     "wmsIdiomaAlterado",
     function (evento) {
-
         const idioma =
-            evento &&
-            evento.detail
-
+            evento && evento.detail
                 ? evento.detail.idioma
-
                 : obterIdiomaGlobalWMS();
 
-
-        aplicarIdiomaWMS(
-            idioma
-        );
-
+        aplicarIdiomaWMS(idioma);
     }
 );
-
 
 // =====================================================
 // DISPONIBILIZAÇÃO GLOBAL DO IDIOMA
@@ -15511,25 +8618,67 @@ window.addEventListener(
 window.obterIdiomaGlobalWMS =
     obterIdiomaGlobalWMS;
 
-
 window.salvarIdiomaGlobalWMS =
     salvarIdiomaGlobalWMS;
-
 
 window.aplicarIdiomaWMS =
     aplicarIdiomaWMS;
 
-
 window.sincronizarSeletorIdiomaGlobalWMS =
     sincronizarSeletorIdiomaGlobalWMS;
-
 
 window.sincronizarConfiguracaoIdiomaWMS =
     sincronizarConfiguracaoIdiomaWMS;
 
 // =====================================================
-// SMI WMS — CORES DOS GRÁFICOS CONFORME O TEMA
-// Não altera dados, cálculos ou operações.
+// INICIALIZAÇÃO FINAL DO IDIOMA
+// =====================================================
+
+document.addEventListener("DOMContentLoaded", function () {
+    criarSeletorIdiomaWMS();
+
+    aplicarIdiomaWMS(
+        obterIdiomaGlobalWMS()
+    );
+
+    iniciarObservadorIdiomaWMS();
+
+    setTimeout(function () {
+        aplicarIdiomaWMS(
+            obterIdiomaGlobalWMS()
+        );
+    }, 300);
+});
+
+window.addEventListener(
+    "wmsIdiomaAlterado",
+    function (evento) {
+        const idioma =
+            evento && evento.detail
+                ? evento.detail.idioma
+                : obterIdiomaGlobalWMS();
+
+        aplicarIdiomaWMS(idioma);
+    }
+);
+
+window.obterIdiomaGlobalWMS =
+    obterIdiomaGlobalWMS;
+
+window.salvarIdiomaGlobalWMS =
+    salvarIdiomaGlobalWMS;
+
+window.aplicarIdiomaWMS =
+    aplicarIdiomaWMS;
+
+window.sincronizarSeletorIdiomaGlobalWMS =
+    sincronizarSeletorIdiomaGlobalWMS;
+
+window.sincronizarConfiguracaoIdiomaWMS =
+    sincronizarConfiguracaoIdiomaWMS;
+
+// =====================================================
+// CORES DOS GRÁFICOS CONFORME O TEMA
 // =====================================================
 
 (function () {
@@ -15551,23 +8700,36 @@ window.sincronizarConfiguracaoIdiomaWMS =
             ) === "escuro";
 
         return {
-            texto: escuro ? "#afc3dc" : "#526780",
-            titulo: escuro ? "#f1f5ff" : "#062d63",
-            grade: escuro ? "#294156" : "#e1e8f0",
-            superficie: escuro ? "#0d2032" : "#ffffff",
-            borda: escuro ? "#294b66" : "#dce5ef",
-            linha: escuro ? "#00cfff" : "#007fa8",
-            preenchimento: escuro
-                ? "rgba(0,190,255,0.13)"
-                : "rgba(0,127,168,0.10)"
+            texto:
+                escuro ? "#afc3dc" : "#526780",
+
+            titulo:
+                escuro ? "#f1f5ff" : "#062d63",
+
+            grade:
+                escuro ? "#294156" : "#e1e8f0",
+
+            superficie:
+                escuro ? "#0d2032" : "#ffffff",
+
+            borda:
+                escuro ? "#294b66" : "#dce5ef",
+
+            linha:
+                escuro ? "#00cfff" : "#007fa8",
+
+            preenchimento:
+                escuro
+                    ? "rgba(0,190,255,0.13)"
+                    : "rgba(0,127,168,0.10)"
         };
     }
 
     function aplicarCoresGrafico(grafico) {
         const cores = obterCoresTema();
 
-        // Altera apenas a configuração visual do gráfico.
-        const opcoes = grafico.config.options ||
+        const opcoes =
+            grafico.config.options ||
             (grafico.config.options = {});
 
         opcoes.color = cores.texto;
@@ -15582,13 +8744,15 @@ window.sincronizarConfiguracaoIdiomaWMS =
                 plugins.legend.labels =
                     plugins.legend.labels || {};
 
-                plugins.legend.labels.color = cores.texto;
+                plugins.legend.labels.color =
+                    cores.texto;
 
                 if (
                     plugins.legend.title &&
                     plugins.legend.title !== false
                 ) {
-                    plugins.legend.title.color = cores.titulo;
+                    plugins.legend.title.color =
+                        cores.titulo;
                 }
             }
 
@@ -15608,10 +8772,18 @@ window.sincronizarConfiguracaoIdiomaWMS =
                 plugins.tooltip.backgroundColor =
                     cores.superficie;
 
-                plugins.tooltip.titleColor = cores.titulo;
-                plugins.tooltip.bodyColor = cores.texto;
-                plugins.tooltip.footerColor = cores.texto;
-                plugins.tooltip.borderColor = cores.borda;
+                plugins.tooltip.titleColor =
+                    cores.titulo;
+
+                plugins.tooltip.bodyColor =
+                    cores.texto;
+
+                plugins.tooltip.footerColor =
+                    cores.texto;
+
+                plugins.tooltip.borderColor =
+                    cores.borda;
+
                 plugins.tooltip.borderWidth = 1;
             }
         }
@@ -15625,9 +8797,8 @@ window.sincronizarConfiguracaoIdiomaWMS =
 
             if (escala.ticks !== false) {
                 escala.ticks = escala.ticks || {};
-                escala.ticks.color = cores.texto;
 
-                // Evita fundos claros em rótulos de gráficos radiais.
+                escala.ticks.color = cores.texto;
                 escala.ticks.backdropColor =
                     cores.superficie;
             }
@@ -15657,17 +8828,18 @@ window.sincronizarConfiguracaoIdiomaWMS =
             }
         }
 
-        // Somente a cor da linha do inventário.
-        // Os valores e as datas permanecem os mesmos.
         if (
             grafico.canvas?.id === "smiGraficoEvolucao"
         ) {
             for (const serie of grafico.data.datasets) {
                 serie.borderColor = cores.linha;
+
                 serie.backgroundColor =
                     cores.preenchimento;
 
-                serie.pointBorderColor = cores.linha;
+                serie.pointBorderColor =
+                    cores.linha;
+
                 serie.pointBackgroundColor =
                     cores.superficie;
             }
@@ -15743,8 +8915,9 @@ window.sincronizarConfiguracaoIdiomaWMS =
 
         document.querySelectorAll("canvas").forEach(
             function (canvas) {
-                const grafico =
-                    biblioteca.getChart(canvas);
+                const grafico = biblioteca.getChart(
+                    canvas
+                );
 
                 if (grafico) {
                     grafico.update("none");
@@ -15766,7 +8939,6 @@ window.sincronizarConfiguracaoIdiomaWMS =
         });
     }
 
-    // A troca de tema existente altera este atributo.
     new MutationObserver(
         agendarAtualizacao
     ).observe(
@@ -15781,8 +8953,6 @@ window.sincronizarConfiguracaoIdiomaWMS =
         registrarTemaChart();
         atualizarCoresDaTela();
 
-        // Atualiza o preenchimento do anel quando muda
-        // o percentual, sem consultar ou salvar no banco.
         const percentual = document.getElementById(
             "indCobertura"
         );
@@ -15819,3 +8989,6 @@ window.sincronizarConfiguracaoIdiomaWMS =
         { once: true }
     );
 })();
+
+// FIM DA PARTE 10/10
+// FIM DO APP.JS

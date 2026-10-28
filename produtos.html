@@ -2850,7 +2850,110 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 </script>
+<script>
+window.exportarEstoqueExcel = async function () {
+    if (typeof XLSX === "undefined") {
+        alert("A biblioteca Excel não foi carregada.");
+        return;
+    }
 
+    if (!window.supabaseClient) {
+        alert("A conexão com o banco não foi encontrada.");
+        return;
+    }
+
+    try {
+        const produtos = [];
+        const tamanhoLote = 1000;
+        let inicio = 0;
+
+        while (true) {
+            const { data, error } = await window.supabaseClient
+                .from("produtos")
+                .select("*")
+                .order("id", { ascending: true })
+                .range(inicio, inicio + tamanhoLote - 1);
+
+            if (error) {
+                throw error;
+            }
+
+            if (!Array.isArray(data) || data.length === 0) {
+                break;
+            }
+
+            produtos.push(...data);
+
+            if (data.length < tamanhoLote) {
+                break;
+            }
+
+            inicio += tamanhoLote;
+        }
+
+        if (produtos.length === 0) {
+            alert("Não existem produtos para exportar.");
+            return;
+        }
+
+        produtos.sort(function (a, b) {
+            return String(a.endereco || "").localeCompare(
+                String(b.endereco || ""),
+                "pt-BR",
+                { numeric: true }
+            );
+        });
+
+        // Somente estas colunas entram no Excel.
+        const dados = produtos.map(function (produto) {
+            return {
+                "Código": produto.codigo || "",
+                "Descrição": produto.descricao || "",
+                "Descrição detalhada":
+                    produto.descricao_detalhada ??
+                    produto.descricaoDetalhada ??
+                    "",
+                "Quantidade": Number(produto.quantidade || 0),
+                "NCM": produto.ncm ?? produto.NCM ?? "",
+                "IPI": produto.ipi ?? produto.IPI ?? "",
+                "Posição": produto.endereco || ""
+            };
+        });
+
+        const planilha = XLSX.utils.json_to_sheet(dados);
+
+        planilha["!cols"] = [
+            { wch: 18 },
+            { wch: 45 },
+            { wch: 55 },
+            { wch: 15 },
+            { wch: 18 },
+            { wch: 12 },
+            { wch: 15 }
+        ];
+
+        const livro = XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(
+            livro,
+            planilha,
+            "Estoque"
+        );
+
+        XLSX.writeFile(
+            livro,
+            "estoque_SEM_VALORES.xlsx"
+        );
+    } catch (erro) {
+        console.error("Erro na exportação:", erro);
+
+        alert(
+            "Não foi possível exportar.\n\n" +
+            (erro.message || String(erro))
+        );
+    }
+};
+</script>
 
 </body>
 
