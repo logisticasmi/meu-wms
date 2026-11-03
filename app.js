@@ -179,6 +179,18 @@ function realizarLogin() {
             senha: "1234",
             nome: "MARCOS.SMI"
         },
+
+ {
+        login: "sarah.nava",
+        senha: "1234",
+        nome: "SARAH.NAVA"
+    },
+    {
+        login: "guilherme.vivona",
+        senha: "1234",
+        nome: "GUILHERME.VIVONA"
+    },
+
         {
             login: "juliana.smi",
             senha: "1234",
