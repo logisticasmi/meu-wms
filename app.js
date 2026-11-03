@@ -159,43 +159,32 @@ function realizarLogin() {
     const senha = String(campoSenha.value || "").trim();
 
     const usuariosPermitidos = [
-        const usuariosPermitidos = [
-    {
-        login: "davi.smi",
-        senha: "1234",
-        nome: "DAVI.SMI"
-    },
-    {
-        login: "julio.smi",
-        senha: "1234",
-        nome: "JULIO.SMI"
-    },
-    {
-        login: "rafael.smi",
-        senha: "1234",
-        nome: "RAFAEL.SMI"
-    },
-    {
-        login: "marcos.smi",
-        senha: "1234",
-        nome: "MARCOS.SMI"
-    },
-    {
-        login: "juliana.smi",
-        senha: "1234",
-        nome: "JULIANA.SMI"
-    },
-    {
-        login: "sarah.nova",
-        senha: "1234",
-        nome: "SARAH.NOVA"
-    },
-    {
-        login: "guilherme.vivona",
-        senha: "1234",
-        nome: "GUILHERME.VIVONA"
-    }
-];
+        {
+            login: "davi.smi",
+            senha: "1234",
+            nome: "DAVI.SMI"
+        },
+        {
+            login: "julio.smi",
+            senha: "1234",
+            nome: "JULIO.SMI"
+        },
+        {
+            login: "rafael.smi",
+            senha: "1234",
+            nome: "RAFAEL.SMI"
+        },
+        {
+            login: "marcos.smi",
+            senha: "1234",
+            nome: "MARCOS.SMI"
+        },
+        {
+            login: "juliana.smi",
+            senha: "1234",
+            nome: "JULIANA.SMI"
+        }
+    ];
 
     const usuarioEncontrado = usuariosPermitidos.find(
         function (item) {
