@@ -142,108 +142,153 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-
-function realizarLogin() {
+async function realizarLogin() {
     const campoUsuario = document.getElementById("usuario");
     const campoSenha = document.getElementById("senha");
+    const botao = document.getElementById("btnLogin");
+    const erroTela = document.getElementById("erro");
+
+    function mostrarErro(mensagem) {
+        if (erroTela) {
+            erroTela.textContent = mensagem;
+        } else {
+            alert(mensagem);
+        }
+    }
+
+    if (erroTela) erroTela.textContent = "";
 
     if (!campoUsuario || !campoSenha) {
-        alert("Os campos de login não foram encontrados.");
+        mostrarErro("Os campos de login não foram encontrados.");
         return;
     }
 
-    const usuario = String(campoUsuario.value || "")
-        .trim()
-        .toLowerCase();
+    if (botao?.disabled) return;
 
-    const senha = String(campoSenha.value || "").trim();
+    const email = campoUsuario.value.trim().toLowerCase();
+    // Não remover espaços da senha.
+    const senha = campoSenha.value;
 
-    const usuariosPermitidos = [
-        {
-            login: "davi.smi",
-            senha: "1234",
-            nome: "DAVI.SMI"
-        },
-        {
-            login: "julio.smi",
-            senha: "1234",
-            nome: "JULIO.SMI"
-        },
-        {
-            login: "rafael.smi",
-            senha: "1234",
-            nome: "RAFAEL.SMI"
-        },
-        {
-            login: "marcos.smi",
-            senha: "1234",
-            nome: "MARCOS.SMI"
-        },
+    if (!email || !senha) {
+        mostrarErro("Preencha o e-mail e a senha.");
+        return;
+    }
 
- {
-        login: "sarah.nava",
-        senha: "1234",
-        nome: "SARAH.NAVA"
-    },
-    {
-        login: "guilherme.vivona",
-        senha: "1234",
-        nome: "GUILHERME.VIVONA"
-    },
+    if (!campoUsuario.checkValidity()) {
+        mostrarErro("Digite um e-mail válido.");
+        campoUsuario.focus();
+        return;
+    }
 
-        {
-            login: "juliana.smi",
-            senha: "1234",
-            nome: "JULIANA.SMI"
-        }
-    ];
+    const cliente = window.supabaseClient;
 
-    const usuarioEncontrado = usuariosPermitidos.find(
-        function (item) {
-            return (
-                item.login === usuario &&
-                item.senha === senha
+    if (!cliente?.auth) {
+        mostrarErro("Conexão indisponível. Atualize a página.");
+        return;
+    }
+
+    const textoOriginal = botao?.textContent;
+
+    if (botao) {
+        botao.disabled = true;
+        botao.textContent = "Entrando...";
+    }
+
+    try {
+        const { data, error } =
+            await cliente.auth.signInWithPassword({
+                email,
+                password: senha
+            });
+
+        if (error || !data?.user || !data?.session) {
+            mostrarErro(
+                "Não foi possível entrar. Confira seu e-mail e sua senha."
             );
+            campoSenha.value = "";
+            campoSenha.focus();
+            return;
         }
-    );
 
-    if (usuarioEncontrado) {
-        localStorage.setItem(
-            "usuario",
-            usuarioEncontrado.nome
-        );
+        // Identificação exibida no WMS.
+        // Isso não concede permissões de administrador.
+        const nomesPorId = {
+            "a130eaaf-ebb6-47f2-8e9c-c64e972a1266": "DAVI.SMI"
+        };
 
+        const nome =
+            nomesPorId[data.user.id] ||
+            data.user.email;
+
+        const identificacao = {
+            id: data.user.id,
+            login: data.user.email,
+            email: data.user.email,
+            nome
+        };
+
+        // Guarda somente a identificação, sem a senha.
+        localStorage.setItem("nomeUsuario", nome);
+        localStorage.setItem("usuario", nome);
+        localStorage.setItem("operador", nome);
         localStorage.setItem(
             "usuarioLogado",
-            JSON.stringify(usuarioEncontrado)
+            JSON.stringify(identificacao)
         );
 
+        campoSenha.value = "";
         window.location.href = "dashboard.html";
-        return;
+
+    } catch (erro) {
+        mostrarErro(
+            "Não foi possível concluir o login. Verifique sua conexão."
+        );
+    } finally {
+        if (botao) {
+            botao.disabled = false;
+            botao.textContent = textoOriginal;
+        }
     }
-
-    alert("Usuário ou senha inválidos.");
-
-    campoSenha.value = "";
-    campoSenha.focus();
 }
 
 // =====================================================
 // SAIR DO SISTEMA
 // =====================================================
 
-function sairSistema() {
-    const confirmou = confirm(
-        "Deseja realmente sair do sistema?"
-    );
-
-    if (!confirmou) {
+async function sairSistema() {
+    if (!confirm("Deseja realmente sair do sistema?")) {
         return;
     }
 
-    localStorage.removeItem("usuarioLogado");
+    const cliente = window.supabaseClient;
 
-    window.location.href = "index.html";
+    if (!cliente?.auth) {
+        alert("Conexão indisponível. Atualize a página para sair.");
+        return;
+    }
+
+    try {
+        const { error } = await cliente.auth.signOut({
+            scope: "local"
+        });
+
+        if (error) {
+            alert("Não foi possível sair. Tente novamente.");
+            return;
+        }
+
+        [
+            "nomeUsuario",
+            "usuario",
+            "operador",
+            "usuarioLogado"
+        ].forEach(chave => localStorage.removeItem(chave));
+
+        window.location.href = "index.html";
+
+    } catch (erro) {
+        alert("Não foi possível sair. Verifique sua conexão.");
+    }
 }
 
 // =====================================================
@@ -7717,28 +7762,58 @@ function login() {
     return realizarLogin();
 }
 
-function verificarLogin() {
+async function verificarLogin() {
+    const caminho = window.location.pathname;
+
     const paginaLogin =
-        /(^|\/)index\.html$/i.test(
-            window.location.pathname
-        ) ||
-        window.location.pathname.endsWith("/");
+        /(^|\/)index\.html$/i.test(caminho) ||
+        caminho.endsWith("/");
 
     if (paginaLogin) {
         return true;
     }
 
-    const usuario =
-        localStorage.getItem("usuarioLogado") ||
-        localStorage.getItem("usuario");
+    const cliente = window.supabaseClient;
 
-    if (!usuario) {
-        window.location.href = "index.html";
+    if (!cliente?.auth) {
+        alert(
+            "Não foi possível verificar sua sessão. " +
+            "Entre novamente no sistema."
+        );
+
+        window.location.replace("index.html");
+        return false;
     }
 
-    return Boolean(usuario);
-}
+    try {
+        const { data, error } = await cliente.auth.getUser();
 
+        if (error || !data?.user) {
+            [
+                "nomeUsuario",
+                "usuario",
+                "operador",
+                "usuarioLogado"
+            ].forEach(function (chave) {
+                localStorage.removeItem(chave);
+            });
+
+            window.location.replace("index.html");
+            return false;
+        }
+
+        return true;
+
+    } catch (erro) {
+        alert(
+            "Não foi possível verificar sua sessão. " +
+            "Verifique a conexão e entre novamente."
+        );
+
+        window.location.replace("index.html");
+        return false;
+    }
+}
 window.login = login;
 window.verificarLogin = verificarLogin;
 
